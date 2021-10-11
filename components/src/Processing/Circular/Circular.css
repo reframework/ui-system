@@ -1,0 +1,61 @@
+.loader {
+  animation: spinner-a 4.8s linear infinite;
+  height: 32px;
+  width: 32px;
+
+  & span,
+  & span::after {
+    bottom: 0;
+    box-sizing: border-box;
+    clip: rect(0, 32px, 32px, 16px);
+    display: block;
+    height: 32px;
+    left: 0;
+    margin: auto;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 32px;
+  }
+
+  & span {
+    animation: spinner-b 1.2s linear infinite;
+
+    &::after {
+      animation: spinner-c 1.2s ease-in-out infinite;
+      border-radius: 50%;
+      border: 3px solid red;
+      content: "";
+    }
+  }
+}
+
+@keyframes spinner-a {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinner-b {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(220deg);
+  }
+}
+
+@keyframes spinner-c {
+  0% {
+    transform: rotate(-140deg);
+  }
+  50% {
+    transform: rotate(-160deg);
+  }
+  100% {
+    transform: rotate(140deg);
+  }
+}

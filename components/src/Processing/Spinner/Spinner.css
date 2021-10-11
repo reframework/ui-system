@@ -1,0 +1,121 @@
+.spinner {
+  animation: spinner-a 2s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+  height: 32px;
+  width: 32px;
+
+  &::before,
+  &::after,
+  & span::after,
+  & span::before {
+    background: red;
+    border-radius: 50%;
+    box-sizing: border-box;
+    content: "";
+    display: block;
+    height: 10px;
+    margin: auto;
+    position: absolute;
+    width: 10px;
+  }
+
+  &::before {
+    animation: spinner-b 2s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+    bottom: 0;
+    left: 0;
+    right: auto;
+    top: 0;
+  }
+
+  &::after {
+    animation: spinner-c 2s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+    bottom: 0;
+    left: auto;
+    right: 0;
+    top: 0;
+  }
+
+  & span {
+    bottom: 0;
+    display: block;
+    height: 32px;
+    left: 0;
+    margin: auto;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 32px;
+
+    &::before {
+      animation: spinner-d 2s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+      bottom: auto;
+      left: 0;
+      right: 0;
+      top: 0;
+    }
+
+    &::after {
+      animation: spinner-e 2s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      top: auto;
+    }
+  }
+}
+
+@keyframes spinner-a {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinner-b {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(24px, 0, 0) scale(0.5);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes spinner-c {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-24px, 0, 0) scale(0.5);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes spinner-d {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, 24px, 0) scale(0.5);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes spinner-e {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -24px, 0) scale(0.5);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
