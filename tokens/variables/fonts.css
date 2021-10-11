@@ -5,15 +5,15 @@
   --font-family-curcive: Bradley Hand, cursive;
   --font-family-monocpace: Monaco, monocpace;
   /* font-size */
-  --font-size-xxx-small: 12px;
-  --font-size-xx-small: 14px;
-  --font-size-x-small: 16px;
-  --font-size-small: 18px;
-  --font-size-medium: 20px;
-  --font-size-large: 22px;
-  --font-size-x-large: 24px;
-  --font-size-xx-large: 32px;
-  --font-size-xxx-large: 40px;
+  --font-size-xxxs: 12px;
+  --font-size-xxs: 14px;
+  --font-size-xs: 16px;
+  --font-size-s: 18px;
+  --font-size-m: 20px;
+  --font-size-l: 22px;
+  --font-size-xl: 24px;
+  --font-size-xxl: 32px;
+  --font-size-xxxl: 40px;
   /* font-weight  */
   --font-weight-100: 100;
   --font-weight-200: 200;

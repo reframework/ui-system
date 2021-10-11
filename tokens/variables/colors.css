@@ -1,6 +1,7 @@
 :root {
   --color-scale-black: #1b1f24;
   --color-scale-white: #ffffff;
+  /* gray  */
   --color-scale-gray-0: #f6f8fa;
   --color-scale-gray-1: #eaeef2;
   --color-scale-gray-2: #d0d7de;
@@ -11,6 +12,7 @@
   --color-scale-gray-7: #424a53;
   --color-scale-gray-8: #32383f;
   --color-scale-gray-9: #24292f;
+  /* blue */
   --color-scale-blue-0: #ddf4ff;
   --color-scale-blue-1: #b6e3ff;
   --color-scale-blue-2: #80ccff;
@@ -21,6 +23,7 @@
   --color-scale-blue-7: #033d8b;
   --color-scale-blue-8: #0a3069;
   --color-scale-blue-9: #002155;
+  /* green */
   --color-scale-green-0: #dafbe1;
   --color-scale-green-1: #aceebb;
   --color-scale-green-2: #6fdd8b;
@@ -31,6 +34,7 @@
   --color-scale-green-7: #044f1e;
   --color-scale-green-8: #003d16;
   --color-scale-green-9: #002d11;
+  /* yellow */
   --color-scale-yellow-0: #fff8c5;
   --color-scale-yellow-1: #fae17d;
   --color-scale-yellow-2: #eac54f;
@@ -41,6 +45,7 @@
   --color-scale-yellow-7: #633c01;
   --color-scale-yellow-8: #4d2d00;
   --color-scale-yellow-9: #3b2300;
+  /* orange */
   --color-scale-orange-0: #fff1e5;
   --color-scale-orange-1: #ffd8b5;
   --color-scale-orange-2: #ffb77c;
@@ -51,6 +56,7 @@
   --color-scale-orange-7: #762c00;
   --color-scale-orange-8: #5c2200;
   --color-scale-orange-9: #471700;
+  /* red */
   --color-scale-red-0: #ffebe9;
   --color-scale-red-1: #ffcecb;
   --color-scale-red-2: #ffaba8;
@@ -61,6 +67,7 @@
   --color-scale-red-7: #82071e;
   --color-scale-red-8: #660018;
   --color-scale-red-9: #4c0014;
+  /* purple */
   --color-scale-purple-0: #fbefff;
   --color-scale-purple-1: #ecd8ff;
   --color-scale-purple-2: #d8b9ff;
@@ -71,6 +78,7 @@
   --color-scale-purple-7: #512a97;
   --color-scale-purple-8: #3e1f79;
   --color-scale-purple-9: #2e1461;
+  /* pink */
   --color-scale-pink-0: #ffeff7;
   --color-scale-pink-1: #ffd3eb;
   --color-scale-pink-2: #ffadda;
@@ -81,6 +89,7 @@
   --color-scale-pink-7: #772057;
   --color-scale-pink-8: #611347;
   --color-scale-pink-9: #4d0336;
+  /* coral */
   --color-scale-coral-0: #fff0eb;
   --color-scale-coral-1: #ffd6cc;
   --color-scale-coral-2: #ffb4a1;

@@ -1,16 +1,16 @@
 :root {
   /* spacing */
-  --spacing-xxx-small: 4px;
-  --spacing-xx-small: 8px;
-  --spacing-x-small: 16px;
-  --spacing-small: 24px;
-  --spacing-medium: 32px;
-  --spacing-large: 40px;
-  --spacing-x-large: 48px;
-  --spacing-xx-large: 56px;
-  --spacing-xxx-large: 64px;
+  --spacing-xxxs: 4px;
+  --spacing-xxs: 8px;
+  --spacing-xs: 16px;
+  --spacing-s: 24px;
+  --spacing-m: 32px;
+  --spacing-l: 40px;
+  --spacing-xl: 48px;
+  --spacing-xxl: 56px;
+  --spacing-xxxl: 64px;
   /* icon size */
-  --icon-small: 16px;
-  --icon-medium: 24px;
-  --icon-large: 30px;
+  --icon-s: 16px;
+  --icon-m: 24px;
+  --icon-l: 30px;
 }
