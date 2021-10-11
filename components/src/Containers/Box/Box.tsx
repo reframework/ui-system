@@ -1,9 +1,9 @@
 import React from 'react'
 
-type Props = {
-  children: React.ReactNode
+type Props = React.HTMLAttributes<HTMLDivElement>;
+
+const Box = (props: Props) => {
+  return <div {...props}  />
 }
 
-const Box = ({children}) => {
-  return <div>{children}</div>
-}
+export default Box

@@ -1,0 +1,16 @@
+env
+**/.env
+
+node_modules
+*/node_modules
+
+**/dist
+**/lib
+**/.sass-cache
+**/.tmp
+**/test-*.xml
+**/coverage
+
+.idea/
+.vscode/
+*.log
