@@ -1,0 +1,33 @@
+:root {
+  /* font-family */
+  --font-family-primary: Trebuchet MS, sans-serif;
+  --font-family-secondary: Times New Roman, serif;
+  --font-family-curcive: Bradley Hand, cursive;
+  --font-family-monocpace: Monaco, monocpace;
+  /* font-size */
+  --font-size-xxx-small: 12px;
+  --font-size-xx-small: 14px;
+  --font-size-x-small: 16px;
+  --font-size-small: 18px;
+  --font-size-medium: 20px;
+  --font-size-large: 22px;
+  --font-size-x-large: 24px;
+  --font-size-xx-large: 32px;
+  --font-size-xxx-large: 40px;
+  /* font-weight  */
+  --font-weight-100: 100;
+  --font-weight-200: 200;
+  --font-weight-300: 300;
+  --font-weight-400: 400;
+  --font-weight-500: 500;
+  --font-weight-600: 600;
+  --font-weight-700: 700;
+  /* aliases of numeric properties */
+  --font-weight-x-light: 100;
+  --font-weight-light: 200;
+  --font-weight-regular: 300;
+  --font-weight-medium: 400;
+  --font-weight-semi-bold: 500;
+  --font-weight-bold: 600;
+  --font-weight-black: 700;
+}
