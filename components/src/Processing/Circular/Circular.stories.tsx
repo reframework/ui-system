@@ -8,8 +8,22 @@ export default {
   component: CircularLoader,
 } as ComponentMeta<typeof CircularLoader>;
 
-const Template: ComponentStory<typeof CircularLoader> = () => <CircularLoader />;
+const Template: ComponentStory<typeof CircularLoader> = ({ size }) => (
+  <CircularLoader size={size} />
+);
 
-export const Default = Template.bind({});
+export const Small = Template.bind({});
+export const Medium = Template.bind({});
+export const Large = Template.bind({});
 
-Default.args = {};
+Small.args = {
+  size: "small",
+};
+
+Medium.args = {
+  size: "medium",
+};
+
+Large.args = {
+  size: "large",
+};

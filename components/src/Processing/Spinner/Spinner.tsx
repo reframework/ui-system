@@ -5,15 +5,16 @@ type Props = {
   className?: string;
   color?: "string";
   spinning: boolean;
-  size?: number;
+  size?: "small" | "medium" | "large";
   paused?: boolean;
   strokeWidth?: number;
 };
 
-const CircularLoader = ({ color }: Props) => {
+const CircularLoader = ({ color, size = "medium" }: Props) => {
   return (
-    <div className={styles.spinner}>
+    <div className={`${styles.spinner} ${styles[size]}`}>
       <span />
+      {/* <span className={styles.base} /> */}
     </div>
   );
 };

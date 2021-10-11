@@ -1,21 +1,50 @@
+.small {
+  --animation-offset: 18px;
+  --size-a: 24px;
+  --size-b: 6px;
+}
+
+.medium {
+  --animation-offset: 24px;
+  --size-a: 32px;
+  --size-b: 8px;
+}
+
+.large {
+  --animation-offset: 30px;
+  --size-a: 40px;
+  --size-b: 10px;
+}
+
 .spinner {
   animation: spinner-a 2s cubic-bezier(0.77, 0, 0.175, 1) infinite;
-  height: 32px;
-  width: 32px;
+  color: #3a9eff;
+
+  &,
+  & span {
+    height: var(--size-a);
+    width: var(--size-a);
+  }
 
   &::before,
   &::after,
   & span::after,
   & span::before {
-    background: red;
+    width: var(--size-b);
+    height: var(--size-b);
+  }
+
+  &::before,
+  &::after,
+  & span::after,
+  & span::before {
+    background: currentColor;
     border-radius: 50%;
     box-sizing: border-box;
     content: "";
     display: block;
-    height: 10px;
     margin: auto;
     position: absolute;
-    width: 10px;
   }
 
   &::before {
@@ -37,13 +66,11 @@
   & span {
     bottom: 0;
     display: block;
-    height: 32px;
     left: 0;
     margin: auto;
     position: absolute;
     right: 0;
     top: 0;
-    width: 32px;
 
     &::before {
       animation: spinner-d 2s cubic-bezier(0.77, 0, 0.175, 1) infinite;
@@ -77,7 +104,7 @@
     transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
-    transform: translate3d(24px, 0, 0) scale(0.5);
+    transform: translate3d(var(--animation-offset), 0, 0) scale(0.5);
   }
   100% {
     transform: translate3d(0, 0, 0) scale(1);
@@ -89,7 +116,7 @@
     transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
-    transform: translate3d(-24px, 0, 0) scale(0.5);
+    transform: translate3d(calc(-1 * var(--animation-offset)), 0, 0) scale(0.5);
   }
   100% {
     transform: translate3d(0, 0, 0) scale(1);
@@ -101,7 +128,7 @@
     transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
-    transform: translate3d(0, 24px, 0) scale(0.5);
+    transform: translate3d(0, var(--animation-offset), 0) scale(0.5);
   }
   100% {
     transform: translate3d(0, 0, 0) scale(1);
@@ -113,7 +140,7 @@
     transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
-    transform: translate3d(0, -24px, 0) scale(0.5);
+    transform: translate3d(0, calc(-1 * var(--animation-offset)), 0) scale(0.5);
   }
   100% {
     transform: translate3d(0, 0, 0) scale(1);

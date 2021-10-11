@@ -8,8 +8,22 @@ export default {
   component: Spinner,
 } as ComponentMeta<typeof Spinner>;
 
-const Template: ComponentStory<typeof Spinner> = () => <Spinner />;
+const Template: ComponentStory<typeof Spinner> = ({ size }) => (
+  <Spinner size={size} />
+);
 
-export const Default = Template.bind({});
+export const Small = Template.bind({});
+export const Medium = Template.bind({});
+export const Large = Template.bind({});
 
-Default.args = {};
+Small.args = {
+  size: "small",
+};
+
+Medium.args = {
+  size: "medium",
+};
+
+Large.args = {
+  size: "large",
+};
