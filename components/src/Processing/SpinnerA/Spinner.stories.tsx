@@ -1,15 +1,15 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import CircularLoader from "./Circular";
+import Spinner from "./Spinner";
 
 export default {
-  title: "Processing/CircularLoader",
-  component: CircularLoader,
-} as ComponentMeta<typeof CircularLoader>;
+  title: "Processing/SpinnerA",
+  component: Spinner,
+} as ComponentMeta<typeof Spinner>;
 
-const Template: ComponentStory<typeof CircularLoader> = ({ size }) => (
-  <CircularLoader size={size} />
+const Template: ComponentStory<typeof Spinner> = ({ size }) => (
+  <Spinner size={size} />
 );
 
 export const Small = Template.bind({});
