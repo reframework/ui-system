@@ -18,18 +18,18 @@ const Page = ({ children, ...props }) => {
   };
   return (
     <Box>
-      <button ref={ref} onClick={() => setOpen(true)}>
+      <button ref={ref} onClick={() => setOpen(true)} style={{ padding: 0 }}>
         Click me!
       </button>
       <PopoverComponent
         {...props}
-        placement="start-end"
+        placement="after-before"
         onClickAway={onClickAway}
-        // anchorEl={ref.current}
+        anchorEl={ref.current}
         open={open}
       >
         <div
-          style={{ width: "200px", height: "100px", backgroundColor: "gray" }}
+          style={{ width: "20px", height: "20px", backgroundColor: "gray" }}
         >
           {children}
         </div>

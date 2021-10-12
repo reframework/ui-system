@@ -26,7 +26,6 @@ export type PopoverProps = {
   onClose?: () => void;
   open: boolean;
   placement?: Placement;
-  trigger: React.ReactNode;
   zIndex?: number;
 };
 
@@ -88,13 +87,15 @@ const Popover: React.FC<PopoverProps> = ({
         "Unexpected behavior, popover element doesn't exist."
       );
     }
+    console.log(anchorEl, "EL");
 
-    const triggerRect = (anchorEl || viewport).getBoundingClientRect();
+    const triggerRect = (anchorEl).getBoundingClientRect();
     const popoverRect = contentRoot.getBoundingClientRect();
     const [getPositionX, getPositionY] = getPositionHandlers(placement);
     const viewportType = anchorEl ? ViewportType.body : ViewportType.window;
 
     setStyle({
+      ...getCssPosition(),
       ...getPositionX(Axis.x, viewportType, triggerRect, popoverRect, offsetX),
       ...getPositionY(Axis.y, viewportType, triggerRect, popoverRect, offsetY),
     });
