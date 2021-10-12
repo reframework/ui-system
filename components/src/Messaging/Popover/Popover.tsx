@@ -2,7 +2,6 @@ import React, { CSSProperties, useEffect, useState } from "react";
 import { Portal } from "./Portal";
 import { getPlacement, viewport } from "./placementUtils";
 import { Axis, ViewportType, PlacementAxis, Placement } from "./types";
-
 import {
   addClickListener,
   addResizeListener,
@@ -11,14 +10,10 @@ import {
   stopPropagation,
 } from "./domUtils";
 
-import { useIsMounted } from "./hooks";
+import { useMounted } from "./hooks";
 
 export function isFunction<T extends Function>(f: T): f is T {
   return typeof f === "function";
-}
-
-export function nextTick(callback: () => void) {
-  return setTimeout(callback, 0);
 }
 
 export type PopoverProps = {
@@ -35,7 +30,7 @@ export type PopoverProps = {
   zIndex?: number;
 };
 
-const getPositionHandlers = (placement: string) => {
+const getPositionHandlers = (placement: Placement) => {
   const [x, y] = placement.split("-") as [PlacementAxis, PlacementAxis];
   return [getPlacement[x], getPlacement[y]];
 };
@@ -59,7 +54,7 @@ const Popover: React.FC<PopoverProps> = ({
   placement = "start-start",
   zIndex,
 }) => {
-  const isMounted = useIsMounted();
+  const isMounted = useMounted();
   const [internalOpen, setInternalOpen] = useState<boolean>(false);
   const [style, setStyle] = useState<CSSProperties>(getCssPosition());
   const [contentRoot, setContentRoot] = useState<HTMLDivElement | null>(null);
@@ -123,10 +118,8 @@ const Popover: React.FC<PopoverProps> = ({
 
   useEffect(() => {
     if (contentRoot) {
-      nextTick(() => {
-        addClickListener(handleClickAway);
-        addResizeListener(setStyles);
-      });
+      addClickListener(handleClickAway);
+      addResizeListener(setStyles);
     }
 
     return () => {

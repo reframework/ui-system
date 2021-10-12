@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-export const useIsMounted = () => {
+export const useMounted = () => {
   const mounted = useRef(false);
 
   useEffect(() => {
