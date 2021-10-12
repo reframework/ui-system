@@ -1,13 +1,11 @@
 import React from "react";
 import styles from "./Circular.css?module";
 
-const SIZE = 44;
 type Props = {
   className?: string;
   color?: "string";
-  spinning: boolean;
   size?: number;
-  value?: number;
+  progress?: number;
   thickness?: number;
 };
 
@@ -15,27 +13,27 @@ const CircularLoader = ({
   color,
   size = 50,
   thickness = 5,
-  value,
+  progress,
 }: Props) => {
+  const SIZE = 44;
+  let variant = "undetermined";
   const circleStyle: {
     strokeDasharray?: string;
     strokeDashoffset?: string;
   } = {};
 
-  let variant = "undetermined";
-
-  if (typeof value === "number") {
+  if (typeof progress === "number") {
     variant = "determined";
     const circumference = 2 * Math.PI * ((SIZE - thickness) / 2);
-    const dashOffset = ((100 - value) / 100) * circumference;
+    const dashOffset = ((100 - progress) / 100) * circumference;
     circleStyle.strokeDasharray = circumference.toFixed(3);
-    circleStyle.strokeDashoffset = `${dashOffset.toFixed(3)}px`;
+    circleStyle.strokeDashoffset = dashOffset.toFixed(3);
   }
 
   return (
     <div
       className={`${styles.loader} ${styles[variant]}`}
-      style={{ width: size, height: size }}
+      style={{ width: size, height: size, color }}
     >
       <svg
         className={styles.svg}

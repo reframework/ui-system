@@ -22,9 +22,14 @@
   }
 }
 
+.loader {
+  color: block;
+}
+
 .background {
   fill: none;
-  stroke: #e2eff0;
+  opacity: 0.15;
+  stroke: currentColor;
 }
 
 .undetermined {
@@ -43,12 +48,12 @@
   }
 
   & .progress {
-    transition: stroke-dashoffset 1s ease-in-out;
+    transition: stroke-dashoffset 0.5s ease-out;
   }
 }
 
 .progress {
   fill: none;
-  stroke: #78bec7;
+  stroke: currentColor;
   stroke-dasharray: 100 100;
 }

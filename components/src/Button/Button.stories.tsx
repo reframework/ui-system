@@ -8,7 +8,7 @@ export default {
   component: Button,
 } as ComponentMeta<typeof Button>;
 
-const Template: ComponentStory<typeof Button> = ({ props, children }) => (
+const Template: ComponentStory<typeof Button> = ({ children, ...props }) => (
   <Button {...props} children={children} />
 );
 
@@ -16,15 +16,6 @@ export const Default = Template.bind({});
 
 Default.args = {
   primary: true,
-  children: "",
+  children: "Button",
   props: {},
-};
-Default.parameters = {
-  backgrounds: {
-    values: [
-      { name: "red", value: "#f00" },
-      { name: "green", value: "#0f0" },
-      { name: "blue", value: "#00f" },
-    ],
-  },
 };

@@ -1,148 +1,65 @@
-.small {
-  --animation-offset: 18px;
-  --size-a: 24px;
-  --size-b: 6px;
-}
-
-.medium {
-  --animation-offset: 24px;
-  --size-a: 32px;
-  --size-b: 8px;
-}
-
-.large {
-  --animation-offset: 30px;
-  --size-a: 40px;
-  --size-b: 10px;
-}
-
 .spinner {
-  animation: spinner-a 2s cubic-bezier(0.77, 0, 0.175, 1) infinite;
-  color: #3a9eff;
-
-  &,
-  & span {
-    height: var(--size-a);
-    width: var(--size-a);
-  }
-
-  &::before,
-  &::after,
-  & span::after,
-  & span::before {
-    width: var(--size-b);
-    height: var(--size-b);
-  }
-
-  &::before,
-  &::after,
-  & span::after,
-  & span::before {
-    background: currentColor;
-    border-radius: 50%;
-    box-sizing: border-box;
-    content: "";
-    display: block;
-    margin: auto;
-    position: absolute;
-  }
-
-  &::before {
-    animation: spinner-b 2s cubic-bezier(0.77, 0, 0.175, 1) infinite;
-    bottom: 0;
-    left: 0;
-    right: auto;
-    top: 0;
-  }
-
-  &::after {
-    animation: spinner-c 2s cubic-bezier(0.77, 0, 0.175, 1) infinite;
-    bottom: 0;
-    left: auto;
-    right: 0;
-    top: 0;
-  }
-
-  & span {
-    bottom: 0;
-    display: block;
-    left: 0;
-    margin: auto;
-    position: absolute;
-    right: 0;
-    top: 0;
-
-    &::before {
-      animation: spinner-d 2s cubic-bezier(0.77, 0, 0.175, 1) infinite;
-      bottom: auto;
-      left: 0;
-      right: 0;
-      top: 0;
-    }
-
-    &::after {
-      animation: spinner-e 2s cubic-bezier(0.77, 0, 0.175, 1) infinite;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      top: auto;
-    }
-  }
+  color: black;
 }
 
-@keyframes spinner-a {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+.svg rect {
+  animation: spinner 1.2s linear infinite;
+  fill: currentColor;
 }
 
-@keyframes spinner-b {
-  0% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  50% {
-    transform: translate3d(var(--animation-offset), 0, 0) scale(0.5);
-  }
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
+.svg rect:nth-child(1) {
+  animation-delay: -1.1s;
 }
 
-@keyframes spinner-c {
-  0% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  50% {
-    transform: translate3d(calc(-1 * var(--animation-offset)), 0, 0) scale(0.5);
-  }
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
+.svg rect:nth-child(2) {
+  animation-delay: -1s;
 }
 
-@keyframes spinner-d {
-  0% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  50% {
-    transform: translate3d(0, var(--animation-offset), 0) scale(0.5);
-  }
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
+.svg rect:nth-child(3) {
+  animation-delay: -0.9s;
 }
 
-@keyframes spinner-e {
+.svg rect:nth-child(4) {
+  animation-delay: -0.8s;
+}
+
+.svg rect:nth-child(5) {
+  animation-delay: -0.7s;
+}
+
+.svg rect:nth-child(6) {
+  animation-delay: -0.6s;
+}
+
+.svg rect:nth-child(7) {
+  animation-delay: -0.5s;
+}
+
+.svg rect:nth-child(8) {
+  animation-delay: -0.4s;
+}
+
+.svg rect:nth-child(9) {
+  animation-delay: -0.3s;
+}
+
+.svg rect:nth-child(10) {
+  animation-delay: -0.2s;
+}
+
+.svg rect:nth-child(11) {
+  animation-delay: -0.1s;
+}
+
+.svg rect:nth-child(12) {
+  animation-delay: 0s;
+}
+
+@keyframes spinner {
   0% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  50% {
-    transform: translate3d(0, calc(-1 * var(--animation-offset)), 0) scale(0.5);
+    opacity: 1;
   }
   100% {
-    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0;
   }
 }
