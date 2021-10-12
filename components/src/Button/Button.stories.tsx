@@ -4,7 +4,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import Button from "./Button";
 
 export default {
-  title: "Button",
+  title: "Button/Button",
   component: Button,
 } as ComponentMeta<typeof Button>;
 
@@ -14,6 +14,7 @@ const Template: ComponentStory<typeof Button> = ({ children, ...props }) => (
 
 export const Primary = Template.bind({});
 export const Secondary = Template.bind({});
+export const Neutral = Template.bind({});
 export const Outlined = Template.bind({});
 export const Contained = Template.bind({});
 export const Text = Template.bind({});
@@ -46,6 +47,12 @@ Large.args = {
 
 Primary.args = {
   color: "primary",
+  children: "Button",
+  disabled: false,
+};
+
+Neutral.args = {
+  color: "neutral",
   children: "Button",
   disabled: false,
 };

@@ -67,6 +67,14 @@
       background-color: var(--color-scale-pink-3);
     }
   }
+
+  &.neutral {
+    background-color: var(--color-scale-gray-4);
+    &:active,
+    &:hover {
+      background-color: var(--color-scale-gray-3);
+    }
+  }
 }
 
 .outlined {
@@ -87,6 +95,15 @@
       background-color: var(--color-scale-pink-1);
     }
   }
+
+  &.neutral {
+    border: 1px solid var(--color-scale-gray-4);
+    color: var(--color-scale-gray-4);
+    &:active,
+    &:hover {
+      background-color: var(--color-scale-gray-1);
+    }
+  }
 }
 
 .text {
@@ -103,6 +120,14 @@
     &:active,
     &:hover {
       color: var(--color-scale-pink-3);
+    }
+  }
+
+  &.neutral {
+    color: var(--color-scale-gray-4);
+    &:active,
+    &:hover {
+      color: var(--color-scale-gray-3);
     }
   }
 }

@@ -2,11 +2,11 @@ const { readFile } = require("fs").promises;
 
 module.exports = async (head) => {
   const files = [
-    // require.resolve("@reframework/ui-system/-tokens/variables/breakpoints.css"),
+    // require.resolve("@reframework/ui-system-tokens/variables/breakpoints.css"),
     require.resolve("@reframework/ui-system-tokens/variables/fonts.css"),
     require.resolve("@reframework/ui-system-tokens/variables/colors.css"),
     require.resolve("@reframework/ui-system-tokens/variables/spacing.css"),
-    // require.resolve("@reframework/ui-system/-tokens/variables/z-index.css"),
+    // require.resolve("@reframework/ui-system-tokens/variables/z-index.css"),
   ];
 
   const styles = await Promise.all(

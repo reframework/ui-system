@@ -3,7 +3,7 @@ import styles from "./Button.css?module";
 import clsx from "clsx";
 export interface ButtonProps {
   children: React.ReactNode;
-  color?: "primary" | "secondary";
+  color?: "primary" | "secondary" | "error" | "warning" | "success" | "neutral";
   variant?: "contained" | "outlined" | "text" | string;
   disabled?: boolean;
   shape?: "circle" | "square";
@@ -30,7 +30,6 @@ const Button = ({
     styles[size],
     styles[variant],
     styles[color],
-
     {
       [styles.circle]: shape === "circle",
       [styles.stretch]: stretch,
