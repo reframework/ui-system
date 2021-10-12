@@ -1,0 +1,24 @@
+:root {
+  /* zero */
+  --breakpoint-xxs: 0;
+  /* small phones e.g. iPhone 4/5 */
+  --breakpoint-xs: 320px;
+  /* phones */
+  --breakpoint-xs: 375px;
+  /* tablets */
+  --breakpoint-m: 600px;
+  /* small laptop */
+  --breakpoint-l: 900px;
+  /* desktop */
+  --breakpoint-xl: 1200px;
+  /* large screens */
+  --breakpoint-xxl: 1536px;
+  /*  Mobile first media */
+  @custom-media --xxs only screen and (min-width: --var(--breakpoint-xxs));
+  @custom-media --xs only screen and (min-width: --var(--breakpoint-xs));
+  @custom-media --s only screen and (min-width: --var(--breakpoint-s));
+  @custom-media --m only screen and (min-width: --var(--breakpoint-m));
+  @custom-media --l only screen and (min-width: --var(--breakpoint-l));
+  @custom-media --xl only screen and (min-width: --var(--breakpoint-xl));
+  @custom-media --xxl only screen and (min-width: --var(--breakpoint-xxl));
+}

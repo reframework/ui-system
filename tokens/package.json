@@ -1,0 +1,10 @@
+{
+  "author": "Philipp Sapronov, philipp.sapronov@gmail.com",
+  "description": "Design tokens",
+  "license": "ISC",
+  "name": "@reframework/ui-system-tokens",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "0.0.1"
+}

@@ -1,0 +1,59 @@
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dash-rotation {
+  0% {
+    stroke-dasharray: 1px 200px;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 100px 200px;
+    stroke-dashoffset: -15px;
+  }
+  100% {
+    stroke-dasharray: 100px 200px;
+    stroke-dashoffset: -120px;
+  }
+}
+
+.loader {
+  color: block;
+}
+
+.background {
+  fill: none;
+  opacity: 0.15;
+  stroke: currentColor;
+}
+
+.undetermined {
+  & .svg {
+    animation: rotation 1.5s linear infinite;
+  }
+  & .progress {
+    animation: dash-rotation 1.5s ease-in-out infinite;
+  }
+}
+
+.determined {
+  .svg {
+    /* set start position at 12:00 AM */
+    transform: rotate(-90deg);
+  }
+
+  & .progress {
+    transition: stroke-dashoffset 0.5s ease-out;
+  }
+}
+
+.progress {
+  fill: none;
+  stroke: currentColor;
+  stroke-dasharray: 100 100;
+}

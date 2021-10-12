@@ -1,0 +1,162 @@
+/* common */
+.typography {
+  font-family: var(--font-family-primary);
+  text-transform: unset;
+  text-decoration: unset;
+  width: max-content;
+  padding: 0;
+  margin: 0;
+}
+
+button.typography {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+a.typography {
+  cursor: pointer;
+}
+
+/* align  */
+.left {
+  text-align: left;
+}
+
+.center {
+  text-align: center;
+}
+
+.right {
+  text-align: right;
+}
+
+/* font */
+.font_primary {
+  font-family: var(--font-family-primary);
+}
+
+.font_secondary {
+  font-family: var(--font-family-secondary);
+}
+
+.font_monospace {
+  font-family: var(--font-family-monospace);
+}
+
+.font_italic {
+  font-family: var(--font-family-italic);
+}
+
+/* size */
+.xxxs {
+  font-size: var(--font-size-xxxs);
+}
+
+.xxs {
+  font-size: var(--font-size-xxs);
+}
+
+.xs {
+  font-size: var(--font-size-xs);
+}
+
+.s {
+  font-size: var(--font-size-s);
+}
+
+.m {
+  font-size: var(--font-size-m);
+}
+
+.l {
+  font-size: var(--font-size-l);
+}
+
+.xl {
+  font-size: var(--font-size-xl);
+}
+
+.xxl {
+  font-size: var(--font-size-xxl);
+}
+
+.xxxl {
+  font-size: var(--font-size-xxxl);
+}
+
+/* variant */
+.primary {
+  color: var(--color-scale-blue-4);
+}
+
+.secondary {
+  color: var(--color-scale-pink-4);
+}
+
+.error {
+  color: var(--color-scale-red-4);
+}
+
+.warning {
+  color: var(--color-scale-yellow-2);
+}
+
+.success {
+  color: var(--color-scale-green-4);
+}
+
+.neutral {
+  color: var(--color-scale-gray-4);
+}
+
+/* weight */
+.thin {
+  font-weight: var(--font-weight-thin);
+}
+
+.light {
+  font-weight: var(--font-weight-light);
+}
+
+.regular {
+  font-weight: var(--font-weight-regular);
+}
+
+.medium {
+  font-weight: var(--font-weight-medium);
+}
+
+.semibold {
+  font-weight: var(--font-weight-semibold);
+}
+
+.bold {
+  font-weight: var(--font-weight-bold);
+}
+
+.black {
+  font-weight: var(--font-weight-black);
+}
+
+.ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.stretch {
+  width: 100%;
+  display: block;
+}
