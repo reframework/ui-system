@@ -1,4 +1,4 @@
-// const injectTokens = require("./injectTokens");
+const injectTokens = require("./injectTokens");
 const cssRegex = "/\\.css$/";
 
 const lastOf = (arr) => {
@@ -29,7 +29,7 @@ module.exports = {
               options: {
                 importLoaders: 1,
                 modules: {
-                  localIdentName: "[name]__[hash:hex:7]",
+                  localIdentName: "[name]_[local]__[hash:hex:7]",
                 },
               },
             },
@@ -68,6 +68,6 @@ module.exports = {
       },
     },
   ],
-  // managerHead: injectTokens,
-  // previewHead: injectTokens,
+  managerHead: injectTokens,
+  previewHead: injectTokens,
 };
