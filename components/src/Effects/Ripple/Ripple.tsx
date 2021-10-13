@@ -1,21 +1,16 @@
-import React, { PropsWithChildren, useState } from "react";
+import React, { ComponentType, ComponentProps, useState } from "react";
 
-type Override<T extends object, O extends object> = {
-  [K in Exclude<keyof O, keyof T>]?: O[K];
-} &
-  { [K in Extract<keyof T, keyof O>]?: O[K] };
+type Box = ComponentType | keyof JSX.IntrinsicElements;
+type Props<C extends Box> = {
+  component: C;
+  children: React.ReactNode;
+} & ComponentProps<C>;
 
-type ButtonBaseProps<T extends object> = {
-  element: keyof JSX.IntrinsicElements | React.ComponentType<T>;
-  className?: string;
-} & Override<{}, T>;
-
-export const ButtonBase = <T extends object>({
+const Ripple = <T extends Box>({
   children,
-  className,
-  element,
+  component: Component = "div" as any,
   ...props
-}: PropsWithChildren<ButtonBaseProps<T>>) => {
+}: Props<T>) => {
   const [ref, setRef] = useState<HTMLElement | null>(null);
 
   const handleAnimationEnd = (e: AnimationEvent) => {
@@ -28,13 +23,8 @@ export const ButtonBase = <T extends object>({
     }
   };
 
-  const handleContextMenu = () => {
-    if (!ref) return;
-  };
-
   const handleMouseUp = () => {
     if (!ref) return;
-
     Array.prototype.forEach.call(ref.children, (node) =>
       node.classList.add("exit")
     );
@@ -42,6 +32,10 @@ export const ButtonBase = <T extends object>({
   };
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (typeof props.onMouseDown === "function") {
+      props.onMouseDown(e);
+    }
+
     const span = document.createElement("span");
 
     if (!ref) return;
@@ -82,16 +76,22 @@ export const ButtonBase = <T extends object>({
   };
 
   return (
-    <div
-      {...props}
-      as={element as React.ComponentType<any>}
-      className={className} // styles.root
-      onContextMenu={handleContextMenu}
-      onMouseDown={handleMouseDown}
-      spellCheck="false"
-    >
+    <Component {...props} onMouseDown={handleMouseDown}>
       {children}
       <div className="ripple" ref={setRef} />
+    </Component>
+  );
+};
+
+export default Ripple;
+
+//  Usage
+
+const Ex = () => {
+  return (
+    <div style={{ color: blue }}>
+      <h1>Example of Ripple</h1>
+      <Ripple component={"div"}>Click Me!</Ripple>
     </div>
   );
 };

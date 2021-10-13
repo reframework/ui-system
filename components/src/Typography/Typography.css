@@ -110,6 +110,10 @@ a.typography {
   color: var(--color-scale-gray-4);
 }
 
+.default {
+  color: var(--color-scale-black);
+}
+
 /* weight */
 .thin {
   font-weight: var(--font-weight-thin);
