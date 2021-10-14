@@ -1,0 +1,5 @@
+.paper {
+  box-sizing: border-box;
+  background-color: var(--color-scale-white);
+  border-radius: var(--spacing-xxxs);
+}

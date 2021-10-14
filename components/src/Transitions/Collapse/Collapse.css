@@ -1,0 +1,58 @@
+.reveal {
+  --collapse-timeout: 300ms;
+  --fade-timeout: 300ms;
+  --max-hight: 300px;
+}
+
+.fade {
+  opacity: 0;
+
+  &.fade-enter {
+    opacity: 0;
+  }
+
+  &.fade-enter-active,
+  &.fade-enter-done {
+    opacity: 1;
+    transition: opacity var(--fade-timeout) ease;
+  }
+  &.fade-exit {
+    opacity: 1;
+  }
+  &.fade-exit-active,
+  &.fade-exit-done {
+    opacity: 0;
+    transition: opacity var(--fade-timeout) ease;
+  }
+
+  &.fade-enter-active.default-expanded {
+    transition: unset;
+  }
+}
+
+.collapse {
+  transition: all var(--collapse-timeout) ease-in-out;
+  overflow: hidden;
+
+  &.collapse-enter,
+  &.collapse-appear {
+    max-height: 0;
+  }
+
+  &.collapse-enter-active,
+  &.collapse-appear-active {
+    max-height: var(--max-height);
+  }
+
+  &.collapse-exit {
+    max-height: var(--max-height);
+  }
+
+  &.collapse-exit-active {
+    max-height: 0;
+  }
+
+  &.default-expanded {
+    transition: unset;
+  }
+}

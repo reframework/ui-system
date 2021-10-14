@@ -2,6 +2,7 @@ import React, { CSSProperties, useEffect, useState } from "react";
 import { Portal } from "./Portal";
 import { getPlacement, viewport } from "./placementUtils";
 import { Axis, ViewportType, PlacementAxis, Placement } from "./types";
+import { useMounted } from "./hooks";
 import {
   addClickListener,
   addResizeListener,
@@ -9,8 +10,6 @@ import {
   removeResizeListener,
   stopPropagation,
 } from "./domUtils";
-
-import { useMounted } from "./hooks";
 
 export function isFunction<T extends Function>(f: T): f is T {
   return typeof f === "function";
@@ -34,12 +33,9 @@ const getPositionHandlers = (placement: Placement) => {
   return [getPlacement[x], getPlacement[y]];
 };
 
-const getCssPosition = () => {
-  return {
-    // Could be fixed ?
-    position: "absolute" as const,
-  };
-};
+const getCssPosition = () => ({
+  position: "absolute" as const,
+});
 
 const Popover: React.FC<PopoverProps> = ({
   anchorEl,
@@ -58,10 +54,6 @@ const Popover: React.FC<PopoverProps> = ({
   const [style, setStyle] = useState<CSSProperties>(getCssPosition());
   const [contentRoot, setContentRoot] = useState<HTMLDivElement | null>(null);
 
-  const toggle = (isOpen = !internalOpen) => {
-    return isOpen ? handleOpen() : handleClose();
-  };
-
   const handleOpen = () => {
     setInternalOpen(true);
   };
@@ -70,26 +62,20 @@ const Popover: React.FC<PopoverProps> = ({
     setInternalOpen(false);
   };
 
-  const handleClickAway = (e: Event) => {
-    if (isFunction(onClickAway)) {
-      return onClickAway(e);
-    }
+  const toggle = (isOpen: boolean) => {
+    return isOpen ? handleOpen() : handleClose();
+  };
 
-    // TODO: close on click away
-    // handleClose();
+  const handleClickAway = (e: Event) => {
+    if (!isFunction(onClickAway)) return;
+    onClickAway(e);
   };
 
   const setStyles = () => {
     if (!internalOpen) return;
+    if (!contentRoot) return console.error("Unexpected behavior");
 
-    if (!contentRoot) {
-      return console.error(
-        "Unexpected behavior, popover element doesn't exist."
-      );
-    }
-    console.log(anchorEl, "EL");
-
-    const triggerRect = (anchorEl).getBoundingClientRect();
+    const triggerRect = anchorEl.getBoundingClientRect();
     const popoverRect = contentRoot.getBoundingClientRect();
     const [getPositionX, getPositionY] = getPositionHandlers(placement);
     const viewportType = anchorEl ? ViewportType.body : ViewportType.window;
