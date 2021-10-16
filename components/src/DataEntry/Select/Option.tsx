@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
-type Props = {
+export interface OptionProps {
   color: string;
   disabled: boolean;
   icon: React.ReactNode;
@@ -11,10 +11,10 @@ type Props = {
   children: React.ReactNode;
   onClick: () => void;
   selected: boolean;
-};
+}
 
-const MenuItem = ({ onClick, selected, title, children }: Props) => {
-  const classNames = clsx('item', { active: selected });
+const Option = ({ onClick, selected, title, children }: OptionProps) => {
+  const classNames = clsx('option', { active: selected });
 
   return (
     <li title={title} onClick={onClick} className={classNames}>
@@ -23,4 +23,4 @@ const MenuItem = ({ onClick, selected, title, children }: Props) => {
   );
 };
 
-export default MenuItem;
+export default Option;

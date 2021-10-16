@@ -1,94 +1,51 @@
-import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import React from 'react';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import Button from "./Button";
+import ButtonComponent from './Button';
 
 export default {
-  title: "Button/Button",
-  component: Button,
-} as ComponentMeta<typeof Button>;
+  title: 'Button/Button',
+  component: ButtonComponent,
+  argTypes: {
+    color: {
+      options: [
+        'primary',
+        'secondary',
+        'error',
+        'warning',
+        'success',
+        'neutral',
+      ],
+      control: 'select',
+    },
+    size: {
+      options: ['small', 'medium', 'large'],
+      control: 'select',
+    },
+    variant: {
+      options: ['contained', 'outlined', 'text'],
+      control: 'select',
+    },
+    shape: {
+      options: ['circle', 'square'],
+      control: 'select',
+    },
+  },
+} as ComponentMeta<typeof ButtonComponent>;
 
-const Template: ComponentStory<typeof Button> = ({ children, ...props }) => (
-  <Button {...props} children={children} />
-);
+const Template: ComponentStory<typeof ButtonComponent> = ({
+  children,
+  ...props
+}) => <ButtonComponent {...props} children={children} />;
 
-export const Primary = Template.bind({});
-export const Secondary = Template.bind({});
-export const Neutral = Template.bind({});
-export const Outlined = Template.bind({});
-export const Contained = Template.bind({});
-export const Text = Template.bind({});
-export const Stretch = Template.bind({});
-export const Circle = Template.bind({});
-export const Small = Template.bind({});
-export const Medium = Template.bind({});
-export const Large = Template.bind({});
+export const Button = Template.bind({});
 
-Small.args = {
-  color: "primary",
-  children: "Button",
+Button.args = {
+  children: 'React.ReactNode',
+  color: 'primary',
+  variant: 'contained',
   disabled: false,
-  size: "small",
-};
-
-Medium.args = {
-  color: "primary",
-  children: "Button",
-  disabled: false,
-  size: "medium",
-};
-
-Large.args = {
-  color: "primary",
-  children: "Button",
-  disabled: false,
-  size: "large",
-};
-
-Primary.args = {
-  color: "primary",
-  children: "Button",
-  disabled: false,
-};
-
-Neutral.args = {
-  color: "neutral",
-  children: "Button",
-  disabled: false,
-};
-
-Secondary.args = {
-  color: "secondary",
-  children: "Button",
-  disabled: false,
-};
-
-Outlined.args = {
-  variant: "outlined",
-  children: "Button",
-  disabled: false,
-};
-
-Contained.args = {
-  variant: "contained",
-  children: "Button",
-  disabled: false,
-};
-
-Text.args = {
-  variant: "text",
-  children: "Button",
-  disabled: false,
-};
-
-Stretch.args = {
-  stretch: true,
-  children: "Button",
-  disabled: false,
-};
-
-Circle.args = {
-  shape: "circle",
-  children: "Button",
-  disabled: false,
+  shape: 'square',
+  size: 'medium',
+  stretch: false,
 };

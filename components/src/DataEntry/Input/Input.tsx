@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import styles from './Input.css?module';
 
-type Props = {
+export interface InputProps {
   // TODO:
   // addonAfter: React.ReactNode;
   // addonBefore: React.ReactNode;
@@ -28,8 +28,8 @@ type Props = {
   type: string;
   value: string;
 
-  // TODO: inputProps: React.HTMLAttributes<HTMLInputElement>;
-};
+  // TODO: React.HTMLAttributes<HTMLInputElement>;
+}
 
 const Input = ({
   className,
@@ -43,7 +43,7 @@ const Input = ({
   suffix,
   type,
   value,
-}: Props) => {
+}: InputProps) => {
   const classNames = clsx(className, styles.container, styles[size], {
     [styles[color]]: color,
   });
