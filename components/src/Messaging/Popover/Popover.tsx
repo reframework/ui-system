@@ -1,21 +1,21 @@
-import React, { CSSProperties, useEffect, useState } from "react";
-import { Portal } from "./Portal";
-import { getPlacement, viewport } from "./placementUtils";
-import { Axis, ViewportType, PlacementAxis, Placement } from "./types";
-import { useMounted } from "./hooks";
+import React, { CSSProperties, useEffect, useState } from 'react';
+import { Portal } from './Portal';
+import { getPlacement, viewport } from './placementUtils';
+import { Axis, ViewportType, PlacementAxis, Placement } from './types';
+import { useMounted } from './hooks';
 import {
   addClickListener,
   addResizeListener,
   removeClickListener,
   removeResizeListener,
   stopPropagation,
-} from "./domUtils";
+} from './domUtils';
 
 export function isFunction<T extends Function>(f: T): f is T {
-  return typeof f === "function";
+  return typeof f === 'function';
 }
 
-export type PopoverProps = {
+export interface PopoverProps {
   anchorEl?: HTMLElement;
   className?: string;
   offsetX?: number;
@@ -26,15 +26,15 @@ export type PopoverProps = {
   open: boolean;
   placement?: Placement;
   zIndex?: number;
-};
+}
 
 const getPositionHandlers = (placement: Placement) => {
-  const [x, y] = placement.split("-") as [PlacementAxis, PlacementAxis];
+  const [x, y] = placement.split('-') as [PlacementAxis, PlacementAxis];
   return [getPlacement[x], getPlacement[y]];
 };
 
 const getCssPosition = () => ({
-  position: "absolute" as const,
+  position: 'absolute' as const,
 });
 
 const Popover: React.FC<PopoverProps> = ({
@@ -46,7 +46,7 @@ const Popover: React.FC<PopoverProps> = ({
   onClickAway,
   onClose,
   open: $open,
-  placement = "start-start",
+  placement = 'start-start',
   zIndex,
 }) => {
   const isMounted = useMounted();
@@ -73,7 +73,7 @@ const Popover: React.FC<PopoverProps> = ({
 
   const setStyles = () => {
     if (!internalOpen) return;
-    if (!contentRoot) return console.error("Unexpected behavior");
+    if (!contentRoot) return console.error('Unexpected behavior');
 
     const triggerRect = anchorEl.getBoundingClientRect();
     const popoverRect = contentRoot.getBoundingClientRect();
