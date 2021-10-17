@@ -1,25 +1,28 @@
 import React from 'react';
 import clsx from 'clsx';
+import styles from 'ListItem.css?module';
 
 type Props = {
   color: string;
   disabled: boolean;
   icon: React.ReactNode;
   key: React.Key;
-  title: string;
   children: React.ReactNode;
   onClick: () => void;
   active: boolean;
 };
 
-const MenuItem = ({ onClick, active, title, children }: Props) => {
-  const classNames = clsx('item', { active: active });
+const ListItem = ({ onClick, active, children = null }: Props) => {
+  const classNames = clsx(styles.item, { [styles.active]: active });
 
   return (
-    <li title={title} onClick={onClick} className={classNames}>
-      {children || title || null}
+    <li onClick={onClick} className={classNames}>
+      {/* TODO: ICON LEFT*/}
+      {children}
     </li>
   );
 };
 
-export default MenuItem;
+export default ListItem;
+
+// TODO: SubMenu component

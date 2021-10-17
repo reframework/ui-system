@@ -31,45 +31,49 @@ export interface InputProps {
   // TODO: React.HTMLAttributes<HTMLInputElement>;
 }
 
-const Input = ({
-  className,
-  color = 'default',
-  id,
-  name,
-  onChange,
-  placeholder,
-  prefix,
-  size = 'small',
-  suffix,
-  type,
-  value,
-}: InputProps) => {
-  const classNames = clsx(className, styles.container, styles[size], {
-    [styles[color]]: color,
-  });
-  const handleChange = (e) => {
-    onChange(e);
-  };
+const Input = React.forwardRef(
+  (
+    {
+      className,
+      color = 'default',
+      id,
+      name,
+      onChange,
+      placeholder,
+      prefix,
+      size = 'small',
+      suffix,
+      type,
+      value,
+    }: InputProps,
+    ref: React.ForwardedRef<HTMLDivElement>
+  ) => {
+    const classNames = clsx(className, styles.container, styles[size], {
+      [styles[color]]: color,
+    });
 
-  return (
-    <div className={classNames}>
-      {/* TODO: Label */}
-      {/* TODO: Prefix */}
-      {prefix && <div>{prefix}</div>}
-      <input
-        className={styles.input}
-        id={id}
-        name={name}
-        onChange={handleChange}
-        placeholder={placeholder}
-        type={type}
-        value={value}
-      />
-      {suffix && <div className={styles.suffix}>{suffix}</div>}
+    const handleChange = (e) => {
+      onChange(e);
+    };
 
-      {/* TODO:  Suffix */}
-    </div>
-  );
-};
-
+    return (
+      <div className={classNames} ref={ref}>
+        {/* TODO: Label */}
+        {/* TODO: Prefix */}
+        {prefix && <div>{prefix}</div>}
+        <input
+          className={styles.input}
+          id={id}
+          name={name}
+          onChange={handleChange}
+          placeholder={placeholder}
+          type={type}
+          value={value}
+        />
+        {suffix && <div className={styles.suffix}>{suffix}</div>}
+        {/* TODO:  Suffix */}
+      </div>
+    );
+  }
+);
 export default Input;

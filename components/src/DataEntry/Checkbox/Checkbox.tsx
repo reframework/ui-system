@@ -2,23 +2,23 @@ import React from 'react';
 import styles from './Checkbox.css?module';
 export interface CheckboxProps {
   checked: boolean;
-  id: string;
-  disabled: boolean;
+  disabled?: boolean;
+  id?: string;
+  name: string;
   onChange?: (e: React.ChangeEvent) => void;
   onClick?: (e: React.MouseEvent) => void;
   value: string;
-  name: string;
 }
 
 const Checkbox = ({
   checked,
-  id,
   disabled,
+  id,
+  name,
   onChange,
   onClick,
   value,
-  name,
-}) => {
+}: CheckboxProps) => {
   return (
     <div className={styles.checkbox}>
       <input

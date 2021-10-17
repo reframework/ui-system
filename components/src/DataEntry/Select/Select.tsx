@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Paper, { PaperProps } from '../../Containers/Paper/Paper';
 import Popover, { PopoverProps } from '../../Messaging/Popover/Popover';
 import Input, { InputProps } from '../Input/Input';
@@ -20,12 +20,17 @@ const Select = ({
   PopoverProps,
   InputProps,
 }: SelectProps) => {
+  const ref = useRef();
+
   return (
-    <Popover {...PopoverProps} trigger={<Input {...InputProps} />}>
-      <Paper {...PaperProps}>
-        <List>{children}</List>
-      </Paper>
-    </Popover>
+    <>
+      <Input {...InputProps} ref={ref} />
+      <Popover {...PopoverProps} anchorEl={ref.current}>
+        <Paper {...PaperProps}>
+          <List>{children}</List>
+        </Paper>
+      </Popover>
+    </>
   );
 };
 

@@ -2,22 +2,22 @@ import React, { useState } from 'react';
 import styles from './Radio.css?module';
 export interface RadioProps {
   checked: boolean;
-  id: string;
-  disabled: boolean;
+  disabled?: boolean;
+  id?: string;
+  name: string;
   onChange?: (e: React.ChangeEvent) => void;
   onClick?: (e: React.MouseEvent) => void;
   value: string;
-  name: string;
 }
 
 const Radio = ({
-  id,
-  disabled,
   checked,
+  disabled,
+  id,
+  name,
   onChange,
   onClick,
   value,
-  name,
 }: RadioProps) => {
   return (
     <div className={styles.radio}>

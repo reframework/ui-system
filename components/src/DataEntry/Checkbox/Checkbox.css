@@ -18,6 +18,11 @@
     z-index: 1;
   }
 
+  & .inner:hover,
+  & input:hover + .inner {
+    border-color: var(--color-scale-blue-4);
+  }
+
   & input:checked + .inner {
     background-color: var(--color-scale-blue-4);
     border-color: var(--color-scale-blue-4);
@@ -31,20 +36,14 @@
 
   & input:disabled:checked + .inner {
     box-shadow: none;
-  }
-
-  & input:disabled + .inner {
-    background-color: var(--color-scale-gray-1);
-    border-color: var(--color-scale-gray-2);
-
     &:after {
       border-color: var(--color-scale-gray-2);
     }
   }
 
-  & .inner:hover,
-  & input:hover + .inner {
-    border-color: var(--color-scale-blue-4);
+  & input:disabled + .inner {
+    background-color: var(--color-scale-gray-1);
+    border-color: var(--color-scale-gray-2);
   }
 
   & .inner {

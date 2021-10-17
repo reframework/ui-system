@@ -6,12 +6,6 @@ import CheckboxComponent from './Checkbox';
 export default {
   title: 'Data Entry/Checkbox',
   component: CheckboxComponent,
-  argTypes: {
-    // checked: {
-    //   options: ['left', 'center', 'right'],
-    //   control: { type: 'select' },
-    // },
-  },
 } as ComponentMeta<typeof CheckboxComponent>;
 
 const Template: ComponentStory<typeof CheckboxComponent> = ({ ...props }) => (
@@ -21,5 +15,9 @@ const Template: ComponentStory<typeof CheckboxComponent> = ({ ...props }) => (
 export const Checkbox = Template.bind({});
 
 Checkbox.args = {
-  checked: true,
+  id: 'example',
+  disabled: false,
+  checked: false,
+  value: 'example',
+  name: 'example',
 };
