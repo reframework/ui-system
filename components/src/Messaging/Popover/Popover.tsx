@@ -26,6 +26,7 @@ export interface PopoverProps {
   open: boolean;
   placement?: Placement;
   zIndex?: number;
+  children: React.ReactNode;
 }
 
 const getPositionHandlers = (placement: Placement) => {
@@ -37,7 +38,7 @@ const getCssPosition = () => ({
   position: 'absolute' as const,
 });
 
-const Popover: React.FC<PopoverProps> = ({
+const Popover = ({
   anchorEl,
   children,
   offsetX,
@@ -48,7 +49,7 @@ const Popover: React.FC<PopoverProps> = ({
   open: $open,
   placement = 'start-start',
   zIndex,
-}) => {
+}: PopoverProps) => {
   const isMounted = useMounted();
   const [internalOpen, setInternalOpen] = useState<boolean>(false);
   const [style, setStyle] = useState<CSSProperties>(getCssPosition());
@@ -75,7 +76,7 @@ const Popover: React.FC<PopoverProps> = ({
     if (!internalOpen) return;
     if (!contentRoot) return console.error('Unexpected behavior');
 
-    const triggerRect = anchorEl.getBoundingClientRect();
+    const triggerRect = (anchorEl || viewport).getBoundingClientRect();
     const popoverRect = contentRoot.getBoundingClientRect();
     const [getPositionX, getPositionY] = getPositionHandlers(placement);
     const viewportType = anchorEl ? ViewportType.body : ViewportType.window;
@@ -91,7 +92,7 @@ const Popover: React.FC<PopoverProps> = ({
     if (!internalOpen) return;
     if (!contentRoot) return;
     setStyles();
-  }, [internalOpen, contentRoot]);
+  }, [internalOpen, contentRoot, placement, anchorEl]);
 
   useEffect(() => {
     toggle($open);

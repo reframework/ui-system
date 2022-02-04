@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './Paper.css';
+import styles from './Paper.css?module';
 import clsx from 'clsx';
 
 export interface PaperProps extends React.HTMLAttributes<HTMLDivElement> {}

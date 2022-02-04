@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-
+import React from 'react';
+import styles from './List.css?module';
 export interface ListProps {
   children: React.ReactNode;
   // placement: 'auto' | 'string';
@@ -13,7 +13,7 @@ export interface ListProps {
 }
 
 const List = ({ children }: ListProps) => {
-  return <ul>{children}</ul>;
+  return <ul class={styles.list}>{children}</ul>;
 };
 
 export default List;

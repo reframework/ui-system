@@ -1,15 +1,15 @@
-import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import React from 'react';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import Box from "./Box";
+import BoxComponent from './Box';
 
 export default {
-  title: "Box",
-  component: Box,
-} as ComponentMeta<typeof Box>;
+  title: 'Containers/Box',
+  component: BoxComponent,
+} as ComponentMeta<typeof BoxComponent>;
 
-const Template: ComponentStory<typeof Box> = () => <Box />;
+const Template: ComponentStory<typeof BoxComponent> = () => <BoxComponent />;
 
-export const Default = Template.bind({});
+export const Box = Template.bind({});
 
-Default.args = {};
+Box.args = {};

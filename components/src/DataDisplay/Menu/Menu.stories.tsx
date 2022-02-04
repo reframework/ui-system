@@ -1,14 +1,16 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import PopoverComponent, { PopoverProps } from './Popover';
+import MenuComponent, { MenuProps } from './Menu';
+import MenuItem from './MenuItem';
+
 import Box from '../../Containers/Box/Box';
 import Button from '../../Button/Button';
 import Paper from '../../Containers/Paper/Paper';
 
 export default {
-  title: 'Popover/Popover',
-  component: PopoverComponent,
+  title: 'Data Display/Menu',
+  component: MenuComponent,
   argTypes: {
     placement: {
       options: [
@@ -41,9 +43,9 @@ export default {
       control: { type: 'select' },
     },
   },
-} as ComponentMeta<typeof PopoverComponent>;
+} as ComponentMeta<typeof MenuComponent>;
 
-const Page = ({ children, ...props }: PopoverProps) => {
+const Page = ({ children, open, ...props }: MenuProps) => {
   const ref = useRef();
 
   return (
@@ -56,30 +58,29 @@ const Page = ({ children, ...props }: PopoverProps) => {
       }}
     >
       <Button ref={ref}>Click me!</Button>
-      <PopoverComponent {...props} anchorEl={ref.current}>
-        <Paper
-          style={{
-            width: '200px',
-            height: '200px',
-            border: '1px solid black',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          {children}
-        </Paper>
-      </PopoverComponent>
+      <MenuComponent {...props} anchorEl={ref.current} open={open}>
+        <MenuItem key="1">Monday</MenuItem>
+        <MenuItem key="2" active>
+          Tuesday
+        </MenuItem>
+        <MenuItem key="3">Wednesday</MenuItem>
+        <MenuItem key="4" disabled>
+          Thursday
+        </MenuItem>
+        <MenuItem key="5" disabled>
+          Friday
+        </MenuItem>
+      </MenuComponent>
     </Box>
   );
 };
-const Template: ComponentStory<typeof PopoverComponent> = (props) => (
+const Template: ComponentStory<typeof MenuComponent> = (props) => (
   <Page {...props} />
 );
 
-export const Popover = Template.bind({});
+export const Menu = Template.bind({});
 
-Popover.args = {
+Menu.args = {
   children: 'Popover',
   placement: 'start-start',
   offsetX: 0,

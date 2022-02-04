@@ -1,15 +1,15 @@
-import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import React from 'react';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import Grid from "./Grid";
+import GridComponent from './Grid';
 
 export default {
-  title: "Grid",
-  component: Grid,
-} as ComponentMeta<typeof Grid>;
+  title: 'Containers/Grid',
+  component: GridComponent,
+} as ComponentMeta<typeof GridComponent>;
 
-const Template: ComponentStory<typeof Grid> = () => <Grid />;
+const Template: ComponentStory<typeof GridComponent> = () => <GridComponent />;
 
-export const Default = Template.bind({});
+export const Grid = Template.bind({});
 
-Default.args = {};
+Grid.args = {};

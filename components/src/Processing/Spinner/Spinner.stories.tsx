@@ -1,18 +1,20 @@
-import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import React from 'react';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import Spinner from "./Spinner";
+import SpinnerComponent from './Spinner';
 
 export default {
-  title: "Processing/Spinner",
-  component: Spinner,
-} as ComponentMeta<typeof Spinner>;
+  title: 'Processing/Spinner',
+  component: SpinnerComponent,
+} as ComponentMeta<typeof SpinnerComponent>;
 
-const Template: ComponentStory<typeof Spinner> = ({ size, color }) => <Spinner size={size} color={color} />;
+const Template: ComponentStory<typeof SpinnerComponent> = ({ size, color }) => (
+  <SpinnerComponent size={size} color={color} />
+);
 
-export const Blue = Template.bind({});
+export const Spinner = Template.bind({});
 
-Blue.args = {
+Spinner.args = {
   size: 100,
-  color: "blue",
+  color: 'blue',
 };

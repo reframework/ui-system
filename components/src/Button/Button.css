@@ -1,14 +1,21 @@
 /* Common */
 .button {
+  --__shadow-color: var(--color-scale-blue-1);
   background-color: transparent;
   /* TODO: add border-radius token */
   border-radius: var(--spacing-xxxs);
   border: none;
   box-sizing: border-box;
+  cursor: pointer;
   font-size: var(--font-size-xxs);
+  outline: none;
   padding: none;
   transition: background-color 0.2s ease, color 0.2s ease;
-  cursor: pointer;
+
+  &:focus,
+  &:active {
+    box-shadow: 0 0 0 1.5px var(--__shadow-color);
+  }
 }
 
 /* Size */
@@ -109,24 +116,30 @@
 .text {
   &.primary {
     color: var(--color-scale-blue-4);
+    &:focus,
     &:active,
     &:hover {
+      --__shadow-color: var(--color-scale-blue-1);
       color: var(--color-scale-blue-3);
     }
   }
 
   &.secondary {
     color: var(--color-scale-pink-4);
+    &:focus,
     &:active,
     &:hover {
       color: var(--color-scale-pink-3);
+      --__shadow-color: var(--color-scale-pink-1);
     }
   }
 
   &.neutral {
     color: var(--color-scale-gray-4);
+    :focus,
     &:active,
     &:hover {
+      --__shadow-color: var(--color-scale-gray-1);
       color: var(--color-scale-gray-3);
     }
   }
