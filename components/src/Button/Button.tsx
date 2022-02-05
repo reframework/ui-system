@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './Button.css?module';
-import clsx from 'clsx';
+import { getClassName } from '@reframework/classnames';
+
 export interface ButtonProps {
   children: React.ReactNode;
   color?: 'primary' | 'secondary' | 'error' | 'warning' | 'success' | 'neutral';
@@ -29,18 +30,16 @@ const Button = React.forwardRef(
     }: Props,
     ref: React.ForwardedRef<HTMLButtonElement>
   ) => {
-    const classNames = clsx(
-      styles.button,
-      styles[size],
-      styles[variant],
-      styles[color],
-      {
-        [styles.circle]: shape === 'circle',
-        [styles.stretch]: stretch,
-        [styles.disabled]: disabled,
-        [className]: className,
-      }
-    );
+    const classNames = getClassName({
+      [styles.button]: true,
+      [styles[size]]: true,
+      [styles[variant]]: true,
+      [styles[color]]: true,
+      [styles.circle]: shape === 'circle',
+      [styles.stretch]: stretch,
+      [styles.disabled]: disabled,
+      [className]: className,
+    });
 
     return (
       <button
