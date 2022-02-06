@@ -61,9 +61,7 @@
   &.primary {
     --__main-color: var(--color-scale-blue-4);
     background-color: var(--__main-color);
-
-    &:active,
-    &:hover {
+    &:not(:active)&:hover {
       background-color: var(--color-scale-blue-3);
     }
   }
@@ -72,8 +70,8 @@
     --__main-color: var(--color-scale-pink-4);
     --__shadow-color: var(--color-scale-pink-1);
     background-color: var(--__main-color);
-    &:active,
-    &:hover {
+
+    &:not(:active)&:hover {
       background-color: var(--color-scale-pink-3);
     }
   }
@@ -82,8 +80,8 @@
     --__main-color: var(--color-scale-gray-4);
     --__shadow-color: var(--color-scale-gray-1);
     background-color: var(--__main-color);
-    &:active,
-    &:hover {
+
+    &:not(:active)&:hover {
       background-color: var(--color-scale-gray-3);
     }
   }
@@ -95,8 +93,8 @@
     --__shadow-color: var(--color-scale-blue-1);
     border: 1px solid var(--__main-color);
     color: var(--__main-color);
-    &:active,
-    &:hover {
+
+    &:not(:active)&:hover {
       background-color: var(--color-scale-blue-0);
     }
   }
@@ -106,8 +104,8 @@
     --__shadow-color: var(--color-scale-pink-1);
     border: 1px solid var(--__main-color);
     color: var(--__main-color);
-    &:active,
-    &:hover {
+
+    &:not(:active)&:hover {
       background-color: var(--color-scale-pink-0);
     }
   }
@@ -117,8 +115,8 @@
     --__shadow-color: var(--color-scale-gray-1);
     border: 1px solid var(--__main-color);
     color: var(--__main-color);
-    &:active,
-    &:hover {
+
+    &:not(:active)&:hover {
       background-color: var(--color-scale-gray-0);
     }
   }
@@ -129,8 +127,7 @@
     --__main-color: transparent;
     color: var(--color-scale-blue-4);
     &:focus,
-    &:active,
-    &:hover {
+    &:not(:active)&:hover {
       --__shadow-color: var(--color-scale-blue-1);
       color: var(--color-scale-blue-3);
     }
@@ -140,8 +137,7 @@
     --__main-color: transparent;
     color: var(--color-scale-pink-4);
     &:focus,
-    &:active,
-    &:hover {
+    &:not(:active)&:hover {
       color: var(--color-scale-pink-3);
       --__shadow-color: var(--color-scale-pink-1);
     }
@@ -150,9 +146,8 @@
   &.neutral {
     --__main-color: transparent;
     color: var(--color-scale-gray-4);
-    :focus,
-    &:active,
-    &:hover {
+    &:focus,
+    &:not(:active)&:hover {
       --__shadow-color: var(--color-scale-gray-1);
       color: var(--color-scale-gray-3);
     }
@@ -162,4 +157,5 @@
 /* Disabled */
 .disabled {
   opacity: 0.7;
+  cursor: default;
 }

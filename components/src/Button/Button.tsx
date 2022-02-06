@@ -31,6 +31,10 @@ const Button = React.forwardRef(
     }: Props,
     ref: React.ForwardedRef<HTMLButtonElement>
   ) => {
+    const buttonRef = useRef<HTMLButtonElement | null>(null);
+    useImperativeHandle(ref, () => buttonRef.current!, []);
+    useWave(buttonRef);
+
     const classNames = getClassName({
       [styles.button]: true,
       [styles[size]]: true,
@@ -41,11 +45,6 @@ const Button = React.forwardRef(
       [styles.disabled]: disabled,
       [className!]: Boolean(className),
     });
-
-    const buttonRef = useRef<HTMLButtonElement | null>(null);
-
-    useImperativeHandle(ref, () => buttonRef.current!, []);
-    useWave(buttonRef);
 
     return (
       <button

@@ -16,7 +16,7 @@ export function isFunction<T extends Function>(f: T): f is T {
 }
 
 export interface PopoverProps {
-  anchorEl?: HTMLElement;
+  anchorEl?: HTMLElement | null;
   className?: string;
   offsetX?: number;
   offsetY?: number;

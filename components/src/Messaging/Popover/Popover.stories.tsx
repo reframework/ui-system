@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import PopoverComponent, { PopoverProps } from './Popover';
@@ -44,7 +44,7 @@ export default {
 } as ComponentMeta<typeof PopoverComponent>;
 
 const Page = ({ children, ...props }: PopoverProps) => {
-  const ref = useRef();
+  const ref = useRef<HTMLButtonElement | null>(null);
 
   return (
     <Box
@@ -61,10 +61,13 @@ const Page = ({ children, ...props }: PopoverProps) => {
           style={{
             width: '200px',
             height: '200px',
-            border: '1px solid black',
+            color: 'var(--color-scale-blue-4)',
+            border: '1px solid currentColor',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            opacity: 0.8,
+            backgroundColor: 'var(--color-scale-blue-1)'
           }}
         >
           {children}
