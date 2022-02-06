@@ -41,7 +41,7 @@ const Template: ComponentStory<typeof ButtonComponent> = ({
 export const Button = Template.bind({});
 
 Button.args = {
-  children: 'React.ReactNode',
+  children: 'Button',
   color: 'primary',
   variant: 'contained',
   disabled: false,

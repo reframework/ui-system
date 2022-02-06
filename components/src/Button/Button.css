@@ -11,7 +11,7 @@
   outline: none;
   padding: none;
   transition: background-color 0.2s ease, color 0.2s ease;
-
+  position: relative;
   &:focus,
   &:active {
     box-shadow: 0 0 0 1.5px var(--__shadow-color);
@@ -59,7 +59,8 @@
 .contained {
   color: var(--color-scale-white);
   &.primary {
-    background-color: var(--color-scale-blue-4);
+    --__color: var(--color-scale-blue-4);
+    background-color: var(--__color);
 
     &:active,
     &:hover {
@@ -68,7 +69,9 @@
   }
 
   &.secondary {
-    background-color: var(--color-scale-pink-4);
+    --__color: var(--color-scale-pink-4);
+    --__shadow-color: var(--color-scale-pink-1);
+    background-color: var(--__color);
     &:active,
     &:hover {
       background-color: var(--color-scale-pink-3);
@@ -76,7 +79,9 @@
   }
 
   &.neutral {
-    background-color: var(--color-scale-gray-4);
+    --__color: var(--color-scale-gray-4);
+    --__shadow-color: var(--color-scale-gray-1);
+    background-color: var(--__color);
     &:active,
     &:hover {
       background-color: var(--color-scale-gray-3);
@@ -86,35 +91,42 @@
 
 .outlined {
   &.primary {
-    border: 1px solid var(--color-scale-blue-4);
-    color: var(--color-scale-blue-4);
+    --__color: var(--color-scale-blue-4);
+    --__shadow-color: var(--color-scale-blue-1);
+    border: 1px solid var(--__color);
+    color: var(--__color);
     &:active,
     &:hover {
-      background-color: var(--color-scale-blue-1);
+      background-color: var(--color-scale-blue-0);
     }
   }
 
   &.secondary {
-    border: 1px solid var(--color-scale-pink-4);
-    color: var(--color-scale-pink-4);
+    --__color: var(--color-scale-pink-4);
+    --__shadow-color: var(--color-scale-pink-1);
+    border: 1px solid var(--__color);
+    color: var(--__color);
     &:active,
     &:hover {
-      background-color: var(--color-scale-pink-1);
+      background-color: var(--color-scale-pink-0);
     }
   }
 
   &.neutral {
-    border: 1px solid var(--color-scale-gray-4);
-    color: var(--color-scale-gray-4);
+    --__color: var(--color-scale-gray-4);
+    --__shadow-color: var(--color-scale-gray-1);
+    border: 1px solid var(--__color);
+    color: var(--__color);
     &:active,
     &:hover {
-      background-color: var(--color-scale-gray-1);
+      background-color: var(--color-scale-gray-0);
     }
   }
 }
 
 .text {
   &.primary {
+    --__color: transparent;
     color: var(--color-scale-blue-4);
     &:focus,
     &:active,
@@ -125,6 +137,7 @@
   }
 
   &.secondary {
+    --__color: transparent;
     color: var(--color-scale-pink-4);
     &:focus,
     &:active,
@@ -135,6 +148,7 @@
   }
 
   &.neutral {
+    --__color: transparent;
     color: var(--color-scale-gray-4);
     :focus,
     &:active,
