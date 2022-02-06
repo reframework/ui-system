@@ -146,6 +146,7 @@ const Select = ({
 
   const items = React.Children.map(children, (child) => {
     if (!React.isValidElement(child)) return null;
+
     // TODO: check
     const selected = value === child.props.value;
 

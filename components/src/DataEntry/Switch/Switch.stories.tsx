@@ -8,8 +8,8 @@ export default {
 
 const Template: ComponentStory<any> = ({ ...props }) => <div {...props} />;
 
-export const Checkbox = Template.bind({});
+export const Switch = Template.bind({});
 
-Checkbox.args = {
+Switch.args = {
   id: 'example',
 };

@@ -55,6 +55,7 @@ const getAnchorWidth = (
 const Popover = ({
   anchorEl,
   children,
+  className,
   offsetX,
   offsetY,
   onChange,
@@ -70,18 +71,6 @@ const Popover = ({
   const [internalOpen, setInternalOpen] = useState<boolean>(false);
   const [styles, setStyles] = useState<CSSProperties>(getStyles(style));
   const [contentRoot, setContentRoot] = useState<HTMLDivElement | null>(null);
-
-  const handleOpen = () => {
-    setInternalOpen(true);
-  };
-
-  const handleClose = () => {
-    setInternalOpen(false);
-  };
-
-  const toggle = (isOpen: boolean) => {
-    return isOpen ? handleOpen() : handleClose();
-  };
 
   const handleClickAway = (e: Event) => {
     if (!isFunction(onClickAway)) return;
@@ -112,7 +101,7 @@ const Popover = ({
   }, [internalOpen, contentRoot, placement, anchorEl]);
 
   useEffect(() => {
-    toggle($open);
+    setInternalOpen($open);
   }, [$open]);
 
   useEffect(() => {
@@ -136,7 +125,12 @@ const Popover = ({
   return (
     <Portal zIndex={zIndex}>
       {internalOpen && (
-        <div ref={setContentRoot} style={styles} onClick={stopPropagation}>
+        <div
+          className={className}
+          onClick={stopPropagation}
+          ref={setContentRoot}
+          style={styles}
+        >
           {children}
         </div>
       )}

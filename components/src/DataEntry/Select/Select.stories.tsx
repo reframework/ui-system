@@ -27,9 +27,9 @@ const Template: ComponentStory<typeof SelectComponent> = ({
   return <SelectComponent {...props} onChange={onChange} value={value} />;
 };
 
-export const Input = Template.bind({});
+export const Select = Template.bind({});
 
-Input.args = {
+Select.args = {
   value: 'january',
   onChange: () => {},
   children: [
@@ -48,11 +48,5 @@ Input.args = {
     <Option key="5" value="may">
       May +
     </Option>,
-  ],
-  options: [
-    {
-      value: '123',
-      label: '321',
-    },
   ],
 };

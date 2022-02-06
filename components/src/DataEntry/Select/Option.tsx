@@ -24,6 +24,8 @@ const Option = ({
     [styles.disabled]: Boolean(disabled),
   });
 
+  // TODO: create internal onClick
+
   return (
     <li
       value={value}

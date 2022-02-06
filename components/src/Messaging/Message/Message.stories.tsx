@@ -1,15 +1,21 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-
+import MessageComponent, { showMessage } from './Message';
+import { Button } from '../../Button';
 export default {
   title: 'Feedback/Message',
   component: () => <div></div>,
-} as ComponentMeta<any>;
+} as ComponentMeta<typeof MessageComponent>;
 
-const Template: ComponentStory<any> = ({ ...props }) => <div {...props} />;
+const Template: ComponentStory<typeof MessageComponent> = () => (
+  <div>
+    <MessageComponent />
+    <Button onClick={() => showMessage({ message: 'Hallo world' })}>
+      Message
+    </Button>
+  </div>
+);
 
-export const Checkbox = Template.bind({});
+export const Message = Template.bind({});
 
-Checkbox.args = {
-  id: 'example',
-};
+Message.args = {};
