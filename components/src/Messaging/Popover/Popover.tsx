@@ -11,7 +11,7 @@ import {
   stopPropagation,
 } from './domUtils';
 
-export function isFunction<T extends Function>(f: T): f is T {
+export function isFunction<T extends Function>(f: unknown): f is T {
   return typeof f === 'function';
 }
 
@@ -55,6 +55,7 @@ const Popover = ({
   const [style, setStyle] = useState<CSSProperties>(getCssPosition());
   const [contentRoot, setContentRoot] = useState<HTMLDivElement | null>(null);
 
+  console.log(anchorEl, 'anchor')
   const handleOpen = () => {
     setInternalOpen(true);
   };

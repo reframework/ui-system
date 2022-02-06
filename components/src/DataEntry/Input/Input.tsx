@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { MutableRefObject, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 import styles from './Input.css?module';
+
+export interface Refs {
+  wrapper: MutableRefObject<HTMLDivElement | null>;
+  input: MutableRefObject<HTMLInputElement | null>;
+}
 
 export interface InputProps {
   // TODO:
@@ -12,12 +17,13 @@ export interface InputProps {
   color: 'default' | 'error' | 'warning' | 'success';
   // defaultValue: string;
   // error: boolean;
-  // helperText:string;
+  // feedback:string;
   id: string;
   // label:string;
   // min/max rows:number;
   // readOnly: boolean;
   // required:boolean;
+  // rules: Rule[]
   className?: string;
   name: string;
   onChange: any;
@@ -45,19 +51,34 @@ const Input = React.forwardRef(
       suffix,
       type,
       value,
+      ...props
     }: InputProps,
-    ref: React.ForwardedRef<HTMLDivElement>
+    ref: React.ForwardedRef<Refs>
   ) => {
     const classNames = clsx(className, styles.container, styles[size], {
       [styles[color]]: color,
     });
+
+    const wrapperRef = useRef<HTMLDivElement | null>(null);
+    const inputRef = useRef<HTMLInputElement | null>(null);
+
+    useImperativeHandle(
+      ref,
+      () => {
+        return {
+          wrapper: wrapperRef,
+          input: inputRef,
+        };
+      },
+      []
+    );
 
     const handleChange = (e) => {
       onChange(e);
     };
 
     return (
-      <div className={classNames} ref={ref}>
+      <div className={classNames} ref={wrapperRef}>
         {/* TODO: Label */}
         {/* TODO: Prefix */}
         {prefix && <div>{prefix}</div>}
@@ -67,8 +88,10 @@ const Input = React.forwardRef(
           name={name}
           onChange={handleChange}
           placeholder={placeholder}
+          ref={inputRef}
           type={type}
           value={value}
+          {...props}
         />
         {suffix && <div className={styles.suffix}>{suffix}</div>}
         {/* TODO:  Suffix */}

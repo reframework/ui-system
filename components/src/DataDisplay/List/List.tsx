@@ -13,7 +13,7 @@ export interface ListProps {
 }
 
 const List = ({ children }: ListProps) => {
-  return <ul class={styles.list}>{children}</ul>;
+  return <ul className={styles.list}>{children}</ul>;
 };
 
 export default List;

@@ -70,7 +70,6 @@
     --__main-color: var(--color-scale-pink-4);
     --__shadow-color: var(--color-scale-pink-1);
     background-color: var(--__main-color);
-
     &:not(:active)&:hover {
       background-color: var(--color-scale-pink-3);
     }
@@ -80,7 +79,6 @@
     --__main-color: var(--color-scale-gray-4);
     --__shadow-color: var(--color-scale-gray-1);
     background-color: var(--__main-color);
-
     &:not(:active)&:hover {
       background-color: var(--color-scale-gray-3);
     }
@@ -93,7 +91,6 @@
     --__shadow-color: var(--color-scale-blue-1);
     color: var(--__main-color);
     border: 1px solid var(--__main-color);
-
     &:not(:active)&:hover {
       --__main-color: var(--color-scale-blue-3);
     }
@@ -104,7 +101,6 @@
     --__shadow-color: var(--color-scale-pink-1);
     color: var(--__main-color);
     border: 1px solid var(--__main-color);
-
     &:not(:active)&:hover {
       --__main-color: var(--color-scale-pink-3);
     }
@@ -115,7 +111,6 @@
     --__shadow-color: var(--color-scale-gray-1);
     color: var(--__main-color);
     border: 1px solid var(--__main-color);
-
     &:not(:active)&:hover {
       --__main-color: var(--color-scale-gray-3);
     }
