@@ -7,7 +7,7 @@ import Button from '../../Button/Button';
 import Paper from '../../Containers/Paper/Paper';
 
 export default {
-  title: 'Popover/Popover',
+  title: 'Feedback/Popover',
   component: PopoverComponent,
   argTypes: {
     placement: {

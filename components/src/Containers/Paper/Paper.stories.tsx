@@ -1,15 +1,27 @@
-import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import React from 'react';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import Grid from "./Paper";
+import PaperComponent from './Paper';
 
 export default {
-  title: "Grid",
-  component: Grid,
-} as ComponentMeta<typeof Grid>;
+  title: 'Containers/Paper',
+  component: PaperComponent,
+  argTypes: {
+    reflection: {
+      options: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      control: 'select',
+    },
+  },
+} as ComponentMeta<typeof PaperComponent>;
 
-const Template: ComponentStory<typeof Grid> = () => <Grid />;
+const Template: ComponentStory<typeof PaperComponent> = (props) => (
+  <PaperComponent {...props} />
+);
 
-export const Default = Template.bind({});
+export const Paper = Template.bind({});
 
-Default.args = {};
+Paper.args = {
+  reflection: 1,
+  square: false,
+  children: <div>Paper</div>,
+};
