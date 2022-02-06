@@ -1,7 +1,7 @@
-import React, { useImperativeHandle, useRef, useState } from 'react';
+import React, { useImperativeHandle, useRef } from 'react';
 import styles from './Button.css?module';
 import { getClassName } from '@reframework/classnames';
-import wave from '../Effects/Wave/Wave.css?module';
+import { useWave } from '../Effects/Wave/useWave';
 
 export interface ButtonProps {
   children: React.ReactNode;
@@ -42,38 +42,15 @@ const Button = React.forwardRef(
       [className!]: Boolean(className),
     });
 
-    const timeout = useRef<number>();
     const buttonRef = useRef<HTMLButtonElement | null>(null);
 
     useImperativeHandle(ref, () => buttonRef.current!, []);
-
-    const onClick = () => {
-      if (!buttonRef.current) return;
-      // Doesn't remove a className
-      clearTimeout(timeout.current);
-
-      buttonRef.current.classList.add(wave.active);
-      // Forces to restart animation
-      buttonRef.current.style.setProperty('--wave', 'none');
-
-      setTimeout(() => {
-        if (!buttonRef.current) return;
-        // Restarts animation
-        buttonRef.current.style.setProperty('--wave', '');
-      }, 0);
-
-      timeout.current = window.setTimeout(() => {
-        if (!buttonRef.current) return;
-        // Removes animation
-        buttonRef.current.classList.remove(wave.active);
-      }, 1000);
-    };
+    useWave(buttonRef);
 
     return (
       <button
         {...otherProps}
         ref={buttonRef}
-        onClick={onClick}
         disabled={disabled}
         className={classNames}
       >

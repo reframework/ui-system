@@ -8,7 +8,7 @@
     );
     border-radius: inherit;
     bottom: 0;
-    box-shadow: 0 0 0 0 var(--__color);
+    box-shadow: 0 0 0 0 var(--__main-color);
     content: '';
     display: block;
     left: 0;
@@ -22,7 +22,7 @@
 
 @keyframes wave {
   100% {
-    box-shadow: 0 0 0 5px var(--__color);
+    box-shadow: 0 0 0 5px var(--__main-color);
   }
 }
 
