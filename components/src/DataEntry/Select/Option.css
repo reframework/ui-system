@@ -1,0 +1,36 @@
+.item {
+  --color: red;
+  color: var(--color-scale-black);
+
+  &:hover {
+    color: var(--color-scale-blue-4);
+  }
+
+  font-size: var(--font-size-xs);
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-regular);
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: var(--spacing-xxs) var(--spacing-xxs);
+}
+
+.active {
+  &:hover {
+    background-color: var(--color-scale-blue-1);
+  }
+
+  color: var(--color-scale-blue-4);
+  background-color: var(--color-scale-blue-1);
+}
+
+.disabled {
+  &:hover {
+    background-color: var(--color-scale-gray-1);
+    color: var(--color-scale-gray-3);
+  }
+
+  cursor: default;
+  color: var(--color-scale-gray-3);
+  background-color: var(--color-scale-gray-1);
+}

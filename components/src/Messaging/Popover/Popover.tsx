@@ -17,6 +17,8 @@ export function isFunction<T extends Function>(f: unknown): f is T {
 
 export interface PopoverProps {
   anchorEl?: HTMLElement | null;
+  anchorWidth?: boolean;
+  children: React.ReactNode;
   className?: string;
   offsetX?: number;
   offsetY?: number;
@@ -25,8 +27,8 @@ export interface PopoverProps {
   onClose?: () => void;
   open: boolean;
   placement?: Placement;
+  style?: CSSProperties;
   zIndex?: number;
-  children: React.ReactNode;
 }
 
 const getPositionHandlers = (placement: Placement) => {
@@ -34,9 +36,21 @@ const getPositionHandlers = (placement: Placement) => {
   return [getPlacement[x], getPlacement[y]];
 };
 
-const getCssPosition = () => ({
+const getStyles = (styles?: CSSProperties) => ({
+  ...styles,
   position: 'absolute' as const,
 });
+
+const getAnchorWidth = (
+  el: HTMLElement | null | undefined,
+  shouldApply?: boolean
+) => {
+  if (!shouldApply || !el) return;
+
+  return {
+    width: el.clientWidth,
+  } as const;
+};
 
 const Popover = ({
   anchorEl,
@@ -49,13 +63,14 @@ const Popover = ({
   open: $open,
   placement = 'start-start',
   zIndex,
+  style,
+  anchorWidth,
 }: PopoverProps) => {
   const isMounted = useMounted();
   const [internalOpen, setInternalOpen] = useState<boolean>(false);
-  const [style, setStyle] = useState<CSSProperties>(getCssPosition());
+  const [styles, setStyles] = useState<CSSProperties>(getStyles(style));
   const [contentRoot, setContentRoot] = useState<HTMLDivElement | null>(null);
 
-  console.log(anchorEl, 'anchor')
   const handleOpen = () => {
     setInternalOpen(true);
   };
@@ -73,7 +88,7 @@ const Popover = ({
     onClickAway(e);
   };
 
-  const setStyles = () => {
+  const setStyle = () => {
     if (!internalOpen) return;
     if (!contentRoot) return console.error('Unexpected behavior');
 
@@ -82,8 +97,9 @@ const Popover = ({
     const [getPositionX, getPositionY] = getPositionHandlers(placement);
     const viewportType = anchorEl ? ViewportType.body : ViewportType.window;
 
-    setStyle({
-      ...getCssPosition(),
+    setStyles({
+      ...getStyles(style),
+      ...getAnchorWidth(anchorEl, anchorWidth),
       ...getPositionX(Axis.x, viewportType, triggerRect, popoverRect, offsetX),
       ...getPositionY(Axis.y, viewportType, triggerRect, popoverRect, offsetY),
     });
@@ -92,7 +108,7 @@ const Popover = ({
   useEffect(() => {
     if (!internalOpen) return;
     if (!contentRoot) return;
-    setStyles();
+    setStyle();
   }, [internalOpen, contentRoot, placement, anchorEl]);
 
   useEffect(() => {
@@ -108,19 +124,19 @@ const Popover = ({
   useEffect(() => {
     if (contentRoot) {
       addClickListener(handleClickAway);
-      addResizeListener(setStyles);
+      addResizeListener(setStyle);
     }
 
     return () => {
       removeClickListener(handleClickAway);
-      removeResizeListener(setStyles);
+      removeResizeListener(setStyle);
     };
   }, [contentRoot]);
 
   return (
     <Portal zIndex={zIndex}>
       {internalOpen && (
-        <div ref={setContentRoot} style={style} onClick={stopPropagation}>
+        <div ref={setContentRoot} style={styles} onClick={stopPropagation}>
           {children}
         </div>
       )}
