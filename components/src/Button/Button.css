@@ -14,7 +14,7 @@
   position: relative;
   &:focus,
   &:active {
-    box-shadow: 0 0 0 1.5px var(--__shadow-color);
+    box-shadow: 0 0 0 1px var(--__shadow-color);
   }
 }
 
@@ -91,33 +91,33 @@
   &.primary {
     --__main-color: var(--color-scale-blue-4);
     --__shadow-color: var(--color-scale-blue-1);
-    border: 1px solid var(--__main-color);
     color: var(--__main-color);
+    border: 1px solid var(--__main-color);
 
     &:not(:active)&:hover {
-      background-color: var(--color-scale-blue-0);
+      --__main-color: var(--color-scale-blue-3);
     }
   }
 
   &.secondary {
     --__main-color: var(--color-scale-pink-4);
     --__shadow-color: var(--color-scale-pink-1);
-    border: 1px solid var(--__main-color);
     color: var(--__main-color);
+    border: 1px solid var(--__main-color);
 
     &:not(:active)&:hover {
-      background-color: var(--color-scale-pink-0);
+      --__main-color: var(--color-scale-pink-3);
     }
   }
 
   &.neutral {
     --__main-color: var(--color-scale-gray-4);
     --__shadow-color: var(--color-scale-gray-1);
-    border: 1px solid var(--__main-color);
     color: var(--__main-color);
+    border: 1px solid var(--__main-color);
 
     &:not(:active)&:hover {
-      background-color: var(--color-scale-gray-0);
+      --__main-color: var(--color-scale-gray-3);
     }
   }
 }

@@ -22,7 +22,7 @@
 
 @keyframes wave {
   100% {
-    box-shadow: 0 0 0 5px var(--__main-color);
+    box-shadow: 0 0 0 6px var(--__main-color);
   }
 }
 
