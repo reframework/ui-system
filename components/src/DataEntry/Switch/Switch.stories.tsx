@@ -6,7 +6,9 @@ export default {
   component: () => <div></div>,
 } as ComponentMeta<any>;
 
-const Template: ComponentStory<any> = ({ ...props }) => <div {...props} />;
+const Template: ComponentStory<any> = ({ ...props }) => (
+  <div {...props}>Switch is coming soon</div>
+);
 
 export const Switch = Template.bind({});
 

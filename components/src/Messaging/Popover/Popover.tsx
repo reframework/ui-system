@@ -1,8 +1,8 @@
 import React, { CSSProperties, useEffect, useState } from 'react';
-import { Portal } from './Portal';
 import { getPlacement, viewport } from './placementUtils';
 import { Axis, ViewportType, PlacementAxis, Placement } from './types';
 import { useMounted } from './hooks';
+import { Portal } from '../../Portal';
 import {
   addClickListener,
   addResizeListener,
@@ -123,7 +123,7 @@ const Popover = ({
   }, [contentRoot]);
 
   return (
-    <Portal zIndex={zIndex}>
+    <Portal style={{ zIndex }}>
       {internalOpen && (
         <div
           className={className}

@@ -1,11 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { CSSProperties, useEffect, useImperativeHandle, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import React from 'react';
-
-export type PortalProps = {
-  id: string;
-  zIndex?: number;
-};
 
 export const useCreated = (callback: () => void) => {
   const created = useRef(false);
@@ -15,53 +10,98 @@ export const useCreated = (callback: () => void) => {
 };
 
 export function isClient(): boolean {
-  return typeof window?.document?.body !== 'undefined';
+  return typeof document !== 'undefined';
 }
 
-export function createHTMLDivElement(
-  id: string,
-  zIndex = 800
-): HTMLDivElement | null {
+const defaultStyle = {
+  position: 'absolute',
+  zIndex: 800,
+  width: '100%',
+  top: '0px',
+};
+
+export function createContainer(params: {
+  id?: string;
+  style?: CSSProperties;
+  element?: keyof JSX.IntrinsicElements;
+  className?: string;
+}): HTMLElement | null {
   if (!isClient()) return null;
 
-  const existedDiv = document.getElementById(id) as HTMLDivElement | null;
+  const { id, style = defaultStyle, element = 'div', className } = params;
 
-  if (existedDiv) return existedDiv;
+  // Checks if id is ready to use
+  const hasValidId = typeof id === 'string' && id.trim().length > 0;
 
-  const div = document.createElement('div');
-  div.setAttribute('id', id);
-  div.style.position = 'absolute';
-  div.style.zIndex = zIndex.toString();
-  div.style.width = '100%';
-  div.style.top = '0px';
-  return div;
+  // When id is provided trying to find the Node,
+  // otherwise creates the new one
+  const container =
+    (hasValidId && document.getElementById(id)) ||
+    document.createElement(element);
+
+  // Return's an existing node
+  if (hasValidId && container.getAttribute('id') === id) {
+    return container;
+  }
+
+  // Adds an id if provided
+  if (hasValidId) {
+    container.setAttribute('id', id);
+  }
+
+  // Adds a className if provided
+  if (className) {
+    container.classList.add(className);
+  }
+
+  // Adds a style if provided
+  if (style) {
+    Object.assign(container.style, style);
+  }
+
+  return container;
 }
 
-export const Portal: React.FC<PortalProps> = ({
-  children,
-  zIndex,
-  id = 'portal-root',
-}) => {
-  const html = useRef<{ root: HTMLElement | null; el: HTMLDivElement | null }>({
-    root: isClient() ? document.body : null,
-    el: createHTMLDivElement(id, zIndex),
-  });
+export interface PortalProps {
+  children: React.ReactNode;
+  className?: string;
+  element?: keyof JSX.IntrinsicElements;
+  id?: string;
+  ref?: React.MutableRefObject<HTMLElement | null>;
+  style?: CSSProperties;
+}
 
-  useCreated(() => {
-    if (!html.current.root || !html.current.el) return;
-    html.current.root.appendChild(html.current.el);
-  });
+const Portal = React.forwardRef<HTMLElement | null, PortalProps>(
+  ({ children, element, id, style, className }, ref) => {
+    const containerRef = useRef<HTMLElement | null>(
+      createContainer({ id, style, element, className })
+    );
 
-  useEffect(
-    () => () => {
-      if (!html.current.root || !html.current.el) return;
-      if (!html.current.root?.contains?.(html.current.el)) return;
-      html.current.root.removeChild(html.current.el);
-    },
-    []
-  );
+    // Allow to customize the Node using a ref
+    useImperativeHandle(ref, () => containerRef.current!, []);
 
-  return html.current.el
-    ? ReactDOM.createPortal(children, html.current.el)
-    : null;
-};
+    useCreated(() => {
+      if (!isClient() || !containerRef.current) return;
+      // Adds the Node to the DOM
+      document.body.appendChild(containerRef.current);
+    });
+
+    useEffect(
+      () => () => {
+        if (!isClient() || !containerRef.current) return;
+        // RemoveChild method throws if no matching Node
+        if (!document.body?.contains?.(containerRef.current)) return;
+        // Removes the Node from the DOM before unmounting
+        document.body.removeChild(containerRef.current);
+      },
+      []
+    );
+
+    // Creates a Portal
+    return containerRef.current
+      ? ReactDOM.createPortal(children, containerRef.current)
+      : null;
+  }
+);
+
+export default Portal;

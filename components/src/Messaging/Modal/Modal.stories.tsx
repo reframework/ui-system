@@ -6,10 +6,12 @@ export default {
   component: () => <div></div>,
 } as ComponentMeta<any>;
 
-const Template: ComponentStory<any> = ({ ...props }) => <div {...props} />;
+const Template: ComponentStory<any> = ({ ...props }) => (
+  <div {...props}>Modal is coming soon</div>
+);
 
-export const Checkbox = Template.bind({});
+export const Modal = Template.bind({});
 
-Checkbox.args = {
+Modal.args = {
   id: 'example',
 };

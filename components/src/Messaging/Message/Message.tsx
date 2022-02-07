@@ -1,5 +1,5 @@
 import React from 'react';
-import { Portal } from '../../Portal/Portal';
+import { Portal } from '../../Portal';
 import styles from './Message.css?module';
 import MessageItem, { MessageItemProps } from './MessageItem';
 import { Store } from './Store';
@@ -23,16 +23,14 @@ const Message: React.FC = () => {
   };
 
   return (
-    <Portal id="messages-root">
-      <div className={styles.wrapper}>
-        {messages.map((props) => (
-          <MessageItem
-            {...props}
-            key={props.key}
-            onClose={removeMessage(props.key)}
-          />
-        ))}
-      </div>
+    <Portal id="messages-root" className={styles.wrapper}>
+      {messages.map((props) => (
+        <MessageItem
+          {...props}
+          key={props.key}
+          onClose={removeMessage(props.key)}
+        />
+      ))}
     </Portal>
   );
 };

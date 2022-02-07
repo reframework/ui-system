@@ -1,0 +1,10 @@
+.snackbar {
+  pointer-events: auto;
+  max-width: max-content;
+  padding: 4px 16px;
+  margin-bottom: 16px;
+}
+
+.icon {
+  margin-right: 8px;
+}

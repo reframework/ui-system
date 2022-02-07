@@ -1,0 +1,28 @@
+.wrapper {
+  border-radius: 4px;
+  border: 1px solid currentColor;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.info {
+    color: var(--color-scale-blue-4);
+    background-color: var(--color-scale-blue-0);
+  }
+
+  &.warning {
+    color: var(--color-scale-yellow-4);
+    background-color: var(--color-scale-yellow-0);
+  }
+
+  &.success {
+    color: var(--color-scale-green-4);
+    background-color: var(--color-scale-green-0);
+  }
+
+  &.error {
+    color: var(--color-scale-red-4);
+    background-color: var(--color-scale-red-0);
+  }
+}
