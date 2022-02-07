@@ -1,6 +1,8 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import MessageComponent, { message } from './Message';
+import MessageComponent from './Message';
+import message from './messages';
+
 import { Button } from '../../Button';
 export default {
   title: 'Feedback/Message',
@@ -34,14 +36,14 @@ const Template: ComponentStory<typeof MessageComponent> = () => (
         const key = '<< The Key >>';
 
         message.warning({
-          content: 'Warning! This message is changing in five seconds',
+          content: 'Warning! This message is changing in 5 (five) seconds',
           key,
           duration: Infinity,
         });
 
         setTimeout(() => {
           message.success({
-            content: 'Ok! Lets wait five seconds more :)',
+            content: 'Ok! Lets wait 5 (five) seconds more',
             key,
             duration: 5000,
           });
@@ -56,7 +58,7 @@ const Template: ComponentStory<typeof MessageComponent> = () => (
       variant="outlined"
       onClick={() =>
         message.error({
-          content: 'This is an error message, duration is 10s',
+          content: 'This is an error message',
           duration: 10000,
         })
       }
@@ -67,12 +69,14 @@ const Template: ComponentStory<typeof MessageComponent> = () => (
       size="medium"
       color="neutral"
       variant="outlined"
-      onClick={() =>
-        message.info({
-          content: 'This is an info message, Duration is 1s',
-          duration: 1000,
-        })
-      }
+      onClick={() => {
+        const clearMessage = message.info({
+          content: 'This is an info message.',
+          duration: Infinity,
+        });
+
+        setTimeout(clearMessage, 5000);
+      }}
     >
       Info
     </Button>
