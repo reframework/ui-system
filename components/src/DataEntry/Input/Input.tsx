@@ -1,6 +1,6 @@
 import React, { MutableRefObject, useImperativeHandle, useRef } from 'react';
-import clsx from 'clsx';
 import styles from './Input.css?module';
+import { getClassName } from '@reframework/classnames';
 
 export interface Refs {
   wrapper: MutableRefObject<HTMLDivElement | null>;
@@ -55,8 +55,11 @@ const Input = React.forwardRef(
     }: InputProps,
     ref: React.ForwardedRef<Refs>
   ) => {
-    const classNames = clsx(className, styles.container, styles[size], {
+    const classNames = getClassName({
+      [className!]: Boolean(className),
+      [styles.container]: true,
       [styles[color]]: color,
+      [styles[size]]: true,
     });
 
     const wrapperRef = useRef<HTMLDivElement | null>(null);

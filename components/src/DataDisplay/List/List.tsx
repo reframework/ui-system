@@ -1,15 +1,9 @@
 import React from 'react';
 import styles from './List.css?module';
+
 export interface ListProps {
   children: React.ReactNode;
-  // placement: 'auto' | 'string';
-  // multiple: boolean;
-  // selectable: boolean;
-  // selectedKeys: string[];
-  // onClick: (item: any) => void;
-  // onDeselect: (item: any) => void;
-  // onOpenChange: (open: boolean) => void;
-  // onSelect: (item: any) => void;
+  autoFocus: boolean; //	If true, the list item will be focused during the first mount. Focus will also be triggered if the value changes from false to true.
 }
 
 const List = ({ children }: ListProps) => {

@@ -16,7 +16,7 @@ const Template: ComponentStory<typeof ListComponent> = ({
 }) => (
   <ListComponent {...props}>
     <ListItem key="1">Monday</ListItem>
-    <ListItem key="2" active>
+    <ListItem key="2" selected>
       Tuesday
     </ListItem>
     <ListItem key="3">Wednesday</ListItem>

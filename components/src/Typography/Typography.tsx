@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './Typography.css?module';
-import clsx from 'clsx';
+import { getClassName } from '@reframework/classnames';
+
 export interface TypographyProps {
   align: 'left' | 'center' | 'right';
   children: React.ReactNode;
@@ -58,22 +59,20 @@ const Paragraph = ({
   weight = 'regular',
   ...otherProps
 }) => {
-  const classNames = clsx(
-    styles.typography,
-    styles[align],
-    styles[`font_${font}`],
-    styles[size],
-    styles[color],
-    styles[weight],
-    {
-      [styles.ellipsis]: ellipsis,
-      [styles.nowrap]: nowrap,
-      [styles.stretch]: stretch,
-      [styles.underline]: underline,
-      [styles.uppercase]: uppercase,
-      [className]: className,
-    }
-  );
+  const classNames = getClassName({
+    [styles.typography]: true,
+    [styles[align]]: true,
+    [styles[`font_${font}`]]: true,
+    [styles[size]]: true,
+    [styles[color]]: true,
+    [styles[weight]]: true,
+    [styles.ellipsis]: ellipsis,
+    [styles.nowrap]: nowrap,
+    [styles.stretch]: stretch,
+    [styles.underline]: underline,
+    [styles.uppercase]: uppercase,
+    [className]: className,
+  });
 
   return (
     <Component {...otherProps} className={classNames}>

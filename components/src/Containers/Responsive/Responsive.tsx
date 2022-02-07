@@ -1,6 +1,6 @@
 import React from 'react';
-import clsx from 'clsx';
 import styles from './Responsive.css?module';
+import { getClassName } from '@reframework/classnames';
 
 type AspectRatio = `${number}:${number}`;
 
@@ -15,7 +15,11 @@ const Responsive = ({
   className,
   ...props
 }: Props) => {
-  const classNames = clsx(styles.container, className);
+  const classNames = getClassName({
+    [styles.container]: true,
+    [className!]: Boolean(className),
+  });
+
   const [x, y] = aspectRatio.split(':');
 
   const style = {

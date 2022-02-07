@@ -1,20 +1,32 @@
 import React from 'react';
-import clsx from 'clsx';
 import styles from './ListItem.css?module';
+import { getClassName } from '@reframework/classnames';
 
 type Props = {
-  disabled?: boolean;
-  icon?: React.ReactNode;
-  key: React.Key;
   children: React.ReactNode;
-  onClick?: () => void;
-  active?: boolean;
+  className?: string;
+  disabled?: boolean;
+  divider?: boolean;
+  onClick?: (event: React.MouseEvent) => void;
+  selected?: boolean;
+  // TODO: add those props;
+  // icon?: React.ReactNode;
 };
 
-const ListItem = ({ onClick, active, children = null, disabled }: Props) => {
-  const classNames = clsx(styles.item, {
-    [styles.active]: active,
-    [styles.disabled]: disabled,
+const ListItem = ({
+  onClick,
+  selected,
+  divider,
+  className,
+  children = null,
+  disabled,
+}: Props) => {
+  const classNames = getClassName({
+    [styles.item]: true,
+    [styles.selected]: Boolean(selected),
+    [styles.disabled]: Boolean(disabled),
+    [styles.divider]: Boolean(divider),
+    [className!]: Boolean(className),
   });
 
   return (

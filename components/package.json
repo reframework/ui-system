@@ -1,8 +1,7 @@
 {
   "dependencies": {
     "@reframework/classnames": "^1.0.2",
-    "@reframework/ui-system-tokens": "../tokens",
-    "clsx": "^1.1.1"
+    "@reframework/ui-system-tokens": "../tokens"
   },
   "description": "",
   "devDependencies": {
