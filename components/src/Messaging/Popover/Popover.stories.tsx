@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import PopoverComponent, { PopoverProps } from './Popover';
@@ -43,8 +43,14 @@ export default {
   },
 } as ComponentMeta<typeof PopoverComponent>;
 
-const Page = ({ children, ...props }: PopoverProps) => {
+const Page = ({ children, open: openProp, ...props }: PopoverProps) => {
   const ref = useRef<HTMLButtonElement | null>(null);
+
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setOpen(openProp);
+  }, [openProp]);
 
   return (
     <Box
@@ -55,8 +61,15 @@ const Page = ({ children, ...props }: PopoverProps) => {
         height: '400px',
       }}
     >
-      <Button ref={ref}>Click me!</Button>
-      <PopoverComponent {...props} anchorEl={ref.current}>
+      <Button ref={ref} onClick={() => setOpen(true)}>
+        Click me!
+      </Button>
+      <PopoverComponent
+        {...props}
+        anchorEl={ref.current}
+        onClickAway={() => setOpen(false)}
+        open={open}
+      >
         <Paper
           style={{
             width: '200px',
@@ -67,7 +80,7 @@ const Page = ({ children, ...props }: PopoverProps) => {
             alignItems: 'center',
             justifyContent: 'center',
             opacity: 0.8,
-            backgroundColor: 'var(--color-scale-blue-1)'
+            backgroundColor: 'var(--color-scale-blue-1)',
           }}
         >
           {children}

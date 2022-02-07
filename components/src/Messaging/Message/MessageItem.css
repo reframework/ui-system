@@ -1,8 +1,10 @@
 .message {
   pointer-events: auto;
   max-width: max-content;
-  padding: 4px 16px;
+  padding: 8px 16px;
   margin-bottom: 16px;
+  min-height: 40px;
+  box-sizing: border-box;
 }
 
 .icon {

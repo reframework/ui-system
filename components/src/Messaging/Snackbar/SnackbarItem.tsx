@@ -1,6 +1,7 @@
 import styles from './SnackbarItem.css?module';
 import Paper from '../../Containers/Paper/Paper';
 import React from 'react';
+import { getClassName } from '@reframework/classnames';
 
 // TODO: add icons by type
 const emoji = {
@@ -24,6 +25,11 @@ const SnackbarItem = ({
   onClose,
   duration = 5000,
 }: SnackbarItemProps & { onClose: () => void }) => {
+  const className = getClassName({
+    [styles.snackbar]: true,
+    [styles[type]]: true,
+  });
+
   React.useEffect(() => {
     if (duration === Infinity) return;
     const timeout = setTimeout(onClose, duration);
@@ -34,7 +40,7 @@ const SnackbarItem = ({
   }, [duration]);
 
   return (
-    <Paper reflection={6} className={styles.snackbar}>
+    <Paper reflection={6} className={className}>
       <span className={styles.icon}>{emoji[type]} </span>
       <span>{content}</span>
     </Paper>
