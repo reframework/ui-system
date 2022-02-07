@@ -8,11 +8,53 @@ export default {
 } as ComponentMeta<typeof MessageComponent>;
 
 const Template: ComponentStory<typeof MessageComponent> = () => (
-  <div>
-    <MessageComponent />
-    <Button onClick={() => showMessage({ message: 'Hallo world' })}>
-      Message
+  <div
+    style={{
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      height: 150,
+      width: 200,
+    }}
+  >
+    <Button
+      size="medium"
+      onClick={() =>
+        showMessage({ message: 'This is a success message', type: 'success' })
+      }
+    >
+      Success
     </Button>
+    <Button
+      size="medium"
+      variant="outlined"
+      onClick={() =>
+        showMessage({ message: 'This is a warning message', type: 'warning' })
+      }
+    >
+      Warning
+    </Button>
+    <Button
+      size="medium"
+      color="secondary"
+      variant="outlined"
+      onClick={() =>
+        showMessage({ message: 'This is an error message', type: 'error' })
+      }
+    >
+      Error
+    </Button>
+    <Button
+      size="medium"
+      color="neutral"
+      variant="outlined"
+      onClick={() =>
+        showMessage({ message: 'This is an info message', type: 'info' })
+      }
+    >
+      Info
+    </Button>
+    <MessageComponent />
   </div>
 );
 
