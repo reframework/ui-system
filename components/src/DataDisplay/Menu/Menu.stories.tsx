@@ -2,11 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import MenuComponent, { MenuProps } from './Menu';
-import MenuItem from './MenuItem';
 
 import Box from '../../Containers/Box/Box';
 import Button from '../../Button/Button';
-import Paper from '../../Containers/Paper/Paper';
 
 export default {
   title: 'Data Display/Menu',
@@ -45,8 +43,10 @@ export default {
   },
 } as ComponentMeta<typeof MenuComponent>;
 
-const Page = ({ children, open, ...props }: MenuProps) => {
-  const ref = useRef();
+const { MenuItem } = MenuComponent;
+
+const Page = ({ children, ...props }: MenuProps) => {
+  const [ref, setRef] = useState<HTMLButtonElement | null>(null);
 
   return (
     <Box
@@ -57,18 +57,27 @@ const Page = ({ children, open, ...props }: MenuProps) => {
         height: '400px',
       }}
     >
-      <Button ref={ref}>Click me!</Button>
-      <MenuComponent {...props} anchorEl={ref.current} open={open}>
+      <MenuComponent
+        {...props}
+        anchorEl={ref}
+        trigger={
+          <Button ref={setRef} onClick={() => console.log('Clicks')}>
+            Click me!
+          </Button>
+        }
+      >
         <MenuItem key="1">Monday</MenuItem>
-        <MenuItem key="2" active>
+        <MenuItem key="2" selected>
           Tuesday
         </MenuItem>
         <MenuItem key="3">Wednesday</MenuItem>
-        <MenuItem key="4" disabled>
-          Thursday
+        <MenuItem key="4">Thursday</MenuItem>
+        <MenuItem key="5">Friday</MenuItem>
+        <MenuItem key="6" disabled>
+          Saturday
         </MenuItem>
-        <MenuItem key="5" disabled>
-          Friday
+        <MenuItem key="7" disabled>
+          Sunday
         </MenuItem>
       </MenuComponent>
     </Box>
@@ -85,6 +94,5 @@ Menu.args = {
   placement: 'start-start',
   offsetX: 0,
   offsetY: 0,
-  open: false,
   zIndex: 1,
 };
