@@ -13,6 +13,14 @@ type Props = {
   // icon?: React.ReactNode;
 };
 
+const createEvent = <T extends {}>(detail?: T) => {
+  return new CustomEvent('rf:list-item-click', {
+    bubbles: true,
+    cancelable: true,
+    detail,
+  });
+};
+
 const ListItem = ({
   onClick,
   selected,
@@ -21,6 +29,18 @@ const ListItem = ({
   children = null,
   disabled,
 }: Props) => {
+  const ref = React.useRef<HTMLLIElement | null>(null);
+
+  const handleClick = (event: React.MouseEvent) => {
+    if (typeof onClick === 'function') {
+      onClick(event);
+    }
+
+    if (ref.current && !disabled) {
+      ref.current.dispatchEvent(createEvent());
+    }
+  };
+
   const classNames = getClassName({
     [styles.item]: true,
     [styles.selected]: Boolean(selected),
@@ -30,8 +50,7 @@ const ListItem = ({
   });
 
   return (
-    <li onClick={onClick} className={classNames}>
-      {/* TODO: ICON LEFT*/}
+    <li ref={ref} onClick={handleClick} className={classNames}>
       {children}
     </li>
   );

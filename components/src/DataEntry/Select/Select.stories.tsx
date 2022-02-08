@@ -14,38 +14,30 @@ const Template: ComponentStory<typeof SelectComponent> = ({
   value: valueProp,
   ...props
 }) => {
-  const [value, setValue] = useState(valueProp || '');
-
-  useEffect(() => {
-    setValue(valueProp);
-  }, [valueProp]);
-
-  const onChange = (nextValue: string) => {
-    setValue(nextValue);
-  };
-
-  return <SelectComponent {...props} onChange={onChange} value={value} />;
+  return <SelectComponent {...props} />;
 };
 
 export const Select = Template.bind({});
 
 Select.args = {
-  value: 'january',
+  autoFocus: false,
+  defaultValue: 'january',
+  defaultOpen: false,
   onChange: () => {},
   children: [
-    <Option key="1" value="january">
+    <Option key="1" value="january" id="january">
       January ---
     </Option>,
-    <Option key="2" value="february">
+    <Option key="2" value="february" id="february">
       February -
     </Option>,
-    <Option key="3" value="march">
+    <Option key="3" value="march" id="march">
       March ++
     </Option>,
-    <Option key="4" value="april">
+    <Option key="4" value="april" id="april">
       April +
     </Option>,
-    <Option key="5" value="may">
+    <Option key="5" value="may" id="may">
       May +
     </Option>,
   ],

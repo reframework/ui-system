@@ -5,65 +5,94 @@ import Input, { InputProps, Refs } from '../Input/Input';
 import styles from './Select.css?module';
 import Option from './Option';
 
-const useBoolean = (initialState = false) => {
-  const [state, setState] = React.useState(initialState);
+type OptionSelectedEvent = CustomEvent<{ value: string }>;
 
-  const setTrue = React.useCallback(() => {
-    setState(true);
-  }, []);
+// utils
+const useControlled = <T extends unknown>(params: {
+  controlled: T;
+  default: NonNullable<T>;
+}) => {
+  const { controlled, default: _default } = params;
 
-  const setFalse = React.useCallback(() => {
-    setState(false);
-  }, []);
+  // isControlled should never change
+  const { current: isControlled } = React.useRef(
+    params.controlled !== undefined
+  );
 
-  const toggle = React.useCallback(() => {
-    setState((prev) => !prev);
-  }, []);
+  const [uncontrolled, setUncontrolled] = React.useState(_default);
+  const noOp = React.useCallback(() => {}, []) as typeof setUncontrolled;
 
-  return {
-    state,
-    setTrue,
-    setFalse,
-    toggle,
-  };
+  return isControlled
+    ? ([controlled as NonNullable<T>, noOp] as const)
+    : ([uncontrolled, setUncontrolled] as const);
+};
+
+const typeOf = {
+  function: <T extends Function>(f: unknown): f is T => typeof f === 'function',
+};
+
+type ListBoxProps = {
+  // subscriptions
+  onOptionSelected: (event: OptionSelectedEvent) => void;
+  id?: string;
+};
+
+const isEventListener = (f: Function): f is EventListener => {
+  return typeOf.function(f);
+};
+
+const ListBox: React.FC<ListBoxProps & React.HTMLProps<HTMLDivElement>> = ({
+  children,
+  onOptionSelected,
+  ...props
+}) => {
+  const ref = React.useRef<HTMLDivElement | null>(null);
+
+  React.useEffect(() => {
+    // Subscribes to the custom event
+    if (!ref.current) return;
+    if (!isEventListener(onOptionSelected)) return;
+
+    ref.current.addEventListener('rf:option-select', onOptionSelected);
+
+    return () => {
+      if (!ref.current) return;
+      ref.current.removeEventListener('rf:option-select', onOptionSelected);
+    };
+  }, [onOptionSelected]);
+
+  return (
+    <Paper ref={ref} {...props} role="listbox">
+      {children}
+    </Paper>
+  );
 };
 
 export interface SelectProps {
-  // Options
-  children: React.ReactNode;
-  // Styled components support
-  className?: string;
-  // nested
-  InputProps: InputProps;
-  PopoverProps: PopoverProps;
-  PaperProps: PaperProps;
-
-  // -- Select Core
   autoFocus?: boolean;
+  children: React.ReactNode;
+  className?: string;
+  defaultOpen?: boolean;
+  defaultValue?: string;
   disabled?: boolean;
-  name: string;
-  onChange: (value: string) => void;
-  value: string;
-  onBlur?: (e: React.SyntheticEvent) => void;
-  onFocus?: (e: React.SyntheticEvent) => void;
-
-  // readOnly?: () => void;
-  // multiple?: boolean;
-  // -- change input
-  // renderValue?: (value: string) => React.ReactNode;
-  // -- uncontrolled
-  // defaultValue?: string;
-  // defaultOpen?:boolean;
-  // open,
-
-  // -- Dropdown
+  InputProps?: InputProps;
   keepOpen?: boolean;
-  // autoWidth,
-  // dropdownMatchSelectWidth = true,
+  name?: string;
+  onBlur?: (e: React.SyntheticEvent) => void;
+  onChange: (value: string) => void;
+  onClose?: () => void;
+  onFocus?: (e: React.SyntheticEvent) => void;
+  onOpen?: () => void;
+  open?: boolean;
+  PaperProps?: PaperProps;
+  placeholder?: string;
+  PopoverProps?: PopoverProps;
+  value?: string;
+  dropdownMatchSelectWidth?: true;
+  renderValue?: (value: string) => string;
   // listHeight = 200,
-  // onClose,
-  // onOpen,
-  // showFirst = 5
+  // multiple?: boolean;
+  // readOnly?: () => void;
 
   // -- Search (Autocomplete)
   // inputValue,
@@ -71,116 +100,139 @@ export interface SelectProps {
   // onSearch,
   // autoClearSearchValue = true,
 
-  // -- Refs
-  // inputRef: inputRefProp,
-
   // -- Ally
-  // 'aria-describedby': ariaDescribedby,
-  // 'aria-label': ariaLabel,
-  // tabIndex: tabIndexProp,
+  id?: string;
+  'aria-describedby?': string;
+  'aria-label'?: string;
+  tabIndex?: number;
+  listBoxId?: string;
+  ariaLabelledBy?: string;
   // catching `type` from Input which makes no sense for SelectInput
   // type,
 }
 
 const Select = ({
   autoFocus = false,
-  disabled,
-  onChange,
-  value,
-  onFocus,
-  onBlur,
-  name,
-  //
   children,
-  PaperProps,
-  PopoverProps,
+  defaultOpen,
+  defaultValue,
+  disabled,
+  dropdownMatchSelectWidth = true,
   InputProps,
   keepOpen = false,
+  name,
+  onBlur,
+  onChange,
+  onFocus,
+  open: $open,
+  PaperProps,
+  placeholder,
+  PopoverProps,
+  renderValue: renderValue,
+  value: $value,
+  // A11y
+  id,
+  listBoxId,
+  ariaLabelledBy,
 }: SelectProps) => {
   const ref = React.useRef<Refs>();
+  const selectedOptionId = React.useRef<string>();
 
-  const { state: isOpen, setTrue: open, setFalse: close } = useBoolean(false);
+  const [value, setValue] = useControlled({
+    controlled: $value,
+    default: defaultValue || '',
+  });
 
-  React.useEffect(() => {
-    if (!autoFocus) return;
-    // Autofocus
-    ref.current?.input?.current?.focus?.();
-  }, []);
+  const [open, setOpen] = useControlled({
+    controlled: $open,
+    default: defaultOpen || false,
+  });
 
   const handleFocus = (event: React.SyntheticEvent) => {
-    open();
-
-    if (typeof onFocus === 'function') {
-      onFocus(event);
-    }
+    if (typeOf.function(onFocus)) onFocus(event);
+    setOpen(true);
   };
 
   const handleBlur = (event: React.SyntheticEvent) => {
-    if (typeof onBlur === 'function') {
-      onBlur(event);
+    if (typeOf.function(onBlur)) onBlur(event);
+  };
+
+  const handleClickAway = () => {
+    setOpen(false);
+  };
+
+  React.useEffect(() => {
+    if (autoFocus) ref.current?.focus();
+  }, []);
+
+  const handleSelect = React.useCallback((event: OptionSelectedEvent) => {
+    setValue(event.detail.value);
+    onChange(event.detail.value);
+
+    if (!keepOpen) {
+      setOpen(false);
+    }
+  }, []);
+
+  const handleInputClick = (event: React.MouseEvent) => {
+    if (open) {
+      event.stopPropagation();
+    }
+
+    if (typeof InputProps?.onClick === 'function') {
+      InputProps.onClick(event);
     }
   };
-
-  const handleClickAway = ({ target }: Event) => {
-    if (target === ref.current?.input.current) return;
-    close();
-  };
-
-  const handleItemClick =
-    (child: React.ReactElement) => (event: React.MouseEvent) => {
-      if (typeof child.props.onClick === 'function') {
-        // calls Option's own onClick
-        child.props.onClick(event);
-      }
-
-      if (child.props.disabled) {
-        return;
-      }
-
-      if (!keepOpen) {
-        close();
-      }
-
-      onChange(child.props.value);
-    };
 
   const items = React.Children.map(children, (child) => {
     if (!React.isValidElement(child)) return null;
 
-    // TODO: check
-    const selected = value === child.props.value;
-
-    return React.cloneElement(child, {
-      onClick: handleItemClick(child),
-      selected,
-    });
+    const isSelected = value === child.props.value;
+    if (isSelected) selectedOptionId.current = child.props.id;
+    return React.cloneElement(child, { selected: isSelected });
   });
 
   return (
-    <>
+    <div
+      role="combobox"
+      aria-activedescendant={selectedOptionId.current}
+      aria-controls={listBoxId}
+      aria-expanded={open}
+      aria-haspopup="listbox"
+      aria-labelledby={ariaLabelledBy}
+      id={id}
+      tabIndex={0}
+    >
       <Input
         {...InputProps}
-        ref={ref}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        value={value}
-        role="listbox"
         disabled={disabled}
         name={name}
+        onBlur={handleBlur}
+        onFocus={handleFocus}
+        ref={ref}
+        value={typeOf.function(renderValue) ? renderValue(value) : value}
+        onClick={handleInputClick}
+        placeholder={placeholder}
       />
       <Popover
         placement="start-after"
         {...PopoverProps}
-        anchorEl={ref.current?.wrapper.current}
-        anchorWidth
+        anchorEl={ref.current?.wrapperNode}
+        anchorWidth={dropdownMatchSelectWidth}
         onClickAway={handleClickAway}
-        open={isOpen}
+        open={open}
       >
-        <Paper {...PaperProps}>
-          <ul className={styles.list}>{items}</ul>
-        </Paper>
+        <ListBox
+          {...PaperProps}
+          onOptionSelected={handleSelect}
+          id={listBoxId}
+          aria-labelledby={ariaLabelledBy}
+          tabIndex={-1}
+        >
+          {items}
+        </ListBox>
       </Popover>
-    </>
+    </div>
   );
 };
 

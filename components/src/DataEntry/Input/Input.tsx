@@ -3,8 +3,10 @@ import styles from './Input.css?module';
 import { getClassName } from '@reframework/classnames';
 
 export interface Refs {
-  wrapper: MutableRefObject<HTMLDivElement | null>;
-  input: MutableRefObject<HTMLInputElement | null>;
+  wrapperNode: HTMLDivElement | null;
+  inputNode: HTMLInputElement | null;
+  focus: () => void;
+  blur: () => void;
 }
 
 export interface InputProps {
@@ -14,26 +16,26 @@ export interface InputProps {
   // allowClear: boolean;
   // autocomplete: boolean;
   // autoFocus: boolean;
-  color: 'default' | 'error' | 'warning' | 'success';
+  color?: 'default' | 'error' | 'warning' | 'success';
   // defaultValue: string;
   // error: boolean;
   // feedback:string;
-  id: string;
+  id?: string;
   // label:string;
   // min/max rows:number;
   // readOnly: boolean;
   // required:boolean;
   // rules: Rule[]
   className?: string;
-  name: string;
+  name?: string;
   onChange: any;
-  placeholder: string;
-  prefix: React.ReactNode;
-  size: 'small' | 'medium' | 'large';
-  suffix: React.ReactNode;
-  type: string;
+  onClick?: (event: React.MouseEvent) => void;
+  placeholder?: string;
+  prefix?: React.ReactNode;
+  size?: 'small' | 'medium' | 'large';
+  suffix?: React.ReactNode;
+  type?: string;
   value: string;
-
   // TODO: React.HTMLAttributes<HTMLInputElement>;
 }
 
@@ -51,6 +53,7 @@ const Input = React.forwardRef(
       suffix,
       type,
       value,
+      onClick,
       ...props
     }: InputProps,
     ref: React.ForwardedRef<Refs>
@@ -69,19 +72,21 @@ const Input = React.forwardRef(
       ref,
       () => {
         return {
-          wrapper: wrapperRef,
-          input: inputRef,
+          focus: inputRef.current?.focus || (() => {}),
+          blur: inputRef.current?.blur || (() => {}),
+          wrapperNode: wrapperRef.current,
+          inputNode: inputRef.current,
         };
       },
       []
     );
 
-    const handleChange = (e) => {
+    const handleChange = (e: React.ChangeEvent) => {
       onChange(e);
     };
 
     return (
-      <div className={classNames} ref={wrapperRef}>
+      <div className={classNames} ref={wrapperRef} onClick={onClick}>
         {/* TODO: Label */}
         {/* TODO: Prefix */}
         {prefix && <div>{prefix}</div>}

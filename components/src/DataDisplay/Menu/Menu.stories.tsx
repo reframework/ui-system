@@ -45,7 +45,7 @@ export default {
 
 const { MenuItem } = MenuComponent;
 
-const Page = ({ children, ...props }: MenuProps) => {
+const Page = ({ children, placement, ...props }: MenuProps) => {
   const [ref, setRef] = useState<HTMLButtonElement | null>(null);
 
   return (
@@ -60,6 +60,7 @@ const Page = ({ children, ...props }: MenuProps) => {
       <MenuComponent
         {...props}
         anchorEl={ref}
+        placement={placement}
         trigger={
           <Button ref={setRef} onClick={() => console.log('Clicks')}>
             Click me!
@@ -92,7 +93,4 @@ export const Menu = Template.bind({});
 Menu.args = {
   children: 'Popover',
   placement: 'start-start',
-  offsetX: 0,
-  offsetY: 0,
-  zIndex: 1,
 };
