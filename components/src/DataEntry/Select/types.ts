@@ -1,6 +1,7 @@
 import React from 'react';
 import { PaperProps } from '../../Containers/Paper/Paper';
 import { PopoverProps } from '../../Messaging/Popover/Popover';
+import { InputProps } from '../Input/Input';
 import { OptionProps } from './Option';
 
 export type Optional<T> = T | undefined;
@@ -33,7 +34,6 @@ export interface SelectProps {
   value?: SelectValue;
   dropdownMatchSelectWidth?: true | number;
   openOnFocus?: boolean;
-  filterSelectedOptions: Boolean;
   multiple?: boolean;
   notFoundContent?: React.ReactNode;
   options: OptionItem[];
@@ -64,6 +64,7 @@ export interface UseSelectReturnType {
   role: 'combobox';
   setOpen: (v: boolean) => void;
   value: SelectValue;
+  setValue: (v: SelectValue) => void;
   options: {
     disabled: boolean;
     id: string;
@@ -91,3 +92,14 @@ export type UseSelectProps = Pick<
   | 'value'
   | 'multiple'
 >;
+
+export interface AutocompleteProps extends SelectProps {
+  filterSelectedOptions?: boolean;
+  inputValue?: string;
+  InputProps: InputProps;
+  onInputChange: (event: React.ChangeEvent) => void;
+  includeInputInList?: boolean;
+  renderInput: () => React.ReactNode;
+  readOnly?: boolean;
+  match?: (optionValue: string, value: string) => boolean;
+}

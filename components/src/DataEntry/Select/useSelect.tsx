@@ -5,6 +5,7 @@ import {
   getDefaultValue,
   isArray,
   isFunction,
+  isString,
   useAriaActiveDescendant,
   useControlledState,
 } from './utils';
@@ -26,6 +27,7 @@ const useSelect = ({
   onChange,
   open: $open,
   options = [],
+  // ---- > backfill boolean false // keyboard autocomplete only
   value: $value,
 }: UseSelectProps): UseSelectReturnType => {
   /**
@@ -62,11 +64,17 @@ const useSelect = ({
 
     if (isArray(value)) {
       if (value.indexOf(option.value) === -1) {
+        // select
         nextValue = [...value, option.value];
       } else {
+        // deselect
         nextValue = value.filter((it) => it !== option.value);
       }
+    } else if (isString(value) && value === option.value) {
+      // deselect
+      nextValue = '';
     } else {
+      // select
       nextValue = option.value;
     }
 
@@ -99,11 +107,11 @@ const useSelect = ({
     };
   };
 
-
   return {
     open,
     disabled: Boolean(disabled),
     hasValue,
+    setValue,
     setOpen: setOpen,
     activeDescendant: activeDescendant,
     value: value,

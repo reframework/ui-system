@@ -1,8 +1,6 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import SelectComponent from './hookedSelect';
-
-const { Option } = SelectComponent;
+import SelectComponent from './Select';
 
 export default {
   title: 'Data Entry/Select',

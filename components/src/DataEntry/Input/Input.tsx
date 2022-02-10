@@ -30,12 +30,17 @@ export interface InputProps {
   name?: string;
   onChange: any;
   onClick?: (event: React.MouseEvent) => void;
+  onFocus?: (event: React.FocusEvent) => void;
+  onBlur?: (event: React.FocusEvent) => void;
   placeholder?: string;
   prefix?: React.ReactNode;
   size?: 'small' | 'medium' | 'large';
   suffix?: React.ReactNode;
   type?: string;
   value: string;
+  disabled?: boolean;
+  role?: string;
+  tabIndex?: number;
   // TODO: React.HTMLAttributes<HTMLInputElement>;
 }
 

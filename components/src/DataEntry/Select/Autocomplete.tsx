@@ -4,11 +4,18 @@ import Popover from '../../Messaging/Popover/Popover';
 import styles from './Select.css?module';
 import Option from './Option';
 import { getClassName } from '@reframework/classnames';
-import { isFunction, defaultRenderValue, defaultGetOptionLabel } from './utils';
+import {
+  isFunction,
+  defaultRenderValue,
+  defaultGetOptionLabel,
+  useControlledState,
+  defaultMatch,
+} from './utils';
 import useSelect from './useSelect';
-import { SelectProps } from './types';
+import { AutocompleteProps } from './types';
+import Input, { InputRef } from '../Input/Input';
 
-const Select = ({
+const Autocomplete = ({
   ariaLabel,
   ariaLabelledBy,
   autoFocus,
@@ -24,25 +31,54 @@ const Select = ({
   PaperProps,
   placeholder,
   PopoverProps,
+  InputProps,
   renderOption,
   renderValue = defaultRenderValue,
   tabIndex,
   // to autocomplete
-  // filterSelectedOptions = true,
-
+  filterSelectedOptions = true,
+  inputValue: $inputValue,
+  onInputChange,
+  includeInputInList,
+  renderInput,
+  readOnly,
+  options: $options,
+  // defaultInputValue = '',
+  // openOnMatchingValue: string | Regexp
+  // skip multiple
+  match = defaultMatch,
+  multiple: _,
   ...useSelectProps
-}: SelectProps) => {
-  const comboboxRef = React.useRef<HTMLDivElement | null>(null);
+}: AutocompleteProps) => {
+  const comboboxRef = React.useRef<InputRef | null>(null);
+
+  const [matchingOptions, setMatchingOptions] = React.useState($options);
 
   const {
     activeDescendant,
     disabled,
-    hasValue,
+    setValue,
     open,
     options,
     setOpen,
     value,
-  } = useSelect(useSelectProps);
+  } = useSelect({
+    ...useSelectProps,
+    options: matchingOptions,
+  });
+
+  // todo:
+  const [inputValue, setInputValue] = useControlledState({
+    controlled: $inputValue,
+    default: '',
+  });
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (isFunction(onInputChange)) onInputChange(event);
+    if (!open) setOpen(true);
+    if (!inputValue?.trim()) return setInputValue(event.target.value);
+    setValue(event.target.value);
+  };
 
   const handleClickAway = (event: Event) => {
     const { onClickAway } = PopoverProps || {};
@@ -55,8 +91,6 @@ const Select = ({
     if (!open) setOpen(true);
   };
 
-  console.log(open, 'isOpen');
-
   const handleFocus = (event: React.SyntheticEvent) => {
     if (isFunction(onFocus)) onFocus(event);
     if (openOnFocus) setOpen(true);
@@ -66,43 +100,40 @@ const Select = ({
     if (autoFocus) comboboxRef.current?.focus?.();
   }, []);
 
+  React.useEffect(() => {
+    if (!isFunction(match)) return;
+    setMatchingOptions($options.filter(({ value }) => match(value, value)));
+  }, [value, $options, match]);
+
   const renderedValue = renderValue(value);
-
-  const comboboxClassName = getClassName({
-    [styles.combobox]: true,
-    [styles.placeholder]: hasValue,
-    [styles.disabled]: disabled,
-  });
-
-  console.log(options, 'opts');
 
   return (
     <div>
-      <div
-        onBlur={onBlur}
-        onClick={handleClick}
-        onFocus={handleFocus}
-        role="combobox"
+      <Input
+        {...InputProps}
         aria-activedescendant={activeDescendant}
+        aria-autocomplete="none"
         aria-controls={listBoxId}
-        aria-disabled={disabled}
         aria-expanded={open}
         aria-haspopup="listbox"
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledBy}
-        aria-placeholder={renderedValue ? undefined : placeholder}
+        disabled={disabled}
         id={id}
-        tabIndex={tabIndex || 0}
-        aria-autocomplete="none"
-        className={comboboxClassName}
+        onBlur={onBlur}
+        onChange={handleInputChange}
+        onClick={handleClick}
+        onFocus={handleFocus}
+        placeholder={placeholder}
         ref={comboboxRef}
-      >
-        {renderedValue || placeholder}
-      </div>
+        role="combobox"
+        tabIndex={tabIndex || 0}
+        value={renderedValue}
+      />
       <Popover
         placement="start-after"
         {...PopoverProps}
-        anchorEl={comboboxRef.current}
+        anchorEl={comboboxRef.current?.wrapperNode}
         anchorWidth={dropdownMatchSelectWidth}
         onClickAway={handleClickAway}
         open={open}
@@ -115,7 +146,6 @@ const Select = ({
               return renderOption(optionProps, option);
             }
 
-            console.log('123');
             return (
               <Option {...optionProps} value={value}>
                 {getOptionLabel(option)}
@@ -128,4 +158,4 @@ const Select = ({
   );
 };
 
-export default Select;
+export default Autocomplete;
