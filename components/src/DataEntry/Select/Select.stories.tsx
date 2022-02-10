@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import SelectComponent from './Select';
+import SelectComponent from './hookedSelect';
 
 const { Option } = SelectComponent;
 
@@ -13,16 +13,19 @@ const Template: ComponentStory<typeof SelectComponent> = ({
   value: valueProp,
   ...props
 }) => {
-  return <SelectComponent {...props} />;
+  return <SelectComponent {...props} multiple />;
 };
 
 export const Select = Template.bind({});
 
 Select.args = {
   autoFocus: false,
-  defaultValue: 'january',
+  defaultValue: '1',
   defaultOpen: false,
   placeholder: 'Placeholder',
   onChange: () => {},
-  options: [{ label: '123', value: '123' }],
+  options: [
+    { label: 'ololo', value: '1' },
+    { label: 'kokoko', value: '2' },
+  ],
 };

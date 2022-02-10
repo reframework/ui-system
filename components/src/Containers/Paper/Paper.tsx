@@ -9,6 +9,7 @@ export interface PaperProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const Paper = React.forwardRef<HTMLDivElement | null, PaperProps>(
   ({ className, square = false, reflection = 3, ...props }, ref) => {
+    console.log('Paper');
     const classNames = getClassName({
       [styles.paper]: true,
       [styles.round]: !square,

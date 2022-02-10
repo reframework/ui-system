@@ -14,6 +14,7 @@ export interface OptionProps {
   onFocus?: (event: React.FocusEvent) => void;
   selected?: boolean;
   value: string | number;
+  tabIndex?: number;
 }
 
 const Option = ({
@@ -25,6 +26,7 @@ const Option = ({
   onFocus,
   selected,
   value,
+  tabIndex,
   ...props
 }: OptionProps) => {
   const classNames = getClassName({
@@ -44,7 +46,7 @@ const Option = ({
       onClick={onClick}
       onFocus={onFocus}
       role="option"
-      tabIndex={0}
+      tabIndex={tabIndex}
       {...props}
     >
       {children || null}

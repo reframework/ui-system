@@ -43,16 +43,13 @@ const getStyles = (styles?: CSSProperties) => ({
 
 const getAnchorWidth = (
   el: HTMLElement | null | undefined,
-  anchorWidth?: boolean
+  anchorWidth?: boolean | number
 ) => {
   if (!el) return;
-
-  return {
-    width:
-      typeof anchorWidth === 'number'
-        ? anchorWidth
-        : el.clientWidth || 'max-content',
-  } as const;
+  let width: number | string = el.clientWidth;
+  if (typeof anchorWidth == 'number') width = anchorWidth;
+  if (!anchorWidth) width = 'max-content';
+  return { width };
 };
 
 const Popover = ({
