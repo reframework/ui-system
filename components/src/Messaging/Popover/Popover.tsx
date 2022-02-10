@@ -17,7 +17,7 @@ export function isFunction<T extends Function>(f: unknown): f is T {
 
 export interface PopoverProps {
   anchorEl?: HTMLElement | null;
-  anchorWidth?: boolean;
+  anchorWidth?: boolean | number;
   children: React.ReactNode;
   className?: string;
   offsetX?: number;
@@ -43,12 +43,15 @@ const getStyles = (styles?: CSSProperties) => ({
 
 const getAnchorWidth = (
   el: HTMLElement | null | undefined,
-  shouldApply?: boolean
+  anchorWidth?: boolean
 ) => {
   if (!el) return;
 
   return {
-    width: shouldApply ? el.clientWidth : 'max-content',
+    width:
+      typeof anchorWidth === 'number'
+        ? anchorWidth
+        : el.clientWidth || 'max-content',
   } as const;
 };
 

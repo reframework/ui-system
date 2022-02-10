@@ -1,6 +1,6 @@
 import React from 'react';
 
-type Optional<T> = T | undefined;
+export type Optional<T> = T | undefined;
 
 export const useControlledState = <T extends unknown>(params: {
   controlled: T;
@@ -25,7 +25,7 @@ export const useAriaActiveDescendant = () => {
   const [activeDescendant, setActiveDescendant] =
     React.useState<Optional<string>>();
 
-  const onFocus = React.useCallback(({ target }: CustomEvent) => {
+  const onFocus = React.useCallback(({ target }: React.FocusEvent) => {
     setActiveDescendant((target as HTMLElement).id);
   }, []);
 
@@ -52,3 +52,6 @@ export const pipeEventHandlers =
 export const typeOf = {
   function: <T extends Function>(f: unknown): f is T => typeof f === 'function',
 };
+
+export const isFunction = <T extends Function>(f: unknown): f is T =>
+  typeof f === 'function';

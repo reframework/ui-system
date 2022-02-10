@@ -62,27 +62,45 @@ export interface SelectProps {
   onClick?: (e: React.MouseEvent) => void;
   onFocus?: (e: React.SyntheticEvent) => void;
   onOpen?: () => void;
+  // onDropdownVisibleChange function(open) -
+  // defaultOpen boolean false
   open?: boolean;
   PaperProps?: PaperProps;
   placeholder?: string;
   PopoverProps?: PopoverProps;
   value?: string;
+  // TODO:number
   dropdownMatchSelectWidth?: true | number;
   openOnFocus?: boolean;
-  filterSelectedOptions: Boolean;
-
-  // ----- > editable boolean false
-  // inputValue string
-  // onInputChange function(value) -
-  // includeInputInList bool false
-  // renderInput: () => React.ReactNode;
+  // listHeight = 200,
+  // multiple?: boolean;
   // readOnly?: () => void;
-  // ----- > multiple?: boolean;
-  // allowClear boolean false
-  // renderCombobox: (props: ComboboxProps) => React.ReactNode;
-  // ---- > backfill boolean false // keyboard autocomplete only
 
-  notFoundContent?: React.ReactNode;
+  // -- Search (Autocomplete)
+  // inputValue,
+  // searchValue,
+  // onSearch,
+  // onSearch function(value) -
+
+  // allowClear boolean false
+  // autoClearSearchValue = true
+
+  //
+  // editable boolean false
+  // backfill boolean false // keyboard autocomplete only
+
+  // Dropdown props
+  // notFoundContent string Not Found
+
+  // !!!
+  // disableCloseOnSelect bool false
+  // filterSelectedOptions bool false
+  // inputValue string
+  // multiple bool false
+
+  // includeInputInList bool false
+
+  // Options props
   options: OptionItem[];
   renderValue?: (value: string) => string;
   renderOption: (
@@ -93,6 +111,7 @@ export interface SelectProps {
   getOptionSelected?: (option: OptionItem, value: Optional<string>) => boolean;
   getOptionLabel?: (option: OptionItem) => React.ReactNode;
   getOptionFiltered?: (option: OptionItem) => boolean;
+  // filterOption function(inputValue, option) true
   // -- A11y
   ariaLabel?: string;
   ariaLabelledBy?: string;
@@ -126,24 +145,21 @@ const Select = ({
   PaperProps,
   placeholder,
   PopoverProps,
-  filterSelectedOptions = false,
-  options = [],
-  renderOption,
+  options,
+  // renderOption,
   renderValue = (value: string) => value,
   getOptionDisabled = (opt: OptionItem) => false,
   getOptionSelected = (opt: OptionItem, value?: string) => value === opt.value,
   getOptionLabel = (opt: OptionItem) => opt.label,
   getOptionFiltered = (_: OptionItem) => false,
-  notFoundContent = 'Not Found',
   value: $value,
+  // keepOpen?: boolean;
   // A11y
   id,
   listBoxId,
   ariaLabel,
   tabIndex,
   ariaLabelledBy,
-  // Next
-  editable = false,
 }: SelectProps) => {
   const comboboxRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -204,7 +220,6 @@ const Select = ({
   const getOptionProps = (option: OptionItem) => {
     if (getOptionFiltered(option)) return null;
     const selected = getOptionSelected(option, value);
-    if (filterSelectedOptions && selected) return null;
     const disabled = getOptionDisabled(option);
 
     return {
@@ -213,78 +228,54 @@ const Select = ({
       ['data-value']: option.value,
       id: `opt-${option.value}`,
       key: `opt-${option.value}`,
+      label: getOptionLabel(option),
       onBlur: handleOptionBlur,
       onClick: handleOptionClick,
       onFocus: handleOptionFocus,
       role: 'option',
       selected,
       tabIndex: 0,
+      value: renderValue(option.value),
     };
   };
 
-  // TODO: handleKeyDown
-  // multiple
-  // search
-
-  const renderContent = () => {
-    if (editable) {
-      return <input value={value} placeholder={placeholder} />;
-    }
-
-    return hasValue ? renderValue(value) : placeholder;
+  return {
+    getRootProps: () => ({
+      ['aria-autocomplete']: 'none',
+      ['aria-activedescendant']: activeDescendant,
+      ['aria-controls']: listBoxId,
+      ['aria-disabled']: disabled,
+      ['aria-expanded']: open,
+      ['aria-haspopup']: 'listbox',
+      ['aria-label']: ariaLabel,
+      ['aria-labelledby']: ariaLabelledBy,
+      ['aria-placeholder']: hasValue ? placeholder : undefined,
+      className: comboboxClassName,
+      ['data-name']: name,
+      id,
+      onBlur,
+      onClick: handleClick,
+      onFocus: handleFocus,
+      ref: comboboxRef,
+      role: 'combobox',
+      tabIndex: tabIndex || 0,
+      children: hasValue ? renderValue(value) : placeholder,
+    }),
+    getPopoverProps: () => ({
+      placement: 'start-after',
+      ...PopoverProps,
+      anchorEl: comboboxRef.current,
+      anchorWidth: dropdownMatchSelectWidth,
+      onClickAway: handleClickAway,
+      open,
+    }),
+    getPaperProps: () => ({
+      ...PaperProps,
+      role: 'listbox',
+      tabIndex: -1,
+    }),
+    options: options.map(getOptionProps),
   };
-
-  return (
-    <div
-      aria-autocomplete="none"
-      aria-activedescendant={activeDescendant}
-      aria-controls={listBoxId}
-      aria-disabled={disabled}
-      aria-expanded={open}
-      aria-haspopup="listbox"
-      aria-label={ariaLabel}
-      aria-labelledby={ariaLabelledBy}
-      aria-placeholder={hasValue ? placeholder : undefined}
-      className={comboboxClassName}
-      data-name={name}
-      id={id}
-      onBlur={onBlur}
-      onClick={handleClick}
-      onFocus={handleFocus}
-      ref={comboboxRef}
-      role="combobox"
-      tabIndex={tabIndex || 0}
-    >
-      {renderContent()}
-      <Popover
-        placement="start-after"
-        {...PopoverProps}
-        anchorEl={comboboxRef.current}
-        anchorWidth={dropdownMatchSelectWidth}
-        onClickAway={handleClickAway}
-        open={open}
-      >
-        <Paper {...PaperProps} role="listbox" tabIndex={-1}>
-          {options.length === 0 && notFoundContent}
-          {options.map((option) => {
-            const optionProps = getOptionProps(option);
-
-            if (optionProps === null) return null;
-
-            if (isFunction(renderOption)) {
-              return renderOption(optionProps, option);
-            }
-
-            return (
-              <Option {...optionProps} value={option.value}>
-                {getOptionLabel(option)}
-              </Option>
-            );
-          })}
-        </Paper>
-      </Popover>
-    </div>
-  );
 };
 
 Select.Option = Option;
