@@ -3,25 +3,17 @@ import { getClassName } from '@reframework/classnames';
 import styles from './Option.css?module';
 import { typeOf } from './utils';
 
-const createEvent = <T extends {}>(event: string, detail?: T) => {
-  return new CustomEvent(event, {
-    bubbles: true,
-    cancelable: true,
-    detail,
-  });
-};
-
 export interface OptionProps {
-  id?: string;
+  children?: React.ReactNode;
   color?: string;
   disabled?: boolean;
   icon?: React.ReactNode;
-  value: string | number;
-  children?: React.ReactNode;
-  selected?: boolean;
+  id?: string;
+  onBlur?: (event: React.FocusEvent) => void;
   onClick?: (event: React.MouseEvent) => void;
   onFocus?: (event: React.FocusEvent) => void;
-  onBlur?: (event: React.FocusEvent) => void;
+  selected?: boolean;
+  value: string | number;
 }
 
 const Option = ({
@@ -35,37 +27,11 @@ const Option = ({
   value,
   ...props
 }: OptionProps) => {
-  const ref = React.useRef<HTMLDivElement | null>(null);
-
   const classNames = getClassName({
     [styles.item]: true,
     [styles.active]: Boolean(selected),
     [styles.disabled]: Boolean(disabled),
   });
-
-  const handleClick = (event: React.MouseEvent) => {
-    if (typeOf.function(onClick)) onClick(event);
-
-    if (ref.current && !disabled) {
-      ref.current.dispatchEvent(createEvent('rf:option-select', { value }));
-    }
-  };
-
-  const handleFocus = (event: React.FocusEvent) => {
-    if (typeOf.function(onFocus)) onFocus(event);
-
-    if (ref.current && !disabled) {
-      ref.current.dispatchEvent(createEvent('rf:option-focus'));
-    }
-  };
-
-  const handleBlur = (event: React.FocusEvent) => {
-    if (typeOf.function(onBlur)) onBlur(event);
-
-    if (ref.current && !disabled) {
-      ref.current.dispatchEvent(createEvent('rf:option-blur'));
-    }
-  };
 
   return (
     <div
@@ -74,10 +40,9 @@ const Option = ({
       className={classNames}
       data-value={value}
       id={id}
-      onBlur={handleBlur}
-      onClick={handleClick}
-      onFocus={handleFocus}
-      ref={ref}
+      onBlur={onBlur}
+      onClick={onClick}
+      onFocus={onFocus}
       role="option"
       tabIndex={0}
       {...props}

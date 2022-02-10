@@ -1,13 +1,15 @@
 import React from 'react';
-import { PaperProps } from '../../Containers/Paper/Paper';
+import Paper, { PaperProps } from '../../Containers/Paper/Paper';
 import Popover, { PopoverProps } from '../../Messaging/Popover/Popover';
 import styles from './Select.css?module';
 import Option from './Option';
 import { getClassName } from '@reframework/classnames';
-import { useAriaActiveDescendant, useControlledState, typeOf } from './utils';
-import ListBox from './ListBox';
-
-type OptionSelectedEvent = CustomEvent<{ value: string }>;
+import {
+  useAriaActiveDescendant,
+  useControlledState,
+  typeOf,
+  pipeEventHandlers,
+} from './utils';
 
 export interface SelectProps {
   autoFocus?: boolean;
@@ -42,7 +44,6 @@ export interface SelectProps {
   // autoClearSearchValue = true,
 
   // -- A11y
-  'aria-label'?: string;
   ariaLabel?: string;
   ariaLabelledBy?: string;
   id?: string;
@@ -67,7 +68,7 @@ const Select = ({
   PaperProps,
   placeholder,
   PopoverProps,
-  renderValue = (v: string) => v,
+  renderValue = (value: string) => value,
   value: $value,
   // keepOpen?: boolean;
   // A11y
@@ -84,46 +85,10 @@ const Select = ({
     default: defaultValue || '',
   });
 
-  const hasValue = Boolean(value?.trim());
-
   const [open, setOpen] = useControlledState({
     controlled: $open,
     default: defaultOpen || false,
   });
-
-  const comboboxClassName = getClassName({
-    [styles.combobox]: true,
-    [styles.placeholder]: hasValue,
-  });
-
-  const items = React.useMemo(() => {
-    return React.Children.map(children, (child) => {
-      if (!React.isValidElement(child)) return null;
-      return React.cloneElement(child, {
-        selected: child.props.value === value,
-      });
-    });
-  }, [children, value]);
-
-  const handleClick = (event: React.MouseEvent) => {
-    if (typeOf.function(onClick)) onClick(event);
-    if (!open) setOpen(true);
-  };
-
-  const handleClickAway = () => {
-    setOpen(false);
-  };
-
-  const handleFocus = (event: React.SyntheticEvent) => {
-    if (typeOf.function(onFocus)) onFocus(event);
-    if (openOnFocus) setOpen(true);
-  };
-
-  const handleOptionSelect = React.useCallback((event: OptionSelectedEvent) => {
-    setOpen(false);
-    setValue(event.detail.value);
-    onChange(event.detail.value);
-  }, []);
 
   const {
     activeDescendant,
@@ -131,21 +96,59 @@ const Select = ({
     onBlur: handleOptionBlur,
   } = useAriaActiveDescendant();
 
-  const subscriptions = React.useMemo(
-    () => ({
-      'rf:option-select': handleOptionSelect,
-      'rf:option-focus': handleOptionFocus,
-      'rf:option-blur': handleOptionBlur,
-    }),
+  const handleOptionClick = React.useCallback(
+    ({ target }: React.MouseEvent) => {
+      const targetValue = (target as Element).getAttribute('data-value') || '';
+      setValue(targetValue);
+      onChange(targetValue);
+      setOpen(false);
+    },
     []
   );
+
+  const handleClick = (event: React.MouseEvent) => {
+    if (typeOf.function(onClick)) onClick(event);
+    if (!open) setOpen(true);
+  };
+
+  const handleFocus = (event: React.SyntheticEvent) => {
+    if (typeOf.function(onFocus)) onFocus(event);
+    if (openOnFocus) setOpen(true);
+  };
+
+  const handleClickAway = (event: Event) => {
+    const { onClickAway } = PopoverProps || {};
+    if (typeOf.function(onClickAway)) onClickAway(event);
+    setOpen(false);
+  };
+
+  const items = React.useMemo(() => {
+    return React.Children.map(children, (child) => {
+      if (!React.isValidElement(child)) return null;
+      return React.cloneElement(child, {
+        selected: child.props.value === value,
+        onClick: pipeEventHandlers(child.props.onClick, handleOptionClick),
+        onFocus: pipeEventHandlers(child.props.onFocus, handleOptionFocus),
+        onBlur: pipeEventHandlers(child.props.onBlur, handleOptionBlur),
+      });
+    });
+  }, [children, value]);
 
   React.useEffect(() => {
     if (autoFocus) comboboxRef.current?.focus();
   }, []);
 
+  const hasValue = Boolean(value?.trim());
+
+  const comboboxClassName = getClassName({
+    [styles.combobox]: true,
+    [styles.placeholder]: hasValue,
+    [styles.disabled]: Boolean(disabled),
+  });
+
   return (
     <div
+      aria-autocomplete="none"
       aria-activedescendant={activeDescendant}
       aria-controls={listBoxId}
       aria-disabled={disabled}
@@ -173,14 +176,9 @@ const Select = ({
         onClickAway={handleClickAway}
         open={open}
       >
-        <ListBox
-          {...PaperProps}
-          aria-labelledby={ariaLabelledBy}
-          id={listBoxId}
-          subscriptions={subscriptions}
-        >
+        <Paper {...PaperProps} role="listbox" tabIndex={-1}>
           {items}
-        </ListBox>
+        </Paper>
       </Popover>
     </div>
   );

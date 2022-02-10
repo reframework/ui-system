@@ -21,10 +21,6 @@ export const useControlledState = <T extends unknown>(params: {
     : ([uncontrolled, setUncontrolled] as const);
 };
 
-export const typeOf = {
-  function: <T extends Function>(f: unknown): f is T => typeof f === 'function',
-};
-
 export const useAriaActiveDescendant = () => {
   const [activeDescendant, setActiveDescendant] =
     React.useState<Optional<string>>();
@@ -42,4 +38,17 @@ export const useAriaActiveDescendant = () => {
     onFocus,
     onBlur,
   };
+};
+
+export const pipeEventHandlers =
+  <TEvent extends {}>(...handlers: ((e: TEvent) => void)[]) =>
+  (e: TEvent) => {
+    handlers.forEach((handler) => {
+      if (!typeOf.function(handler)) return;
+      handler(e);
+    });
+  };
+
+export const typeOf = {
+  function: <T extends Function>(f: unknown): f is T => typeof f === 'function',
 };
