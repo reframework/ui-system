@@ -89,5 +89,5 @@ export const defaultGetOptionSelected = (
 export const defaultGetOptionFiltered = (_: OptionItem) => true;
 
 export const defaultMatch = (optionValue: string, value: string) => {
-  return optionValue.match(new RegExp(value as string, 'ig'));
+  return new RegExp(value as string, 'ig').test(optionValue);
 };

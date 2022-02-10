@@ -1,14 +1,11 @@
 import React from 'react';
 import Paper from '../../Containers/Paper/Paper';
 import Popover from '../../Messaging/Popover/Popover';
-import styles from './Select.css?module';
 import Option from './Option';
-import { getClassName } from '@reframework/classnames';
 import {
   isFunction,
   defaultRenderValue,
   defaultGetOptionLabel,
-  useControlledState,
   defaultMatch,
 } from './utils';
 import useSelect from './useSelect';
@@ -67,16 +64,9 @@ const Autocomplete = ({
     options: matchingOptions,
   });
 
-  // todo:
-  const [inputValue, setInputValue] = useControlledState({
-    controlled: $inputValue,
-    default: '',
-  });
-
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (isFunction(onInputChange)) onInputChange(event);
     if (!open) setOpen(true);
-    if (!inputValue?.trim()) return setInputValue(event.target.value);
     setValue(event.target.value);
   };
 
@@ -102,7 +92,9 @@ const Autocomplete = ({
 
   React.useEffect(() => {
     if (!isFunction(match)) return;
-    setMatchingOptions($options.filter(({ value }) => match(value, value)));
+    setMatchingOptions(
+      $options.filter((option) => match(option.value, value as string))
+    );
   }, [value, $options, match]);
 
   const renderedValue = renderValue(value);
@@ -112,7 +104,7 @@ const Autocomplete = ({
       <Input
         {...InputProps}
         aria-activedescendant={activeDescendant}
-        aria-autocomplete="none"
+        aria-autocomplete="list"
         aria-controls={listBoxId}
         aria-expanded={open}
         aria-haspopup="listbox"
