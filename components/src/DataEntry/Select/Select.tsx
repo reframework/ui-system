@@ -1,72 +1,13 @@
 import React from 'react';
-import Paper, { PaperProps } from '../../Containers/Paper/Paper';
+import { PaperProps } from '../../Containers/Paper/Paper';
 import Popover, { PopoverProps } from '../../Messaging/Popover/Popover';
-import Input, { InputProps, Refs } from '../Input/Input';
 import styles from './Select.css?module';
 import Option from './Option';
+import { getClassName } from '@reframework/classnames';
+import { useAriaActiveDescendant, useControlledState, typeOf } from './utils';
+import ListBox from './ListBox';
 
 type OptionSelectedEvent = CustomEvent<{ value: string }>;
-
-// utils
-const useControlled = <T extends unknown>(params: {
-  controlled: T;
-  default: NonNullable<T>;
-}) => {
-  const { controlled, default: _default } = params;
-
-  // isControlled should never change
-  const { current: isControlled } = React.useRef(
-    params.controlled !== undefined
-  );
-
-  const [uncontrolled, setUncontrolled] = React.useState(_default);
-  const noOp = React.useCallback(() => {}, []) as typeof setUncontrolled;
-
-  return isControlled
-    ? ([controlled as NonNullable<T>, noOp] as const)
-    : ([uncontrolled, setUncontrolled] as const);
-};
-
-const typeOf = {
-  function: <T extends Function>(f: unknown): f is T => typeof f === 'function',
-};
-
-type ListBoxProps = {
-  // subscriptions
-  onOptionSelected: (event: OptionSelectedEvent) => void;
-  id?: string;
-};
-
-const isEventListener = (f: Function): f is EventListener => {
-  return typeOf.function(f);
-};
-
-const ListBox: React.FC<ListBoxProps & React.HTMLProps<HTMLDivElement>> = ({
-  children,
-  onOptionSelected,
-  ...props
-}) => {
-  const ref = React.useRef<HTMLDivElement | null>(null);
-
-  React.useEffect(() => {
-    // Subscribes to the custom event
-    if (!ref.current) return;
-    if (!isEventListener(onOptionSelected)) return;
-
-    ref.current.addEventListener('rf:option-select', onOptionSelected);
-
-    return () => {
-      if (!ref.current) return;
-      ref.current.removeEventListener('rf:option-select', onOptionSelected);
-    };
-  }, [onOptionSelected]);
-
-  return (
-    <Paper ref={ref} {...props} role="listbox">
-      {children}
-    </Paper>
-  );
-};
 
 export interface SelectProps {
   autoFocus?: boolean;
@@ -75,12 +16,11 @@ export interface SelectProps {
   defaultOpen?: boolean;
   defaultValue?: string;
   disabled?: boolean;
-  InputProps?: InputProps;
-  keepOpen?: boolean;
   name?: string;
   onBlur?: (e: React.SyntheticEvent) => void;
   onChange: (value: string) => void;
   onClose?: () => void;
+  onClick?: (e: React.MouseEvent) => void;
   onFocus?: (e: React.SyntheticEvent) => void;
   onOpen?: () => void;
   open?: boolean;
@@ -90,6 +30,7 @@ export interface SelectProps {
   value?: string;
   dropdownMatchSelectWidth?: true;
   renderValue?: (value: string) => string;
+  openOnFocus?: boolean;
   // listHeight = 200,
   // multiple?: boolean;
   // readOnly?: () => void;
@@ -100,15 +41,13 @@ export interface SelectProps {
   // onSearch,
   // autoClearSearchValue = true,
 
-  // -- Ally
-  id?: string;
-  'aria-describedby?': string;
+  // -- A11y
   'aria-label'?: string;
-  tabIndex?: number;
-  listBoxId?: string;
+  ariaLabel?: string;
   ariaLabelledBy?: string;
-  // catching `type` from Input which makes no sense for SelectInput
-  // type,
+  id?: string;
+  listBoxId?: string;
+  tabIndex?: number;
 }
 
 const Select = ({
@@ -118,116 +57,127 @@ const Select = ({
   defaultValue,
   disabled,
   dropdownMatchSelectWidth = true,
-  InputProps,
-  keepOpen = false,
+  openOnFocus = false,
   name,
   onBlur,
   onChange,
+  onClick,
   onFocus,
   open: $open,
   PaperProps,
   placeholder,
   PopoverProps,
-  renderValue: renderValue,
+  renderValue = (v: string) => v,
   value: $value,
+  // keepOpen?: boolean;
   // A11y
   id,
   listBoxId,
+  ariaLabel,
+  tabIndex,
   ariaLabelledBy,
 }: SelectProps) => {
-  const ref = React.useRef<Refs>();
-  const selectedOptionId = React.useRef<string>();
+  const comboboxRef = React.useRef<HTMLDivElement | null>(null);
 
-  const [value, setValue] = useControlled({
+  const [value, setValue] = useControlledState({
     controlled: $value,
     default: defaultValue || '',
   });
 
-  const [open, setOpen] = useControlled({
+  const hasValue = Boolean(value?.trim());
+
+  const [open, setOpen] = useControlledState({
     controlled: $open,
     default: defaultOpen || false,
   });
 
-  const handleFocus = (event: React.SyntheticEvent) => {
-    if (typeOf.function(onFocus)) onFocus(event);
-    setOpen(true);
-  };
+  const comboboxClassName = getClassName({
+    [styles.combobox]: true,
+    [styles.placeholder]: hasValue,
+  });
 
-  const handleBlur = (event: React.SyntheticEvent) => {
-    if (typeOf.function(onBlur)) onBlur(event);
+  const items = React.useMemo(() => {
+    return React.Children.map(children, (child) => {
+      if (!React.isValidElement(child)) return null;
+      return React.cloneElement(child, {
+        selected: child.props.value === value,
+      });
+    });
+  }, [children, value]);
+
+  const handleClick = (event: React.MouseEvent) => {
+    if (typeOf.function(onClick)) onClick(event);
+    if (!open) setOpen(true);
   };
 
   const handleClickAway = () => {
     setOpen(false);
   };
 
-  React.useEffect(() => {
-    if (autoFocus) ref.current?.focus();
-  }, []);
-
-  const handleSelect = React.useCallback((event: OptionSelectedEvent) => {
-    setValue(event.detail.value);
-    onChange(event.detail.value);
-
-    if (!keepOpen) {
-      setOpen(false);
-    }
-  }, []);
-
-  const handleInputClick = (event: React.MouseEvent) => {
-    if (open) {
-      event.stopPropagation();
-    }
-
-    if (typeof InputProps?.onClick === 'function') {
-      InputProps.onClick(event);
-    }
+  const handleFocus = (event: React.SyntheticEvent) => {
+    if (typeOf.function(onFocus)) onFocus(event);
+    if (openOnFocus) setOpen(true);
   };
 
-  const items = React.Children.map(children, (child) => {
-    if (!React.isValidElement(child)) return null;
+  const handleOptionSelect = React.useCallback((event: OptionSelectedEvent) => {
+    setOpen(false);
+    setValue(event.detail.value);
+    onChange(event.detail.value);
+  }, []);
 
-    const isSelected = value === child.props.value;
-    if (isSelected) selectedOptionId.current = child.props.id;
-    return React.cloneElement(child, { selected: isSelected });
-  });
+  const {
+    activeDescendant,
+    onFocus: handleOptionFocus,
+    onBlur: handleOptionBlur,
+  } = useAriaActiveDescendant();
+
+  const subscriptions = React.useMemo(
+    () => ({
+      'rf:option-select': handleOptionSelect,
+      'rf:option-focus': handleOptionFocus,
+      'rf:option-blur': handleOptionBlur,
+    }),
+    []
+  );
+
+  React.useEffect(() => {
+    if (autoFocus) comboboxRef.current?.focus();
+  }, []);
 
   return (
     <div
-      role="combobox"
-      aria-activedescendant={selectedOptionId.current}
+      aria-activedescendant={activeDescendant}
       aria-controls={listBoxId}
+      aria-disabled={disabled}
       aria-expanded={open}
       aria-haspopup="listbox"
+      aria-label={ariaLabel}
       aria-labelledby={ariaLabelledBy}
+      aria-placeholder={hasValue ? placeholder : undefined}
+      className={comboboxClassName}
+      data-name={name}
       id={id}
-      tabIndex={0}
+      onBlur={onBlur}
+      onClick={handleClick}
+      onFocus={handleFocus}
+      ref={comboboxRef}
+      role="combobox"
+      tabIndex={tabIndex || 0}
     >
-      <Input
-        {...InputProps}
-        disabled={disabled}
-        name={name}
-        onBlur={handleBlur}
-        onFocus={handleFocus}
-        ref={ref}
-        value={typeOf.function(renderValue) ? renderValue(value) : value}
-        onClick={handleInputClick}
-        placeholder={placeholder}
-      />
+      {hasValue ? renderValue(value) : placeholder}
       <Popover
         placement="start-after"
         {...PopoverProps}
-        anchorEl={ref.current?.wrapperNode}
+        anchorEl={comboboxRef.current}
         anchorWidth={dropdownMatchSelectWidth}
         onClickAway={handleClickAway}
         open={open}
       >
         <ListBox
           {...PaperProps}
-          onOptionSelected={handleSelect}
-          id={listBoxId}
           aria-labelledby={ariaLabelledBy}
-          tabIndex={-1}
+          id={listBoxId}
+          subscriptions={subscriptions}
         >
           {items}
         </ListBox>

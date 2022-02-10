@@ -3,3 +3,17 @@
   padding: 0;
   margin: 0;
 }
+
+.combobox {
+  padding: 16px;
+  border: 1px solid black;
+  cursor: pointer;
+
+  &[aria-disabled='true'] {
+    cursor: default;
+  }
+
+  &.placeholder {
+    color: gray;
+  }
+}

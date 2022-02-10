@@ -23,6 +23,7 @@ Select.args = {
   autoFocus: false,
   defaultValue: 'january',
   defaultOpen: false,
+  placeholder: 'Placeholder',
   onChange: () => {},
   children: [
     <Option key="1" value="january" id="january">

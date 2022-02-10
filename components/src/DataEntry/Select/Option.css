@@ -2,7 +2,8 @@
   --color: red;
   color: var(--color-scale-black);
 
-  &:hover {
+  &:hover,
+  &:focus {
     color: var(--color-scale-blue-4);
   }
 
@@ -25,7 +26,8 @@
 }
 
 .disabled {
-  &:hover {
+  &:hover,
+  &:focus {
     background-color: var(--color-scale-gray-1);
     color: var(--color-scale-gray-3);
   }

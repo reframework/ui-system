@@ -1,9 +1,10 @@
 import React from 'react';
 import { getClassName } from '@reframework/classnames';
 import styles from './Option.css?module';
+import { typeOf } from './utils';
 
-const createSelectEvent = <T extends {}>(detail?: T) => {
-  return new CustomEvent('rf:option-select', {
+const createEvent = <T extends {}>(event: string, detail?: T) => {
+  return new CustomEvent(event, {
     bubbles: true,
     cancelable: true,
     detail,
@@ -19,13 +20,17 @@ export interface OptionProps {
   children?: React.ReactNode;
   selected?: boolean;
   onClick?: (event: React.MouseEvent) => void;
+  onFocus?: (event: React.FocusEvent) => void;
+  onBlur?: (event: React.FocusEvent) => void;
 }
 
 const Option = ({
   children,
   disabled,
   id,
+  onBlur,
   onClick,
+  onFocus,
   selected,
   value,
   ...props
@@ -39,12 +44,26 @@ const Option = ({
   });
 
   const handleClick = (event: React.MouseEvent) => {
-    if (typeof onClick === 'function') {
-      onClick(event);
-    }
+    if (typeOf.function(onClick)) onClick(event);
 
     if (ref.current && !disabled) {
-      ref.current.dispatchEvent(createSelectEvent({ value }));
+      ref.current.dispatchEvent(createEvent('rf:option-select', { value }));
+    }
+  };
+
+  const handleFocus = (event: React.FocusEvent) => {
+    if (typeOf.function(onFocus)) onFocus(event);
+
+    if (ref.current && !disabled) {
+      ref.current.dispatchEvent(createEvent('rf:option-focus'));
+    }
+  };
+
+  const handleBlur = (event: React.FocusEvent) => {
+    if (typeOf.function(onBlur)) onBlur(event);
+
+    if (ref.current && !disabled) {
+      ref.current.dispatchEvent(createEvent('rf:option-blur'));
     }
   };
 
@@ -55,9 +74,12 @@ const Option = ({
       className={classNames}
       data-value={value}
       id={id}
+      onBlur={handleBlur}
       onClick={handleClick}
+      onFocus={handleFocus}
       ref={ref}
       role="option"
+      tabIndex={0}
       {...props}
     >
       {children || null}

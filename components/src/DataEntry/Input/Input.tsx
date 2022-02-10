@@ -2,7 +2,7 @@ import React, { MutableRefObject, useImperativeHandle, useRef } from 'react';
 import styles from './Input.css?module';
 import { getClassName } from '@reframework/classnames';
 
-export interface Refs {
+export interface InputRef {
   wrapperNode: HTMLDivElement | null;
   inputNode: HTMLInputElement | null;
   focus: () => void;
@@ -56,7 +56,7 @@ const Input = React.forwardRef(
       onClick,
       ...props
     }: InputProps,
-    ref: React.ForwardedRef<Refs>
+    ref: React.ForwardedRef<InputRef>
   ) => {
     const classNames = getClassName({
       [className!]: Boolean(className),

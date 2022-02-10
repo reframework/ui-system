@@ -45,10 +45,10 @@ const getAnchorWidth = (
   el: HTMLElement | null | undefined,
   shouldApply?: boolean
 ) => {
-  if (!shouldApply || !el) return;
+  if (!el) return;
 
   return {
-    width: el.clientWidth,
+    width: shouldApply ? el.clientWidth : 'max-content',
   } as const;
 };
 
