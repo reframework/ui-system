@@ -62,15 +62,13 @@ export interface UseComboboxReturnType {
   activeDescendant?: string;
   disabled: boolean;
   hasValue: boolean;
-  open: boolean;
-  role: 'combobox';
+  onBlur: (e: React.FocusEvent) => void;
   onClick: (e: React.MouseEvent) => void;
-  onFocus: (e: React.FocusEvent) => void;
   onClickAway: (e: Event) => void;
-  setOpen: (v: boolean) => void;
-  value: React.ReactNode | undefined;
-  rawValue: SelectValue;
-  setValue: (v: SelectValue) => void;
+  onFocus: (e: React.FocusEvent) => void;
+  onKeyDown: (e: React.KeyboardEvent) => void;
+  onKeyUp: (e: React.KeyboardEvent) => void;
+  open: boolean;
   options: {
     disabled: boolean;
     id: string;
@@ -82,6 +80,11 @@ export interface UseComboboxReturnType {
     value: string;
     label: string;
   }[];
+  rawValue: SelectValue;
+  role: 'combobox';
+  setOpen: (v: boolean) => void;
+  setValue: (v: SelectValue) => void;
+  value: React.ReactNode | undefined;
 }
 
 export type UseComboboxProps = Pick<
@@ -89,20 +92,21 @@ export type UseComboboxProps = Pick<
   | 'defaultOpen'
   | 'defaultValue'
   | 'disabled'
+  | 'getOptionDisabled'
+  | 'getOptionFiltered'
+  | 'getOptionSelected'
+  | 'multiple'
+  | 'onBlur'
   | 'onChange'
   | 'onClick'
-  | 'onFocus'
-  | 'openOnFocus'
-  | 'openOnClick'
-  | 'open'
-  | 'options'
-  | 'getOptionDisabled'
-  | 'getOptionSelected'
-  | 'getOptionFiltered'
-  | 'value'
-  | 'multiple'
   | 'onClickAway'
+  | 'onFocus'
+  | 'open'
+  | 'openOnClick'
+  | 'openOnFocus'
+  | 'options'
   | 'renderValue'
+  | 'value'
 >;
 
 export interface AutocompleteProps extends Omit<SelectProps, 'multiple'> {

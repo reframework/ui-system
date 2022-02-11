@@ -19,7 +19,7 @@ const ListBox: React.FC<ListBoxProps & React.HTMLProps<HTMLDivElement>> = ({
   id,
   options,
   renderOption,
-  tabIndex = -1,
+  tabIndex,
   PaperProps,
 }) => {
   return (

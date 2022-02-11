@@ -27,6 +27,7 @@ export interface PopoverProps {
   placement?: Placement;
   style?: CSSProperties;
   zIndex?: number;
+  role?: string;
 }
 
 const getPositionHandlers = (placement: Placement) => {
@@ -63,6 +64,7 @@ const Popover = ({
   onClose,
   open: $open,
   placement = 'start-start',
+  role = 'presentation',
   style,
   zIndex,
 }: PopoverProps) => {
@@ -127,6 +129,7 @@ const Popover = ({
       onClick={stopPropagation}
       ref={setContentRoot}
       style={styles}
+      role={role}
     >
       {children}
     </div>

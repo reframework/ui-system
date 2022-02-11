@@ -34,6 +34,8 @@ export interface InputProps {
   onChange: any;
   onClick?: (event: React.MouseEvent) => void;
   onFocus?: (event: React.FocusEvent) => void;
+  onKeyUp?: (event: React.KeyboardEvent) => void;
+  onKeyDown?: (event: React.KeyboardEvent) => void;
   placeholder?: string;
   prefix?: React.ReactNode;
   role?: string;

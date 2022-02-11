@@ -1,4 +1,5 @@
 import React from 'react';
+import { Optional } from './DataEntry/Combobox/types';
 
 export const useAutoFocus = (hasFocus: boolean, node?: HTMLElement | null) => {
   React.useEffect(() => {
@@ -55,4 +56,23 @@ export const isArray = <T extends any>(value: unknown): value is T[] => {
 
 export const isString = <T extends any>(value: unknown): value is string => {
   return typeof value === 'string';
+};
+
+export const lastOf = <T extends any>(arr: T[]): Optional<T> => {
+  return arr[arr.length - 1];
+};
+
+export const firstOf = <T extends any>(arr: T[]): Optional<T> => {
+  return arr[0];
+};
+
+export const nextOf = <T extends any>(arr: T[], idx: number): Optional<T> => {
+  return arr[idx + 1];
+};
+
+export const previousOf = <T extends any>(
+  arr: T[],
+  idx: number
+): Optional<T> => {
+  return arr[idx - 1];
 };

@@ -2,11 +2,6 @@
   --color: red;
   color: var(--color-scale-black);
 
-  &:hover,
-  &:focus {
-    color: var(--color-scale-blue-4);
-  }
-
   font-size: var(--font-size-xs);
   font-family: var(--font-family-primary);
   font-weight: var(--font-weight-regular);
@@ -16,13 +11,18 @@
   padding: var(--spacing-xxs) var(--spacing-xxs);
 }
 
-.active {
-  &:hover {
-    background-color: var(--color-scale-blue-1);
-  }
-
+.active:not(.highlighted) {
   color: var(--color-scale-blue-4);
   background-color: var(--color-scale-blue-1);
+}
+
+.highlighted {
+  &.active {
+    color: var(--color-scale-blue-4);
+    background-color: var(--color-scale-blue-0);
+  }
+
+  background-color: var(--color-scale-gray-1);
 }
 
 .disabled {

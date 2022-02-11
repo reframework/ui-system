@@ -6,6 +6,7 @@ export interface OptionProps {
   children?: React.ReactNode;
   color?: string;
   disabled?: boolean;
+  highlighted?: Boolean;
   icon?: React.ReactNode;
   id?: string;
   label?: React.ReactNode;
@@ -14,7 +15,7 @@ export interface OptionProps {
   onFocus?: (event: React.FocusEvent) => void;
   selected?: boolean;
   tabIndex?: number;
-  value: string | number;
+  value: string;
 }
 
 const Option = ({
@@ -27,6 +28,7 @@ const Option = ({
   onFocus,
   selected,
   tabIndex,
+  highlighted,
   value,
   ...props
 }: OptionProps) => {
@@ -34,6 +36,7 @@ const Option = ({
     [styles.item]: true,
     [styles.active]: Boolean(selected),
     [styles.disabled]: Boolean(disabled),
+    [styles.highlighted]: Boolean(highlighted),
   });
 
   return (

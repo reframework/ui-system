@@ -1,6 +1,7 @@
 import { CSSProperties, useEffect, useImperativeHandle, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import React from 'react';
+import { isString } from '../utils';
 
 export const useCreated = (callback: () => void) => {
   const created = useRef(false);
@@ -31,7 +32,7 @@ export function createContainer(params: {
   const { id, style = defaultStyle, element = 'div', className } = params;
 
   // Checks if id is ready to use
-  const hasValidId = typeof id === 'string' && id.trim().length > 0;
+  const hasValidId = isString(id) && id.trim().length > 0;
 
   // When id is provided trying to find the Node,
   // otherwise creates the new one

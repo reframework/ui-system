@@ -30,8 +30,10 @@ export const defaultGetOptionSelected = (
   value?: SelectValue
 ) => {
   if (isArray(value)) {
-    return value.findIndex((it) => it === opt.value) >= 0;
+    // Multiple mode
+    return value.findIndex((it) => it === opt.value) !== -1;
   }
+
   return value === opt.value;
 };
 
@@ -39,4 +41,8 @@ export const defaultGetOptionFiltered = (_: OptionItem) => true;
 
 export const defaultMatch = (optionValue: string, value: string) => {
   return new RegExp(value as string, 'ig').test(optionValue);
+};
+
+export const isPrintableCharacter = (value: string) => {
+  return value.length === 1 && value.match(/\S| /);
 };
