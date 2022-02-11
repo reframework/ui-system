@@ -68,7 +68,8 @@ export interface UseSelectReturnType {
   onFocus: (e: React.FocusEvent) => void;
   onClickAway: (e: Event) => void;
   setOpen: (v: boolean) => void;
-  value: SelectValue;
+  value: React.ReactNode | undefined;
+  rawValue: SelectValue;
   setValue: (v: SelectValue) => void;
   options: {
     disabled: boolean;
@@ -101,6 +102,7 @@ export type UseSelectProps = Pick<
   | 'value'
   | 'multiple'
   | 'onClickAway'
+  | 'renderValue'
 >;
 
 export interface AutocompleteProps extends SelectProps {

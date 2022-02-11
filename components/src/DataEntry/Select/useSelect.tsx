@@ -2,6 +2,7 @@ import {
   defaultGetOptionDisabled,
   defaultGetOptionFiltered,
   defaultGetOptionSelected,
+  defaultRenderValue,
   getDefaultValue,
   isArray,
   isFunction,
@@ -23,7 +24,6 @@ const useSelect = ({
   getOptionDisabled = defaultGetOptionDisabled,
   getOptionFiltered = defaultGetOptionFiltered,
   getOptionSelected = defaultGetOptionSelected,
-  filterSelectedOptions = false,
   multiple = false,
   onChange,
   onClick,
@@ -33,6 +33,7 @@ const useSelect = ({
   openOnClick = true,
   openOnFocus,
   options = [],
+  renderValue = defaultRenderValue,
   // ---- > backfill boolean false // keyboard autocomplete only
   value: $value,
 }: UseSelectProps): UseSelectReturnType => {
@@ -138,7 +139,8 @@ const useSelect = ({
     onClickAway: handleClickAway,
     setOpen: setOpen,
     activeDescendant: activeDescendant,
-    value: value,
+    rawValue: value,
+    value: renderValue(value),
     // @ts-expect-error
     options: options.map(getOptionProps).filter(Boolean),
   };

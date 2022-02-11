@@ -26,17 +26,11 @@ const Select = ({
   placeholder,
   PopoverProps,
   renderOption,
-  renderValue = defaultRenderValue,
   tabIndex,
   // to autocomplete
   // filterSelectedOptions = true,
-
   ...useSelectProps
 }: SelectProps) => {
-  const comboboxRef = React.useRef<HTMLDivElement | null>(null);
-
-  useAutoFocus(!!autoFocus, comboboxRef.current);
-
   const {
     activeDescendant,
     disabled,
@@ -49,36 +43,42 @@ const Select = ({
     value,
   } = useSelect(useSelectProps);
 
-  const renderedValue = renderValue(value);
+  /**
+   * Ref
+   */
+  const comboboxRef = React.useRef<HTMLDivElement | null>(null);
 
-  const comboboxClassName = getClassName({
-    [styles.combobox]: true,
-    [styles.placeholder]: hasValue,
-    [styles.disabled]: disabled,
-  });
+  /**
+   * Autofocus
+   */
+  useAutoFocus(!!autoFocus, comboboxRef.current);
 
   return (
     <div>
       <div
-        onBlur={onBlur}
-        onClick={onClick}
-        onFocus={onFocus}
-        role="combobox"
         aria-activedescendant={activeDescendant}
+        aria-autocomplete="none"
         aria-controls={listBoxId}
         aria-disabled={disabled}
         aria-expanded={open}
         aria-haspopup="listbox"
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledBy}
-        aria-placeholder={renderedValue ? undefined : placeholder}
+        aria-placeholder={value ? undefined : placeholder}
+        className={getClassName({
+          [styles.combobox]: true,
+          [styles.placeholder]: hasValue,
+          [styles.disabled]: disabled,
+        })}
         id={id}
-        tabIndex={tabIndex || 0}
-        aria-autocomplete="none"
-        className={comboboxClassName}
+        onBlur={onBlur}
+        onClick={onClick}
+        onFocus={onFocus}
         ref={comboboxRef}
+        role="combobox"
+        tabIndex={tabIndex || 0}
       >
-        {renderedValue || placeholder}
+        {value || placeholder}
       </div>
       <Popover
         placement="start-after"

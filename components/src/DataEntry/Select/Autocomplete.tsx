@@ -32,9 +32,8 @@ const Autocomplete = ({
   placeholder,
   PopoverProps,
   readOnly,
-  renderInput,
+  // todo: renderInput,
   renderOption,
-  renderValue = defaultRenderValue,
   tabIndex,
   // defaultInputValue = '',
   // openOnMatchingValue: string | Regexp
@@ -44,8 +43,6 @@ const Autocomplete = ({
   ...useSelectProps
 }: AutocompleteProps) => {
   const inputRef = React.useRef<InputRef | null>(null);
-
-  useAutoFocus(!!autoFocus, inputRef.current?.inputNode);
 
   const [matchingOptions, setMatchingOptions] = React.useState($options);
 
@@ -65,20 +62,29 @@ const Autocomplete = ({
     options: matchingOptions,
   });
 
+  /**
+   * Input change handler
+   */
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (isFunction(onInputChange)) onInputChange(event);
     if (!open) setOpen(true);
     setValue(event.target.value);
   };
 
+  /**
+   * Autocomplete
+   */
   React.useEffect(() => {
     if (!isFunction(match)) return;
     setMatchingOptions(
-      $options.filter((option) => match(option.value, value as string))
+      $options.filter((it) => match(it.value, value as string))
     );
   }, [value, $options, match]);
 
-  const renderedValue = renderValue(value);
+  /**
+   * Autofocus
+   */
+  useAutoFocus(!!autoFocus, inputRef.current?.inputNode);
 
   return (
     <div>
@@ -101,7 +107,7 @@ const Autocomplete = ({
         ref={inputRef}
         role="combobox"
         tabIndex={tabIndex || 0}
-        value={renderedValue}
+        value={value as string}
       />
       <Popover
         placement="start-after"
