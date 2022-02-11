@@ -20,6 +20,7 @@ export interface PopoverProps {
   anchorWidth?: boolean | number;
   children: React.ReactNode;
   className?: string;
+  disablePortal?: boolean;
   offsetX?: number;
   offsetY?: number;
   onChange?: (open: boolean) => void;
@@ -54,8 +55,10 @@ const getAnchorWidth = (
 
 const Popover = ({
   anchorEl,
+  anchorWidth,
   children,
   className,
+  disablePortal,
   offsetX,
   offsetY,
   onChange,
@@ -63,9 +66,8 @@ const Popover = ({
   onClose,
   open: $open,
   placement = 'start-start',
-  zIndex,
   style,
-  anchorWidth,
+  zIndex,
 }: PopoverProps) => {
   const isMounted = useMounted();
   const [internalOpen, setInternalOpen] = useState<boolean>(false);
@@ -122,20 +124,22 @@ const Popover = ({
     };
   }, [contentRoot]);
 
-  return (
-    <Portal style={{ zIndex }}>
-      {internalOpen && (
-        <div
-          className={className}
-          onClick={stopPropagation}
-          ref={setContentRoot}
-          style={styles}
-        >
-          {children}
-        </div>
-      )}
-    </Portal>
-  );
+  const content = internalOpen ? (
+    <div
+      className={className}
+      onClick={stopPropagation}
+      ref={setContentRoot}
+      style={styles}
+    >
+      {children}
+    </div>
+  ) : null;
+
+  if (disablePortal) {
+    return content;
+  }
+
+  return <Portal style={{ zIndex }}>{content}</Portal>;
 };
 
 export default Popover;

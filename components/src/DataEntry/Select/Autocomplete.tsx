@@ -1,16 +1,16 @@
 import React from 'react';
-import Paper from '../../Containers/Paper/Paper';
 import Popover from '../../Messaging/Popover/Popover';
-import Option from './Option';
 import {
   isFunction,
   defaultRenderValue,
   defaultGetOptionLabel,
   defaultMatch,
+  useAutoFocus,
 } from './utils';
 import useSelect from './useSelect';
 import { AutocompleteProps } from './types';
 import Input, { InputRef } from '../Input/Input';
+import ListBox from './ListBox';
 
 const Autocomplete = ({
   ariaLabel,
@@ -19,27 +19,23 @@ const Autocomplete = ({
   dropdownMatchSelectWidth = true,
   getOptionLabel = defaultGetOptionLabel,
   id,
+  includeInputInList,
+  InputProps,
+  inputValue: $inputValue,
   listBoxId,
   notFoundContent,
   onBlur,
-  onClick,
-  onFocus,
+  onInputChange,
   openOnFocus,
+  options: $options,
   PaperProps,
   placeholder,
   PopoverProps,
-  InputProps,
+  readOnly,
+  renderInput,
   renderOption,
   renderValue = defaultRenderValue,
   tabIndex,
-  // to autocomplete
-  filterSelectedOptions = true,
-  inputValue: $inputValue,
-  onInputChange,
-  includeInputInList,
-  renderInput,
-  readOnly,
-  options: $options,
   // defaultInputValue = '',
   // openOnMatchingValue: string | Regexp
   // skip multiple
@@ -47,17 +43,22 @@ const Autocomplete = ({
   multiple: _,
   ...useSelectProps
 }: AutocompleteProps) => {
-  const comboboxRef = React.useRef<InputRef | null>(null);
+  const inputRef = React.useRef<InputRef | null>(null);
+
+  useAutoFocus(!!autoFocus, inputRef.current?.inputNode);
 
   const [matchingOptions, setMatchingOptions] = React.useState($options);
 
   const {
     activeDescendant,
     disabled,
-    setValue,
+    onClick,
+    onClickAway,
+    onFocus,
     open,
     options,
     setOpen,
+    setValue,
     value,
   } = useSelect({
     ...useSelectProps,
@@ -69,26 +70,6 @@ const Autocomplete = ({
     if (!open) setOpen(true);
     setValue(event.target.value);
   };
-
-  const handleClickAway = (event: Event) => {
-    const { onClickAway } = PopoverProps || {};
-    if (isFunction(onClickAway)) onClickAway(event);
-    setOpen(false);
-  };
-
-  const handleClick = (event: React.MouseEvent) => {
-    if (isFunction(onClick)) onClick(event);
-    if (!open) setOpen(true);
-  };
-
-  const handleFocus = (event: React.SyntheticEvent) => {
-    if (isFunction(onFocus)) onFocus(event);
-    if (openOnFocus) setOpen(true);
-  };
-
-  React.useEffect(() => {
-    if (autoFocus) comboboxRef.current?.focus?.();
-  }, []);
 
   React.useEffect(() => {
     if (!isFunction(match)) return;
@@ -114,10 +95,10 @@ const Autocomplete = ({
         id={id}
         onBlur={onBlur}
         onChange={handleInputChange}
-        onClick={handleClick}
-        onFocus={handleFocus}
+        onClick={onClick}
+        onFocus={onFocus}
         placeholder={placeholder}
-        ref={comboboxRef}
+        ref={inputRef}
         role="combobox"
         tabIndex={tabIndex || 0}
         value={renderedValue}
@@ -125,26 +106,18 @@ const Autocomplete = ({
       <Popover
         placement="start-after"
         {...PopoverProps}
-        anchorEl={comboboxRef.current?.wrapperNode}
+        anchorEl={inputRef.current?.wrapperNode}
         anchorWidth={dropdownMatchSelectWidth}
-        onClickAway={handleClickAway}
+        onClickAway={onClickAway}
         open={open}
       >
-        <Paper {...PaperProps} role="listbox" tabIndex={-1}>
-          {options.map(({ value, label, ...optionProps }) => {
-            const option = { value, label };
-
-            if (isFunction(renderOption)) {
-              return renderOption(optionProps, option);
-            }
-
-            return (
-              <Option {...optionProps} value={value}>
-                {getOptionLabel(option)}
-              </Option>
-            );
-          })}
-        </Paper>
+        <ListBox
+          PaperProps={PaperProps}
+          options={options}
+          renderOption={renderOption}
+          getOptionLabel={getOptionLabel}
+          id={listBoxId}
+        />
       </Popover>
     </div>
   );

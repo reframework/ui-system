@@ -1,12 +1,15 @@
 import React from 'react';
-import Paper from '../../Containers/Paper/Paper';
 import Popover from '../../Messaging/Popover/Popover';
 import styles from './Select.css?module';
-import Option from './Option';
 import { getClassName } from '@reframework/classnames';
-import { isFunction, defaultRenderValue, defaultGetOptionLabel } from './utils';
+import {
+  defaultRenderValue,
+  defaultGetOptionLabel,
+  useAutoFocus,
+} from './utils';
 import useSelect from './useSelect';
 import { SelectProps } from './types';
+import ListBox from './ListBox';
 
 const Select = ({
   ariaLabel,
@@ -18,8 +21,6 @@ const Select = ({
   listBoxId,
   notFoundContent,
   onBlur,
-  onClick,
-  onFocus,
   openOnFocus,
   PaperProps,
   placeholder,
@@ -34,37 +35,19 @@ const Select = ({
 }: SelectProps) => {
   const comboboxRef = React.useRef<HTMLDivElement | null>(null);
 
+  useAutoFocus(!!autoFocus, comboboxRef.current);
+
   const {
     activeDescendant,
     disabled,
     hasValue,
+    onClick,
+    onClickAway,
+    onFocus,
     open,
     options,
-    setOpen,
     value,
   } = useSelect(useSelectProps);
-
-  const handleClickAway = (event: Event) => {
-    const { onClickAway } = PopoverProps || {};
-    if (isFunction(onClickAway)) onClickAway(event);
-    setOpen(false);
-  };
-
-  const handleClick = (event: React.MouseEvent) => {
-    if (isFunction(onClick)) onClick(event);
-    if (!open) setOpen(true);
-  };
-
-  console.log(open, 'isOpen');
-
-  const handleFocus = (event: React.SyntheticEvent) => {
-    if (isFunction(onFocus)) onFocus(event);
-    if (openOnFocus) setOpen(true);
-  };
-
-  React.useEffect(() => {
-    if (autoFocus) comboboxRef.current?.focus?.();
-  }, []);
 
   const renderedValue = renderValue(value);
 
@@ -74,14 +57,12 @@ const Select = ({
     [styles.disabled]: disabled,
   });
 
-  console.log(options, 'opts');
-
   return (
     <div>
       <div
         onBlur={onBlur}
-        onClick={handleClick}
-        onFocus={handleFocus}
+        onClick={onClick}
+        onFocus={onFocus}
         role="combobox"
         aria-activedescendant={activeDescendant}
         aria-controls={listBoxId}
@@ -104,25 +85,16 @@ const Select = ({
         {...PopoverProps}
         anchorEl={comboboxRef.current}
         anchorWidth={dropdownMatchSelectWidth}
-        onClickAway={handleClickAway}
+        onClickAway={onClickAway}
         open={open}
       >
-        <Paper {...PaperProps} role="listbox" tabIndex={-1}>
-          {options.map(({ value, label, ...optionProps }) => {
-            const option = { value, label };
-
-            if (isFunction(renderOption)) {
-              return renderOption(optionProps, option);
-            }
-
-            console.log('123');
-            return (
-              <Option {...optionProps} value={value}>
-                {getOptionLabel(option)}
-              </Option>
-            );
-          })}
-        </Paper>
+        <ListBox
+          PaperProps={PaperProps}
+          options={options}
+          renderOption={renderOption}
+          getOptionLabel={getOptionLabel}
+          id={listBoxId}
+        />
       </Popover>
     </div>
   );

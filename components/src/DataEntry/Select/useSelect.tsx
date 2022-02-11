@@ -23,9 +23,15 @@ const useSelect = ({
   getOptionDisabled = defaultGetOptionDisabled,
   getOptionFiltered = defaultGetOptionFiltered,
   getOptionSelected = defaultGetOptionSelected,
+  filterSelectedOptions = false,
   multiple = false,
   onChange,
+  onClick,
+  onClickAway,
+  onFocus,
   open: $open,
+  openOnClick = true,
+  openOnFocus,
   options = [],
   // ---- > backfill boolean false // keyboard autocomplete only
   value: $value,
@@ -55,6 +61,21 @@ const useSelect = ({
     onFocus: handleOptionFocus,
     onBlur: handleOptionBlur,
   } = useAriaActiveDescendant();
+
+  const handleClickAway = (event: Event) => {
+    if (isFunction(onClickAway)) onClickAway(event);
+    setOpen(false);
+  };
+
+  const handleClick = (event: React.MouseEvent) => {
+    if (isFunction(onClick)) onClick(event);
+    if (openOnClick && !open) setOpen(true);
+  };
+
+  const handleFocus = (event: React.SyntheticEvent) => {
+    if (isFunction(onFocus)) onFocus(event);
+    if (openOnFocus && !open) setOpen(true);
+  };
 
   /**
    * Option Click Handler
@@ -112,6 +133,9 @@ const useSelect = ({
     disabled: Boolean(disabled),
     hasValue,
     setValue,
+    onFocus: handleFocus,
+    onClick: handleClick,
+    onClickAway: handleClickAway,
     setOpen: setOpen,
     activeDescendant: activeDescendant,
     value: value,

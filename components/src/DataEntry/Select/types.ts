@@ -34,6 +34,8 @@ export interface SelectProps {
   value?: SelectValue;
   dropdownMatchSelectWidth?: true | number;
   openOnFocus?: boolean;
+  openOnClick?: boolean;
+  onClickAway?: (e: Event) => void;
   multiple?: boolean;
   notFoundContent?: React.ReactNode;
   options: OptionItem[];
@@ -62,6 +64,9 @@ export interface UseSelectReturnType {
   hasValue: boolean;
   open: boolean;
   role: 'combobox';
+  onClick: (e: React.MouseEvent) => void;
+  onFocus: (e: React.FocusEvent) => void;
+  onClickAway: (e: Event) => void;
   setOpen: (v: boolean) => void;
   value: SelectValue;
   setValue: (v: SelectValue) => void;
@@ -84,6 +89,10 @@ export type UseSelectProps = Pick<
   | 'defaultValue'
   | 'disabled'
   | 'onChange'
+  | 'onClick'
+  | 'onFocus'
+  | 'openOnFocus'
+  | 'openOnClick'
   | 'open'
   | 'options'
   | 'getOptionDisabled'
@@ -91,6 +100,7 @@ export type UseSelectProps = Pick<
   | 'getOptionFiltered'
   | 'value'
   | 'multiple'
+  | 'onClickAway'
 >;
 
 export interface AutocompleteProps extends SelectProps {
@@ -102,4 +112,5 @@ export interface AutocompleteProps extends SelectProps {
   renderInput: () => React.ReactNode;
   readOnly?: boolean;
   match?: (optionValue: string, value: string) => boolean;
+  openOnKeyDown?: boolean;
 }

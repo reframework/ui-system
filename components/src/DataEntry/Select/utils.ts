@@ -91,3 +91,9 @@ export const defaultGetOptionFiltered = (_: OptionItem) => true;
 export const defaultMatch = (optionValue: string, value: string) => {
   return new RegExp(value as string, 'ig').test(optionValue);
 };
+
+export const useAutoFocus = (hasFocus: boolean, node?: HTMLElement | null) => {
+  React.useEffect(() => {
+    if (hasFocus && node) node.focus?.();
+  }, []);
+};
