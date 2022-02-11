@@ -41,7 +41,7 @@ export interface SelectProps {
   options: OptionItem[];
   renderValue?: (v: Optional<SelectValue>) => string;
   renderOption: (
-    props: Partial<OptionProps>,
+    props: Partial<Omit<OptionProps, keyof OptionItem>>,
     option: OptionItem
   ) => React.ReactNode;
   getOptionDisabled?: (option: OptionItem) => boolean;
@@ -58,7 +58,7 @@ export interface SelectProps {
   tabIndex?: number;
 }
 
-export interface UseSelectReturnType {
+export interface UseComboboxReturnType {
   activeDescendant?: string;
   disabled: boolean;
   hasValue: boolean;
@@ -84,7 +84,7 @@ export interface UseSelectReturnType {
   }[];
 }
 
-export type UseSelectProps = Pick<
+export type UseComboboxProps = Pick<
   SelectProps,
   | 'defaultOpen'
   | 'defaultValue'
@@ -105,7 +105,7 @@ export type UseSelectProps = Pick<
   | 'renderValue'
 >;
 
-export interface AutocompleteProps extends SelectProps {
+export interface AutocompleteProps extends Omit<SelectProps, 'multiple'> {
   filterSelectedOptions?: boolean;
   inputValue?: string;
   InputProps: InputProps;

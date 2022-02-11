@@ -1,6 +1,7 @@
 import React, { MutableRefObject, useImperativeHandle, useRef } from 'react';
 import styles from './Input.css?module';
 import { getClassName } from '@reframework/classnames';
+import { isFunction, useAutoFocus, useControlledState } from '../../utils';
 
 export interface InputRef {
   wrapperNode: HTMLDivElement | null;
@@ -15,31 +16,31 @@ export interface InputProps {
   // addonBefore: React.ReactNode;
   // allowClear: boolean;
   // autocomplete: boolean;
-  // autoFocus: boolean;
+  autoFocus?: boolean;
   color?: 'default' | 'error' | 'warning' | 'success';
-  // defaultValue: string;
-  // error: boolean;
+  defaultValue?: string;
+  error?: boolean;
   // feedback:string;
   id?: string;
   // label:string;
   // min/max rows:number;
-  // readOnly: boolean;
+  readOnly?: boolean;
   // required:boolean;
   // rules: Rule[]
   className?: string;
+  disabled?: boolean;
   name?: string;
+  onBlur?: (event: React.FocusEvent) => void;
   onChange: any;
   onClick?: (event: React.MouseEvent) => void;
   onFocus?: (event: React.FocusEvent) => void;
-  onBlur?: (event: React.FocusEvent) => void;
   placeholder?: string;
   prefix?: React.ReactNode;
+  role?: string;
   size?: 'small' | 'medium' | 'large';
   suffix?: React.ReactNode;
   type?: string;
-  value: string;
-  disabled?: boolean;
-  role?: string;
+  value?: string;
   tabIndex?: number;
   // TODO: React.HTMLAttributes<HTMLInputElement>;
 }
@@ -53,11 +54,15 @@ const Input = React.forwardRef(
       name,
       onChange,
       placeholder,
+      defaultValue,
+      autoFocus,
+      readOnly,
       prefix,
       size = 'small',
       suffix,
       type,
-      value,
+      error,
+      value: $value,
       onClick,
       ...props
     }: InputProps,
@@ -66,12 +71,18 @@ const Input = React.forwardRef(
     const classNames = getClassName({
       [className!]: Boolean(className),
       [styles.container]: true,
+      [styles.error]: Boolean(error),
       [styles[color]]: color,
       [styles[size]]: true,
     });
 
     const wrapperRef = useRef<HTMLDivElement | null>(null);
     const inputRef = useRef<HTMLInputElement | null>(null);
+
+    const [value, setValue] = useControlledState({
+      controlled: $value,
+      default: defaultValue || '',
+    });
 
     useImperativeHandle(
       ref,
@@ -86,15 +97,19 @@ const Input = React.forwardRef(
       []
     );
 
-    const handleChange = (e: React.ChangeEvent) => {
-      onChange(e);
+    useAutoFocus(!!autoFocus, inputRef.current);
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (readOnly) return;
+      if (isFunction(onChange)) onChange(event);
+      setValue(event.target.value);
     };
 
     return (
       <div className={classNames} ref={wrapperRef} onClick={onClick}>
         {/* TODO: Label */}
         {/* TODO: Prefix */}
-        {prefix && <div>{prefix}</div>}
+        {prefix && <div className={styles.prefix}>{prefix}</div>}
         <input
           className={styles.input}
           id={id}

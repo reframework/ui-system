@@ -1,12 +1,15 @@
 .input {
   border: none;
+  box-sizing: border-box;
   color: inherit;
   display: block;
   font-size: inherit;
   min-width: var(--spacing-s);
   outline: none !important;
-  padding: 0 var(--spacing-xxxs);
+  padding: var(--spacing-xxs);
   width: 100%;
+  height: 100%;
+
   &::placeholder {
     color: var(--color-scale-gray-3);
   }
@@ -27,9 +30,7 @@
   display: inline-block;
   display: inline-flex;
   font-size: var(--font-size-xxs);
-  height: var(--spacing-s);
   min-width: 0;
-  padding: var(--spacing-xxxs) var(--spacing-xxs);
   transition: all 0.2s ease;
   width: 100%;
 
@@ -40,22 +41,29 @@
   &:focus-within {
     box-shadow: 0 0 0 1.5px var(--__shadow-color);
   }
+}
 
-  & .suffix {
-    margin-left: auto;
-  }
+.suffix {
+  padding-right: var(--spacing-xs);
+  margin-left: auto;
+  cursor: default;
+}
+
+.prefix {
+  padding-left: var(--spacing-xs);
+  cursor: default;
 }
 
 .small {
-  height: var(--spacing-s);
-}
-
-.medium {
   height: var(--spacing-m);
 }
 
-.large {
+.medium {
   height: var(--spacing-l);
+}
+
+.large {
+  height: var(--spacing-xl);
   font-size: var(--font-size-xs);
 }
 

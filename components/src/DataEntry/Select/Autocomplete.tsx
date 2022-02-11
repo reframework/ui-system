@@ -1,16 +1,11 @@
 import React from 'react';
 import Popover from '../../Messaging/Popover/Popover';
-import {
-  isFunction,
-  defaultRenderValue,
-  defaultGetOptionLabel,
-  defaultMatch,
-  useAutoFocus,
-} from './utils';
-import useSelect from './useSelect';
+import { defaultGetOptionLabel, defaultMatch } from './utils';
+import useCombobox from './useCombobox';
 import { AutocompleteProps } from './types';
 import Input, { InputRef } from '../Input/Input';
 import ListBox from './ListBox';
+import { isFunction, useAutoFocus } from '../../utils';
 
 const Autocomplete = ({
   ariaLabel,
@@ -21,26 +16,25 @@ const Autocomplete = ({
   id,
   includeInputInList,
   InputProps,
-  inputValue: $inputValue,
+  // todo: inputValue: $inputValue,
+  // todo: defaultInputValue = '',
+  // todo: renderInput,
   listBoxId,
   notFoundContent,
   onBlur,
   onInputChange,
-  openOnFocus,
+  // todo: openOnKeyDown,
   options: $options,
   PaperProps,
   placeholder,
   PopoverProps,
   readOnly,
-  // todo: renderInput,
   renderOption,
   tabIndex,
-  // defaultInputValue = '',
-  // openOnMatchingValue: string | Regexp
-  // skip multiple
   match = defaultMatch,
+  // @ts-expect-error skip multiple
   multiple: _,
-  ...useSelectProps
+  ...useComboboxProps
 }: AutocompleteProps) => {
   const inputRef = React.useRef<InputRef | null>(null);
 
@@ -57,8 +51,8 @@ const Autocomplete = ({
     setOpen,
     setValue,
     value,
-  } = useSelect({
-    ...useSelectProps,
+  } = useCombobox({
+    ...useComboboxProps,
     options: matchingOptions,
   });
 

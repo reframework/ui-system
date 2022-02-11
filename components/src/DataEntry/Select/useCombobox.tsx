@@ -1,23 +1,24 @@
 import {
+  isArray,
+  isFunction,
+  useAriaActiveDescendant,
+  useControlledState,
+} from '../../utils';
+import {
   defaultGetOptionDisabled,
   defaultGetOptionFiltered,
   defaultGetOptionSelected,
   defaultRenderValue,
   getDefaultValue,
-  isArray,
-  isFunction,
-  isString,
-  useAriaActiveDescendant,
-  useControlledState,
 } from './utils';
 import {
   OptionItem,
   SelectValue,
-  UseSelectProps,
-  UseSelectReturnType,
+  UseComboboxProps,
+  UseComboboxReturnType,
 } from './types';
 
-const useSelect = ({
+const useCombobox = ({
   defaultOpen,
   defaultValue,
   disabled,
@@ -36,13 +37,12 @@ const useSelect = ({
   renderValue = defaultRenderValue,
   // ---- > backfill boolean false // keyboard autocomplete only
   value: $value,
-}: UseSelectProps): UseSelectReturnType => {
+}: UseComboboxProps): UseComboboxReturnType => {
   /**
    * Value
    */
   const [value, setValue] = useControlledState({
     controlled: $value,
-    // todo: check default value if multiple should be an array
     default: getDefaultValue(defaultValue, multiple),
   });
 
@@ -86,18 +86,18 @@ const useSelect = ({
 
     if (isArray(value)) {
       if (value.indexOf(option.value) === -1) {
-        // select
+        // Multiple mode selection
         nextValue = [...value, option.value];
       } else {
-        // deselect
+        // Multiple mode deselection
         nextValue = value.filter((it) => it !== option.value);
       }
-    } else if (isString(value) && value === option.value) {
-      // deselect
-      nextValue = '';
-    } else {
-      // select
+    } else if (value !== option.value) {
+      // Single mode selection
       nextValue = option.value;
+    } else {
+      // Single mode deselection
+      nextValue = '';
     }
 
     setValue(nextValue);
@@ -109,6 +109,9 @@ const useSelect = ({
     setOpen(false);
   };
 
+  /**
+   * Boolean determines to show placeholder
+   */
   const hasValue = Boolean((isArray(value) ? value[0] : value)?.trim());
 
   /**
@@ -146,4 +149,4 @@ const useSelect = ({
   };
 };
 
-export default useSelect;
+export default useCombobox;

@@ -1,7 +1,6 @@
 import React from 'react';
 import { getClassName } from '@reframework/classnames';
 import styles from './Option.css?module';
-import { typeOf } from './utils';
 
 export interface OptionProps {
   children?: React.ReactNode;
@@ -9,24 +8,26 @@ export interface OptionProps {
   disabled?: boolean;
   icon?: React.ReactNode;
   id?: string;
+  label?: React.ReactNode;
   onBlur?: (event: React.FocusEvent) => void;
   onClick?: (event: React.MouseEvent) => void;
   onFocus?: (event: React.FocusEvent) => void;
   selected?: boolean;
-  value: string | number;
   tabIndex?: number;
+  value: string | number;
 }
 
 const Option = ({
   children,
   disabled,
   id,
+  label,
   onBlur,
   onClick,
   onFocus,
   selected,
-  value,
   tabIndex,
+  value,
   ...props
 }: OptionProps) => {
   const classNames = getClassName({
@@ -49,7 +50,7 @@ const Option = ({
       tabIndex={tabIndex}
       {...props}
     >
-      {children || null}
+      {children || label || null}
     </div>
   );
 };

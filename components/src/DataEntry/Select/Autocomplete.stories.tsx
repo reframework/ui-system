@@ -11,7 +11,7 @@ const Template: ComponentStory<typeof AutocompleteComponent> = ({
   value: valueProp,
   ...props
 }) => {
-  return <AutocompleteComponent {...props} multiple />;
+  return <AutocompleteComponent {...props} />;
 };
 
 export const Autocomplete = Template.bind({});

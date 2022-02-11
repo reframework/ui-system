@@ -2,6 +2,7 @@ import React, { CSSProperties, useEffect, useState } from 'react';
 import { getPlacement, viewport } from './placementUtils';
 import { Axis, ViewportType, PlacementAxis, Placement } from './types';
 import { useMounted } from './hooks';
+import { isFunction } from '../../utils';
 import { Portal } from '../../Portal';
 import {
   addClickListener,
@@ -10,10 +11,6 @@ import {
   removeResizeListener,
   stopPropagation,
 } from './domUtils';
-
-export function isFunction<T extends Function>(f: unknown): f is T {
-  return typeof f === 'function';
-}
 
 export interface PopoverProps {
   anchorEl?: HTMLElement | null;

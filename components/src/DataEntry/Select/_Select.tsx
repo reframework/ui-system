@@ -72,32 +72,29 @@ export interface SelectProps {
   defaultOpen?: boolean;
   defaultValue?: SelectValue;
   disabled?: boolean;
+  dropdownMatchSelectWidth?: true | number;
+  filterSelectedOptions: Boolean;
   name?: string;
   onBlur?: (e: React.SyntheticEvent) => void;
   onChange: (value: SelectValue) => void;
-  onClose?: () => void;
   onClick?: (e: React.MouseEvent) => void;
+  onClose?: () => void;
   onFocus?: (e: React.SyntheticEvent) => void;
   onOpen?: () => void;
   open?: boolean;
+  openOnFocus?: boolean;
   PaperProps?: PaperProps;
   placeholder?: string;
   PopoverProps?: PopoverProps;
   value?: SelectValue;
-  dropdownMatchSelectWidth?: true | number;
-  openOnFocus?: boolean;
-  filterSelectedOptions: Boolean;
-
-
   multiple?: boolean;
   // allowClear boolean false
   // disablePortal
-
   notFoundContent?: React.ReactNode;
   options: OptionItem[];
   renderValue?: (value: Optional<SelectValue>) => string;
   renderOption: (
-    props: Partial<OptionProps>,
+    props: Partial<Omit<OptionProps, keyof OptionItem>>,
     option: OptionItem
   ) => React.ReactNode;
   getOptionDisabled?: (option: OptionItem) => boolean;

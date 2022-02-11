@@ -2,14 +2,11 @@ import React from 'react';
 import Popover from '../../Messaging/Popover/Popover';
 import styles from './Select.css?module';
 import { getClassName } from '@reframework/classnames';
-import {
-  defaultRenderValue,
-  defaultGetOptionLabel,
-  useAutoFocus,
-} from './utils';
-import useSelect from './useSelect';
+import { defaultGetOptionLabel } from './utils';
+import useCombobox from './useCombobox';
 import { SelectProps } from './types';
 import ListBox from './ListBox';
+import { useAutoFocus } from '../../utils';
 
 const Select = ({
   ariaLabel,
@@ -29,7 +26,7 @@ const Select = ({
   tabIndex,
   // to autocomplete
   // filterSelectedOptions = true,
-  ...useSelectProps
+  ...useComboboxProps
 }: SelectProps) => {
   const {
     activeDescendant,
@@ -41,7 +38,7 @@ const Select = ({
     open,
     options,
     value,
-  } = useSelect(useSelectProps);
+  } = useCombobox(useComboboxProps);
 
   /**
    * Ref
