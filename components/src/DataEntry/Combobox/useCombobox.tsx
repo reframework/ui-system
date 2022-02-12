@@ -17,7 +17,6 @@ import {
 import {
   Optional,
   OptionItem,
-  SelectValue,
   UseComboboxProps,
   UseComboboxReturnType,
 } from './types';
@@ -79,7 +78,7 @@ const useCombobox = ({
   });
 
   /**
-   * ActiveDescendant
+   * Active Descendant
    */
   const [highlighted, setHighlighted] = React.useState<Optional<OptionProps>>();
 
@@ -142,7 +141,10 @@ const useCombobox = ({
       disabled: getOptionDisabled(option),
       id,
       onClick: handleOptionClick(option),
-      onMouseEnter: handleOptionMouseEnter,
+      onMouseEnter: handleOptionMouseEnter({
+        id,
+        ...option,
+      }),
       selected: getOptionSelected(option, value),
       highlighted: highlighted?.id === id,
       tabIndex: -1,
@@ -231,29 +233,6 @@ const useCombobox = ({
     }
   };
 
-  const handleKeyUp = (event: React.KeyboardEvent) => {
-    let shouldCancelEvent = false;
-
-    switch (event.key) {
-      case 'Left':
-      case 'ArrowLeft':
-      case 'Right':
-      case 'ArrowRight':
-      case 'Home':
-      case 'End':
-        setHighlighted(undefined);
-        shouldCancelEvent = true;
-        break;
-      default:
-        break;
-    }
-
-    if (shouldCancelEvent) {
-      event.stopPropagation();
-      event.preventDefault();
-    }
-  };
-
   return {
     open,
     disabled: Boolean(disabled),
@@ -265,9 +244,9 @@ const useCombobox = ({
     onClickAway: handleClickAway,
     setOpen: setOpen,
     onKeyDown: handleKeyDown,
-    onKeyUp: handleKeyUp,
     activeDescendant: highlighted?.id,
     rawValue: value,
+    // todo: placeholder
     value: renderValue(value),
     // @ts-expect-error something weird
     options: filteredOptions,

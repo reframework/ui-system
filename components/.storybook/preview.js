@@ -1,6 +1,6 @@
 export const parameters = {
-  actions: { argTypesRegex: "^on[A-Z].*" },
-  layout: "fullscreen",
+  actions: { argTypesRegex: '^on[A-Z].*' },
+
   controls: {
     matchers: {
       color: /(background|color)$/i,
@@ -13,7 +13,7 @@ export const decorators = [
   (Story) => (
     <div
       style={{
-        padding: "50px 100px",
+        padding: '50px 100px',
       }}
     >
       <Story />

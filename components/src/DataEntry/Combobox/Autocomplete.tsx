@@ -47,7 +47,6 @@ const Autocomplete = ({
     onBlur,
     onFocus,
     onKeyDown,
-    onKeyUp,
     open,
     options,
     setOpen,
@@ -95,7 +94,6 @@ const Autocomplete = ({
         aria-labelledby={ariaLabelledBy}
         disabled={disabled}
         id={id}
-        onKeyUp={onKeyUp}
         onKeyDown={onKeyDown}
         onBlur={onBlur}
         onChange={handleInputChange}

@@ -33,6 +33,7 @@ const Select = ({
     disabled,
     hasValue,
     onClick,
+    onKeyDown,
     onClickAway,
     onFocus,
     open,
@@ -62,6 +63,7 @@ const Select = ({
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledBy}
         aria-placeholder={value ? undefined : placeholder}
+        aria-owns={listBoxId}
         className={getClassName({
           [styles.combobox]: true,
           [styles.placeholder]: hasValue,
@@ -71,6 +73,7 @@ const Select = ({
         onBlur={onBlur}
         onClick={onClick}
         onFocus={onFocus}
+        onKeyDown={onKeyDown}
         ref={comboboxRef}
         role="combobox"
         tabIndex={tabIndex || 0}

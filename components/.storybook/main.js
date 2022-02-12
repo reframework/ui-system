@@ -1,5 +1,5 @@
-const injectTokens = require("./injectTokens");
-const cssRegex = "/\\.css$/";
+const injectTokens = require('./injectTokens');
+const cssRegex = '/\\.css$/';
 
 const lastOf = (arr) => {
   if (!Array.isArray(arr)) return;
@@ -23,13 +23,13 @@ module.exports = {
         {
           resourceQuery: /module/,
           use: [
-            "style-loader",
+            'style-loader',
             {
-              loader: "css-loader",
+              loader: 'css-loader',
               options: {
                 importLoaders: 1,
                 modules: {
-                  localIdentName: "[name]_[local]__[hash:hex:7]",
+                  localIdentName: '[name]_[local]__[hash:hex:7]',
                 },
               },
             },
@@ -37,7 +37,7 @@ module.exports = {
           ],
         },
         {
-          use: ["style-loader", "css-loader", postCssRule],
+          use: ['style-loader', 'css-loader', postCssRule],
         },
       ],
     };
@@ -54,16 +54,18 @@ module.exports = {
       },
     };
   },
-  stories: ["../src/**/*.stories.@(mdx|tsx)"],
+  stories: ['../src/**/*.stories.@(mdx|tsx)'],
   addons: [
     // '@reframework/preset-storybook',
-    "@storybook/addon-links",
-    "@storybook/addon-essentials",
+    '@storybook/addon-links',
+    '@storybook/addon-essentials',
+    '@storybook/addon-storysource',
+
     {
-      name: "@storybook/addon-postcss",
+      name: '@storybook/addon-postcss',
       options: {
         postcssLoaderOptions: {
-          implementation: require("postcss"),
+          implementation: require('postcss'),
         },
       },
     },

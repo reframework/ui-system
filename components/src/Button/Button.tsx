@@ -6,7 +6,7 @@ import { useWave } from '../Effects/Wave/useWave';
 export interface ButtonProps {
   children: React.ReactNode;
   color?: 'primary' | 'secondary' | 'error' | 'warning' | 'success' | 'neutral';
-  variant?: 'contained' | 'outlined' | 'text' | string;
+  variant?: 'solid' | 'outlined' | 'ghost' | 'link';
   disabled?: boolean;
   shape?: 'circle' | 'square';
   size?: 'small' | 'medium' | 'large';
@@ -26,7 +26,7 @@ const Button = React.forwardRef(
       shape = 'square',
       size = 'medium',
       stretch = false,
-      variant = 'contained',
+      variant = 'ghost',
       ...otherProps
     }: Props,
     ref: React.ForwardedRef<HTMLButtonElement>
