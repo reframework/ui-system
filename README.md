@@ -7,4 +7,4 @@
 <h1 align="center">reframework / ui system</h1>
 
 
-[Docs](http://localhost:52748/?path=/docs/button--sandbox)
+[Docs](https://reframework.github.io/ui-system)
