@@ -21,6 +21,8 @@ const Template: ComponentStory<typeof MessageComponent> = () => (
   >
     <Button
       size="medium"
+      color="success"
+      variant="solid"
       onClick={() =>
         message.success({
           content: 'This is a success message',
@@ -31,6 +33,7 @@ const Template: ComponentStory<typeof MessageComponent> = () => (
     </Button>
     <Button
       size="medium"
+      color="warning"
       variant="outlined"
       onClick={() => {
         const key = '<< The Key >>';
@@ -54,7 +57,7 @@ const Template: ComponentStory<typeof MessageComponent> = () => (
     </Button>
     <Button
       size="medium"
-      color="secondary"
+      color="error"
       variant="outlined"
       onClick={() =>
         message.error({

@@ -3,9 +3,9 @@ import styles from './Typography.css?module';
 import { getClassName } from '@reframework/classnames';
 
 export interface TypographyProps {
-  align: 'left' | 'center' | 'right';
+  align?: 'left' | 'center' | 'right';
   children: React.ReactNode;
-  className: string;
+  className?: string;
   component?:
     | 'a'
     | 'button'
@@ -18,14 +18,14 @@ export interface TypographyProps {
     | 'small'
     | 'span'
     | 'strong';
-  ellipsis: boolean;
-  font: 'primary' | 'secondary' | 'monospace' | 'italic';
-  nowrap: boolean;
-  size: 'xxxs' | 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl' | 'xxxl';
+  ellipsis?: boolean;
+  font?: 'primary' | 'secondary' | 'monospace' | 'italic';
+  nowrap?: boolean;
+  size?: 'xxxs' | 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl' | 'xxxl';
   stretch?: boolean;
-  underline: boolean;
-  uppercase: boolean;
-  color:
+  underline?: boolean;
+  uppercase?: boolean;
+  color?:
     | 'primary'
     | 'secondary'
     | 'error'
@@ -33,7 +33,7 @@ export interface TypographyProps {
     | 'success'
     | 'neutral'
     | 'default';
-  weight:
+  weight?:
     | 'thin'
     | 'light'
     | 'regular'
@@ -47,7 +47,7 @@ const Paragraph = ({
   align = 'left',
   children,
   className,
-  component: Component = 'p' as keyof JSX.IntrinsicElements,
+  component: Component = 'p' as const,
   ellipsis = false,
   font = 'primary',
   nowrap = false,
@@ -58,7 +58,7 @@ const Paragraph = ({
   color = 'default',
   weight = 'regular',
   ...otherProps
-}) => {
+}: TypographyProps) => {
   const classNames = getClassName({
     [styles.typography]: true,
     [styles[align]]: true,
@@ -71,7 +71,7 @@ const Paragraph = ({
     [styles.stretch]: stretch,
     [styles.underline]: underline,
     [styles.uppercase]: uppercase,
-    [className]: className,
+    [className!]: Boolean(className),
   });
 
   return (

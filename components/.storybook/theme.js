@@ -35,11 +35,13 @@ export default create({
   // inputTextColor: 'string',
   inputBorderRadius: 2,
 
-    // Typography
-    fontBase: '"Roboto", Arial, Helvetica, sans-serif',
-    fontCode: 'monospace',
+  // Typography
+  fontBase: '"Roboto", Arial, Helvetica, sans-serif',
+  fontCode: 'monospace',
 
   // brandTitle: 'reframework',
   brandUrl: 'https://github.com/reframework',
-  brandImage: 'https://github.com/reframework/reframework/blob/main/relogo-inline-1.png?raw=true',
+  brandImage:
+    'https://github.com/reframework/.github/blob/main/logo-grad-storybook%20(3).png?raw=true',
+  // brandImage: 'https://github.com/reframework/reframework/blob/main/re-logo-color.png?raw=true',
 });

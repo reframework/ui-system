@@ -1,15 +1,19 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { Button as ButtonComponent } from '../Button';
+import { Button } from '../Button';
+import { StoryLayout } from './Layout';
+
+const flex = {
+  display: 'flex',
+  width: '100%',
+  justifyContent: 'space-between',
+};
 
 export default {
   title: 'Button/Button',
-  component: ButtonComponent,
+  component: Button,
   layout: 'centered',
-  parameters: {
-    layout: 'centered',
-  },
   argTypes: {
     color: {
       options: [
@@ -35,428 +39,266 @@ export default {
       control: 'select',
     },
   },
-} as ComponentMeta<typeof ButtonComponent>;
+} as ComponentMeta<typeof Button>;
 
-export const Variants: ComponentStory<typeof ButtonComponent> = ({
+export const Variants: ComponentStory<typeof Button> = ({
   children,
   ...props
 }) => (
-  <div style={{ maxWidth: 500, width: '100vw' }}>
-    <h1 style={{ textAlign: 'center' }}>Button variants</h1>
-    <div
-      style={{
-        display: 'flex',
-        width: '100%',
-        justifyContent: 'space-between',
-      }}
-    >
-      <ButtonComponent variant="solid">Solid</ButtonComponent>
-      <ButtonComponent variant="outlined">Outlined</ButtonComponent>
-      <ButtonComponent variant="ghost">Ghost</ButtonComponent>
-      <ButtonComponent variant="link">Text</ButtonComponent>
+  <StoryLayout title="Button variants">
+    <div style={flex}>
+      <Button variant="solid">Solid</Button>
+      <Button variant="outlined">Outlined</Button>
+      <Button variant="ghost">Ghost</Button>
+      <Button variant="link">Link</Button>
     </div>
-  </div>
+  </StoryLayout>
 );
 
 Variants.parameters = {
   actions: { onClick: { action: 'clicked' } },
 };
 
-export const Solid: ComponentStory<typeof ButtonComponent> = () => (
-  <div style={{ maxWidth: 500, width: '100vw' }}>
-    <h1 style={{ textAlign: 'center' }}>Solid button</h1>
-    <div
-      style={{
-        display: 'flex',
-        width: '100%',
-        justifyContent: 'space-between',
-      }}
-    >
-      <ButtonComponent variant="solid" color="primary">
+export const Solid: ComponentStory<typeof Button> = () => (
+  <StoryLayout title="Solid button colors">
+    <div style={flex}>
+      <Button variant="solid" color="primary">
         Primary
-      </ButtonComponent>
-      <ButtonComponent variant="solid" color="secondary">
+      </Button>
+      <Button variant="solid" color="secondary">
         Secondary
-      </ButtonComponent>
-      <ButtonComponent variant="solid" color="success">
+      </Button>
+      <Button variant="solid" color="success">
         Success
-      </ButtonComponent>
+      </Button>
     </div>
-    <div
-      style={{
-        display: 'flex',
-        width: '100%',
-        justifyContent: 'space-between',
-        marginTop: 10,
-      }}
-    >
-      <ButtonComponent variant="solid" color="warning">
+    <div style={{ ...flex, marginTop: 20 }}>
+      <Button variant="solid" color="warning">
         Warning
-      </ButtonComponent>
-      <ButtonComponent variant="solid" color="error">
+      </Button>
+      <Button variant="solid" color="error">
         Error
-      </ButtonComponent>
-      <ButtonComponent variant="solid" color="neutral">
-        Outlined
-      </ButtonComponent>
-    </div>
-  </div>
-);
-
-export const Outlined: ComponentStory<typeof ButtonComponent> = () => (
-  <div style={{ maxWidth: 500, width: '100vw' }}>
-    <h1 style={{ textAlign: 'center' }}>Outlined button</h1>
-    <div
-      style={{
-        display: 'flex',
-        width: '100%',
-        justifyContent: 'space-between',
-      }}
-    >
-      <ButtonComponent variant="outlined" color="primary">
-        Primary
-      </ButtonComponent>
-      <ButtonComponent variant="outlined" color="secondary">
-        Secondary
-      </ButtonComponent>
-      <ButtonComponent variant="outlined" color="success">
-        Success
-      </ButtonComponent>
-    </div>
-    <div
-      style={{
-        display: 'flex',
-        width: '100%',
-        justifyContent: 'space-between',
-        marginTop: 10,
-      }}
-    >
-      <ButtonComponent variant="outlined" color="warning">
-        Warning
-      </ButtonComponent>
-      <ButtonComponent variant="outlined" color="error">
-        Error
-      </ButtonComponent>
-      <ButtonComponent variant="outlined" color="neutral">
-        Outlined
-      </ButtonComponent>
-    </div>
-  </div>
-);
-
-export const Ghost: ComponentStory<typeof ButtonComponent> = () => (
-  <div style={{ maxWidth: 500, width: '100vw' }}>
-    <h1 style={{ textAlign: 'center' }}>Ghost button</h1>
-    <div
-      style={{
-        display: 'flex',
-        width: '100%',
-        justifyContent: 'space-between',
-      }}
-    >
-      <ButtonComponent variant="ghost" color="primary">
-        Primary
-      </ButtonComponent>
-      <ButtonComponent variant="ghost" color="secondary">
-        Secondary
-      </ButtonComponent>
-      <ButtonComponent variant="ghost" color="success">
-        Success
-      </ButtonComponent>
-    </div>
-    <div
-      style={{
-        display: 'flex',
-        width: '100%',
-        justifyContent: 'space-between',
-        marginTop: 10,
-      }}
-    >
-      <ButtonComponent variant="ghost" color="warning">
-        Warning
-      </ButtonComponent>
-      <ButtonComponent variant="ghost" color="error">
-        Error
-      </ButtonComponent>
-      <ButtonComponent variant="ghost" color="neutral">
+      </Button>
+      <Button variant="solid" color="neutral">
         Neutral
-      </ButtonComponent>
+      </Button>
     </div>
-  </div>
+  </StoryLayout>
 );
 
-export const Link: ComponentStory<typeof ButtonComponent> = () => (
-  <div style={{ maxWidth: 500, width: '100vw' }}>
-    <h1 style={{ textAlign: 'center' }}>Link button</h1>
-    <div
-      style={{
-        display: 'flex',
-        width: '100%',
-        justifyContent: 'space-between',
-      }}
-    >
-      <ButtonComponent variant="link" color="primary">
+export const Outlined: ComponentStory<typeof Button> = () => (
+  <StoryLayout title="Outlined button colors">
+    <div style={flex}>
+      <Button variant="outlined" color="primary">
         Primary
-      </ButtonComponent>
-      <ButtonComponent variant="link" color="secondary">
+      </Button>
+      <Button variant="outlined" color="secondary">
         Secondary
-      </ButtonComponent>
-      <ButtonComponent variant="link" color="success">
+      </Button>
+      <Button variant="outlined" color="success">
         Success
-      </ButtonComponent>
+      </Button>
     </div>
-    <div
-      style={{
-        display: 'flex',
-        width: '100%',
-        justifyContent: 'space-between',
-        marginTop: 10,
-      }}
-    >
-      <ButtonComponent variant="link" color="warning">
+    <div style={{ ...flex, marginTop: 20 }}>
+      <Button variant="outlined" color="warning">
         Warning
-      </ButtonComponent>
-      <ButtonComponent variant="link" color="error">
+      </Button>
+      <Button variant="outlined" color="error">
         Error
-      </ButtonComponent>
-      <ButtonComponent variant="link" color="neutral">
-        Outlined
-      </ButtonComponent>
+      </Button>
+      <Button variant="outlined" color="neutral">
+        Neutral
+      </Button>
     </div>
-  </div>
+  </StoryLayout>
 );
 
-export const Disabled: ComponentStory<typeof ButtonComponent> = () => (
-  <div style={{ maxWidth: 500, width: '100vw' }}>
-    <h1 style={{ textAlign: 'center' }}>Disabled button</h1>
-    <div
-      style={{
-        display: 'flex',
-        width: '100%',
-        justifyContent: 'space-between',
-      }}
-    >
-      <ButtonComponent variant="solid">Solid</ButtonComponent>
-      <ButtonComponent variant="outlined">Outlined</ButtonComponent>
-      <ButtonComponent variant="ghost">Ghost</ButtonComponent>
-      <ButtonComponent variant="link">Text</ButtonComponent>
+export const Ghost: ComponentStory<typeof Button> = () => (
+  <StoryLayout title="Ghost button colors">
+    <div style={flex}>
+      <Button variant="ghost" color="primary">
+        Primary
+      </Button>
+      <Button variant="ghost" color="secondary">
+        Secondary
+      </Button>
+      <Button variant="ghost" color="success">
+        Success
+      </Button>
     </div>
-    <div
-      style={{
-        display: 'flex',
-        width: '100%',
-        justifyContent: 'space-between',
-        marginTop: 10,
-      }}
-    >
-      <ButtonComponent variant="solid" disabled>
+    <div style={{ ...flex, marginTop: 20 }}>
+      <Button variant="ghost" color="warning">
+        Warning
+      </Button>
+      <Button variant="ghost" color="error">
+        Error
+      </Button>
+      <Button variant="ghost" color="neutral">
+        Neutral
+      </Button>
+    </div>
+  </StoryLayout>
+);
+
+export const Link: ComponentStory<typeof Button> = () => (
+  <StoryLayout title="Link button colors">
+    <div style={flex}>
+      <Button variant="link" color="primary">
+        Primary
+      </Button>
+      <Button variant="link" color="secondary">
+        Secondary
+      </Button>
+      <Button variant="link" color="success">
+        Success
+      </Button>
+    </div>
+    <div style={{ ...flex, marginTop: 20 }}>
+      <Button variant="link" color="warning">
+        Warning
+      </Button>
+      <Button variant="link" color="error">
+        Error
+      </Button>
+      <Button variant="link" color="neutral">
+        Neutral
+      </Button>
+    </div>
+  </StoryLayout>
+);
+
+export const Disabled: ComponentStory<typeof Button> = () => (
+  <StoryLayout title="Disabled button">
+    <div style={flex}>
+      <Button variant="solid">Solid</Button>
+      <Button variant="outlined">Outlined</Button>
+      <Button variant="ghost">Ghost</Button>
+      <Button variant="link">Text</Button>
+    </div>
+    <div style={{ ...flex, marginTop: 20 }}>
+      <Button variant="solid" disabled>
         Solid
-      </ButtonComponent>
-      <ButtonComponent variant="outlined" disabled>
+      </Button>
+      <Button variant="outlined" disabled>
         Outlined
-      </ButtonComponent>
-      <ButtonComponent variant="ghost" disabled>
+      </Button>
+      <Button variant="ghost" disabled>
         Ghost
-      </ButtonComponent>
-      <ButtonComponent variant="link" disabled>
+      </Button>
+      <Button variant="link" disabled>
         Text
-      </ButtonComponent>
+      </Button>
     </div>
-  </div>
+  </StoryLayout>
 );
 
-export const Shape: ComponentStory<typeof ButtonComponent> = () => (
-  <div style={{ maxWidth: 500, width: '100vw' }}>
-    <h1 style={{ textAlign: 'center' }}>Shape of button</h1>
-    <div
-      style={{
-        display: 'flex',
-        width: '100%',
-        justifyContent: 'space-between',
-      }}
-    >
-      <ButtonComponent variant="solid" shape="circle">
+export const Shape: ComponentStory<typeof Button> = () => (
+  <StoryLayout title="Shape of button">
+    <div style={flex}>
+      <Button variant="solid" shape="circle">
         Circle
-      </ButtonComponent>
-      <ButtonComponent variant="outlined" shape="circle">
+      </Button>
+      <Button variant="outlined" shape="circle">
         Circle
-      </ButtonComponent>
-      <ButtonComponent variant="ghost" shape="circle">
+      </Button>
+      <Button variant="ghost" shape="circle">
         Circle
-      </ButtonComponent>
+      </Button>
     </div>
-
-    <div
-      style={{
-        display: 'flex',
-        width: '100%',
-        justifyContent: 'space-between',
-        marginTop: 10,
-      }}
-    >
-      <ButtonComponent variant="solid" shape="square">
+    <div style={{ ...flex, marginTop: 20 }}>
+      <Button variant="solid" shape="square">
         Square
-      </ButtonComponent>
-      <ButtonComponent variant="outlined" shape="square">
+      </Button>
+      <Button variant="outlined" shape="square">
         Square
-      </ButtonComponent>
-      <ButtonComponent variant="ghost" shape="square">
+      </Button>
+      <Button variant="ghost" shape="square">
         Square
-      </ButtonComponent>
+      </Button>
     </div>
-  </div>
+  </StoryLayout>
 );
 
-export const Stretch: ComponentStory<typeof ButtonComponent> = () => (
-  <div style={{ maxWidth: 500, width: '100vw' }}>
-    <h1 style={{ textAlign: 'center' }}>Stretched button</h1>
-
-    <div
-      style={{
-        display: 'flex',
-        width: '100%',
-        justifyContent: 'space-between',
-        marginTop: 10,
-      }}
-    >
-      <ButtonComponent variant="solid" stretch>
+export const Stretch: ComponentStory<typeof Button> = () => (
+  <StoryLayout title="Stretched button">
+    <div style={{ ...flex }}>
+      <Button variant="solid" stretch>
         Solid
-      </ButtonComponent>
+      </Button>
     </div>
-    <div
-      style={{
-        display: 'flex',
-        width: '100%',
-        justifyContent: 'space-between',
-        marginTop: 10,
-      }}
-    >
-      <ButtonComponent variant="outlined" stretch>
+    <div style={{ ...flex, marginTop: 20 }}>
+      <Button variant="outlined" stretch>
         Outlined
-      </ButtonComponent>
+      </Button>
     </div>
-    <div
-      style={{
-        display: 'flex',
-        width: '100%',
-        justifyContent: 'space-between',
-        marginTop: 10,
-      }}
-    >
-      <ButtonComponent variant="ghost" stretch>
+    <div style={{ ...flex, marginTop: 20 }}>
+      <Button variant="ghost" stretch>
         Ghost
-      </ButtonComponent>
+      </Button>
     </div>
-    <div
-      style={{
-        display: 'flex',
-        width: '100%',
-        justifyContent: 'space-between',
-        marginTop: 10,
-      }}
-    >
-      <ButtonComponent variant="link" stretch>
+    <div style={{ ...flex, marginTop: 20 }}>
+      <Button variant="link" stretch>
         Text
-      </ButtonComponent>
+      </Button>
     </div>
-  </div>
+  </StoryLayout>
 );
 
-export const Sizes: ComponentStory<typeof ButtonComponent> = () => (
-  <div style={{ maxWidth: 500, width: '100vw' }}>
-    <h1 style={{ textAlign: 'center' }}>Button sizes</h1>
-    <div
-      style={{
-        display: 'flex',
-        width: '100%',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      }}
-    >
-      <ButtonComponent variant="solid" size="large">
+export const Sizes: ComponentStory<typeof Button> = () => (
+  <StoryLayout title="Button sizes">
+    <div style={flex}>
+      <Button variant="solid" size="large">
         Large
-      </ButtonComponent>
-      <ButtonComponent variant="solid" size="medium">
+      </Button>
+      <Button variant="solid" size="medium">
         Medium
-      </ButtonComponent>
-      <ButtonComponent variant="solid" size="small">
+      </Button>
+      <Button variant="solid" size="small">
         Small
-      </ButtonComponent>
+      </Button>
     </div>
-    <div
-      style={{
-        display: 'flex',
-        width: '100%',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginTop: 10,
-      }}
-    >
-      <ButtonComponent variant="outlined" size="large">
+    <div style={{ ...flex, marginTop: 20 }}>
+      <Button variant="outlined" size="large">
         Large
-      </ButtonComponent>
-      <ButtonComponent variant="outlined" size="medium">
+      </Button>
+      <Button variant="outlined" size="medium">
         Medium
-      </ButtonComponent>
-      <ButtonComponent variant="outlined" size="small">
+      </Button>
+      <Button variant="outlined" size="small">
         Small
-      </ButtonComponent>
+      </Button>
     </div>
-    <div
-      style={{
-        display: 'flex',
-        width: '100%',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginTop: 10,
-      }}
-    >
-      <ButtonComponent variant="ghost" size="large">
+    <div style={{ ...flex, marginTop: 20 }}>
+      <Button variant="ghost" size="large">
         Large
-      </ButtonComponent>
-      <ButtonComponent variant="ghost" size="medium">
+      </Button>
+      <Button variant="ghost" size="medium">
         Medium
-      </ButtonComponent>
-      <ButtonComponent variant="ghost" size="small">
+      </Button>
+      <Button variant="ghost" size="small">
         Small
-      </ButtonComponent>
+      </Button>
     </div>
-    <div
-      style={{
-        display: 'flex',
-        width: '100%',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginTop: 10,
-      }}
-    >
-      <ButtonComponent variant="link" size="large">
+    <div style={{ ...flex, marginTop: 20 }}>
+      <Button variant="link" size="large">
         Large
-      </ButtonComponent>
-      <ButtonComponent variant="link" size="medium">
+      </Button>
+      <Button variant="link" size="medium">
         Medium
-      </ButtonComponent>
-      <ButtonComponent variant="link" size="small">
+      </Button>
+      <Button variant="link" size="small">
         Small
-      </ButtonComponent>
+      </Button>
     </div>
-  </div>
+  </StoryLayout>
 );
 
-export const Example: ComponentStory<typeof ButtonComponent> = (props) => (
-  <div style={{ maxWidth: 500, width: '100vw' }}>
-    <h1 style={{ textAlign: 'center' }}>Change props</h1>
-    <div
-      style={{
-        display: 'flex',
-        width: '100%',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <ButtonComponent {...props} />
+export const Example: ComponentStory<typeof Button> = (props) => (
+  <StoryLayout title="Sandbox">
+    <div style={flex}>
+      <Button {...props} />
     </div>
-  </div>
+  </StoryLayout>
 );
 
 Example.args = {
