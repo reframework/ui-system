@@ -50,6 +50,9 @@ export const useAriaActiveDescendant = () => {
 export const isFunction = <T extends Function>(f: unknown): f is T =>
   typeof f === 'function';
 
+export const isNumber = (value: unknown): value is number =>
+  typeof value === 'number';
+
 export const isArray = <T extends any>(value: unknown): value is T[] => {
   return Array.isArray(value);
 };

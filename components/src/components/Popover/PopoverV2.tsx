@@ -1,6 +1,6 @@
 import React, { CSSProperties, useEffect, useState } from 'react';
-import { getPlacement, viewport } from './placementUtils';
-import { Axis, ViewportType, PlacementAxis, Placement } from './types';
+import { getPlacement } from './placementUtilsV2';
+import { Axis, PlacementAxis, Placement } from './types';
 import { useMounted } from './hooks';
 import { isFunction } from '../../utils';
 import { Portal } from '../Portal';
@@ -11,12 +11,12 @@ import {
   removeResizeListener,
   stopPropagation,
 } from './domUtils';
+import Merge from '../Trigger/Merge';
 
 export interface PopoverProps {
-  anchorEl?: HTMLElement | null;
-  anchorWidth?: boolean | number;
+  originElement?: HTMLElement | null;
+  matchOriginWidth?: boolean | number;
   children: React.ReactNode;
-  className?: string;
   disablePortal?: boolean;
   offsetX?: number;
   offsetY?: number;
@@ -28,6 +28,7 @@ export interface PopoverProps {
   style?: CSSProperties;
   zIndex?: number;
   role?: string;
+  position?: 'fixed' | 'absolute';
 }
 
 const getPositionHandlers = (placement: Placement) => {
@@ -40,31 +41,30 @@ const getStyles = (styles?: CSSProperties) => ({
   position: 'absolute' as const,
 });
 
-const getAnchorWidth = (
+const getOriginWidth = (
   el: HTMLElement | null | undefined,
-  anchorWidth?: boolean | number
+  matchOriginWidth?: boolean | number
 ) => {
   if (!el) return;
   let width: number | string = el.clientWidth;
-  if (typeof anchorWidth == 'number') width = anchorWidth;
-  if (!anchorWidth) width = 'max-content';
+  if (typeof matchOriginWidth == 'number') width = matchOriginWidth;
+  if (!matchOriginWidth) width = 'max-content';
   return { width };
 };
 
-const Popover = ({
-  anchorEl,
-  anchorWidth,
+const PopoverV2 = ({
   children,
-  className,
   disablePortal,
+  matchOriginWidth,
   offsetX,
   offsetY,
   onChange,
   onClickAway,
   onClose,
   open: $open,
+  originElement,
   placement = 'start-start',
-  role,
+  position = 'absolute',
   style,
   zIndex,
 }: PopoverProps) => {
@@ -82,16 +82,36 @@ const Popover = ({
     if (!internalOpen) return;
     if (!contentRoot) return console.error('Unexpected behavior');
 
-    const triggerRect = (anchorEl || viewport).getBoundingClientRect();
+    // let viewportType;
+    let triggerRect;
+    let viewportRect;
+
+    if (true || position === 'absolute') {
+      const parent = contentRoot.offsetParent;
+      // TODO: handle parent table elements
+      viewportRect = (parent || document.body).getBoundingClientRect();
+      triggerRect = originElement?.getBoundingClientRect();
+    }
+
+    /**
+     * if (position === 'fixed') {
+     * viewportRect = viewport.getBoundingClientRect();
+     * triggerRect = viewport.getBoundingClientRect();
+     * }
+     */
+
+    if (!viewportRect || !triggerRect) {
+      return;
+    }
+
     const popoverRect = contentRoot.getBoundingClientRect();
     const [getPositionX, getPositionY] = getPositionHandlers(placement);
-    const viewportType = anchorEl ? ViewportType.body : ViewportType.window;
 
     setStyles({
       ...getStyles(style),
-      ...getAnchorWidth(anchorEl, anchorWidth),
-      ...getPositionX(Axis.x, viewportType, triggerRect, popoverRect, offsetX),
-      ...getPositionY(Axis.y, viewportType, triggerRect, popoverRect, offsetY),
+      ...getOriginWidth(originElement, matchOriginWidth),
+      ...getPositionX(Axis.x, viewportRect, triggerRect, popoverRect, offsetX),
+      ...getPositionY(Axis.y, viewportRect, triggerRect, popoverRect, offsetY),
     });
   };
 
@@ -99,7 +119,7 @@ const Popover = ({
     if (!internalOpen) return;
     if (!contentRoot) return;
     setStyle();
-  }, [internalOpen, contentRoot, placement, anchorEl]);
+  }, [internalOpen, contentRoot, placement, originElement]);
 
   useEffect(() => {
     setInternalOpen($open);
@@ -124,15 +144,9 @@ const Popover = ({
   }, [contentRoot]);
 
   const content = internalOpen ? (
-    <div
-      className={className}
-      onClick={stopPropagation}
-      ref={setContentRoot}
-      style={styles}
-      role={role}
-    >
+    <Merge onClick={stopPropagation} ref={setContentRoot} style={styles}>
       {children}
-    </div>
+    </Merge>
   ) : null;
 
   if (disablePortal) {
@@ -142,4 +156,4 @@ const Popover = ({
   return <Portal style={{ zIndex }}>{content}</Portal>;
 };
 
-export default Popover;
+export default PopoverV2;

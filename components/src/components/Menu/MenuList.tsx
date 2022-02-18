@@ -1,8 +1,10 @@
 import React from 'react';
 import { getClassName } from '@reframework/classnames';
-import { createContext } from '../../utils/context';
-import Paper, { PaperProps } from '../Paper/Paper';
-import { useActiveDescendant, useFocusManager } from './useActiveDescendant';
+import {
+  DescendantProvider,
+  useActiveDescendant,
+  useFocusManager,
+} from './useActiveDescendant';
 import {
   cancelEvent,
   createKeyboardHandler,
@@ -10,42 +12,55 @@ import {
   getEnabledItems,
 } from './utils';
 import styles from './MenuList.css?module';
+import { isNumber } from '../../utils';
 
-export const [DescendantProvider, useDescendantContext] = createContext();
-
-export const MenuList: React.FC<{
-  paperProps?: PaperProps;
+interface MenuListProps {
+  autoFocusIndex?: number;
+  children: React.ReactNode;
+  id?: string;
   onKeyDown: (e: React.KeyboardEvent) => void;
   onMouseLeave: (e: React.MouseEvent) => void;
-}> = ({ children, paperProps, onKeyDown, onMouseLeave }) => {
-  const paperRef = React.useRef<HTMLDivElement | null>(null);
-  const [activeDescendant, focus] = useActiveDescendant();
+  tabIndex?: number;
+}
+
+export const MenuList: React.FC<MenuListProps> = ({
+  autoFocusIndex,
+  children,
+  id,
+  onKeyDown,
+  onMouseLeave,
+  tabIndex,
+}) => {
+  const listRef = React.useRef<HTMLUListElement | null>(null);
+  const ActiveDescendant = useActiveDescendant();
   const focusManager = useFocusManager();
+
+  const { node: activeDescendant } = ActiveDescendant;
 
   const keyboardHandler = createKeyboardHandler({
     onArrowDown: cancelEvent(() => {
-      focus.setNext(
-        getEnabledItems(paperRef.current),
-        getActiveEl(paperRef.current)
+      ActiveDescendant.setNext(
+        getEnabledItems(listRef.current),
+        getActiveEl(listRef.current)
       );
     }),
     onArrowUp: cancelEvent(() => {
-      focus.setPrevious(
-        getEnabledItems(paperRef.current),
-        getActiveEl(paperRef.current)
+      ActiveDescendant.setPrevious(
+        getEnabledItems(listRef.current),
+        getActiveEl(listRef.current)
       );
     }),
     onArrowLeft: cancelEvent(() => {
-      focus.setFirst(getEnabledItems(paperRef.current));
+      ActiveDescendant.setFirst(getEnabledItems(listRef.current));
     }),
     onArrowRight: cancelEvent(() => {
-      focus.setLast(getEnabledItems(paperRef.current));
+      ActiveDescendant.setLast(getEnabledItems(listRef.current));
     }),
     onHome: cancelEvent(() => {
-      focus.setFirst(getEnabledItems(paperRef.current));
+      ActiveDescendant.setFirst(getEnabledItems(listRef.current));
     }),
     onEnd: cancelEvent(() => {
-      focus.setLast(getEnabledItems(paperRef.current));
+      ActiveDescendant.setLast(getEnabledItems(listRef.current));
     }),
   });
 
@@ -55,41 +70,57 @@ export const MenuList: React.FC<{
   };
 
   React.useEffect(() => {
-    if (!paperRef.current) return;
+    // Pedantic typescript
+    if (!listRef.current) {
+      return;
+    }
+
+    // The case when autoFocus is set on the item
+    if (listRef.current.contains(document.activeElement)) {
+      return;
+    }
+
+    // The case when autoFocus should appear on the list
+    if (!isNumber(autoFocusIndex)) {
+      listRef.current.focus();
+      return;
+    }
 
     if (!activeDescendant) {
       focusManager.saveFocus();
-      focus.setFirst(getEnabledItems(paperRef.current));
+      ActiveDescendant.setByIndex(
+        getEnabledItems(listRef.current),
+        autoFocusIndex
+      );
+      return;
     }
-  }, [activeDescendant]);
+  }, []);
 
   React.useEffect(() => {
     return () => {
-      focus.reset();
+      ActiveDescendant.reset();
       focusManager.restoreFocus();
     };
   }, []);
 
-  const paperClassName = getClassName({
-    [styles.paper]: true,
-    [paperProps?.className!]: Boolean(paperProps?.className),
+  const listClassName = getClassName({
+    [styles.list]: true,
   });
 
   return (
     <DescendantProvider value={{ activeDescendant }}>
-      <Paper
-        id="my-menu"
-        levitation={3}
-        {...paperProps}
+      <ul
+        id={id}
         aria-orientation="vertical"
-        className={paperClassName}
+        className={listClassName}
         onKeyDown={handleKeyDown}
         onMouseLeave={onMouseLeave}
-        ref={paperRef}
+        ref={listRef}
         role="menu"
+        tabIndex={tabIndex || -1}
       >
         {children}
-      </Paper>
+      </ul>
     </DescendantProvider>
   );
 };

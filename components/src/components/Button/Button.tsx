@@ -2,6 +2,7 @@ import React, { useImperativeHandle, useRef } from 'react';
 import styles from './Button.css?module';
 import { getClassName } from '@reframework/classnames';
 import { useWave } from '../Wave/useWave';
+import { forkRef } from '../../utils/forkRef';
 
 export interface ButtonProps {
   /**
@@ -56,7 +57,8 @@ const Button = React.forwardRef(
     ref: React.ForwardedRef<HTMLButtonElement>
   ) => {
     const buttonRef = useRef<HTMLButtonElement | null>(null);
-    useImperativeHandle(ref, () => buttonRef.current!, []);
+
+    const forkedRef = forkRef(ref, buttonRef);
 
     const waveRef = variant !== 'link' ? buttonRef : { current: null };
     useWave(waveRef);
@@ -75,7 +77,7 @@ const Button = React.forwardRef(
     return (
       <button
         {...otherProps}
-        ref={buttonRef}
+        ref={forkedRef}
         disabled={disabled}
         className={classNames}
       >

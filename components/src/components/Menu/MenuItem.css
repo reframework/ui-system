@@ -7,7 +7,6 @@
   font-weight: var(--font-weight-regular);
   padding: var(--spacing-xxs) var(--spacing-s);
   position: relative;
-  border-radius: 4px;
   outline: none;
 
   &:hover,

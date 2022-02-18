@@ -1,4 +1,4 @@
-import { Axis, ClientRect, ViewportType } from './types';
+import { Axis, ClientRect } from './types';
 
 export const viewport = {
   getBoundingClientRect: (): ClientRect => {
@@ -24,20 +24,6 @@ const AxisProperties = {
   },
 };
 
-const ViewportOffset = {
-  [ViewportType.window]: (elementRect: ClientRect) => ({
-    top: elementRect.top,
-    left: elementRect.left,
-  }),
-  [ViewportType.body]: (elementRect: ClientRect) => {
-    const bodyRect = document.body.getBoundingClientRect();
-    return {
-      top: elementRect.top - bodyRect.top,
-      left: elementRect.left - bodyRect.left,
-    };
-  },
-};
-
 const ViewportOffsetV2 = (
   elementRect: ClientRect,
   viewportRect: ClientRect
@@ -50,7 +36,7 @@ const ViewportOffsetV2 = (
 
 function before(
   axis: Axis,
-  viewportType: ViewportType,
+  viewportRect: ClientRect,
   triggerRect: ClientRect,
   popoverRect: ClientRect,
   offset = 0
@@ -58,7 +44,7 @@ function before(
   const { from, size } = AxisProperties[axis];
   return {
     [from]:
-      ViewportOffset[viewportType](triggerRect)[from] -
+      ViewportOffsetV2(triggerRect, viewportRect)[from] -
       popoverRect[size] +
       offset,
   };
@@ -66,20 +52,20 @@ function before(
 
 function start(
   axis: Axis,
-  viewportType: ViewportType,
+  viewportRect: ClientRect,
   triggerRect: ClientRect,
   _popoverRect: ClientRect,
   offsetX = 0
 ) {
   const { from } = AxisProperties[axis];
   return {
-    [from]: ViewportOffset[viewportType](triggerRect)[from] + offsetX,
+    [from]: ViewportOffsetV2(triggerRect, viewportRect)[from] + offsetX,
   };
 }
 
 function center(
   axis: Axis,
-  viewportType: ViewportType,
+  viewportRect: ClientRect,
   triggerRect: ClientRect,
   popoverRect: ClientRect,
   offset = 0
@@ -87,7 +73,7 @@ function center(
   const { from, size } = AxisProperties[axis];
   return {
     [from]:
-      ViewportOffset[viewportType](triggerRect)[from] +
+      ViewportOffsetV2(triggerRect, viewportRect)[from] +
       triggerRect[size] / 2 -
       popoverRect[size] / 2 +
       offset,
@@ -96,7 +82,7 @@ function center(
 
 function end(
   axis: Axis,
-  viewportType: ViewportType,
+  viewportRect: ClientRect,
   triggerRect: ClientRect,
   popoverRect: ClientRect,
   offset = 0
@@ -104,7 +90,7 @@ function end(
   const { from, size } = AxisProperties[axis];
   return {
     [from]:
-      ViewportOffset[viewportType](triggerRect)[from] +
+      ViewportOffsetV2(triggerRect, viewportRect)[from] +
       triggerRect[size] -
       popoverRect[size] +
       offset,
@@ -113,7 +99,7 @@ function end(
 
 function after(
   axis: Axis,
-  viewportType: ViewportType,
+  viewportRect: ClientRect,
   triggerRect: ClientRect,
   _popoverRect: ClientRect,
   offset = 0
@@ -121,7 +107,7 @@ function after(
   const { from, size } = AxisProperties[axis];
   return {
     [from]:
-      ViewportOffset[viewportType](triggerRect)[from] +
+      ViewportOffsetV2(triggerRect, viewportRect)[from] +
       triggerRect[size] +
       offset,
   };

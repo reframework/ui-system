@@ -1,23 +1,33 @@
 import React from 'react';
 import styles from './MenuItem.css?module';
 import { getClassName } from '@reframework/classnames';
-import { useDescendantContext } from './MenuList';
 import { useMenuContext } from './Menu';
+import { useDescendantContext } from './useActiveDescendant';
 
 type Props = {
-  // autoFocus
-  // component
+  autoFocus?: boolean;
+  as?: keyof JSX.IntrinsicElements;
+  // closeOnSelect
   children: React.ReactNode;
   className?: string;
   disabled?: boolean;
   divider?: boolean;
   onClick?: (event: React.MouseEvent) => void;
   selected?: boolean;
+  //
+  closeOnSelect?: boolean;
+  focusable?: boolean;
   // TODO: add those props;
   // icon?: React.ReactNode;
 };
 
+const focus = (node: any) => {
+  node?.focus();
+};
+
 const MenuItem = ({
+  autoFocus,
+  as = 'li',
   onClick,
   selected,
   divider,
@@ -25,10 +35,12 @@ const MenuItem = ({
   children = null,
   disabled,
 }: Props) => {
-  const ref = React.useRef<HTMLDivElement | null>(null);
-
   const { close } = useMenuContext();
   const { activeDescendant } = useDescendantContext();
+
+  const Root = as as any;
+  const ref = React.useRef<HTMLElement | null>(null);
+  const shouldFocus = ref.current?.isSameNode(activeDescendant);
 
   const classNames = getClassName({
     [styles.item]: true,
@@ -44,26 +56,33 @@ const MenuItem = ({
   };
 
   const handleMouseEnter = ({ currentTarget }: React.MouseEvent) => {
-    (currentTarget as HTMLElement).focus();
+    focus(currentTarget);
   };
 
   React.useEffect(() => {
-    if (!ref.current?.isSameNode(activeDescendant)) return;
-    ref.current?.focus?.();
-  }, [activeDescendant]);
+    if (shouldFocus) {
+      focus(ref.current);
+    }
+  }, [shouldFocus]);
+
+  React.useEffect(() => {
+    if (autoFocus) {
+      focus(ref.current);
+    }
+  }, []);
 
   return (
-    <div
+    <Root
       role="menuitem"
       ref={ref}
       onClick={handleClick}
       className={classNames}
       aria-disabled={disabled}
       onMouseEnter={handleMouseEnter}
-      tabIndex={ref.current?.isSameNode(activeDescendant) ? 0 : -1}
+      tabIndex={shouldFocus ? 0 : -1}
     >
       {children}
-    </div>
+    </Root>
   );
 };
 

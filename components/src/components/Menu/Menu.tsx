@@ -1,12 +1,13 @@
 import React from 'react';
-import Popover, { PopoverProps } from '../Popover/Popover';
-import { PaperProps } from '../Paper/Paper';
-import Trigger from '../Trigger/Trigger';
+import Paper, { PaperProps } from '../Paper/Paper';
 import MenuItem from './MenuItem';
-import { useControlledState } from '../../utils';
+import { isNumber, useControlledState } from '../../utils';
 import { createContext } from '../../utils/context';
 import { cancelEvent, createKeyboardHandler } from './utils';
 import { MenuList } from './MenuList';
+import PopoverV2, { PopoverProps } from '../Popover/PopoverV2';
+import Merge from '../Trigger/Merge';
+import { Optional } from '../Combobox/types';
 
 type Action = 'click' | 'hover';
 
@@ -17,10 +18,10 @@ const actionHandlerName: Record<Action, string> = {
 
 // TODO: Add MenuList, MenuListItem
 export interface MenuProps {
-  anchorEl?: HTMLElement | null;
+  id?: string;
+  originElement?: HTMLElement | null;
   autoFocus?: boolean;
   children: React.ReactNode;
-  keepOpen: boolean;
   onClose?: () => {};
   onOpen?: () => {};
   open?: boolean;
@@ -28,46 +29,71 @@ export interface MenuProps {
   trigger?: React.ReactNode;
   triggerAction?: Action;
   // Popover props
-  PopoverProps?: PopoverProps;
+  popoverProps?: PopoverProps;
   placement: PopoverProps['placement'];
-  anchorWidth: PopoverProps['anchorWidth'];
+  matchOriginWidth: PopoverProps['matchOriginWidth'];
+  disablePortal?: boolean;
+  //
+  // closeOnBlur
+  closeOnSelect?: boolean;
+  defaultOpen?: boolean;
+  preventOverflow?: boolean;
 }
 
-export const [MenuProvider, useMenuContext] = createContext();
+export const [MenuProvider, useMenuContext] =
+  createContext<{ isOpen: boolean; close: () => void }>();
 
 const Menu = ({
-  onOpen,
-  anchorEl,
-  anchorWidth = false,
+  originElement,
+  matchOriginWidth = true,
+  autoFocus = false,
   children,
+  id = 'menu',
   onClose,
+  onOpen,
   open: $open,
   paperProps,
   placement = 'start-after',
-  PopoverProps,
+  popoverProps,
   trigger,
   // closeOnSelect = true,
   // closeOnBlur = true,
   // autoSelect = true,
   // keep open (do not close after click item is caught)
   triggerAction = 'click',
+  disablePortal = false,
 }: MenuProps) => {
   // Saves ref to the state in order to catch the un/mounting
+  const triggerRef = React.useRef<HTMLElement>(null);
+  const [autoFocusIndex, setAutofocusIndex] =
+    React.useState<Optional<number>>();
 
-  const [internalOpen, setInternalOpen] = useControlledState({
+  const [isOpen, setIsOpen] = useControlledState({
     controlled: $open,
     default: false,
   });
 
-  const openMenu = () => {
-    if (internalOpen) return;
-    setInternalOpen(true);
+  const openMenu = (options?: { focusIndex?: number }) => {
+    if (isOpen) return;
+    if (isNumber(options?.focusIndex)) {
+      setAutofocusIndex(options?.focusIndex);
+    }
+    setIsOpen(true);
     onOpen?.();
   };
 
   const closeMenu = () => {
-    setInternalOpen(false);
+    setIsOpen(false);
+    setAutofocusIndex(undefined);
     onClose?.();
+  };
+
+  const openWithTheFirstFocused = () => {
+    openMenu({ focusIndex: 0 });
+  };
+
+  const openWithTheLastFocused = () => {
+    openMenu({ focusIndex: -1 });
   };
 
   const handleListKeyDown = createKeyboardHandler({
@@ -77,8 +103,10 @@ const Menu = ({
   });
 
   const handleTriggerKeyDown = createKeyboardHandler({
-    onEnter: cancelEvent(openMenu),
-    onSpace: cancelEvent(openMenu),
+    onEnter: cancelEvent(openWithTheFirstFocused),
+    onSpace: cancelEvent(openWithTheFirstFocused),
+    onArrowDown: cancelEvent(openWithTheFirstFocused),
+    onArrowUp: cancelEvent(openWithTheLastFocused),
   });
 
   const handleMouseLeave = (event: React.MouseEvent) => {
@@ -87,40 +115,54 @@ const Menu = ({
     }
   };
 
-  const triggerProps: Record<string, (...args: any[]) => void> = {
-    onKeyDown: handleTriggerKeyDown,
-    onMouseLeave: handleMouseLeave,
-    [actionHandlerName[triggerAction]]: openMenu,
-    ['aria-haspopup']: true,
-    ['aria-expanded']: internalOpen,
-    ['aria-controls']: 'my-menu',
-    tabIndex: 0,
+  const menuContext = {
+    close: closeMenu,
+    isOpen: isOpen,
   };
 
+  /**
+   * Autofocus handling
+   */
+  React.useEffect(() => {
+    if (autoFocus && triggerRef.current) {
+      triggerRef.current.focus();
+    }
+  }, [triggerRef.current]);
+
   return (
-    <MenuProvider
-      value={{
-        close: closeMenu,
-        isOpen: internalOpen,
-      }}
-    >
-      <Trigger {...triggerProps}>{trigger}</Trigger>
-      <Popover
-        anchorWidth={anchorWidth}
-        placement={placement}
-        {...PopoverProps}
-        anchorEl={anchorEl}
-        onClickAway={closeMenu}
-        open={internalOpen}
+    <MenuProvider value={menuContext}>
+      <Merge
+        onClick={openMenu}
+        aria-controls={id}
+        aria-expanded={isOpen}
+        aria-haspopup={true}
+        onKeyDown={handleTriggerKeyDown}
+        onMouseLeave={handleMouseLeave}
+        ref={triggerRef}
+        tabIndex={0}
       >
-        <MenuList
-          paperProps={paperProps}
-          onKeyDown={handleListKeyDown}
-          onMouseLeave={handleMouseLeave}
-        >
-          {children}
-        </MenuList>
-      </Popover>
+        {trigger}
+      </Merge>
+      <PopoverV2
+        matchOriginWidth={matchOriginWidth}
+        placement={placement}
+        {...popoverProps}
+        originElement={originElement || triggerRef.current}
+        onClickAway={closeMenu}
+        open={isOpen}
+        disablePortal={disablePortal}
+      >
+        <Paper {...paperProps}>
+          <MenuList
+            id={id}
+            autoFocusIndex={autoFocusIndex}
+            onKeyDown={handleListKeyDown}
+            onMouseLeave={handleMouseLeave}
+          >
+            {children}
+          </MenuList>
+        </Paper>
+      </PopoverV2>
     </MenuProvider>
   );
 };

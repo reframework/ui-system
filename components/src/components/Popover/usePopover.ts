@@ -3,7 +3,7 @@ import { getPlacement, viewport } from './placementUtils';
 import { Axis, ViewportType, PlacementAxis, Placement } from './types';
 import { useMounted } from './hooks';
 import { isFunction } from '../../utils';
-import { Portal } from '../Portal';
+
 import {
   addClickListener,
   addResizeListener,
@@ -12,7 +12,7 @@ import {
   stopPropagation,
 } from './domUtils';
 
-export interface PopoverProps {
+export interface UsePopoverProps {
   anchorEl?: HTMLElement | null;
   anchorWidth?: boolean | number;
   children: React.ReactNode;
@@ -51,12 +51,10 @@ const getAnchorWidth = (
   return { width };
 };
 
-const Popover = ({
+const usePopover = ({
   anchorEl,
   anchorWidth,
-  children,
-  className,
-  disablePortal,
+  // disablePortal,
   offsetX,
   offsetY,
   onChange,
@@ -64,10 +62,9 @@ const Popover = ({
   onClose,
   open: $open,
   placement = 'start-start',
-  role,
   style,
-  zIndex,
-}: PopoverProps) => {
+}: // zIndex,
+UsePopoverProps) => {
   const isMounted = useMounted();
   const [internalOpen, setInternalOpen] = useState<boolean>(false);
   const [styles, setStyles] = useState<CSSProperties>(getStyles(style));
@@ -82,6 +79,7 @@ const Popover = ({
     if (!internalOpen) return;
     if (!contentRoot) return console.error('Unexpected behavior');
 
+    // get from props
     const triggerRect = (anchorEl || viewport).getBoundingClientRect();
     const popoverRect = contentRoot.getBoundingClientRect();
     const [getPositionX, getPositionY] = getPositionHandlers(placement);
@@ -123,23 +121,15 @@ const Popover = ({
     };
   }, [contentRoot]);
 
-  const content = internalOpen ? (
-    <div
-      className={className}
-      onClick={stopPropagation}
-      ref={setContentRoot}
-      style={styles}
-      role={role}
-    >
-      {children}
-    </div>
-  ) : null;
+  const props = {
+    // TODO: change stopPropagation
+    onClick: stopPropagation,
+    ref: setContentRoot,
+    style: styles,
+    open: internalOpen,
+  };
 
-  if (disablePortal) {
-    return content;
-  }
-
-  return <Portal style={{ zIndex }}>{content}</Portal>;
+  return props;
 };
 
-export default Popover;
+export default usePopover;

@@ -1,15 +1,10 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { firstOf, lastOf, nextOf, previousOf } from '../../utils';
+import { createContext } from '../../utils/context';
 import { Optional } from '../Combobox/types';
 
-interface DescendantManager<T extends {}> {
-  reset: () => {};
-  set: (current: T) => {};
-  setFirst: () => {};
-  setLast: () => {};
-  setNext: (current: T) => {};
-  setPrevious: (current: T) => {};
-}
+export const [DescendantProvider, useDescendantContext] =
+  createContext<{ activeDescendant: any }>();
 
 export const useActiveDescendant = () => {
   const [node, setNode] = useState<Optional<any>>();
@@ -20,6 +15,11 @@ export const useActiveDescendant = () => {
 
   const set = (current: {}) => {
     setNode(current);
+  };
+
+  const setByIndex = (list: any[], index: number) => {
+    const node = index >= 0 ? list[index] : list[list.length + index];
+    if (node) setNode(node);
   };
 
   const setFirst = (list: any[]) => {
@@ -40,10 +40,20 @@ export const useActiveDescendant = () => {
     setNode(previousOf(list, idx) || lastOf(list));
   };
 
-  return [
-    node,
-    { set, reset, setFirst, setLast, setPrevious, setNext },
-  ] as const;
+  return useMemo(() => {
+    return {
+      get node() {
+        return node;
+      },
+      reset,
+      set,
+      setByIndex,
+      setFirst,
+      setLast,
+      setNext,
+      setPrevious,
+    };
+  }, [node]);
 };
 
 export const useFocusManager = () => {

@@ -1,0 +1,72 @@
+import {
+  Meta,
+  Story,
+  Canvas,
+  ArgsTable,
+  Source,
+  Description,
+} from '@storybook/addon-docs';
+import { Menu } from '../../components/Menu';
+import * as stories from './Menu.stories.tsx';
+
+<Meta
+  title="Menu/Menu"
+  component={Menu}
+  id="Menu/MDX"
+  argTypes={{
+    placement: {
+      options: [
+        'before-before',
+        'before-end',
+        'before-center',
+        'before-start',
+        'before-after',
+        'end-before',
+        'end-end',
+        'end-center',
+        'end-start',
+        'end-after',
+        'center-before',
+        'center-end',
+        'center-center',
+        'center-start',
+        'center-after',
+        'start-before',
+        'start-end',
+        'start-center',
+        'start-start',
+        'start-after',
+        'after-before',
+        'after-end',
+        'after-center',
+        'after-start',
+        'after-after',
+      ],
+      control: { type: 'select' },
+    },
+  }}
+/>
+
+export const Template = (args) => ({});
+
+# Menu
+
+An accessible dropdown menu for the common dropdown menu button design pattern. Menu uses roving tabIndex for focus management.
+
+## Import
+
+<Source dark language="js" code={`import { Menu } from '@reframework/menu';`} />
+
+## Usage
+
+<br />
+
+<Story name="Intro" story={stories.Intro}>
+  {Template.bind({})}
+</Story>
+
+<Story name="Source" story={stories.SourceStory} />
+
+## Props
+
+<Story name="ArgsTable" story={stories.ArgsTableStory} />

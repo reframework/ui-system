@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Story, Canvas, ArgsTable, Source } from '@storybook/addon-docs';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-
-import { Menu as MenuComponent, MenuProps } from '../../components/Menu';
-
-import { Box } from '../../components/Box';
 import { Button } from '../../components/Button';
+import { Menu } from '../../components/Menu';
 
 export default {
   title: 'Menu/Menu',
-  component: MenuComponent,
+  id: 'Menu/Menu',
+  component: Menu,
   argTypes: {
     placement: {
       options: [
@@ -41,49 +40,39 @@ export default {
       control: { type: 'select' },
     },
   },
-} as ComponentMeta<typeof MenuComponent>;
+} as ComponentMeta<typeof Menu>;
 
-const { MenuItem } = MenuComponent;
+//
 
-const Page = ({ children, placement, ...props }: MenuProps) => {
-  const [ref, setRef] = useState<HTMLButtonElement | null>(null);
-
-  return (
-    <Box
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '400px',
-      }}
-    >
-      <MenuComponent
-        {...props}
-        anchorEl={ref}
-        placement={placement}
-        trigger={
-          <Button variant="outlined" ref={setRef}>
-            Click me!
-          </Button>
-        }
-      >
-        <MenuItem key="1">Share...</MenuItem>
-        <MenuItem key="3">Move...</MenuItem>
-        <MenuItem key="4">Rename...</MenuItem>
-        <MenuItem key="5" disabled>
-          Delete...
-        </MenuItem>
-      </MenuComponent>
-    </Box>
-  );
-};
-const Template: ComponentStory<typeof MenuComponent> = (props) => (
-  <Page {...props} />
+export const Intro: ComponentStory<typeof Menu> = (props) => (
+  <Menu {...props} trigger={<Button variant="outlined">Open menu</Button>}>
+    <Menu.MenuItem key="1">Share...</Menu.MenuItem>
+    <Menu.MenuItem key="3">Move...</Menu.MenuItem>
+    <Menu.MenuItem key="4">Rename...</Menu.MenuItem>
+    <Menu.MenuItem key="5" disabled>
+      Delete...
+    </Menu.MenuItem>
+  </Menu>
 );
 
-export const Menu = Template.bind({});
+export const SourceStory: ComponentStory<typeof Menu> = () => (
+  <div style={{ zIndex: 0, position: 'relative' }}>
+    <Source of="Intro" dark />
+  </div>
+);
 
-Menu.args = {
+export const ArgsTableStory: ComponentStory<typeof Menu> = () => (
+  <div style={{ zIndex: 0, position: 'relative' }}>
+    <ArgsTable of="." />
+  </div>
+);
+
+Intro.args = {
   children: 'Popover',
   placement: 'start-after',
+  anchorWidth: true,
+  // disablePortal: false,
+  autoFocus: false,
+  keepOpen: false,
+  // Popover props
 };
