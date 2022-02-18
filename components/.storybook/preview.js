@@ -11,11 +11,7 @@ export const parameters = {
 
 export const decorators = [
   (Story) => (
-    <div
-      style={{
-        padding: '50px 100px',
-      }}
-    >
+    <div>
       <Story />
     </div>
   ),

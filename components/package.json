@@ -21,6 +21,7 @@
     "gh-pages": "^3.2.3",
     "mini-css-extract-plugin": "^2.4.2",
     "postcss": "^8.3.9",
+    "postcss-each": "^1.1.0",
     "postcss-import": "^14.0.2",
     "postcss-loader": "^6.1.1",
     "postcss-nested": "^5.0.6",
@@ -33,9 +34,12 @@
   "main": "index.js",
   "name": "components",
   "scripts": {
-    "start": "yarn storybook",
+    "start": "yarn run storybook",
+    "start:doc": "yarn run start-storybook-docs",
     "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "start-storybook -p 6006",
+    "start-storybook-docs": "start-storybook --docs --no-manager-cache",
+    "build-storybook-docs": "build-storybook --docs",
     "build-storybook": "build-storybook",
     "predeploy": "npm run build-storybook",
     "deploy-storybook": "gh-pages -d storybook-static"

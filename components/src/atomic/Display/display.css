@@ -1,0 +1,26 @@
+@each $item
+  in block
+  inline-block
+  inline
+  flex
+  inline-flex
+  table
+  inline-table
+  table-caption
+  table-cell
+  table-column
+  table-column-group
+  table-footer-group
+  table-header-group
+  table-row-group
+  table-row
+  grid
+  inline-grid
+  contents
+  list-item
+  none
+{
+  .display-$(item) {
+    display: $(item);
+  }
+}

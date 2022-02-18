@@ -1,0 +1,43 @@
+@each $spacing in xxxs, xxs, xs, s, m, l, xl, xxl, xxxl {
+  .margin-$(spacing) {
+    margin: var(--spacing-$(spacing));
+  }
+
+  .marginTop-$(spacing) {
+    margin-top: var(--spacing-$(spacing));
+  }
+
+  .marginLeft-$(spacing) {
+    margin-left: var(--spacing-$(spacing));
+  }
+
+  .marginRight-$(spacing) {
+    margin-right: var(--spacing-$(spacing));
+  }
+
+  .marginBottom-$(spacing) {
+    margin-bottom: var(--spacing-$(spacing));
+  }
+}
+
+@each $spacing in xxxs, xxs, xs, s, m, l, xl, xxl, xxxl {
+  .padding-$(spacing) {
+    padding: var(--spacing-$(spacing));
+  }
+
+  .paddingTop-$(spacing) {
+    padding-top: var(--spacing-$(spacing));
+  }
+
+  .paddingLeft-$(spacing) {
+    padding-left: var(--spacing-$(spacing));
+  }
+
+  .paddingRight-$(spacing) {
+    padding-right: var(--spacing-$(spacing));
+  }
+
+  .paddingBottom-$(spacing) {
+    padding-bottom: var(--spacing-$(spacing));
+  }
+}

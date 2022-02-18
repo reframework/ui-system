@@ -1,0 +1,131 @@
+import {
+  Meta,
+  Story,
+  Canvas,
+  ArgsTable,
+  Source,
+  Description,
+} from '@storybook/addon-docs';
+import { Button } from '../../components/Button';
+import * as stories from './Button.stories.tsx';
+
+<Meta
+  title="Button/Button"
+  component={Button}
+  id="Button/MDX"
+  argTypes={{
+    color: {
+      table: {
+        description: 'Color description',
+        type: 'color-type',
+      },
+      options: [
+        'primary',
+        'secondary',
+        'error',
+        'warning',
+        'success',
+        'neutral',
+      ],
+      control: 'select',
+    },
+    disabled: {
+      control: 'boolean',
+    },
+    shape: {
+      options: ['circle', 'square'],
+      control: 'select',
+    },
+    size: {
+      options: ['small', 'medium', 'large'],
+      control: 'select',
+    },
+    stretch: {
+      control: 'boolean',
+    },
+    variant: {
+      options: ['solid', 'outlined', 'ghost', 'link'],
+      control: 'select',
+    },
+  }}
+/>
+
+export const Template = (args) => ({});
+
+# Button
+
+The Button component is used to trigger an action or event,such as submitting a form, opening a dialog, canceling an action, or performing a delete operation.
+
+## Import
+
+<Source
+  dark
+  language="js"
+  code={`import { Button } from '@reframework/button';`}
+/>
+
+## Usage
+
+<br />
+
+<Story name="Button" story={stories.Sandbox}>
+  {Template.bind({})}
+</Story>
+
+<Source of="Button" dark />
+
+## Props
+
+<ArgsTable story="Button" />
+
+### Button Variants
+
+Use the `variant` prop to change the visual style of the Button. You can set the value to `solid`, `ghost`, `outline`, or `link`.
+
+<Canvas>
+  <Story story={stories.Variants} />
+</Canvas>
+
+### Button Colors
+
+The Button component has an `color` property with 6 available values:`primary`, `sacondary`, `error`, `warning`, `success` or `neutral`.
+
+<Canvas>
+  <Story story={stories.Colors} />
+</Canvas>
+
+### Button Sizes
+
+Use the `size` prop to change the size of the button. You can set the value to `small`, `medium` and `large`.
+
+<Canvas>
+  <Story story={stories.Sizes} />
+</Canvas>
+
+### Button Shapes
+
+Use the `shape` prop to change the border-radius style of the Button. You can set the value to `sqare` or `circle`.
+
+<Canvas>
+  <Story story={stories.Shape} />
+</Canvas>
+
+### Stretched Button
+
+Use the `stretch` prop to fit the Button.
+
+<Canvas>
+  <Story story={stories.Stretch} />
+</Canvas>
+
+### Disabled Button
+
+Use the `disabled` prop to make the button disabled.
+
+<Canvas>
+  <Story story={stories.Disabled} />
+</Canvas>
+
+### Button with the icon
+
+`Comming soon`

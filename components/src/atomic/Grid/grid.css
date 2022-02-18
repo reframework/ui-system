@@ -1,0 +1,174 @@
+.display {
+  display: grid;
+}
+
+@each $item in 1, 2, 3, 4, 5, 6, 7, 8 {
+  .cols-$(item) {
+    grid-template-columns: repeat($(item), minmax(0, 1fr));
+  }
+}
+
+.cols-none {
+  grid-template-columns: none;
+}
+
+@each $item in 1, 2, 3, 4, 5, 6, 7, 8 {
+  .col-span-$(item) {
+    grid-column: span $(item) / span $(item);
+  }
+
+  .col-start-$(item) {
+    grid-column-start: $(item);
+  }
+
+  .col-end-$(item) {
+    grid-column-end: $(item);
+  }
+}
+
+.col-auto {
+  grid-column: auto;
+}
+
+.col-span-full {
+  grid-column: 1 / -1;
+}
+
+.col-start-auto {
+  grid-column-start: auto;
+}
+
+.col-end-auto {
+  grid-column-end: auto;
+}
+
+@each $item in 1, 2, 3, 4, 5, 6 {
+  .rows-$(item) {
+    grid-template-rows: repeat($(item), minmax(0, 1fr));
+  }
+}
+
+.rows-none {
+  grid-template-rows: none;
+}
+
+@each $item in 1, 2, 3, 4, 5, 6 {
+  .row-span-$(item) {
+    grid-row: span $(item) / span $(item);
+  }
+
+  .row-start-$(item) {
+    grid-row-start: $(item);
+  }
+
+  .row-end-$(item) {
+    grid-row-end: $(item);
+  }
+}
+
+.row-auto {
+  grid-row: auto;
+}
+
+.row-end-auto {
+  grid-row-end: auto;
+}
+
+.auto-flow-row {
+  grid-auto-flow: row;
+}
+
+.auto-flow-col {
+  grid-auto-flow: column;
+}
+
+.auto-flow-row-dense {
+  grid-auto-flow: row dense;
+}
+
+.auto-flow-col-dense {
+  grid-auto-flow: column dense;
+}
+
+.auto-cols-auto {
+  grid-auto-columns: auto;
+}
+
+.auto-cols-min {
+  grid-auto-columns: min-content;
+}
+
+.auto-cols-max {
+  grid-auto-columns: max-content;
+}
+
+.auto-cols-fr {
+  grid-auto-columns: minmax(0, 1fr);
+}
+
+.auto-rows-auto {
+  grid-auto-rows: auto;
+}
+
+.auto-rows-min {
+  grid-auto-rows: min-content;
+}
+
+.auto-rows-max {
+  grid-auto-rows: max-content;
+}
+
+.auto-rows-fr {
+  grid-auto-rows: minmax(0, 1fr);
+}
+
+@each $item in xxxs, xxs, xs, s, m, l, xl, xxl, xxxl {
+  .gap-$(item) {
+    grid-gap: var(--spacing-$(item));
+  }
+
+  .col-gap-$(item) {
+    grid-column-gap: var(--spacing-$(item));
+  }
+
+  .row-gap-$(item) {
+    grid-row-gap: var(--spacing-$(item));
+  }
+}
+
+/* todo: move to content placement */
+@each $item in center, flex-start, flex-end, space-between, space-around,
+  space-evenly
+{
+  .justifyContent-$(item) {
+    justify-content: $(item);
+  }
+
+  .alignContent-$(item) {
+    align-content: $(item);
+  }
+
+  .placeContent-$(item) {
+    place-content: $(item);
+  }
+}
+
+@each $item in flex-start, flex-end, center, baseline, stretch {
+  .alignItems-$(item) {
+    align-items: $(item);
+  }
+
+  .alignSelf-$(item) {
+    align-self: $(item);
+  }
+}
+
+@each $item in start, end, center, stretch {
+  .justifyItems-$(item) {
+    justify-items: $(item);
+  }
+
+  .placeItems-$(item) {
+    place-items: $(item);
+  }
+}

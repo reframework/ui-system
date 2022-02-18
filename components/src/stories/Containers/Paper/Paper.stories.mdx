@@ -1,0 +1,70 @@
+import {
+  Meta,
+  Story,
+  Canvas,
+  ArgsTable,
+  Source,
+  Description,
+} from '@storybook/addon-docs';
+import { Paper } from '../../../components/Paper';
+import * as stories from './Paper.stories.tsx';
+
+<Meta
+  title="Containers/Paper"
+  component={Paper}
+  id="Containers/Paper"
+  argTypes={{
+    levitation: {
+      options: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      control: 'select',
+    },
+    shape: {
+      options: ['square', 'circle'],
+      control: 'radio',
+    },
+  }}
+/>
+
+export const Template = (args) => ({});
+
+# Button
+
+The Button component is used to trigger an action or event,such as submitting a form, opening a dialog, canceling an action, or performing a delete operation.
+
+## Import
+
+<Source
+  dark
+  language="js"
+  code={`import { Paper } from '@reframework/paper';`}
+/>
+
+## Usage
+
+<br />
+
+<Story name="Paper" story={stories.Sandbox}>
+  {Template.bind({})}
+</Story>
+
+<Source of="Paper" dark />
+
+## Props
+
+<ArgsTable story="Paper" />
+
+### Paper Shapes
+
+Use the `shape` prop to change the border-radius style of the Paper. You can set the value to `sqare` or `circle`.
+
+<Canvas>
+  <Story story={stories.Shapes} />
+</Canvas>
+
+### Levitation
+
+The `levitation` prop can be used to establish a hierachy between other content. In practical terms, the levitation controls the size of the shadow applied to the surface.
+
+<Canvas>
+  <Story story={stories.Levitation} />
+</Canvas>

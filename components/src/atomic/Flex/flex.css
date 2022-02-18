@@ -1,0 +1,63 @@
+.display {
+  display: flex;
+}
+
+/* todo: move to common */
+@each $item in flex-start, flex-end, center, baseline, stretch {
+  .alignItems-$(item) {
+    align-items: $(item);
+  }
+
+  .alignSelf-$(item) {
+    align-self: $(item);
+  }
+}
+
+@each $item in start, end, center, stretch {
+  .justifyItems-$(item) {
+    justify-items: $(item);
+  }
+
+  .placeItems-$(item) {
+    place-items: $(item);
+  }
+}
+
+@each $item in auto, start, end, center, stretch {
+  .justifySelf-$(item) {
+    justify-self: $(item);
+  }
+
+  .placeSelf-$(item) {
+    place-self: $(item);
+  }
+}
+
+/* todo: move to content placement */
+@each $item in center, flex-start, flex-end, space-between, space-around,
+  space-evenly
+{
+  .justifyContent-$(item) {
+    justify-content: $(item);
+  }
+
+  .alignContent-$(item) {
+    align-content: $(item);
+  }
+
+  .placeContent-$(item) {
+    place-content: $(item);
+  }
+}
+
+@each $item in flex-wrap, flex-wrap-reverse, flex-nowrap {
+  .wrap-$(item) {
+    flex-wrap: $(item);
+  }
+}
+
+@each $item in flex-row, flex-row-reverse, flex-col, flex-col-reverse {
+  .direction-$(item) {
+    flex-direction: $(item);
+  }
+}
