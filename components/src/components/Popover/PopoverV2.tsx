@@ -1,5 +1,5 @@
 import React, { CSSProperties, useEffect, useState } from 'react';
-import { PlacementHero, Axis, Placement } from './placementUtilsV2';
+import { PlacementHero, Placement } from './placementUtilsV2';
 import { useMounted } from './hooks';
 import { isFunction } from '../../utils';
 import { Portal } from '../Portal';
@@ -109,7 +109,8 @@ const PopoverV2 = ({
       ...getStyles(style),
       ...getOriginWidth(originElement, matchOriginWidth),
       ...PlacementHero.getPlacement(placement, {
-        offset: offsetX,
+        offsetX,
+        offsetY,
         popoverRect,
         triggerRect,
         viewportOffset,

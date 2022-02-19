@@ -1,59 +1,35 @@
 export type PlacementAxis = 'before' | 'end' | 'center' | 'start' | 'after';
 export type Placement = `${PlacementAxis}-${PlacementAxis}`;
 
-export enum ViewportType {
-  window = 'window',
-  body = 'body',
+enum Axis {
+  X = 'X',
+  Y = 'Y',
 }
-
-export enum Axis {
-  x = 'x',
-  y = 'y',
-}
-
-export type ClientRect = {
-  top: number;
-  left: number;
-  right: number;
-  bottom: number;
-  width: number;
-  height: number;
-};
 
 export const viewport = {
-  getBoundingClientRect: (): ClientRect => {
+  getBoundingDOMRect: (): DOMRect => {
     return {
+      x: 0,
+      y: 0,
       top: 0,
       left: 0,
       right: window.innerWidth,
       bottom: window.innerHeight,
       width: window.innerWidth,
       height: window.innerHeight,
+      toJSON: () => '',
     };
   },
 };
 
-const AxisProperties = {
-  [Axis.x]: {
-    size: 'width' as const,
-    from: 'left' as const,
-  },
-  [Axis.y]: {
-    size: 'height' as const,
-    from: 'top' as const,
-  },
-};
-
-const AxisPropertiesRTL = {
-  [Axis.x]: {
-    size: 'width' as const,
-    from: 'right' as const,
-  },
-  [Axis.y]: {
-    size: 'height' as const,
-    from: 'bottom' as const,
-  },
-};
+const PlacementProperties = {
+  width: 'width',
+  height: 'height',
+  left: 'left',
+  right: 'right',
+  top: 'top',
+  bottom: 'bottom',
+} as const;
 
 interface ViewportOffset {
   top: number;
@@ -62,24 +38,43 @@ interface ViewportOffset {
   right: number;
 }
 
-interface PositioningParams {
-  axis: Axis;
+interface GetPlacementParams {
   viewportOffset: ViewportOffset;
-  triggerRect: ClientRect;
-  popoverRect?: ClientRect;
+  triggerRect: DOMRect;
+  popoverRect?: DOMRect;
+  offsetX?: number;
+  offsetY?: number;
+}
+
+interface PositioningParams
+  extends Omit<GetPlacementParams, 'offsetX' | 'offsetY'> {
+  axis: Axis;
+  isBackward?: boolean;
   offset?: number;
 }
 
 export class PlacementHero {
-  static getPlacement(placement: Placement, params: PositioningParams) {
-    const [getX, getY] = PlacementHero.getPlacementHandlers(placement);
-    // const { triggerRect, viewportOffset, offset, popoverRect } = params;
+  static getProperties(axis: Axis, isBackward?: boolean) {
+    if (axis === Axis.X) {
+      return {
+        from: isBackward ? PlacementProperties.right : PlacementProperties.left,
+        size: PlacementProperties.width,
+      };
+    }
 
     return {
-      ...getX({ ...params, axis: Axis.x }),
-      ...getY({ ...params, axis: Axis.y }),
+      from: isBackward ? PlacementProperties.bottom : PlacementProperties.top,
+      size: PlacementProperties.height,
     };
-    //
+  }
+
+  static getPlacement(placement: Placement, params: GetPlacementParams) {
+    const [getX, getY] = PlacementHero.getPlacementHandlers(placement);
+
+    return {
+      ...getX({ ...params, axis: Axis.X }),
+      ...getY({ ...params, axis: Axis.Y }),
+    };
   }
   /**
    *
@@ -93,8 +88,8 @@ export class PlacementHero {
    *
    */
   static getViewportOffset = (
-    elementRect: ClientRect,
-    viewportRect: ClientRect
+    elementRect: DOMRect,
+    viewportRect: DOMRect
   ): ViewportOffset => {
     return {
       top: elementRect.top - viewportRect.top,
@@ -107,26 +102,15 @@ export class PlacementHero {
   /**
    *
    */
-  static before({
-    axis,
-    viewportOffset,
-    triggerRect,
-    offset = 0,
-  }: PositioningParams) {
-    const { from, size } = AxisPropertiesRTL[axis];
-    return {
-      [from]: viewportOffset[from] + triggerRect[size] + offset,
-    };
+  static start(params: PositioningParams) {
+    return PlacementHero.end({ ...params, isBackward: true });
   }
 
   /**
    *
    */
-  static start({ axis, viewportOffset, offset = 0 }: PositioningParams) {
-    const { from } = AxisProperties[axis];
-    return {
-      [from]: viewportOffset[from] + offset,
-    };
+  static before(params: PositioningParams) {
+    return PlacementHero.after({ ...params, isBackward: true });
   }
 
   /**
@@ -140,11 +124,12 @@ export class PlacementHero {
     offset = 0,
   }: PositioningParams) {
     if (!popoverRect) {
-      console.error('No popover ClientRect provided');
+      console.error('No popover DOMRect provided');
       return {};
     }
 
-    const { from, size } = AxisProperties[axis];
+    const { from, size } = PlacementHero.getProperties(axis);
+
     return {
       [from]:
         viewportOffset[from] +
@@ -157,25 +142,31 @@ export class PlacementHero {
   /**
    *
    */
-  static end({ axis, viewportOffset, offset = 0 }: PositioningParams) {
-    const { from } = AxisPropertiesRTL[axis];
+  static after({
+    axis,
+    isBackward,
+    offset = 0,
+    triggerRect,
+    viewportOffset,
+  }: PositioningParams) {
+    const { from, size } = PlacementHero.getProperties(axis, isBackward);
     return {
-      [from]: viewportOffset[from] + offset,
+      [from]: viewportOffset[from] + triggerRect[size] + offset,
     };
   }
 
   /**
    *
    */
-  static after({
+  static end({
     axis,
-    viewportOffset,
-    triggerRect,
+    isBackward,
     offset = 0,
+    viewportOffset,
   }: PositioningParams) {
-    const { from, size } = AxisProperties[axis];
+    const { from } = PlacementHero.getProperties(axis, isBackward);
     return {
-      [from]: viewportOffset[from] + triggerRect[size] + offset,
+      [from]: viewportOffset[from] + offset,
     };
   }
 }
