@@ -174,6 +174,7 @@ export const Resize: ComponentStory<typeof Menu> = (props) => {
   return (
     <Menu
       {...props}
+      watchResizing
       trigger={
         <Button variant={'solid'} onClick={onClick}>
           {flag === 0 && 'Open Menu'}

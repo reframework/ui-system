@@ -1,7 +1,7 @@
 import React, { CSSProperties, useEffect, useState } from 'react';
 import { PlacementHero, Placement } from './placementUtilsV2';
 import { useMounted } from './hooks';
-import { isFunction } from '../../utils';
+import { isFunction, isNumber } from '../../utils';
 import { Portal } from '../Portal';
 import {
   addClickListener,
@@ -28,6 +28,8 @@ export interface PopoverProps {
   zIndex?: number;
   role?: string;
   position?: 'fixed' | 'absolute';
+  watchResizing?: boolean;
+  preventOverflow?: boolean;
 }
 
 const getStyles = (styles?: CSSProperties) => ({
@@ -35,15 +37,19 @@ const getStyles = (styles?: CSSProperties) => ({
   position: 'absolute' as const,
 });
 
-const getOriginWidth = (
-  el: HTMLElement | null | undefined,
+const getWidth = (
+  originRect: DOMRect | null,
   matchOriginWidth?: boolean | number
 ) => {
-  if (!el) return;
-  let width: number | string = el.clientWidth;
-  if (typeof matchOriginWidth == 'number') width = matchOriginWidth;
-  if (!matchOriginWidth) width = 'max-content';
-  return { width };
+  if (isNumber(matchOriginWidth)) {
+    return { width: matchOriginWidth };
+  }
+
+  if (matchOriginWidth === true && originRect) {
+    return { width: originRect.width };
+  }
+
+  return { width: 'max-content' };
 };
 
 const PopoverV2 = ({
@@ -60,6 +66,7 @@ const PopoverV2 = ({
   placement = 'start-start',
   position = 'absolute',
   style,
+  watchResizing,
   zIndex,
 }: PopoverProps) => {
   const isMounted = useMounted();
@@ -88,13 +95,6 @@ const PopoverV2 = ({
       triggerRect = originElement?.getBoundingClientRect();
     }
 
-    /**
-     * if (position === 'fixed') {
-     * viewportRect = viewport.getBoundingClientRect();
-     * triggerRect = viewport.getBoundingClientRect();
-     * }
-     */
-
     if (!viewportRect || !triggerRect) {
       return;
     }
@@ -107,7 +107,7 @@ const PopoverV2 = ({
 
     setStyles({
       ...getStyles(style),
-      ...getOriginWidth(originElement, matchOriginWidth),
+      ...getWidth(triggerRect, matchOriginWidth),
       ...PlacementHero.getPlacement(placement, {
         offsetX,
         offsetY,
@@ -147,6 +147,7 @@ const PopoverV2 = ({
   }, [contentElement]);
 
   useEffect(() => {
+    if (!watchResizing) return;
     if (!contentElement) return;
 
     const handleResize = (entries: ResizeObserverEntry[]) => {

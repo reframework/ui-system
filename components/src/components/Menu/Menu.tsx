@@ -62,6 +62,7 @@ const Menu = ({
   // keep open (do not close after click item is caught)
   triggerAction = 'click',
   disablePortal = false,
+  watchResizing,
 }: MenuProps) => {
   // Saves ref to the state in order to catch the un/mounting
   const triggerRef = React.useRef<HTMLElement>(null);
@@ -151,6 +152,7 @@ const Menu = ({
         onClickAway={closeMenu}
         open={isOpen}
         disablePortal={disablePortal}
+        watchResizing={watchResizing}
       >
         <Paper {...paperProps}>
           <MenuList
