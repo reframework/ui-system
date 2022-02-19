@@ -17,6 +17,7 @@ type Props = {
   //
   closeOnSelect?: boolean;
   focusable?: boolean;
+  role?: string;
   // TODO: add those props;
   // icon?: React.ReactNode;
 };
@@ -27,19 +28,19 @@ const focus = (node: any) => {
 
 const MenuItem = ({
   autoFocus,
-  as = 'li',
   onClick,
   selected,
   divider,
   className,
   children = null,
   disabled,
+  role,
+  ...props
 }: Props) => {
   const { close } = useMenuContext();
   const { activeDescendant } = useDescendantContext();
 
-  const Root = as as any;
-  const ref = React.useRef<HTMLElement | null>(null);
+  const ref = React.useRef<HTMLLIElement | null>(null);
   const shouldFocus = ref.current?.isSameNode(activeDescendant);
 
   const classNames = getClassName({
@@ -72,7 +73,7 @@ const MenuItem = ({
   }, []);
 
   return (
-    <Root
+    <li
       role="menuitem"
       ref={ref}
       onClick={handleClick}
@@ -80,9 +81,10 @@ const MenuItem = ({
       aria-disabled={disabled}
       onMouseEnter={handleMouseEnter}
       tabIndex={shouldFocus ? 0 : -1}
+      {...props}
     >
       {children}
-    </Root>
+    </li>
   );
 };
 

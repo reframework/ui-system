@@ -21,7 +21,7 @@ const Merge = React.forwardRef<any, MergeProps>((props, parentRef) => {
       const { [propKey]: childProp } = child.props;
       if (isFunction(propValue) && isFunction(childProp)) {
         // compose events
-        acc[propKey] = pipeCallbacks(propValue);
+        acc[propKey] = pipeCallbacks(propValue, childProp);
         return acc;
       }
 

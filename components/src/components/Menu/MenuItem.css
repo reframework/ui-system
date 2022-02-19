@@ -6,8 +6,10 @@
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-regular);
   padding: var(--spacing-xxs) var(--spacing-s);
-  position: relative;
+  /* position: relative; */
   outline: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   &:hover,
   &:focus {

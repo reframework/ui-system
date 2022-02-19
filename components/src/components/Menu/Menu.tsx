@@ -1,7 +1,7 @@
 import React from 'react';
 import Paper, { PaperProps } from '../Paper/Paper';
 import MenuItem from './MenuItem';
-import { isNumber, useControlledState } from '../../utils';
+import { isFunction, isNumber, useControlledState } from '../../utils';
 import { createContext } from '../../utils/context';
 import { cancelEvent, createKeyboardHandler } from './utils';
 import { MenuList } from './MenuList';
@@ -141,7 +141,7 @@ const Menu = ({
         ref={triggerRef}
         tabIndex={0}
       >
-        {trigger}
+        {isFunction(trigger) ? trigger.call(null, { isOpen }) : trigger}
       </Merge>
       <PopoverV2
         matchOriginWidth={matchOriginWidth}

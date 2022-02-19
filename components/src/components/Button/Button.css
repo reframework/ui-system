@@ -4,7 +4,7 @@
   background-color: transparent;
   /* TODO: add border-radius token */
   border-radius: var(--spacing-xxxs);
-  border: none;
+  border: 1px solid transparent;
   box-sizing: border-box;
   cursor: pointer;
   outline: none;
@@ -89,7 +89,7 @@
 
   &.primary {
     background-color: var(--color-scale-blue-4);
-    &:not(:active)&:hover {
+    &:hover {
       background-color: var(--color-scale-blue-3);
     }
   }
@@ -97,7 +97,7 @@
   &.secondary {
     --__shadow-color: var(--color-scale-pink-1);
     background-color: var(--color-scale-pink-4);
-    &:not(:active)&:hover {
+    &:hover {
       background-color: var(--color-scale-pink-3);
     }
   }
@@ -105,7 +105,7 @@
   &.success {
     --__shadow-color: var(--color-scale-green-1);
     background-color: var(--color-scale-green-4);
-    &:not(:active)&:hover {
+    &:hover {
       background-color: var(--color-scale-green-3);
     }
   }
@@ -113,7 +113,7 @@
   &.warning {
     --__shadow-color: var(--color-scale-yellow-1);
     background-color: var(--color-scale-yellow-4);
-    &:not(:active)&:hover {
+    &:hover {
       background-color: var(--color-scale-yellow-3);
     }
   }
@@ -121,7 +121,7 @@
   &.error {
     --__shadow-color: var(--color-scale-red-1);
     background-color: var(--color-scale-red-4);
-    &:not(:active)&:hover {
+    &:hover {
       background-color: var(--color-scale-red-3);
     }
   }
@@ -129,7 +129,7 @@
   &.neutral {
     --__shadow-color: var(--color-scale-gray-1);
     background-color: var(--color-scale-gray-4);
-    &:not(:active)&:hover {
+    &:hover {
       background-color: var(--color-scale-gray-3);
     }
   }
@@ -141,7 +141,7 @@
   &.primary {
     --__shadow-color: var(--color-scale-blue-1);
     color: var(--color-scale-blue-4);
-    &:not(:active)&:hover {
+    &:hover {
       background-color: var(--color-scale-blue-0);
     }
   }
@@ -149,7 +149,7 @@
   &.secondary {
     --__shadow-color: var(--color-scale-pink-1);
     color: var(--color-scale-pink-3);
-    &:not(:active)&:hover {
+    &:hover {
       background-color: var(--color-scale-pink-0);
     }
   }
@@ -157,7 +157,7 @@
   &.success {
     --__shadow-color: var(--color-scale-green-1);
     color: var(--color-scale-green-4);
-    &:not(:active)&:hover {
+    &:hover {
       background-color: var(--color-scale-green-0);
     }
   }
@@ -165,7 +165,7 @@
   &.warning {
     --__shadow-color: var(--color-scale-yellow-1);
     color: var(--color-scale-yellow-4);
-    &:not(:active)&:hover {
+    &:hover {
       background-color: var(--color-scale-yellow-0);
     }
   }
@@ -173,7 +173,7 @@
   &.error {
     --__shadow-color: var(--color-scale-red-1);
     color: var(--color-scale-red-4);
-    &:not(:active)&:hover {
+    &:hover {
       background-color: var(--color-scale-red-0);
     }
   }
@@ -181,7 +181,7 @@
   &.neutral {
     --__shadow-color: var(--color-scale-gray-1);
     color: var(--color-scale-gray-4);
-    &:not(:active)&:hover {
+    &:hover {
       background-color: var(--color-scale-gray-1);
     }
   }
@@ -192,7 +192,7 @@
     --__shadow-color: var(--color-scale-blue-1);
     color: var(--color-scale-blue-4);
     &:focus,
-    &:not(:active)&:hover {
+    &:hover {
       background-color: var(--color-scale-blue-0);
     }
   }
@@ -201,7 +201,7 @@
     --__shadow-color: var(--color-scale-pink-1);
     color: var(--color-scale-pink-4);
     &:focus,
-    &:not(:active)&:hover {
+    &:hover {
       background-color: var(--color-scale-pink-0);
     }
   }
@@ -210,7 +210,7 @@
     --__shadow-color: var(--color-scale-green-1);
     color: var(--color-scale-green-4);
     &:focus,
-    &:not(:active)&:hover {
+    &:hover {
       background-color: var(--color-scale-green-0);
     }
   }
@@ -219,7 +219,7 @@
     --__shadow-color: var(--color-scale-yellow-1);
     color: var(--color-scale-yellow-4);
     &:focus,
-    &:not(:active)&:hover {
+    &:hover {
       background-color: var(--color-scale-yellow-0);
     }
   }
@@ -228,7 +228,7 @@
     --__shadow-color: var(--color-scale-red-1);
     color: var(--color-scale-red-4);
     &:focus,
-    &:not(:active)&:hover {
+    &:hover {
       background-color: var(--color-scale-red-0);
     }
   }
@@ -237,7 +237,7 @@
     --__shadow-color: var(--color-scale-gray-2);
     color: var(--color-scale-gray-4);
     &:focus,
-    &:not(:active)&:hover {
+    &:hover {
       background-color: var(--color-scale-gray-1);
     }
   }
@@ -256,7 +256,7 @@
   &.primary {
     color: var(--color-scale-blue-4);
     &:focus,
-    &:not(:active)&:hover {
+    &:hover {
       color: var(--color-scale-blue-3);
     }
   }
@@ -265,7 +265,7 @@
     --__main-color: transparent;
     color: var(--color-scale-pink-4);
     &:focus,
-    &:not(:active)&:hover {
+    &:hover {
       color: var(--color-scale-pink-3);
     }
   }
@@ -273,7 +273,7 @@
   &.success {
     color: var(--color-scale-green-4);
     &:focus,
-    &:not(:active)&:hover {
+    &:hover {
       color: var(--color-scale-green-3);
     }
   }
@@ -281,7 +281,7 @@
   &.warning {
     color: var(--color-scale-yellow-4);
     &:focus,
-    &:not(:active)&:hover {
+    &:hover {
       color: var(--color-scale-yellow-3);
     }
   }
@@ -289,7 +289,7 @@
   &.error {
     color: var(--color-scale-red-4);
     &:focus,
-    &:not(:active)&:hover {
+    &:hover {
       color: var(--color-scale-red-3);
     }
   }
@@ -298,7 +298,7 @@
     --__main-color: transparent;
     color: var(--color-scale-gray-4);
     &:focus,
-    &:not(:active)&:hover {
+    &:hover {
       color: var(--color-scale-gray-3);
     }
   }

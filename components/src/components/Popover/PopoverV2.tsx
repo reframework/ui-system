@@ -1,6 +1,5 @@
 import React, { CSSProperties, useEffect, useState } from 'react';
-import { getPlacement } from './placementUtilsV2';
-import { Axis, PlacementAxis, Placement } from './types';
+import { PlacementHero, Axis, Placement } from './placementUtilsV2';
 import { useMounted } from './hooks';
 import { isFunction } from '../../utils';
 import { Portal } from '../Portal';
@@ -30,11 +29,6 @@ export interface PopoverProps {
   role?: string;
   position?: 'fixed' | 'absolute';
 }
-
-const getPositionHandlers = (placement: Placement) => {
-  const [x, y] = placement.split('-') as [PlacementAxis, PlacementAxis];
-  return [getPlacement[x], getPlacement[y]];
-};
 
 const getStyles = (styles?: CSSProperties) => ({
   ...styles,
@@ -71,7 +65,8 @@ const PopoverV2 = ({
   const isMounted = useMounted();
   const [internalOpen, setInternalOpen] = useState<boolean>(false);
   const [styles, setStyles] = useState<CSSProperties>(getStyles(style));
-  const [contentRoot, setContentRoot] = useState<HTMLDivElement | null>(null);
+  const [contentElement, setContentElement] =
+    useState<HTMLDivElement | null>(null);
 
   const handleClickAway = (e: Event) => {
     if (!isFunction(onClickAway)) return;
@@ -80,14 +75,14 @@ const PopoverV2 = ({
 
   const setStyle = () => {
     if (!internalOpen) return;
-    if (!contentRoot) return console.error('Unexpected behavior');
+    if (!contentElement) return console.error('Unexpected behavior');
 
     // let viewportType;
     let triggerRect;
     let viewportRect;
 
     if (true || position === 'absolute') {
-      const parent = contentRoot.offsetParent;
+      const parent = contentElement.offsetParent;
       // TODO: handle parent table elements
       viewportRect = (parent || document.body).getBoundingClientRect();
       triggerRect = originElement?.getBoundingClientRect();
@@ -104,22 +99,29 @@ const PopoverV2 = ({
       return;
     }
 
-    const popoverRect = contentRoot.getBoundingClientRect();
-    const [getPositionX, getPositionY] = getPositionHandlers(placement);
+    const popoverRect = contentElement.getBoundingClientRect();
+    const viewportOffset = PlacementHero.getViewportOffset(
+      triggerRect,
+      viewportRect
+    );
 
     setStyles({
       ...getStyles(style),
       ...getOriginWidth(originElement, matchOriginWidth),
-      ...getPositionX(Axis.x, viewportRect, triggerRect, popoverRect, offsetX),
-      ...getPositionY(Axis.y, viewportRect, triggerRect, popoverRect, offsetY),
+      ...PlacementHero.getPlacement(placement, {
+        offset: offsetX,
+        popoverRect,
+        triggerRect,
+        viewportOffset,
+      }),
     });
   };
 
   useEffect(() => {
     if (!internalOpen) return;
-    if (!contentRoot) return;
+    if (!contentElement) return;
     setStyle();
-  }, [internalOpen, contentRoot, placement, originElement]);
+  }, [internalOpen, contentElement, placement, originElement]);
 
   useEffect(() => {
     setInternalOpen($open);
@@ -132,7 +134,7 @@ const PopoverV2 = ({
   }, [internalOpen]);
 
   useEffect(() => {
-    if (contentRoot) {
+    if (contentElement) {
       addClickListener(handleClickAway);
       addResizeListener(setStyle);
     }
@@ -141,10 +143,29 @@ const PopoverV2 = ({
       removeClickListener(handleClickAway);
       removeResizeListener(setStyle);
     };
-  }, [contentRoot]);
+  }, [contentElement]);
+
+  useEffect(() => {
+    if (!contentElement) return;
+
+    const handleResize = (entries: ResizeObserverEntry[]) => {
+      const [{ target }] = entries;
+      if (target === contentElement || target === originElement) {
+        setStyle();
+      }
+    };
+
+    const observer = new ResizeObserver(handleResize);
+    observer.observe(contentElement);
+    if (originElement) observer.observe(originElement);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [contentElement, originElement]);
 
   const content = internalOpen ? (
-    <Merge onClick={stopPropagation} ref={setContentRoot} style={styles}>
+    <Merge onClick={stopPropagation} ref={setContentElement} style={styles}>
       {children}
     </Merge>
   ) : null;

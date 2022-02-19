@@ -1,4 +1,24 @@
-import { Axis, ClientRect } from './types';
+export type PlacementAxis = 'before' | 'end' | 'center' | 'start' | 'after';
+export type Placement = `${PlacementAxis}-${PlacementAxis}`;
+
+export enum ViewportType {
+  window = 'window',
+  body = 'body',
+}
+
+export enum Axis {
+  x = 'x',
+  y = 'y',
+}
+
+export type ClientRect = {
+  top: number;
+  left: number;
+  right: number;
+  bottom: number;
+  width: number;
+  height: number;
+};
 
 export const viewport = {
   getBoundingClientRect: (): ClientRect => {
@@ -24,99 +44,138 @@ const AxisProperties = {
   },
 };
 
-const ViewportOffsetV2 = (
-  elementRect: ClientRect,
-  viewportRect: ClientRect
-) => {
-  return {
-    top: elementRect.top - viewportRect.top,
-    left: elementRect.left - viewportRect.left,
-  };
+const AxisPropertiesRTL = {
+  [Axis.x]: {
+    size: 'width' as const,
+    from: 'right' as const,
+  },
+  [Axis.y]: {
+    size: 'height' as const,
+    from: 'bottom' as const,
+  },
 };
 
-function before(
-  axis: Axis,
-  viewportRect: ClientRect,
-  triggerRect: ClientRect,
-  popoverRect: ClientRect,
-  offset = 0
-) {
-  const { from, size } = AxisProperties[axis];
-  return {
-    [from]:
-      ViewportOffsetV2(triggerRect, viewportRect)[from] -
-      popoverRect[size] +
-      offset,
-  };
+interface ViewportOffset {
+  top: number;
+  left: number;
+  bottom: number;
+  right: number;
 }
 
-function start(
-  axis: Axis,
-  viewportRect: ClientRect,
-  triggerRect: ClientRect,
-  _popoverRect: ClientRect,
-  offsetX = 0
-) {
-  const { from } = AxisProperties[axis];
-  return {
-    [from]: ViewportOffsetV2(triggerRect, viewportRect)[from] + offsetX,
-  };
+interface PositioningParams {
+  axis: Axis;
+  viewportOffset: ViewportOffset;
+  triggerRect: ClientRect;
+  popoverRect?: ClientRect;
+  offset?: number;
 }
 
-function center(
-  axis: Axis,
-  viewportRect: ClientRect,
-  triggerRect: ClientRect,
-  popoverRect: ClientRect,
-  offset = 0
-) {
-  const { from, size } = AxisProperties[axis];
-  return {
-    [from]:
-      ViewportOffsetV2(triggerRect, viewportRect)[from] +
-      triggerRect[size] / 2 -
-      popoverRect[size] / 2 +
-      offset,
-  };
-}
+export class PlacementHero {
+  static getPlacement(placement: Placement, params: PositioningParams) {
+    const [getX, getY] = PlacementHero.getPlacementHandlers(placement);
+    // const { triggerRect, viewportOffset, offset, popoverRect } = params;
 
-function end(
-  axis: Axis,
-  viewportRect: ClientRect,
-  triggerRect: ClientRect,
-  popoverRect: ClientRect,
-  offset = 0
-) {
-  const { from, size } = AxisProperties[axis];
-  return {
-    [from]:
-      ViewportOffsetV2(triggerRect, viewportRect)[from] +
-      triggerRect[size] -
-      popoverRect[size] +
-      offset,
+    return {
+      ...getX({ ...params, axis: Axis.x }),
+      ...getY({ ...params, axis: Axis.y }),
+    };
+    //
+  }
+  /**
+   *
+   */
+  static getPlacementHandlers = (placement: Placement) => {
+    const [x, y] = placement.split('-') as [PlacementAxis, PlacementAxis];
+    return [PlacementHero[x], PlacementHero[y]];
   };
-}
 
-function after(
-  axis: Axis,
-  viewportRect: ClientRect,
-  triggerRect: ClientRect,
-  _popoverRect: ClientRect,
-  offset = 0
-) {
-  const { from, size } = AxisProperties[axis];
-  return {
-    [from]:
-      ViewportOffsetV2(triggerRect, viewportRect)[from] +
-      triggerRect[size] +
-      offset,
+  /**
+   *
+   */
+  static getViewportOffset = (
+    elementRect: ClientRect,
+    viewportRect: ClientRect
+  ): ViewportOffset => {
+    return {
+      top: elementRect.top - viewportRect.top,
+      left: elementRect.left - viewportRect.left,
+      bottom: viewportRect.bottom - elementRect.bottom,
+      right: viewportRect.right - elementRect.right,
+    };
   };
-}
 
-export const getPlacement = {
-  after,
-  before,
-  center,
-  end,
-  start,
-};
+  /**
+   *
+   */
+  static before({
+    axis,
+    viewportOffset,
+    triggerRect,
+    offset = 0,
+  }: PositioningParams) {
+    const { from, size } = AxisPropertiesRTL[axis];
+    return {
+      [from]: viewportOffset[from] + triggerRect[size] + offset,
+    };
+  }
+
+  /**
+   *
+   */
+  static start({ axis, viewportOffset, offset = 0 }: PositioningParams) {
+    const { from } = AxisProperties[axis];
+    return {
+      [from]: viewportOffset[from] + offset,
+    };
+  }
+
+  /**
+   *
+   */
+  static center({
+    axis,
+    viewportOffset,
+    popoverRect,
+    triggerRect,
+    offset = 0,
+  }: PositioningParams) {
+    if (!popoverRect) {
+      console.error('No popover ClientRect provided');
+      return {};
+    }
+
+    const { from, size } = AxisProperties[axis];
+    return {
+      [from]:
+        viewportOffset[from] +
+        triggerRect[size] / 2 -
+        popoverRect[size] / 2 +
+        offset,
+    };
+  }
+
+  /**
+   *
+   */
+  static end({ axis, viewportOffset, offset = 0 }: PositioningParams) {
+    const { from } = AxisPropertiesRTL[axis];
+    return {
+      [from]: viewportOffset[from] + offset,
+    };
+  }
+
+  /**
+   *
+   */
+  static after({
+    axis,
+    viewportOffset,
+    triggerRect,
+    offset = 0,
+  }: PositioningParams) {
+    const { from, size } = AxisProperties[axis];
+    return {
+      [from]: viewportOffset[from] + triggerRect[size] + offset,
+    };
+  }
+}
