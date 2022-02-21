@@ -14,13 +14,16 @@
     "@storybook/addon-storysource": "^6.4.19",
     "@storybook/addons": "^6.4.18",
     "@storybook/react": "^6.3.10",
+    "@storybook/source-loader": "^6.4.19",
     "@storybook/theming": "^6.4.18",
     "@types/react": "^17.0.27",
     "autoprefixer": "^10.3.7",
     "babel-loader": "^8.2.2",
+    "css": "^3.0.0",
     "gh-pages": "^3.2.3",
     "mini-css-extract-plugin": "^2.4.2",
-    "postcss": "^8.3.9",
+    "post": "^0.0.1",
+    "postcss": "^8.4.6",
     "postcss-each": "^1.1.0",
     "postcss-import": "^14.0.2",
     "postcss-loader": "^6.1.1",
@@ -42,7 +45,10 @@
     "build-storybook-docs": "build-storybook --docs",
     "build-storybook": "build-storybook",
     "predeploy": "npm run build-storybook",
-    "deploy-storybook": "gh-pages -d storybook-static"
+    "deploy-storybook": "gh-pages -d storybook-static",
+    "docz:dev": "docz dev",
+    "docz:build": "docz build",
+    "docz:serve": "docz build && docz serve"
   },
   "version": "0.0.1"
 }

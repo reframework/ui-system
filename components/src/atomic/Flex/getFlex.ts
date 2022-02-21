@@ -1,6 +1,6 @@
 import { getClassName } from '@reframework/classnames';
 import { AtomicContentPlacementProps } from '../Common/contentPlacement';
-import styles from './flex.css?module';
+import styles from './flex.module.css?module';
 
 export interface AtomicFlexProps extends AtomicContentPlacementProps {
   alignSelf?: string;
@@ -22,13 +22,14 @@ export const getFlex = <T extends AtomicFlexProps>(props: T) => {
     // flex
     alignSelf,
     placeSelf,
-    direction,
+    direction = 'row',
     justifySelf,
-    flexWrap,
+    flexWrap = 'nowrap',
     ...restProps
   } = props;
 
   const className = getClassName({
+    [styles.flex]: true,
     [styles[`alignContent-${alignContent}`]]: Boolean(alignContent),
     [styles[`justifyContent-${justifyContent}`]]: Boolean(justifyContent),
     [styles[`placeContent-${placeContent}`]]: Boolean(placeContent),

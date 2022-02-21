@@ -11,10 +11,19 @@ const pipeCallbacks =
     fns.forEach((fn) => fn?.(...args));
   };
 
+const mergeStyles = (styleA: {}, styleB: {}) => {
+  return {
+    style: {
+      ...(styleA || {}),
+      ...(styleB || {}),
+    },
+  };
+};
+
 const Merge = React.forwardRef<any, MergeProps>((props, parentRef) => {
   const child = React.Children.only(props.children) as React.ReactElement;
 
-  const { children: _, ...parentProps } = props;
+  const { children: _, style, ...parentProps } = props;
 
   const mergedProps = Object.entries(parentProps).reduce(
     (acc, [propKey, propValue]) => {
@@ -36,6 +45,7 @@ const Merge = React.forwardRef<any, MergeProps>((props, parentRef) => {
 
   const newChildProps = {
     ...mergedProps,
+    ...mergeStyles(child.props.style, style),
     ...cloneChildRef(child, parentRef),
   };
 

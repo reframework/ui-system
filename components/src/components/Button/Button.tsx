@@ -1,8 +1,8 @@
-import React, { useImperativeHandle, useRef } from 'react';
-import styles from './Button.css?module';
+import React, { useRef } from 'react';
 import { getClassName } from '@reframework/classnames';
 import { useWave } from '../Wave/useWave';
 import { forkRef } from '../../utils/forkRef';
+import styles from './Button.module.css?module?module';
 
 export interface ButtonProps {
   /**

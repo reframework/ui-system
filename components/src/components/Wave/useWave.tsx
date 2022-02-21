@@ -1,5 +1,5 @@
 import { MutableRefObject, useRef, useEffect } from 'react';
-import wave from './Wave.css?module';
+import wave from './Wave.module.css?module';
 
 export const useWave = (ref: MutableRefObject<HTMLElement | null>) => {
   const timeout = useRef<number>();

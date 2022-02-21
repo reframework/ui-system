@@ -1,5 +1,5 @@
 import { getClassName } from '@reframework/classnames';
-import styles from './spacing.css?module';
+import styles from './spacing.module.css?module?module';
 
 type Size = 'xxxs' | 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl' | 'xxxl';
 

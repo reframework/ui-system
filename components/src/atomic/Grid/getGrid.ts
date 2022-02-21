@@ -1,6 +1,6 @@
 import { getClassName } from '@reframework/classnames';
 import { AtomicContentPlacementProps } from '../Common/contentPlacement';
-import styles from './grid.css?module';
+import styles from './grid.module.css?module';
 
 export interface AtomicGridProps extends AtomicContentPlacementProps {
   cols?: number;

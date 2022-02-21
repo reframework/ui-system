@@ -100,21 +100,19 @@ const PopoverV2 = ({
     }
 
     const popoverRect = contentElement.getBoundingClientRect();
-    const viewportOffset = PlacementHero.getViewportOffset(
+
+    const placementStyles = PlacementHero.getPlacement(placement, {
+      offsetX,
+      offsetY,
+      targetRect: popoverRect,
       triggerRect,
-      viewportRect
-    );
+      offsetParentRect: viewportRect,
+    });
 
     setStyles({
       ...getStyles(style),
       ...getWidth(triggerRect, matchOriginWidth),
-      ...PlacementHero.getPlacement(placement, {
-        offsetX,
-        offsetY,
-        popoverRect,
-        triggerRect,
-        viewportOffset,
-      }),
+      ...placementStyles,
     });
   };
 
@@ -176,7 +174,11 @@ const PopoverV2 = ({
     return content;
   }
 
-  return <Portal style={{ zIndex }}>{content}</Portal>;
+  return (
+    <Portal style={{ zIndex }} id="popover-root">
+      {content}
+    </Portal>
+  );
 };
 
 export default PopoverV2;

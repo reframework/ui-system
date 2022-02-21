@@ -1,59 +1,80 @@
 import React from 'react';
-import { Story, Canvas, ArgsTable, Source } from '@storybook/addon-docs';
+
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Button } from '../../components/Button';
 import { Menu } from '../../components/Menu';
+import CircularLoader from '../../components/CircularProgress/Circular';
+import { Flex } from '../../components/Flex';
+import { Box } from '../../components/Box';
+import { Docs } from './MenuDocs';
+// import source from '!!raw-loader!./Menu.mdx';
 
 export default {
   title: 'Menu/Menu',
   id: 'Menu/Menu',
   component: Menu,
+  subcomponents: {
+    MenuList: Menu.MenuList,
+    MenuItem: Menu.MenuItem,
+  },
+  parameters: {
+    docs: {
+      page: Docs,
+    },
+  },
   argTypes: {
     placement: {
       options: [
-        'before-before',
-        'before-end',
-        'before-center',
-        'before-start',
-        'before-after',
-        'end-before',
-        'end-end',
-        'end-center',
-        'end-start',
+        'start-after',
         'end-after',
-        'center-before',
-        'center-end',
-        'center-center',
-        'center-start',
-        'center-after',
         'start-before',
+        'before-start',
+        'before-before',
+        'after-after',
         'start-end',
         'start-center',
-        'start-start',
-        'start-after',
-        'after-before',
-        'after-end',
-        'after-center',
-        'after-start',
-        'after-after',
       ],
       control: { type: 'select' },
     },
   },
 } as ComponentMeta<typeof Menu>;
 
-//
+export const Intro: ComponentStory<typeof Menu> = (props) => {
+  return (
+    <div
+      style={{
+        position: 'relative',
+        marginTop: 50,
+        height: 400,
+        width: 500,
+        marginLeft: 10,
+        backgroundColor: 'white',
+      }}
+    >
+      <Menu {...props} trigger={<Button variant="outlined">Open Menu</Button>}>
+        <Menu.MenuItem key="1">Share...</Menu.MenuItem>
+        <Menu.MenuItem key="3">Move...</Menu.MenuItem>
+        <Menu.MenuItem key="4">Rename...</Menu.MenuItem>
+        <Menu.MenuItem key="5" disabled>
+          Delete...
+        </Menu.MenuItem>
+      </Menu>
+    </div>
+  );
+};
 
-export const Intro: ComponentStory<typeof Menu> = (props) => (
-  <Menu {...props} trigger={<Button variant="outlined">Open Menu</Button>}>
-    <Menu.MenuItem key="1">Share...</Menu.MenuItem>
-    <Menu.MenuItem key="3">Move...</Menu.MenuItem>
-    <Menu.MenuItem key="4">Rename...</Menu.MenuItem>
-    <Menu.MenuItem key="5" disabled>
-      Delete...
-    </Menu.MenuItem>
-  </Menu>
-);
+Intro.bind({});
+
+Intro.args = {
+  children: 'Popover',
+  placement: 'start-after',
+  matchOriginWidth: true,
+  // disablePortal: false,
+  autoFocus: false,
+  // Popover props
+};
+
+//
 
 export const RenderTrigger: ComponentStory<typeof Menu> = (props) => (
   <Menu
@@ -73,85 +94,35 @@ export const RenderTrigger: ComponentStory<typeof Menu> = (props) => (
   </Menu>
 );
 
-export const Anchors: ComponentStory<typeof Menu> = (props) => (
-  <Menu
-    {...props}
-    trigger={(params: { isOpen: boolean }) => (
-      <Button variant={params.isOpen ? 'outlined' : 'solid'}>
-        {params.isOpen ? 'Close Menu' : 'Open Menu'}
-      </Button>
-    )}
-  >
-    <Menu.MenuItem
-      href={'https://reactjs.org'}
-      target="_blank"
-      rel="noopener noreferrer"
-      key="1"
-    >
-      React
-    </Menu.MenuItem>
-    <Menu.MenuItem
-      href={'https://angularjs.org'}
-      target="_blank"
-      rel="noopener noreferrer"
-      key="3"
-    >
-      Angular
-    </Menu.MenuItem>
-    <Menu.MenuItem
-      href={'https://vuejs.org'}
-      target="_blank"
-      rel="noopener noreferrer"
-      key="4"
-    >
-      Vue
-    </Menu.MenuItem>
-    <Menu.MenuItem
-      href={'https://emberjs.com/'}
-      target="_blank"
-      rel="noopener noreferrer"
-      key="5"
-      disabled
-    >
-      Ember
-    </Menu.MenuItem>
-  </Menu>
-);
-
-export const SourceStory: ComponentStory<typeof Menu> = () => (
-  <div style={{ zIndex: 0, position: 'relative' }}>
-    <Source of="Intro" dark />
-  </div>
-);
-
-export const ArgsTableStory: ComponentStory<typeof Menu> = () => (
-  <div style={{ zIndex: 0, position: 'relative' }}>
-    <ArgsTable of="." />
-  </div>
-);
-
-Intro.args = {
-  children: 'Popover',
-  placement: 'start-after',
-  anchorWidth: true,
-  // disablePortal: false,
-  autoFocus: false,
-  keepOpen: false,
-  // Popover props
+RenderTrigger.parameters = {
+  docs: {
+    source: {
+      type: 'code',
+    },
+  },
 };
 
-const options = Array(100)
+/**
+ *
+ *
+ *
+ *
+ *
+ */
+const options = Array(20)
   .fill(0)
   .map(() => Math.random() * 1000000);
 
 export const Scrollable: ComponentStory<typeof Menu> = (props) => (
   <Menu
     {...props}
-    trigger={(params: { isOpen: boolean }) => (
-      <Button variant={params.isOpen ? 'outlined' : 'solid'}>
-        {params.isOpen ? 'Close Menu' : 'Open Menu'}
-      </Button>
-    )}
+    paperProps={{
+      style: {
+        maxHeight: 200,
+        overflowY: 'auto',
+      },
+    }}
+    trigger={<Button variant={'outlined'}>{'Open Menu'}</Button>}
   >
     {options.map((it, idx) => {
       return <Menu.MenuItem key={idx}>{it}</Menu.MenuItem>;
@@ -160,39 +131,70 @@ export const Scrollable: ComponentStory<typeof Menu> = (props) => (
 );
 
 Scrollable.parameters = {
-  layout: 'centered',
+  docs: {
+    source: {
+      type: 'code',
+    },
+  },
 };
 
-export const Resize: ComponentStory<typeof Menu> = (props) => {
-  const [flag, setFlag] = React.useState(0);
+/**
+ *
+ *
+ *
+ *
+ */
+
+export const WatchResizing: ComponentStory<typeof Menu> = (props) => {
+  const [step, setStep] = React.useState(0);
+  const timeout = React.useRef<number>();
 
   const onClick = () => {
-    setFlag(1);
-    setTimeout(() => setFlag(2), 1000);
+    if (step === 0) {
+      setStep(1);
+      timeout.current = window.setTimeout(() => setStep(2), 1000);
+    }
+  };
+
+  const handleClose = () => {
+    setStep(0);
+    clearTimeout(timeout.current);
   };
 
   return (
     <Menu
-      {...props}
+      onClose={handleClose}
       watchResizing
+      placement={props.placement}
       trigger={
         <Button variant={'solid'} onClick={onClick}>
-          {flag === 0 && 'Open Menu'}
-          {flag === 1 && 'Loading ...'}
-          {flag === 2 && 'So looooooooooooong button label'}
+          {step === 0 && 'Open Menu'}
+          {step === 1 && (
+            <Flex alignItems="center">
+              <Box mr="xxs">
+                <CircularLoader size={15} />
+              </Box>
+              Loading
+            </Flex>
+          )}
+          {step === 2 && 'So looooooooooooong label'}
         </Button>
       }
     >
-      <Menu.MenuItem key="1">Share...</Menu.MenuItem>
-      <Menu.MenuItem key="3">Move...</Menu.MenuItem>
-      <Menu.MenuItem key="4">Rename...</Menu.MenuItem>
+      <Menu.MenuItem key="1">Menu item</Menu.MenuItem>
+      <Menu.MenuItem key="3">Menu item</Menu.MenuItem>
+      <Menu.MenuItem key="4">Menu item</Menu.MenuItem>
       <Menu.MenuItem key="5" disabled>
-        Delete...
+        Menu item
       </Menu.MenuItem>
     </Menu>
   );
 };
 
-Resize.parameters = {
-  layout: 'centered',
+WatchResizing.parameters = {
+  docs: {
+    source: {
+      type: 'code',
+    },
+  },
 };

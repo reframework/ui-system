@@ -16,6 +16,22 @@ module.exports = {
     const hasCssRule = cssRuleIdx !== -1;
     const postCssRule = lastOf(config.module.rules[cssRuleIdx].use);
 
+    // config.module.rules.push({
+    //   test: /\.stories\.tsx?$/,
+    //   use: [
+    //     {
+    //       loader: require.resolve('@storybook/source-loader'),
+    //       options: {
+    //         injectParameters: true,
+    //         inspectLocalDependencies: false,
+    //         inspectDependencies: false,
+    //         parser: 'typescript',
+    //       },
+    //     },
+    //   ],
+    //   enforce: 'pre',
+    // });
+
     const cssRule = {
       test: /\.css$/i,
       sideEffects: true,
@@ -59,8 +75,13 @@ module.exports = {
     // '@reframework/preset-storybook',
     '@storybook/addon-links',
     '@storybook/addon-essentials',
-    '@storybook/addon-storysource',
-
+    {
+      name: '@storybook/addon-docs',
+      options: {
+        configureJSX: false,
+        sourceLoaderOptions: null,
+      },
+    },
     {
       name: '@storybook/addon-postcss',
       options: {
@@ -69,6 +90,7 @@ module.exports = {
         },
       },
     },
+    '@storybook/addon-storysource',
   ],
   managerHead: injectTokens,
   previewHead: injectTokens,

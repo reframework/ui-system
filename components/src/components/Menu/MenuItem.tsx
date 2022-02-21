@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './MenuItem.css?module';
+import styles from './MenuItem.module.css?module';
 import { getClassName } from '@reframework/classnames';
 import { useMenuContext } from './Menu';
 import { useDescendantContext } from './useActiveDescendant';

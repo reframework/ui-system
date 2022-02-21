@@ -11,7 +11,7 @@ import {
   getActiveEl,
   getEnabledItems,
 } from './utils';
-import styles from './MenuList.css?module';
+import styles from './MenuList.module.css?module';
 import { isNumber } from '../../utils';
 
 interface MenuListProps {

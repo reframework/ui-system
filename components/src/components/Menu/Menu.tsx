@@ -22,22 +22,23 @@ export interface MenuProps {
   originElement?: HTMLElement | null;
   autoFocus?: boolean;
   children: React.ReactNode;
-  onClose?: () => {};
-  onOpen?: () => {};
+  onClose?: () => void;
+  onOpen?: () => void;
   open?: boolean;
   paperProps?: PaperProps;
   trigger?: React.ReactNode;
   triggerAction?: Action;
   // Popover props
   popoverProps?: PopoverProps;
-  placement: PopoverProps['placement'];
-  matchOriginWidth: PopoverProps['matchOriginWidth'];
-  disablePortal?: boolean;
+  placement?: PopoverProps['placement'];
+  matchOriginWidth?: PopoverProps['matchOriginWidth'];
+  portal?: boolean;
   //
   // closeOnBlur
   closeOnSelect?: boolean;
   defaultOpen?: boolean;
   preventOverflow?: boolean;
+  watchResizing?: boolean;
 }
 
 export const [MenuProvider, useMenuContext] =
@@ -61,7 +62,7 @@ const Menu = ({
   // autoSelect = true,
   // keep open (do not close after click item is caught)
   triggerAction = 'click',
-  disablePortal = false,
+  portal = false,
   watchResizing,
 }: MenuProps) => {
   // Saves ref to the state in order to catch the un/mounting
@@ -100,7 +101,7 @@ const Menu = ({
   const handleListKeyDown = createKeyboardHandler({
     onEnter: cancelEvent(closeMenu),
     onEscape: cancelEvent(closeMenu),
-    onTab: closeMenu,
+    onTab: cancelEvent(closeMenu),
   });
 
   const handleTriggerKeyDown = createKeyboardHandler({
@@ -147,12 +148,12 @@ const Menu = ({
       <PopoverV2
         matchOriginWidth={matchOriginWidth}
         placement={placement}
+        watchResizing={watchResizing}
+        disablePortal={!portal}
         {...popoverProps}
         originElement={originElement || triggerRef.current}
         onClickAway={closeMenu}
         open={isOpen}
-        disablePortal={disablePortal}
-        watchResizing={watchResizing}
       >
         <Paper {...paperProps}>
           <MenuList

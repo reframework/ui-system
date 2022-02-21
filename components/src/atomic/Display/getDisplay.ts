@@ -1,5 +1,5 @@
 import { getClassName } from '@reframework/classnames';
-import displayStyles from './display.css?module';
+import displayStyles from './display.module.css?module';
 
 export interface AtomicDisplayProps {
   display: string;

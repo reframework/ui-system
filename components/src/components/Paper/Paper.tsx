@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './Paper.css?module';
+import styles from './Paper.module.css?module';
 import { getClassName } from '@reframework/classnames';
 
 export interface PaperProps extends React.HTMLAttributes<HTMLDivElement> {

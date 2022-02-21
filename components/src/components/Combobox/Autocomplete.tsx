@@ -1,11 +1,11 @@
 import React from 'react';
-import Popover from '../Popover/Popover';
 import { defaultGetOptionLabel, defaultMatch } from './utils';
 import useCombobox from './useCombobox';
 import { AutocompleteProps } from './types';
 import Input, { InputRef } from '../Input/Input';
 import ListBox from './ListBox';
 import { isFunction, useAutoFocus } from '../../utils';
+import PopoverV2 from '../Popover/PopoverV2';
 
 const Autocomplete = ({
   ariaLabel,
@@ -105,11 +105,11 @@ const Autocomplete = ({
         tabIndex={tabIndex || 0}
         value={value as string}
       />
-      <Popover
+      <PopoverV2
         placement="start-after"
         {...PopoverProps}
-        anchorEl={inputRef.current?.wrapperNode}
-        anchorWidth={dropdownMatchSelectWidth}
+        originElement={inputRef.current?.wrapperNode}
+        matchOriginWidth={dropdownMatchSelectWidth}
         onClickAway={onClickAway}
         open={open}
       >
@@ -120,7 +120,7 @@ const Autocomplete = ({
           getOptionLabel={getOptionLabel}
           id={listBoxId}
         />
-      </Popover>
+      </PopoverV2>
     </div>
   );
 };

@@ -2,6 +2,10 @@
   display: flex;
 }
 
+.flex {
+  display: flex;
+}
+
 /* todo: move to common */
 @each $item in flex-start, flex-end, center, baseline, stretch {
   .alignItems-$(item) {
