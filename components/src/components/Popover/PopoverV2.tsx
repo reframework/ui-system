@@ -1,5 +1,5 @@
 import React, { CSSProperties, useEffect, useState } from 'react';
-import { PlacementHero, Placement } from './placementUtilsV2';
+import { PlacementHero, Placement } from './placementUtils';
 import { useMounted } from './hooks';
 import { isFunction, isNumber } from '../../utils';
 import { Portal } from '../Portal';
@@ -86,27 +86,27 @@ const PopoverV2 = ({
 
     // let viewportType;
     let triggerRect;
-    let viewportRect;
+    let offsetParentRect;
 
     if (true || position === 'absolute') {
       const parent = contentElement.offsetParent;
       // TODO: handle parent table elements
-      viewportRect = (parent || document.body).getBoundingClientRect();
+      offsetParentRect = (parent || document.body).getBoundingClientRect();
       triggerRect = originElement?.getBoundingClientRect();
     }
 
-    if (!viewportRect || !triggerRect) {
+    if (!offsetParentRect || !triggerRect) {
       return;
     }
 
-    const popoverRect = contentElement.getBoundingClientRect();
+    const targetRect = contentElement.getBoundingClientRect();
 
     const placementStyles = PlacementHero.getPlacement(placement, {
+      offsetParentRect,
       offsetX,
       offsetY,
-      targetRect: popoverRect,
+      targetRect,
       triggerRect,
-      offsetParentRect: viewportRect,
     });
 
     setStyles({
