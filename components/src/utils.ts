@@ -28,6 +28,29 @@ export const useControlledState = <T extends unknown>(params: {
     : ([uncontrolled, setUncontrolled] as const);
 };
 
+export const useControlledStateV2 = <T extends unknown>(params: {
+  controlled: T;
+  default: NonNullable<T>;
+}) => {
+  const { controlled, default: _default } = params;
+
+  // isControlled should never change
+  const { current: isControlled } = React.useRef(
+    params.controlled !== undefined
+  );
+
+  const [uncontrolled, setUncontrolled] = React.useState(_default);
+  const noOp = React.useCallback(() =>
+    // todo: fire callback
+    {}, []) as typeof setUncontrolled;
+
+  return {
+    isControlled,
+    setState: isControlled ? noOp : setUncontrolled,
+    state: isControlled ? controlled : uncontrolled,
+  };
+};
+
 export const useAriaActiveDescendant = () => {
   const [activeDescendant, setActiveDescendant] =
     React.useState<string | undefined>();

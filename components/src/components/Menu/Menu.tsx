@@ -5,7 +5,7 @@ import { isFunction, isNumber, useControlledState } from '../../utils';
 import { createContext } from '../../utils/context';
 import { cancelEvent, createKeyboardHandler } from './utils';
 import { MenuList } from './MenuList';
-import PopoverV2, { PopoverProps } from '../Popover/PopoverV2';
+import PopoverV3, { PopoverProps } from '../Popover/PopoverV3';
 import Merge from '../Trigger/Merge';
 import { Optional } from '../Combobox/types';
 
@@ -37,7 +37,8 @@ export interface MenuProps {
   // closeOnBlur
   closeOnSelect?: boolean;
   defaultOpen?: boolean;
-  preventOverflow?: boolean;
+  preventOverflowX?: boolean;
+  preventOverflowY?: boolean;
   watchResizing?: boolean;
 }
 
@@ -64,6 +65,8 @@ const Menu = ({
   triggerAction = 'click',
   portal = false,
   watchResizing,
+  preventOverflowX,
+  preventOverflowY,
 }: MenuProps) => {
   // Saves ref to the state in order to catch the un/mounting
   const triggerRef = React.useRef<HTMLElement>(null);
@@ -89,6 +92,10 @@ const Menu = ({
     setAutofocusIndex(undefined);
     onClose?.();
   };
+
+  const handleClickAway = React.useCallback(() => {
+    if (isOpen) closeMenu();
+  }, [isOpen]);
 
   const openWithTheFirstFocused = () => {
     openMenu({ focusIndex: 0 });
@@ -131,6 +138,8 @@ const Menu = ({
     }
   }, [triggerRef.current]);
 
+  console.log('$$ Menu: updated $$');
+
   return (
     <MenuProvider value={menuContext}>
       <Merge
@@ -145,14 +154,16 @@ const Menu = ({
       >
         {isFunction(trigger) ? trigger.call(null, { isOpen }) : trigger}
       </Merge>
-      <PopoverV2
+      <PopoverV3
         matchOriginWidth={matchOriginWidth}
         placement={placement}
         watchResizing={watchResizing}
         disablePortal={!portal}
+        preventOverflowX={preventOverflowX}
+        preventOverflowY={preventOverflowY}
         {...popoverProps}
         originElement={originElement || triggerRef.current}
-        onClickAway={closeMenu}
+        onClickAway={handleClickAway}
         open={isOpen}
       >
         <Paper {...paperProps}>
@@ -165,7 +176,7 @@ const Menu = ({
             {children}
           </MenuList>
         </Paper>
-      </PopoverV2>
+      </PopoverV3>
     </MenuProvider>
   );
 };

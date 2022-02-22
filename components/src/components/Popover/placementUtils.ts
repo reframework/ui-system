@@ -2,9 +2,6 @@ export type PlacementAxis = 'before' | 'end' | 'center' | 'start' | 'after';
 export type Placement = `${PlacementAxis}-${PlacementAxis}`;
 type BoundarySide = 'top' | 'left' | 'right' | 'bottom';
 
-const defaultPreventOverflow = { x: true, y: true };
-const defaultOffset = 0;
-
 /**
  *
  */
@@ -85,7 +82,8 @@ interface GetPlacementParams {
   offsetY?: number;
   targetRect: DOMRect;
   triggerRect: DOMRect;
-  preventOverflow?: { x: boolean; y: boolean };
+  preventOverflowX?: boolean;
+  preventOverflowY?: boolean;
 }
 
 interface GetOverflowParams {
@@ -110,9 +108,10 @@ export class PlacementHero {
       offsetParentRect,
       targetRect,
       triggerRect,
-      preventOverflow = defaultPreventOverflow,
-      offsetX = defaultOffset,
-      offsetY = defaultOffset,
+      preventOverflowX = false,
+      preventOverflowY = true,
+      offsetX = 0,
+      offsetY = 0,
     } = params;
 
     const {
@@ -173,7 +172,7 @@ export class PlacementHero {
     /**
      * First check that flipping a placement does make sense
      */
-    if (preventOverflow?.x && !anywayOverflowing.x) {
+    if (preventOverflowX && !anywayOverflowing.x) {
       overflowX = getOverflow({
         axis: axisX,
         computedPosition: computedPositionX,
@@ -186,7 +185,7 @@ export class PlacementHero {
     /**
      * First check that flipping a placement does make sense
      */
-    if (preventOverflow?.y && !anywayOverflowing.y) {
+    if (preventOverflowY && !anywayOverflowing.y) {
       overflowY = getOverflow({
         axis: axisY,
         computedPosition: computedPositionY,
@@ -227,6 +226,16 @@ export class PlacementHero {
         triggerRect,
       });
     }
+
+    console.log(
+      'preventOverflowX ',
+      preventOverflowX,
+      'overflowX: ',
+      overflowX,
+      'anywayOverflowing: ',
+      anywayOverflowing.x,
+      '??'
+    );
 
     return {
       ...computedPositionX,
@@ -326,7 +335,7 @@ export class PlacementHero {
     parentOffset,
     targetRect,
     triggerRect,
-    offset = defaultOffset,
+    offset = 0,
   }: PlacementHandlerParams): Partial<OffsetBoundaries> {
     if (!targetRect) {
       console.error('No popover DOMRect provided');
@@ -349,7 +358,7 @@ export class PlacementHero {
    */
   private static after({
     axis,
-    offset = defaultOffset,
+    offset = 0,
     triggerRect,
     parentOffset,
   }: PlacementHandlerParams): Partial<OffsetBoundaries> {
@@ -364,7 +373,7 @@ export class PlacementHero {
    */
   private static start({
     axis,
-    offset = defaultOffset,
+    offset = 0,
     parentOffset,
   }: PlacementHandlerParams) {
     const { from } = AxisToPropertyMap[axis];

@@ -36,25 +36,28 @@ function setPaddingRight(selectors: string[], scrollbarSize: number): void {
     const element = document.querySelector(selector) as HTMLElement | null;
 
     if (element) {
-      element.style.paddingRight = `${getPaddingRight(element) + scrollbarSize}px`;
+      element.style.paddingRight = `${
+        getPaddingRight(element) + scrollbarSize
+      }px`;
     }
   });
 }
 
-interface ScrollLock {
+interface ScrollLockManager {
   lock: () => void;
   unlock: () => void;
   isOverflowing: boolean;
   scrollbarSize: number;
 }
 
-export class ScrollLockManager implements ScrollLock {
+export class ScrollLock implements ScrollLockManager {
   private static $scrollbarSize: number;
   private $disabled: boolean;
   private $isLock: boolean;
 
   constructor(private selectors: string[]) {
-    ScrollLockManager.$scrollbarSize = ScrollLockManager.$scrollbarSize ?? getScrollbarSize(document);
+    ScrollLock.$scrollbarSize =
+      ScrollLock.$scrollbarSize ?? getScrollbarSize(document);
     this.$disabled = false;
     this.$isLock = false;
   }
@@ -72,7 +75,7 @@ export class ScrollLockManager implements ScrollLock {
   }
 
   public get scrollbarSize() {
-    return ScrollLockManager.$scrollbarSize;
+    return ScrollLock.$scrollbarSize;
   }
 
   public get isOverflowing() {
@@ -83,7 +86,7 @@ export class ScrollLockManager implements ScrollLock {
     if (this.$isLock) return;
     if (this.$disabled) return;
 
-    setPaddingRight(this.selectors, ScrollLockManager.$scrollbarSize);
+    setPaddingRight(this.selectors, ScrollLock.$scrollbarSize);
     document.body.style.overflow = 'hidden';
     this.$isLock = true;
   }
@@ -93,7 +96,7 @@ export class ScrollLockManager implements ScrollLock {
 
     // Order is matters
     document.body.style.overflow = 'inherit';
-    setPaddingRight(this.selectors, -Math.abs(ScrollLockManager.$scrollbarSize));
+    setPaddingRight(this.selectors, -Math.abs(ScrollLock.$scrollbarSize));
     this.$isLock = false;
   }
 

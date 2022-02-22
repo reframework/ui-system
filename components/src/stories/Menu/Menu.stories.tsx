@@ -25,14 +25,14 @@ export default {
   argTypes: {
     placement: {
       options: [
-        'start-after',
-        'end-after',
-        'start-before',
-        'before-start',
-        'before-before',
         'after-after',
-        'start-end',
+        'before-before',
+        'before-start',
+        'end-after',
+        'start-after',
+        'start-before',
         'start-center',
+        'start-end',
       ],
       control: { type: 'select' },
     },
@@ -51,7 +51,12 @@ export const Intro: ComponentStory<typeof Menu> = (props) => {
         backgroundColor: 'white',
       }}
     >
-      <Menu {...props} trigger={<Button variant="outlined">Open Menu</Button>}>
+      <Menu
+        {...props}
+        preventOverflowX
+        preventOverflowY
+        trigger={<Button variant="outlined">Open Menu</Button>}
+      >
         <Menu.MenuItem key="1">Share...</Menu.MenuItem>
         <Menu.MenuItem key="3">Move...</Menu.MenuItem>
         <Menu.MenuItem key="4">Rename...</Menu.MenuItem>
@@ -166,6 +171,8 @@ export const WatchResizing: ComponentStory<typeof Menu> = (props) => {
       onClose={handleClose}
       watchResizing
       placement={props.placement}
+      preventOverflowX
+      preventOverflowY
       trigger={
         <Button variant={'solid'} onClick={onClick}>
           {step === 0 && 'Open Menu'}
