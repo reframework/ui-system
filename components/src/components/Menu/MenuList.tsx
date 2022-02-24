@@ -8,6 +8,7 @@ import {
 import {
   cancelEvent,
   createKeyboardHandler,
+  focus,
   getActiveEl,
   getEnabledItems,
 } from './utils';
@@ -82,7 +83,7 @@ export const MenuList: React.FC<MenuListProps> = ({
 
     // The case when autoFocus should appear on the list
     if (!isNumber(autoFocusIndex)) {
-      listRef.current.focus();
+      focus(listRef.current);
       return;
     }
 

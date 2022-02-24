@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { firstOf, lastOf, nextOf, previousOf } from '../../utils';
 import { createContext } from '../../utils/context';
 import { Optional } from '../Combobox/types';
+import { focus } from './utils';
 
 export const [DescendantProvider, useDescendantContext] =
   createContext<{ activeDescendant: any }>();
@@ -65,7 +66,7 @@ export const useFocusManager = () => {
     },
     restoreFocus: () => {
       if (!document.contains(savedFocus.current)) return;
-      savedFocus.current?.focus();
+      focus(savedFocus.current);
     },
   };
 };

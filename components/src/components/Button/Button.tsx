@@ -61,7 +61,7 @@ const Button = React.forwardRef(
     const forkedRef = forkRef(ref, buttonRef);
 
     const waveRef = variant !== 'link' ? buttonRef : { current: null };
-    useWave(waveRef);
+    // useWave(waveRef);
 
     const classNames = getClassName({
       [styles.button]: true,

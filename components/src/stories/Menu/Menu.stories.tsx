@@ -25,14 +25,18 @@ export default {
   argTypes: {
     placement: {
       options: [
-        'after-after',
-        'before-before',
-        'before-start',
-        'end-after',
-        'start-after',
-        'start-before',
-        'start-center',
-        'start-end',
+        'top-center',
+        'top-end',
+        'top-start',
+        'left-center',
+        'left-end',
+        'left-start',
+        'bottom-center',
+        'bottom-end',
+        'bottom-start',
+        'right-center',
+        'right-end',
+        'right-start',
       ],
       control: { type: 'select' },
     },
@@ -43,12 +47,18 @@ export const Intro: ComponentStory<typeof Menu> = (props) => {
   return (
     <div
       style={{
+        height: 2000,
         position: 'relative',
         marginTop: 50,
-        height: 400,
         width: 500,
         marginLeft: 10,
         backgroundColor: 'white',
+        display: 'flex',
+        paddingTop: 10,
+        paddingLeft: 10,
+        flexDirection: 'row-reverse',
+
+        // justifyContent: 'center',
       }}
     >
       <Menu
@@ -72,7 +82,7 @@ Intro.bind({});
 
 Intro.args = {
   children: 'Popover',
-  placement: 'start-after',
+  placement: 'bottom-start',
   matchOriginWidth: true,
   // disablePortal: false,
   autoFocus: false,

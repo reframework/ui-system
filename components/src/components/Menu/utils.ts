@@ -106,3 +106,9 @@ export const getEnabledItems = (node: HTMLElement | null) => {
 export const getActiveEl = (node: Node | null) => {
   return node?.ownerDocument?.activeElement;
 };
+
+export const focus = (node: any) => {
+  requestAnimationFrame(() => {
+    node?.focus();
+  });
+};

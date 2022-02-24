@@ -1,17 +1,23 @@
-import React from 'react';
-import { PlacementHero, Placement } from './placementUtils';
+import React, { useLayoutEffect } from 'react';
+import { Placement, computePosition } from './placementUtilsV2';
+
 import { useMounted } from './hooks';
 import { isNumber, useControlledStateV2 } from '../../utils';
 import {
   addClickListener,
   addResizeListener,
+  addScrollListener,
   removeClickListener,
   removeResizeListener,
+  removeScrollListener,
 } from './domUtils';
 
-const getDefaultStyles = (styles?: React.CSSProperties) => ({
-  ...styles,
+const getDefaultStyles = (
+  styles?: React.CSSProperties
+): React.CSSProperties => ({
   position: 'absolute' as const,
+  opacity: 0,
+  ...styles,
 });
 
 const getWidth = (
@@ -42,6 +48,7 @@ export interface UsePopperProps {
   placement?: Placement;
   position?: 'fixed' | 'absolute';
   watchResizing?: boolean;
+  watchScrolling?: boolean;
   preventOverflowX?: boolean;
   preventOverflowY?: boolean;
   // TODO:
@@ -61,7 +68,8 @@ const usePopper = ({
   originElement,
   placement,
   position = 'absolute',
-  watchResizing,
+  watchResizing = true,
+  watchScrolling = true,
   preventOverflowX,
   preventOverflowY,
 }: UsePopperProps) => {
@@ -69,14 +77,16 @@ const usePopper = ({
   /**
    *
    */
-  const [styles, setStyles] = React.useState<React.CSSProperties>(
-    // change that in favour to animation, opacity
-    getDefaultStyles({ visibility: 'hidden' })
-  );
+  const [computedStyles, setComputedStyles] =
+    React.useState<React.CSSProperties>(
+      // change that in favour to animation, opacity
+      getDefaultStyles()
+    );
   /**
    *
    */
   const popperRef = React.useRef<HTMLDivElement | null>(null);
+
   /**
    *
    */
@@ -97,61 +107,32 @@ const usePopper = ({
     onClickAway?.(event);
   };
 
-  const setStyle = React.useCallback(() => {
-    console.log('$$ setStyle $$ ');
-    if (!isOpen) return;
-    if (!placement) return;
-    if (!popperRef?.current) {
-      return console.error('No popper ref was initialized');
-    }
+  const setupRef = React.useCallback(
+    (node) => {
+      popperRef.current = node;
+    },
+    [placement, originElement]
+  );
 
-    let triggerRect;
-    let offsetParentRect;
+  const setStyles = React.useCallback(() => {
+    if (!placement || !popperRef.current || !originElement) return;
 
-    if (true || position === 'absolute') {
-      const parent = popperRef.current.offsetParent;
-      // TODO: handle parent table elements
-      offsetParentRect = (parent || document.body).getBoundingClientRect();
-      triggerRect = originElement?.getBoundingClientRect();
-    }
-
-    if (!offsetParentRect || !triggerRect) {
-      return;
-    }
-
-    const targetRect = popperRef.current.getBoundingClientRect();
-
-    console.log(
-      '$$ setStyle called with arguments $$ ',
-      placement,
-      'originElement: ',
-      originElement,
-      'targetRect: ',
-      targetRect,
-      'triggerRect: ',
-      triggerRect
-    );
-
-    const placementStyles = PlacementHero.getPlacement(placement, {
-      offsetParentRect,
-      offsetX,
-      offsetY,
-      preventOverflowX: preventOverflowX,
-      preventOverflowY: preventOverflowY,
-      targetRect,
-      triggerRect,
+    const styles = computePosition(placement, {
+      // offsetX,
+      // offsetY,
+      // preventOverflowX: preventOverflowX,
+      // preventOverflowY: preventOverflowY,
+      targetElement: popperRef.current,
+      referenceElement: originElement,
     });
 
-    setStyles({
-      ...getDefaultStyles({ visibility: isOpen ? 'visible' : 'hidden' }),
-      ...getWidth(triggerRect, matchOriginWidth),
-      ...placementStyles,
-    });
-  }, [isOpen, originElement, placement]);
+    setComputedStyles({ ...getDefaultStyles({ opacity: 1 }), ...styles });
+  }, [originElement, placement]);
 
   React.useEffect(() => {
-    if (isOpen) setStyle();
-  }, [isOpen, setStyle]);
+    if (!isMounted) return;
+    setStyles();
+  }, [setStyles, isMounted]);
 
   React.useEffect(() => {
     // Controlled state changes
@@ -166,30 +147,28 @@ const usePopper = ({
 
   React.useEffect(() => {
     addClickListener(handleClickAway);
-
+    addScrollListener(setStyles);
     return () => {
       removeClickListener(handleClickAway);
+      removeScrollListener(setStyles);
     };
-  }, [handleClickAway]);
+  }, [handleClickAway, setStyles]);
 
   React.useEffect(() => {
-    addResizeListener(setStyle);
-
+    addResizeListener(setStyles);
     return () => {
-      removeResizeListener(setStyle);
+      removeResizeListener(setStyles);
     };
-  }, [setStyle]);
+  }, [setStyles]);
 
   React.useEffect(() => {
-    if (Math.random() < 10000) return;
-    console.log('$$ Resize observer is set $$');
     if (!watchResizing) return;
     if (!popperRef.current) return;
 
     const handleResize = (entries: ResizeObserverEntry[]) => {
       const [{ target }] = entries;
       if (target === popperRef.current || target === originElement) {
-        setStyle();
+        setStyles();
       }
     };
 
@@ -200,14 +179,38 @@ const usePopper = ({
     return () => {
       observer.disconnect();
     };
-  }, [originElement, setStyle]);
+  }, [originElement, setStyles]);
+
+  React.useEffect(() => {
+    if (!watchScrolling) return;
+    if (!popperRef.current) return;
+
+    // todo: if isFlipped -> return
+
+    const handleOverflow = ([entry]: IntersectionObserverEntry[]) => {
+      if (entry.intersectionRatio < 1) {
+        setStyles();
+      }
+    };
+
+    const observer = new IntersectionObserver(handleOverflow, {
+      root: null,
+      threshold: 1,
+    });
+
+    observer.observe(popperRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [setStyles]);
 
   console.log('$$ usePopper: updated $$');
 
   return {
     open: isOpen,
-    ref: popperRef,
-    styles,
+    ref: setupRef,
+    styles: computedStyles,
   };
 };
 

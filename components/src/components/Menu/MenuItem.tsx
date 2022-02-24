@@ -3,6 +3,7 @@ import styles from './MenuItem.module.css?module';
 import { getClassName } from '@reframework/classnames';
 import { useMenuContext } from './Menu';
 import { useDescendantContext } from './useActiveDescendant';
+import { focus } from './utils';
 
 type Props = {
   autoFocus?: boolean;
@@ -20,10 +21,6 @@ type Props = {
   role?: string;
   // TODO: add those props;
   // icon?: React.ReactNode;
-};
-
-const focus = (node: any) => {
-  node?.focus();
 };
 
 const MenuItem = ({

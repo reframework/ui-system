@@ -2,26 +2,21 @@ export type PlacementAxis = 'before' | 'end' | 'center' | 'start' | 'after';
 export type Placement = `${PlacementAxis}-${PlacementAxis}`;
 type BoundarySide = 'top' | 'left' | 'right' | 'bottom';
 
-/**
- *
- */
-enum Axis {
-  XForward = 'X1',
-  YForward = 'Y1',
-  XBackward = 'X2',
-  YBackward = 'Y2',
-}
+const asyncRAF = async (callback: Function) => {
+  return new Promise((resolve) => {
+    requestAnimationFrame((timestamp) => {
+      resolve(callback(timestamp));
+    });
+  });
+};
 
 /**
  *
  */
-const placementToAxisMap: Record<PlacementAxis, { x: Axis; y: Axis }> = {
-  after: { x: Axis.XForward, y: Axis.YForward },
-  before: { x: Axis.XBackward, y: Axis.YBackward },
-  center: { x: Axis.XForward, y: Axis.YForward },
-  end: { x: Axis.XBackward, y: Axis.YBackward },
-  start: { x: Axis.XForward, y: Axis.YForward },
-};
+enum Axis {
+  X = 'X',
+  Y = 'Y',
+}
 
 /**
  *
@@ -37,21 +32,13 @@ const flippedBoundaryMap: Record<BoundarySide, BoundarySide> = {
  *
  */
 const AxisToPropertyMap = {
-  [Axis.XForward]: {
+  [Axis.X]: {
     size: 'width',
     from: 'left',
   },
-  [Axis.YForward]: {
+  [Axis.Y]: {
     size: 'height',
     from: 'top',
-  },
-  [Axis.XBackward]: {
-    size: 'width',
-    from: 'right',
-  },
-  [Axis.YBackward]: {
-    size: 'height',
-    from: 'bottom',
   },
 } as const;
 
@@ -97,13 +84,13 @@ interface GetOverflowParams {
 interface PlacementHandlerParams {
   axis: Axis;
   offset?: number;
-  targetRect: DOMRect;
+  targetRect?: DOMRect;
   triggerRect: DOMRect;
   parentOffset: OffsetBoundaries;
 }
 
 export class PlacementHero {
-  static getPlacement(placement: Placement, params: GetPlacementParams) {
+  static getPlacement_V0(placement: Placement, params: GetPlacementParams) {
     const {
       offsetParentRect,
       targetRect,
@@ -138,11 +125,6 @@ export class PlacementHero {
      */
     const parentOffset = getParentOffset(triggerRect, offsetParentRect);
     /**
-     * Axis could be x-forward x-backward, y-forward, y-backward
-     */
-    let axisX = placementToAxisMap[placementX].x;
-    let axisY = placementToAxisMap[placementY].y;
-    /**
      * Placement handlers e.g. before, start, end, center, after
      */
     let computePlacementX = PlacementHero[placementX];
@@ -154,7 +136,7 @@ export class PlacementHero {
     let overflowY;
 
     let computedPositionX = computePlacementX({
-      axis: axisX,
+      axis: Axis.X,
       offset: offsetX,
       parentOffset,
       targetRect,
@@ -162,7 +144,7 @@ export class PlacementHero {
     });
 
     let computedPositionY = computePlacementY({
-      axis: axisY,
+      axis: Axis.Y,
       offset: offsetY,
       parentOffset,
       targetRect,
@@ -174,7 +156,7 @@ export class PlacementHero {
      */
     if (preventOverflowX && !anywayOverflowing.x) {
       overflowX = getOverflow({
-        axis: axisX,
+        axis: Axis.X,
         computedPosition: computedPositionX,
         offsetParentRect,
         targetRect,
@@ -187,7 +169,7 @@ export class PlacementHero {
      */
     if (preventOverflowY && !anywayOverflowing.y) {
       overflowY = getOverflow({
-        axis: axisY,
+        axis: Axis.Y,
         computedPosition: computedPositionY,
         offsetParentRect,
         targetRect,
@@ -197,13 +179,12 @@ export class PlacementHero {
 
     if (overflowX) {
       const flippedPlacement = getFlippedPlacement(overflowX);
-      axisX = placementToAxisMap[flippedPlacement].x;
       computePlacementX = PlacementHero[flippedPlacement];
       /**
        * Recalculates the placement for the X axis
        */
       computedPositionX = computePlacementX({
-        axis: axisX,
+        axis: Axis.X,
         offset: params.offsetX,
         parentOffset,
         targetRect,
@@ -214,12 +195,11 @@ export class PlacementHero {
     if (overflowY) {
       const flippedPlacement = getFlippedPlacement(overflowY);
       computePlacementY = PlacementHero[flippedPlacement];
-      axisY = placementToAxisMap[flippedPlacement].y;
       /**
        * Recalculates the placement for the Y axis
        */
       computedPositionY = computePlacementY({
-        axis: axisY,
+        axis: Axis.Y,
         offset: params.offsetX,
         parentOffset,
         targetRect,
@@ -227,19 +207,74 @@ export class PlacementHero {
       });
     }
 
-    console.log(
-      'preventOverflowX ',
-      preventOverflowX,
-      'overflowX: ',
-      overflowX,
-      'anywayOverflowing: ',
-      anywayOverflowing.x,
-      '??'
-    );
-
     return {
       ...computedPositionX,
       ...computedPositionY,
+    };
+  }
+
+  static getPlacement(placement: Placement, params: GetPlacementParams) {
+    const {
+      offsetParentRect,
+      targetRect,
+      triggerRect,
+      // preventOverflowX = false,
+      // preventOverflowY = true,
+      offsetX = 0,
+      offsetY = 0,
+    } = params;
+
+    const {
+      getParentOffset,
+      isAnywayOverflowing,
+      // getFlippedPlacement,
+      // getOverflow,
+    } = PlacementHero;
+
+    const [placementX, placementY] = placement.split('-') as [
+      PlacementAxis,
+      PlacementAxis
+    ];
+    /**
+     * Viewport (window) boundaries
+     */
+    const viewportRect = viewport.getBoundingDOMRect();
+    /**
+     * Checks if viewport is larger then popup and flipping placement does make sense
+     */
+    const anywayOverflowing = isAnywayOverflowing(viewportRect, targetRect);
+    /**
+     * First relative parent offset
+     */
+    const parentOffset = getParentOffset(triggerRect, offsetParentRect);
+    /**
+     * Placement handlers e.g. before, start, end, center, after
+     */
+    let computePlacementX = PlacementHero[placementX];
+    let computePlacementY = PlacementHero[placementY];
+    /**
+     * Overflowing
+     */
+    // let overflowX;
+    // let overflowY;
+
+    let computedPositionX = computePlacementX({
+      axis: Axis.X,
+      // offset: offsetX,
+      parentOffset,
+      triggerRect,
+    });
+
+    let computedPositionY = computePlacementY({
+      axis: Axis.Y,
+      // offset: offsetY,
+      parentOffset,
+      triggerRect,
+    });
+
+    return {
+      inset: '0 auto auto 0',
+      transform: `translate3d(${computedPositionX.left}, ${computedPositionY.top}, 0px)`,
     };
   }
 
@@ -288,9 +323,9 @@ export class PlacementHero {
       overflow = viewportSize - (contentSum + offsetParentFrom);
     }
 
-    if (from === 'right' || from === 'bottom') {
-      overflow = viewportSize - contentSum - (viewportSize - offsetParentFrom);
-    }
+    // if (from === 'right' || from === 'bottom') {
+    //   overflow = viewportSize - contentSum - (viewportSize - offsetParentFrom);
+    // }
 
     return overflow < 0 ? flippedBoundaryMap[from] : null;
   };
@@ -302,8 +337,8 @@ export class PlacementHero {
     return {
       top: originRect.top - parentOffsetRect.top,
       left: originRect.left - parentOffsetRect.left,
-      bottom: parentOffsetRect.bottom - originRect.bottom,
-      right: parentOffsetRect.right - originRect.right,
+      bottom: 0, // parentOffsetRect.bottom - originRect.bottom,
+      right: 0, // parentOffsetRect.right - originRect.right,
     };
   };
 
@@ -312,19 +347,32 @@ export class PlacementHero {
    * Placement handlers
    *
    */
-  private static end(
-    params: PlacementHandlerParams
-  ): Partial<OffsetBoundaries> {
-    return PlacementHero.start({ ...params });
+  private static end({
+    axis,
+    parentOffset,
+    triggerRect,
+    offset = 0,
+  }: PlacementHandlerParams): Partial<OffsetBoundaries> {
+    const { from, size } = AxisToPropertyMap[axis];
+    const l = parentOffset[from] + triggerRect[size] + offset;
+    return {
+      [from]: `calc(${l}px - 100%)`,
+    };
   }
 
   /**
    *
    */
-  private static before(
-    params: PlacementHandlerParams
-  ): Partial<OffsetBoundaries> {
-    return PlacementHero.after({ ...params });
+  private static before({
+    axis,
+    parentOffset,
+    offset = 0,
+  }: PlacementHandlerParams): Partial<OffsetBoundaries> {
+    const { from } = AxisToPropertyMap[axis];
+
+    return {
+      [from]: `calc(${parentOffset[from] + offset}px - 100%)`,
+    };
   }
 
   /**
@@ -333,23 +381,14 @@ export class PlacementHero {
   private static center({
     axis,
     parentOffset,
-    targetRect,
     triggerRect,
     offset = 0,
   }: PlacementHandlerParams): Partial<OffsetBoundaries> {
-    if (!targetRect) {
-      console.error('No popover DOMRect provided');
-      return {};
-    }
-
     const { from, size } = AxisToPropertyMap[axis];
+    const l = parentOffset[from] + triggerRect[size] / 2 + offset;
 
     return {
-      [from]:
-        parentOffset[from] +
-        triggerRect[size] / 2 -
-        targetRect[size] / 2 +
-        offset,
+      [from]: `calc(${l}px - 50%)`,
     };
   }
 
@@ -364,7 +403,7 @@ export class PlacementHero {
   }: PlacementHandlerParams): Partial<OffsetBoundaries> {
     const { from, size } = AxisToPropertyMap[axis];
     return {
-      [from]: parentOffset[from] + triggerRect[size] + offset,
+      [from]: `${parentOffset[from] + triggerRect[size] + offset}px`,
     };
   }
 
@@ -378,7 +417,40 @@ export class PlacementHero {
   }: PlacementHandlerParams) {
     const { from } = AxisToPropertyMap[axis];
     return {
-      [from]: parentOffset[from] + offset,
+      [from]: `${parentOffset[from] + offset}px`,
     };
   }
+
+  // REFLOW
+  static getComputedRects = async (
+    targetElement: HTMLElement,
+    referenceElement: HTMLElement
+  ) => {
+    return asyncRAF(() => {
+      // if (!targetElement || !referenceElement) return;
+
+      let referenceRect;
+      let offsetParentRect;
+      let targetRect;
+
+      // reflow
+      const { offsetParent } = targetElement;
+      // reflow
+      offsetParentRect = (
+        offsetParent || document.body
+      ).getBoundingClientRect();
+      // reflow
+      referenceRect = referenceElement.getBoundingClientRect();
+      // reflow
+      targetRect = targetElement.getBoundingClientRect();
+
+      if (!offsetParentRect || !referenceRect) return;
+
+      return {
+        offsetParentRect,
+        targetRect,
+        referenceRect,
+      };
+    });
+  };
 }
