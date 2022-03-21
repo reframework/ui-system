@@ -60,22 +60,38 @@
     width: 16px;
     z-index: 0;
 
-    /* Checkmark Icon */
     &::after {
       position: absolute;
       opacity: 0;
-      left: 21.5%;
-      top: 45%;
       display: table;
       border: 2px solid transparent;
-      width: 5.71428571px;
-      height: 9.14285714px;
-      border-top: 0;
-      border-left: 0;
-      transform: rotate(45deg) scale(1) translate(-50%, -50%);
       opacity: 1;
       transition: all 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) 0.1s;
       content: ' ';
+    }
+
+    &::after {
+      left: 21%;
+      top: 45%;
+      border: 2px solid transparent;
+      width: 5px;
+      height: 9px;
+      border-top: 0;
+      border-left: 0;
+      transform: rotate(45deg) translate(-50%, -50%);
+    }
+
+    &.indeterminate {
+      &::after {
+        left: 50%;
+        top: 50%;
+        width: 9px;
+        height: 1px;
+        border-top: 0;
+        border-left: 0;
+        border-right: 0;
+        transform: translate(-50%, -50%);
+      }
     }
   }
 }

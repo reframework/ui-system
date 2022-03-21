@@ -55,7 +55,7 @@ const Menu = ({
   onOpen,
   open: $open,
   paperProps,
-  placement = 'start-after',
+  placement = 'bottom-start',
   popoverProps,
   trigger,
   // closeOnSelect = true,
@@ -88,6 +88,7 @@ const Menu = ({
   };
 
   const closeMenu = () => {
+    if (!isOpen) return;
     setIsOpen(false);
     setAutofocusIndex(undefined);
     onClose?.();

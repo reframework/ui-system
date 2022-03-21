@@ -7,7 +7,6 @@ import CircularLoader from '../../components/CircularProgress/Circular';
 import { Flex } from '../../components/Flex';
 import { Box } from '../../components/Box';
 import { Docs } from './MenuDocs';
-// import source from '!!raw-loader!./Menu.mdx';
 
 export default {
   title: 'Menu/Menu',

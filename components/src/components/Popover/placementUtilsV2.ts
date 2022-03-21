@@ -369,7 +369,6 @@ export function computePosition(
   }
 
   return {
-    inset: '0 auto auto 0',
     transform: `translate3d(${computedPosition.left}px, ${computedPosition.top}px, 0px)`,
   };
 }

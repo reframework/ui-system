@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from 'react';
 
 export const useMounted = () => {
   const mounted = useRef(false);
@@ -19,4 +19,18 @@ export const useCreated = (callback: () => void) => {
   if (created.current) return;
   created.current = true;
   callback();
+};
+
+export const useListener = (
+  params: { event: string; listener: EventListener },
+  deps: any[]
+) => {
+  const { event, listener } = params;
+  React.useEffect(() => {
+    window.addEventListener(event, listener);
+
+    return () => {
+      window.addEventListener(event, listener);
+    };
+  }, deps);
 };
