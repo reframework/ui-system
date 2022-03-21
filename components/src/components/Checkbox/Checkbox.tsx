@@ -32,7 +32,7 @@ const Checkbox = ({
   return (
     <div className={styles.checkbox}>
       <input
-        checked={checked}
+        checked={checked || indeterminate}
         disabled={disabled}
         id={id}
         name={name}
