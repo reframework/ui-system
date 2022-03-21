@@ -25,7 +25,7 @@ const Checkbox = ({
   value,
 }: CheckboxProps) => {
   const innerClassName = getClassName({
-    [styles.indeterminate]: true || Boolean(indeterminate),
+    [styles.indeterminate]: indeterminate,
     [styles.inner]: true,
   });
 

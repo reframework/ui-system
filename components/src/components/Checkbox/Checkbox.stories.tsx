@@ -18,6 +18,7 @@ Checkbox.args = {
   id: 'example',
   disabled: false,
   checked: false,
+  indeterminate: false,
   value: 'example',
   name: 'example',
 };
