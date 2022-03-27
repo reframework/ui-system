@@ -25,14 +25,20 @@ const Checkbox = ({
   value,
 }: CheckboxProps) => {
   const innerClassName = getClassName({
-    [styles.indeterminate]: indeterminate,
     [styles.inner]: true,
   });
 
+  const checkboxRef = React.useRef<HTMLInputElement>(null);
+
+  React.useEffect(() => {
+    if (!checkboxRef.current) return;
+    checkboxRef.current.indeterminate = indeterminate;
+  }, [indeterminate]);
+
   return (
-    <div className={styles.checkbox}>
+    <div className={styles.wrapper}>
       <input
-        checked={checked || indeterminate}
+        checked={checked}
         disabled={disabled}
         id={id}
         name={name}
@@ -40,6 +46,7 @@ const Checkbox = ({
         onClick={onClick}
         type="checkbox"
         value={value}
+        ref={checkboxRef}
       />
       <span className={innerClassName} aria-hidden="true" />
     </div>
