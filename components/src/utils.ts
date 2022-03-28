@@ -1,5 +1,11 @@
 import React from 'react';
-import { Optional } from './DataEntry/Combobox/types';
+
+type Optional<T> = T | undefined;
+type Func = (...args: any[]) => any;
+
+export const useConst = <T>(value: T) => {
+  return React.useRef<T>(value).current;
+};
 
 export const useAutoFocus = (hasFocus: boolean, node?: HTMLElement | null) => {
   React.useEffect(() => {
@@ -40,9 +46,9 @@ export const useControlledStateV2 = <T extends unknown>(params: {
   );
 
   const [uncontrolled, setUncontrolled] = React.useState(_default);
-  const noOp = React.useCallback(() =>
-    // todo: fire callback
-    {}, []) as typeof setUncontrolled;
+
+  // TODO: move outside the hook
+  const noOp = React.useCallback(() => {}, []) as typeof setUncontrolled;
 
   return {
     isControlled,

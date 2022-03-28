@@ -5,12 +5,13 @@ import styles from './Checkbox.css?module';
 
 export interface CheckboxProps {
   autofocus?: boolean;
-  checked: boolean;
+  checked?: boolean;
+  /** */
   defaultChecked?: boolean;
   disabled?: boolean;
   id?: string;
   indeterminate?: boolean;
-  name: string;
+  name?: string;
   onChange?: (e: React.ChangeEvent) => void;
 }
 
