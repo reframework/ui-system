@@ -1,51 +1,65 @@
 import { getClassName } from '@reframework/classnames';
 import React from 'react';
+import { useAutoFocus, useControlledStateV2 } from '../../utils';
 import styles from './Checkbox.css?module';
+
 export interface CheckboxProps {
+  autofocus?: boolean;
   checked: boolean;
+  defaultChecked?: boolean;
   disabled?: boolean;
   id?: string;
   indeterminate?: boolean;
   name: string;
   onChange?: (e: React.ChangeEvent) => void;
-  // ?
-  onClick?: (e: React.MouseEvent) => void;
-  // ?
-  value: string;
 }
 
 const Checkbox = ({
+  autofocus,
   checked,
+  defaultChecked,
   disabled,
   id,
   indeterminate = false,
   name,
   onChange,
-  onClick,
-  value,
 }: CheckboxProps) => {
   const innerClassName = getClassName({
-    [styles.inner]: true,
+    [styles.checkbox]: true,
   });
 
   const checkboxRef = React.useRef<HTMLInputElement>(null);
 
+  const { state: internalChecked, setState: setInternalChecked } =
+    useControlledStateV2<boolean>({
+      default: !!defaultChecked,
+      controlled: checked,
+    });
+
   React.useEffect(() => {
     if (!checkboxRef.current) return;
+    /**
+     * Changes indeterminate flag depending on a `indeterminate` prop
+     */
     checkboxRef.current.indeterminate = indeterminate;
   }, [indeterminate]);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInternalChecked(event.target.checked);
+    onChange?.(event);
+  };
+
+  useAutoFocus(!!autofocus, checkboxRef.current);
 
   return (
     <div className={styles.wrapper}>
       <input
-        checked={checked}
+        checked={internalChecked}
         disabled={disabled}
         id={id}
         name={name}
-        onChange={onChange}
-        onClick={onClick}
+        onChange={handleChange}
         type="checkbox"
-        value={value}
         ref={checkboxRef}
       />
       <span className={innerClassName} aria-hidden="true" />
