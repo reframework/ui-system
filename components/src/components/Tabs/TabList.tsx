@@ -57,14 +57,21 @@ export const TabList: React.FC<TabListProps> = ({
 
   const children = React.Children.map(_children, (child) => {
     if (!React.isValidElement(child)) return null;
-    const isControlled = child.props.active !== undefined;
-    const hasValue = child.props.value !== undefined;
+    let active;
+
+    if (child.props.disabled) {
+      active = false;
+    } else if (child.props.active !== undefined) {
+      active = child.props.active;
+    } else if (child.props.value !== undefined) {
+      active = value === child.props.value;
+    } else {
+      active = false;
+    }
 
     return React.cloneElement(child, {
       onKeyDown: handleKeyDown,
-      active: isControlled
-        ? child.props.active
-        : hasValue && value === child.props.value,
+      active,
     });
   });
 

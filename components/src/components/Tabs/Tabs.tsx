@@ -1,5 +1,5 @@
-import React from 'react';
-import { useConst } from '../../utils';
+import React, { useRef } from 'react';
+import { useConst, useControlledStateV2 } from '../../utils';
 import './Tabs.css';
 
 const TabsContext = React.createContext({} as any);
@@ -42,16 +42,21 @@ export const Tabs: React.FC<TabsProps> = ({
   defaultValue,
   onChange,
 }) => {
-  const isControlled = useConst(value !== undefined);
-
-  const [state, setState] = React.useState<TabsState>({
-    value: value || defaultValue || null,
-    tabNode: null,
+  const {
+    state: internalValue,
+    setState: setInternalValue,
+    isControlled,
+  } = useControlledStateV2({
+    controlled: value,
+    default: defaultValue,
   });
+
+  const [tabNode, setTabNode] = React.useState<HTMLDivElement | null>(null);
 
   const updateState = (next: TabsState) => {
     if (!next.value) return;
-    setState(next);
+    setInternalValue(next.value);
+    setTabNode(next.tabNode);
     onChange?.(next.value!);
   };
 
@@ -59,8 +64,8 @@ export const Tabs: React.FC<TabsProps> = ({
     <TabsContext.Provider
       value={{
         isControlled,
-        value: state.value,
-        tabNode: state.tabNode,
+        value: internalValue,
+        tabNode,
         setState: updateState,
       }}
     >

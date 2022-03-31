@@ -5,6 +5,12 @@ import { TabList, TabPanel, Tabs as TabsComponent, Tab } from '.';
 export default {
   title: 'Navigation/Tabs',
   component: TabsComponent,
+  argTypes: {
+    value: {
+      options: ['1', '2', '3', '4', undefined],
+      control: 'radio',
+    },
+  },
 } as ComponentMeta<typeof TabsComponent>;
 
 const Template: ComponentStory<any> = ({ ...props }) => (
@@ -26,6 +32,5 @@ const Template: ComponentStory<any> = ({ ...props }) => (
 export const Tabs = Template.bind({});
 
 Tabs.args = {
-  // value: '2',
   defaultValue: '1',
 };

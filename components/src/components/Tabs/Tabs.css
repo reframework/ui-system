@@ -11,6 +11,7 @@
 
   &.active {
     color: currentColor;
+    outline: 1px solid currentColor;
   }
 
   &.disabled {
