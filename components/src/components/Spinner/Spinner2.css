@@ -1,0 +1,49 @@
+.spinner {
+  color: black;
+}
+
+.svg rect {
+  animation: spinner 1.2s linear infinite;
+  fill: currentColor;
+}
+
+.svg rect:nth-child(1) {
+  animation-delay: -1.05s;
+}
+
+.svg rect:nth-child(2) {
+  animation-delay: -0.9s;
+}
+
+.svg rect:nth-child(3) {
+  animation-delay: -0.75s;
+}
+
+.svg rect:nth-child(4) {
+  animation-delay: -0.6s;
+}
+
+.svg rect:nth-child(5) {
+  animation-delay: -0.45s;
+}
+
+.svg rect:nth-child(6) {
+  animation-delay: -0.3s;
+}
+
+.svg rect:nth-child(7) {
+  animation-delay: -0.15s;
+}
+
+.svg rect:nth-child(8) {
+  animation-delay: 0s;
+}
+
+@keyframes spinner {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

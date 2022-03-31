@@ -11,11 +11,11 @@ export default {
 
 const Template: ComponentStory<typeof CheckboxComponent> = ({ ...props }) => (
   <Box>
-    <Box mt='s'>
+    <Box mt="s">
       Controlled:
       <CheckboxComponent {...props} />
     </Box>
-    <Box mt='l'>
+    <Box mt="l">
       Uncontrolled:
       <CheckboxComponent defaultChecked={false} />
     </Box>

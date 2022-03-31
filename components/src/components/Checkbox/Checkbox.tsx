@@ -32,8 +32,8 @@ const Checkbox = ({
   const checkboxRef = React.useRef<HTMLInputElement>(null);
 
   const { state: internalChecked, setState: setInternalChecked } =
-    useControlledStateV2<boolean>({
-      default: !!defaultChecked,
+    useControlledStateV2({
+      default: defaultChecked,
       controlled: checked,
     });
 

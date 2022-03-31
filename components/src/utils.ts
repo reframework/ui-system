@@ -36,7 +36,7 @@ export const useControlledState = <T extends unknown>(params: {
 
 export const useControlledStateV2 = <T extends unknown>(params: {
   controlled: T;
-  default: NonNullable<T>;
+  default: T;
 }) => {
   const { controlled, default: _default } = params;
 
@@ -107,4 +107,21 @@ export const previousOf = <T extends any>(
   idx: number
 ): Optional<T> => {
   return arr[idx - 1];
+};
+
+const useMutableState = <T extends object>(defaultState: T = {} as T) => {
+  const [, forceUpdate] = React.useReducer(() => ({}), {});
+  const state = React.useRef(defaultState);
+
+  return {
+    get: () => {
+      return state.current;
+    },
+    set: (next: T) => {
+      Object.assign(state.current, next);
+    },
+    commit: () => {
+      forceUpdate();
+    },
+  };
 };
