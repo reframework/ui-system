@@ -12,6 +12,8 @@ interface TabListProps {
 }
 
 const defaultParams = { width: 0, left: 0 };
+const getTabs = <T extends HTMLElement>(el?: T) =>
+  Array.from(el?.querySelectorAll('[role="tab"]:not(.disabled)') || []);
 
 export const TabList: React.FC<TabListProps> = ({
   children: _children,
@@ -20,37 +22,35 @@ export const TabList: React.FC<TabListProps> = ({
 }) => {
   const wrapperRef = React.useRef<HTMLDivElement>(null);
 
-  const { value, activeTabNode } = useTabs();
+  const { value, tabNode } = useTabs();
   const [inkProps, setInkProps] = React.useState(defaultParams);
 
   React.useEffect(() => {
-    if (!activeTabNode) return;
+    if (!tabNode) return;
     if (!wrapperRef.current) return;
 
     const wrapperRect = wrapperRef.current.getBoundingClientRect();
-    const activeTabRect = activeTabNode.getBoundingClientRect();
+    const activeTabRect = tabNode.getBoundingClientRect();
 
     setInkProps({
       left: activeTabRect.left - wrapperRect.left,
       width: activeTabRect.width,
     });
-  }, [activeTabNode, value]);
+  }, [tabNode, value]);
 
   const handleKeyDown = createKeyboardHandler({
     onArrowRight: cancelEvent(() => {
       const next = DescendantUtils.getNext(
-        Array.from(wrapperRef.current?.children || []),
-        activeTabNode!
+        getTabs(wrapperRef.current as HTMLElement),
+        tabNode!
       );
-
       (next as HTMLElement)?.focus();
     }),
     onArrowLeft: cancelEvent(() => {
       const prev = DescendantUtils.getPrevious(
-        Array.from(wrapperRef.current?.children || []),
-        activeTabNode!
+        getTabs(wrapperRef.current as HTMLElement),
+        tabNode!
       );
-
       (prev as HTMLElement)?.focus();
     }),
   });

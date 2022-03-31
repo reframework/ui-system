@@ -18,6 +18,7 @@ export const Tab: React.FC<TabProps> = ({
   label,
   value,
   active,
+  disabled,
   className,
   ...props
 }) => {
@@ -44,14 +45,23 @@ export const Tab: React.FC<TabProps> = ({
 
   React.useEffect(() => {
     if (!active) return;
+    /** Doesn't make sense to update when current tab is the same */
+    if (value === activeValue && tabNode === ref.current) return;
     updateState();
-  }, [active]);
+  }, [active, activeValue, tabNode]);
 
   const classNames = getClassName({
     [TabsClassName.tab]: true,
-    className: Boolean(className),
     active: Boolean(active),
+    className: Boolean(className),
+    disabled: Boolean(disabled),
   });
+
+  let tabIndex;
+
+  if (!disabled) {
+    tabIndex = active ? 0 : -1;
+  }
 
   return (
     <div
@@ -61,7 +71,7 @@ export const Tab: React.FC<TabProps> = ({
       onFocus={handleFocus}
       ref={ref}
       role="tab"
-      tabIndex={active ? 0 : -1}
+      tabIndex={tabIndex}
       {...props}
     >
       {label}

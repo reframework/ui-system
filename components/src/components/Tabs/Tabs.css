@@ -6,11 +6,16 @@
   padding: var(--spacing-xxs) var(--spacing-xs);
 
   &:focus {
-    outline: 1px solid var(--color-scale-blue-1);
+    outline: 1px solid currentColor;
   }
 
   &.active {
     color: currentColor;
+  }
+
+  &.disabled {
+    color: var(--color-scale-gray-2);
+    cursor: default;
   }
 }
 

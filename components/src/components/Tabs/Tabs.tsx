@@ -55,14 +55,12 @@ export const Tabs: React.FC<TabsProps> = ({
     onChange?.(next.value!);
   };
 
-  console.log('RENDERS');
-
   return (
     <TabsContext.Provider
       value={{
         isControlled,
         value: state.value,
-        activeTabNode: state.tabNode,
+        tabNode: state.tabNode,
         setState: updateState,
       }}
     >

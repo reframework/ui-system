@@ -10,17 +10,16 @@ export default {
 const Template: ComponentStory<any> = ({ ...props }) => (
   <TabsComponent {...props}>
     <TabList>
-      <Tab
-        value="1"
-        label="New Arrivals in the Longest Text"
-      />
+      <Tab value="1" label="New Arrivals in the Longest Text" />
       <Tab value="2" label="Two" />
       <Tab value="3" label="Three" />
+      <Tab disabled value="4" label="Four" />
     </TabList>
 
     <TabPanel value="1">One</TabPanel>
     <TabPanel value="2">Two</TabPanel>
     <TabPanel value="3">Three</TabPanel>
+    <TabPanel value="4">Four</TabPanel>
   </TabsComponent>
 );
 
