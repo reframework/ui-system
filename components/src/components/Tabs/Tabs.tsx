@@ -42,14 +42,11 @@ export const Tabs: React.FC<TabsProps> = ({
   defaultValue,
   onChange,
 }) => {
-  const {
-    state: internalValue,
-    setState: setInternalValue,
-    isControlled,
-  } = useControlledStateV2({
-    controlled: value,
-    default: defaultValue,
-  });
+  const { setState: setInternalValue, state: internalValue } =
+    useControlledStateV2({
+      controlled: value,
+      default: defaultValue,
+    });
 
   const [tabNode, setTabNode] = React.useState<HTMLDivElement | null>(null);
 
@@ -57,16 +54,17 @@ export const Tabs: React.FC<TabsProps> = ({
     if (!next.value) return;
     setInternalValue(next.value);
     setTabNode(next.tabNode);
-    onChange?.(next.value!);
+    onChange?.(next.value);
   };
 
   return (
     <TabsContext.Provider
       value={{
-        isControlled,
         value: internalValue,
         tabNode,
         setState: updateState,
+        // setActiveValue,
+        // setActiveTabNode
       }}
     >
       {children}
