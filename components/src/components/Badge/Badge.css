@@ -12,30 +12,50 @@
   /* allows to take the size of children */
   display: inline-flex;
   /* Should be overwritten by className provided to the component */
-  /* border-radius: 50%; */
-  min-width: 10px;
-  min-height: 10px;
+  min-width: var(--badge-size, 10px);
+  min-height: var(--badge-size, 10px);
 }
 
 .ref\:status {
-  border: 2px solid var(--color-scale-white);
+  border: 3px solid var(--color-scale-white);
+  box-sizing: border-box;
   border-radius: 50%;
+  background-color: currentColor;
+  color: currentColor;
+
+  &.ref\:status-animated {
+    &::after {
+      animation: ripple 1.2s infinite cubic-bezier(0.38, 0.87, 0.6, 1.04);
+      background: radial-gradient(
+        circle,
+        rgba(0, 0, 0, 0) 30%,
+        currentColor 100%
+      );
+      border-radius: 50%;
+      content: '';
+      height: 100%;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+  }
 }
 
 .ref\:status-online {
-  background-color: var(--color-scale-green-4);
+  color: var(--color-scale-green-4);
 }
 
 .ref\:status-offline {
-  background-color: var(--color-scale-gray-2);
+  color: var(--color-scale-gray-2);
 }
 
 .ref\:status-away {
-  background-color: var(--color-scale-yellow-4);
+  color: var(--color-scale-yellow-4);
 }
 
 .ref\:status-busy {
-  background-color: var(--color-scale-red-4);
+  color: var(--color-scale-red-4);
 }
 
 .ref\:badge-top-left {
@@ -60,4 +80,16 @@
   inset: auto 15% 15% auto;
   transform: scale(1) translate(50%, 50%);
   transform-origin: 100% 100%;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
 }

@@ -2,27 +2,31 @@ import React from 'react';
 import './Avatar.css';
 import { getClassName } from '@reframework/classnames';
 import { Image, ImageProps } from '../Image';
+import { getCSSSize } from '../../utils';
 
 enum AvatarClassNames {
   container = 'ref:avatar-container',
   picture = 'ref:avatar-picture',
-  status = 'ref:avatar-status',
-  size = 'ref:avatar-size',
 }
 
 interface AvatarProps extends ImageProps {
   // TODO:
   shape?: 'square' | 'circle' | 'rounded';
+  size?: number | string;
 }
 
-const Avatar: React.FC<AvatarProps> = ({ className, ...props }) => {
+const Avatar: React.FC<AvatarProps> = ({ className, size, ...props }) => {
   const classNames = getClassName({
     [AvatarClassNames.container]: true,
     [className!]: Boolean(className),
   });
 
+  const style = {
+    '--avatar-size': getCSSSize(size),
+  } as React.CSSProperties;
+
   return (
-    <div className={classNames}>
+    <div className={classNames} style={style}>
       {/* override placeholder and fallback for current project */}
       <Image
         {...props}

@@ -3,21 +3,9 @@
   background-color: transparent;
   position: relative;
   height: 100%;
-  width: 100px;
+  width: var(--avatar-size, 50px);
   overflow: hidden;
   border-radius: 50%;
-
-  &.ref\:avatar-size-s {
-    width: 100px;
-  }
-
-  &.ref\:avatar-size-m {
-    width: 150px;
-  }
-
-  &.ref\:avatar-size-l {
-    width: 200px;
-  }
 }
 
 .ref\:avatar-picture {
@@ -25,7 +13,6 @@
   height: 100%;
   border-radius: 100%;
 
-  text-align: center;
   /* Handle non-square image. */
   object-fit: cover;
   /* Hide alt text. */

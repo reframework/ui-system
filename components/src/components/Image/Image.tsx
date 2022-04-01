@@ -31,12 +31,6 @@ export interface ImageProps
   onClick?: () => void;
 }
 
-enum ImageStatus {
-  loading = 'loading',
-  ready = 'ready',
-  error = 'error',
-}
-
 enum ImageState {
   placeholder = 'placeholder',
   image = 'image',
@@ -110,6 +104,10 @@ const Image: React.FC<ImageProps> = ({
     }
   }, [src, srcSet]);
 
+  const style = {
+    ['--image-aspect-ratio']: aspectRatio,
+  } as React.CSSProperties;
+
   return (
     <div className={ImageClassNames.container}>
       <img
@@ -118,11 +116,7 @@ const Image: React.FC<ImageProps> = ({
         onLoad={handleLoad}
         onError={handleError}
         className={imageClassNames}
-        style={{
-          // TODO: width / height
-          // @ts-expect-error
-          ['--aspect-ratio']: aspectRatio,
-        }}
+        style={style}
       />
 
       {state === ImageState.placeholder && (

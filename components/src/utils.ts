@@ -3,6 +3,14 @@ import React from 'react';
 type Optional<T> = T | undefined;
 type Func = (...args: any[]) => any;
 
+export const getCSSSize = (size?: number | string, units = 'px') => {
+  if (size === undefined) return;
+
+  if (typeof size === 'number') return `${size}${units}`;
+
+  return size;
+};
+
 export const useConst = <T>(value: T) => {
   return React.useRef<T>(value).current;
 };

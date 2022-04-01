@@ -1,6 +1,7 @@
 import React from 'react';
 import { getClassName } from '@reframework/classnames';
 import './Badge.css';
+import { getCSSSize } from '../../utils';
 
 enum BadgeClassNames {
   container = 'ref:badge-container',
@@ -20,8 +21,7 @@ enum StatusClassNames {
   busy = 'ref:status-busy',
   offline = 'ref:status-offline',
   online = 'ref:status-online',
-  // TODO:
-  size = 'ref:status-size',
+  animated = 'ref:status-animated',
 }
 
 type BadgePosition = `${'top' | 'bottom'}-${'left' | 'right'}`;
@@ -32,7 +32,7 @@ interface BadgeProps {
   className?: string;
   content?: React.ReactNode;
   position?: BadgePosition;
-  size?: number;
+  size?: number | string;
   // TODO:
   overlap?: 'circular' | 'rectangular';
 }
@@ -42,6 +42,7 @@ export const Badge: React.FC<BadgeProps> = ({
   content,
   className,
   children,
+  size,
 }) => {
   const badgeClassNames = getClassName({
     [BadgeClassNames.badge]: true,
@@ -49,26 +50,35 @@ export const Badge: React.FC<BadgeProps> = ({
     [className!]: !!className,
   });
 
+  const style = {
+    '--badge-size': getCSSSize(size),
+  } as React.CSSProperties;
+
   return (
     <div className={BadgeClassNames.container}>
       {children}
-      <div className={badgeClassNames}>{content}</div>
+      <div className={badgeClassNames} style={style}>
+        {content}
+      </div>
     </div>
   );
 };
 
 interface StatusProps extends BadgeProps {
   status: Status;
+  animated?: boolean;
 }
 
-export const StatusBadge: React.FC<StatusProps> = ({
+export const OnlineStatus: React.FC<StatusProps> = ({
   status,
   position = 'bottom-right',
+  animated = false,
   ...props
 }) => {
   const statusClassNames = getClassName({
     [StatusClassNames.status]: true,
     [StatusClassNames[status!]]: true,
+    [StatusClassNames.animated]: animated,
   });
 
   return <Badge {...props} position={position} className={statusClassNames} />;

@@ -60,7 +60,7 @@
   }
 }
 
-@each $item in flex-row, flex-row-reverse, flex-col, flex-col-reverse {
+@each $item in row, row-reverse, column, column-reverse {
   .direction-$(item) {
     flex-direction: $(item);
   }
