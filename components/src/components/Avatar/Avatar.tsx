@@ -25,8 +25,6 @@ const Avatar: React.FC<AvatarProps> = ({ className, ...props }) => {
     <div className={classNames}>
       {/* override placeholder and fallback for current project */}
       <Image
-        placeholder={<div>LOADING</div>}
-        fallback={<div>ERROR</div>}
         {...props}
         aspectRatio="1 / 1"
         className={AvatarClassNames.picture}

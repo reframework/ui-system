@@ -7,8 +7,9 @@ import Cat1xWebp from './assets/maxresdefault1x.webp';
 import Cat2xWebp from './assets/maxresdefault2x.webp';
 
 import Avatar from './Avatar';
-import { Badge } from './Badge';
+import { Badge, StatusBadge } from './Badge';
 import { Box } from '../Box';
+import { Spinner } from '../Spinner';
 
 export default {
   title: 'Avatar/Avatar',
@@ -16,18 +17,50 @@ export default {
 } as ComponentMeta<typeof Avatar>;
 
 const testImage =
-  'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/close-up-of-cat-wearing-sunglasses-while-sitting-royalty-free-image-1571755145.jpg';
+  'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png';
 
 const Template: ComponentStory<typeof Avatar> = (props) => (
   <Box>
     <Badge content={<div>🙂</div>}>
       <Avatar {...props} />
     </Badge>
+
+    <StatusBadge status="online">
+      <Avatar {...props} />
+    </StatusBadge>
   </Box>
 );
 
 export const SandAvatar = Template.bind({});
 
 SandAvatar.args = {
-  src: Cat1xJpeg,
+  src: testImage,
+  placeholder: (
+    <div
+      style={{
+        alignItems: 'center',
+        backgroundColor: 'goldenrod',
+        display: 'flex',
+        height: '100%',
+        justifyContent: 'center',
+        width: '100%',
+      }}
+    >
+      <Spinner size={30} color="white" />
+    </div>
+  ),
+  fallback: (
+    <div
+      style={{
+        alignItems: 'center',
+        backgroundColor: 'tomato',
+        display: 'flex',
+        height: '100%',
+        justifyContent: 'center',
+        width: '100%',
+      }}
+    >
+      😥 Error
+    </div>
+  ),
 };

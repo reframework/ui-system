@@ -85,6 +85,8 @@ const Image: React.FC<ImageProps> = ({
 
   const imageClassNames = getClassName({
     [ImageClassNames.image]: true,
+    [ImageClassNames.hidden]:
+      state === ImageState.placeholder || state === ImageState.fallback,
     [className!]: !!className,
   });
 
@@ -107,8 +109,6 @@ const Image: React.FC<ImageProps> = ({
       imageRef.current.src = src;
     }
   }, [src, srcSet]);
-
-  console.log(state, '>>> STATE <<<');
 
   return (
     <div className={ImageClassNames.container}>

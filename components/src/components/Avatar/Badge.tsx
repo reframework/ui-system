@@ -16,10 +16,10 @@ enum BadgeClassNames {
 enum StatusClassNames {
   status = 'ref:status',
   //
-  away = 'ref:status-status-away',
-  busy = 'ref:status-status-busy',
-  offline = 'ref:status-status-offline',
-  online = 'ref:status-status-online',
+  away = 'ref:status-away',
+  busy = 'ref:status-busy',
+  offline = 'ref:status-offline',
+  online = 'ref:status-online',
   // TODO:
   size = 'ref:status-size',
 }
