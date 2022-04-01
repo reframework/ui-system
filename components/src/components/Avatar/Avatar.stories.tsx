@@ -15,13 +15,12 @@ export default {
   component: Avatar,
 } as ComponentMeta<typeof Avatar>;
 
+const testImage =
+  'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/close-up-of-cat-wearing-sunglasses-while-sitting-royalty-free-image-1571755145.jpg';
+
 const Template: ComponentStory<typeof Avatar> = (props) => (
   <Box>
-    <Badge content={'x'}>
-      <Avatar {...props} />
-    </Badge>
-
-    <Badge content={<div>ololo</div>}>
+    <Badge content={<div>🙂</div>}>
       <Avatar {...props} />
     </Badge>
   </Box>
@@ -30,11 +29,5 @@ const Template: ComponentStory<typeof Avatar> = (props) => (
 export const SandAvatar = Template.bind({});
 
 SandAvatar.args = {
-  srcSet: {
-    '375w': Cat1xJpeg,
-    '1280w': Cat2xJpeg,
-  },
-  status: 'online',
-  badgeContent: <div>x</div>,
-  size: 100,
+  src: Cat1xJpeg,
 };

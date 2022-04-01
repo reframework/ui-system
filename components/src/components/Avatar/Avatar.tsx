@@ -1,8 +1,7 @@
 import React from 'react';
 import './Avatar.css';
 import { getClassName } from '@reframework/classnames';
-
-
+import { Image, ImageProps } from '../Image';
 
 enum AvatarClassNames {
   container = 'ref:avatar-container',
@@ -11,44 +10,27 @@ enum AvatarClassNames {
   size = 'ref:avatar-size',
 }
 
-interface AvatarProps {
-  srcSet: Record<string, string>;
-  sizes: string;
-  src: string;
-  //
-  size?: Size | string;
-  fallback?: React.ReactNode;
-  className?: string;
+interface AvatarProps extends ImageProps {
   // TODO:
   shape?: 'square' | 'circle' | 'rounded';
 }
-const Avatar: React.FC<AvatarProps> = ({
-  srcSet: _srcSet,
-  src,
-  sizes,
-  size = 100,
-  fallback = null,
-  className,
-}) => {
+
+const Avatar: React.FC<AvatarProps> = ({ className, ...props }) => {
   const classNames = getClassName({
     [AvatarClassNames.container]: true,
     [className!]: Boolean(className),
   });
 
-  const srcSet = Object.entries(_srcSet)
-    .map(([size, source]) => `${source} ${size}`)
-    .join(', ');
-
   return (
     <div className={classNames}>
+      {/* override placeholder and fallback for current project */}
       <Image
-        sizes={sizes}
+        placeholder={<div>LOADING</div>}
+        fallback={<div>ERROR</div>}
+        {...props}
+        aspectRatio="1 / 1"
         className={AvatarClassNames.picture}
-        src={src}
-        srcSet={srcSet}
-      >
-        {fallback}
-      </Image>
+      />
     </div>
   );
 };
