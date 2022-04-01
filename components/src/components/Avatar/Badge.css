@@ -1,0 +1,62 @@
+.ref\:badge-container {
+  position: relative;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  /* or inline-flex */
+  display: inline-flex;
+}
+
+.ref\:badge {
+  position: absolute;
+  /* allows to take the size of children */
+  display: inline-flex;
+  /* Should be overwritten by className provided to the component */
+  /* border-radius: 50%; */
+  min-width: 5px;
+  min-height: 5px;
+}
+
+.ref\:status {
+  border: 1px solid var(--color-scale-white);
+}
+
+.ref\:status-online {
+  background-color: var(--color-scale-green-4);
+}
+
+.ref\:status-offline {
+  background-color: var(--color-scale-gray-2);
+}
+
+.ref\:status-away {
+  background-color: var(--color-scale-yellow-4);
+}
+
+.ref\:status-busy {
+  background-color: var(--color-scale-red-4);
+}
+
+.ref\:badge-top-left {
+  inset: 15% auto auto 15%;
+  transform: scale(1) translate(-50%, -50%);
+  transform-origin: 0% 0%;
+}
+
+.ref\:badge-top-right {
+  inset: 15% 15% auto auto;
+  transform: scale(1) translate(50%, -50%);
+  transform-origin: 100% 0%;
+}
+
+.ref\:badge-bottom-left {
+  inset: auto 15% auto 15%;
+  transform: scale(1) translate(-50%, 50%);
+  transform-origin: 0% 100%;
+}
+
+.ref\:badge-bottom-right {
+  inset: auto 15% 15% auto;
+  transform: scale(1) translate(50%, 50%);
+  transform-origin: 100% 100%;
+}

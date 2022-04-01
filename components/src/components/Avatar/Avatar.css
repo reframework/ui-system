@@ -3,7 +3,7 @@
   background-color: transparent;
   position: relative;
   height: 100%;
-  width: var(--_size);
+  width: 100px;
 
   &.ref\:avatar-size-s {
     width: 100px;
@@ -28,68 +28,4 @@
   object-fit: cover;
   /* Hide alt text. */
   color: transparent;
-}
-
-.ref\:avatar-badge {
-  position: absolute;
-
-  aspect-ratio: 1 / 1;
-  position: absolute;
-  width: 2em;
-  height: 2em;
-  display: flex;
-  border: 2px solid var(--color-scale-white);
-  background-color: var(--color-scale-green-4);
-  border-radius: 50%;
-}
-
-.ref\:avatar-status {
-  aspect-ratio: 1 / 1;
-  position: absolute;
-  width: 1em;
-  height: 1em;
-  display: flex;
-  border: 2px solid var(--color-scale-white);
-  background-color: var(--color-scale-white);
-  border-radius: 50%;
-}
-
-.ref\:avatar-status-online {
-  background-color: var(--color-scale-green-4);
-}
-
-.ref\:avatar-status-offline {
-  background-color: var(--color-scale-gray-2);
-}
-
-.ref\:avatar-status-away {
-  background-color: var(--color-scale-yellow-4);
-}
-
-.ref\:avatar-status-busy {
-  background-color: var(--color-scale-red-4);
-}
-
-.ref\:avatar-top-left {
-  inset: 15% auto auto 15%;
-  transform: scale(1) translate(-50%, -50%);
-  transform-origin: 0% 0%;
-}
-
-.ref\:avatar-top-right {
-  inset: 15% 15% auto auto;
-  transform: scale(1) translate(50%, -50%);
-  transform-origin: 100% 0%;
-}
-
-.ref\:avatar-bottom-left {
-  inset: auto 15% auto 15%;
-  transform: scale(1) translate(-50%, 50%);
-  transform-origin: 0% 100%;
-}
-
-.ref\:avatar-bottom-right {
-  inset: auto 15% 15% auto;
-  transform: scale(1) translate(50%, 50%);
-  transform-origin: 100% 100%;
 }
