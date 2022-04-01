@@ -14,21 +14,10 @@ enum ImageClassNames {
 
 export interface ImageProps
   extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, OverrideProps> {
-  alt: string;
   fallback?: string | React.ReactNode;
   placeholder?: string | React.ReactNode;
-  height: string | number;
-  src?: string;
-  srcSet?: string;
-  width: string | number;
-  onError: (error: React.SyntheticEvent<HTMLImageElement, Event>) => void;
   // Visual
   aspectRatio?: string;
-  // TODO: use JS Fallback for lazy loading
-  lazy?: boolean;
-  loading?: 'lazy';
-  crossOrigin?: '' | 'anonymous' | 'use-credentials';
-  onClick?: () => void;
 }
 
 enum ImageState {
@@ -92,7 +81,7 @@ const Image: React.FC<ImageProps> = ({
     [ImageClassNames.fallback]: true,
   });
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     if (!imageRef.current) return;
 
     if (typeof srcSet === 'string') {
@@ -107,6 +96,8 @@ const Image: React.FC<ImageProps> = ({
   const style = {
     ['--image-aspect-ratio']: aspectRatio,
   } as React.CSSProperties;
+
+  console.log(state, 'status');
 
   return (
     <div className={ImageClassNames.container}>

@@ -51,6 +51,14 @@ const Template: ComponentStory<typeof Avatar> = (props) => (
         <Avatar {...props} src={testImage1} size={150} />
       </OnlineStatus>
     </Flex>
+    <Flex p="xl" direction="column" alignItems="center">
+      <Box mb="m">
+        <Text>Error Fallback</Text>
+      </Box>
+      <OnlineStatus position="bottom-left" status="busy" size="1.5rem">
+        <Avatar {...props} src={'%%%-error'} size={150} />
+      </OnlineStatus>
+    </Flex>
   </Flex>
 );
 
@@ -75,14 +83,16 @@ SandAvatar.args = {
     <div
       style={{
         alignItems: 'center',
-        backgroundColor: 'tomato',
+        backgroundColor: 'var(--color-scale-red-2)',
         display: 'flex',
         height: '100%',
         justifyContent: 'center',
         width: '100%',
       }}
     >
-      😥 Error
+      <Text size="m" weight="bold" color="error">
+        😥 Error
+      </Text>
     </div>
   ),
 };
