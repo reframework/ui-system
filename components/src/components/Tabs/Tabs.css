@@ -1,36 +1,36 @@
 .ref\:tab {
-  padding: 5px;
+  color: var(--color-scale-black);
   cursor: pointer;
   outline: none;
-  color: var(--color-scale-black);
+  padding: 5px;
   padding: var(--spacing-xxs) var(--spacing-xs);
 
   &:focus {
     outline: 1px solid currentColor;
   }
 
-  &.active {
+  &.ref\:tab-active {
     color: currentColor;
     outline: 1px solid currentColor;
   }
 
-  &.disabled {
+  &.ref\:tab-disabled {
     color: var(--color-scale-gray-2);
     cursor: default;
   }
 }
 
 .ref\:tab-list {
+  color: var(--color-scale-blue-4);
   display: flex;
   position: relative;
-  color: var(--color-scale-blue-4);
 }
 
 .ref\:tabs-ink {
   background-color: currentColor;
-  position: absolute;
-  height: 1px;
   bottom: 0;
+  height: 1px;
   left: 0;
+  position: absolute;
   transition: all 0.3s ease-out;
 }

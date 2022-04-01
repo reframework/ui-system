@@ -6,7 +6,10 @@ const TabsContext = React.createContext({} as any);
 export const useTabs = () => React.useContext(TabsContext);
 
 export enum TabsClassName {
+  active = 'ref:tab-active',
+  disabled = 'ref:tab-disabled',
   ink = 'ref:tabs-ink',
+  animated = 'ref:tab-animated',
   tab = 'ref:tab',
   tabList = 'ref:tab-list',
 }
@@ -14,8 +17,8 @@ export enum TabsClassName {
 interface TabsProps {
   defaultValue?: string;
   value?: string;
-  onChange: (value: string) => void;
-
+  onChange?: (value: string) => void;
+  animated?: boolean;
   // implement via CSS
 
   // variant: 'fullWidth' | 'scrollable' | 'standard';
@@ -37,34 +40,44 @@ type TabsState = {
 };
 
 export const Tabs: React.FC<TabsProps> = ({
-  value,
+  animated,
   children,
   defaultValue,
   onChange,
+  value,
 }) => {
-  const { setState: setInternalValue, state: internalValue } =
-    useControlledStateV2({
-      controlled: value,
-      default: defaultValue,
-    });
-
   const [tabNode, setTabNode] = React.useState<HTMLDivElement | null>(null);
 
-  const updateState = (next: TabsState) => {
+  const {
+    setState: setInternalValue,
+    state: internalValue,
+    isControlled,
+  } = useControlledStateV2({
+    controlled: value,
+    default: defaultValue,
+  });
+
+  const setState = (next: TabsState) => {
     if (!next.value) return;
-    setInternalValue(next.value);
-    setTabNode(next.tabNode);
-    onChange?.(next.value);
+
+    if (next.value !== internalValue) {
+      setInternalValue(next.value);
+      onChange?.(next.value);
+    }
+
+    if (next.tabNode !== tabNode) {
+      setTabNode(next.tabNode);
+    }
   };
 
   return (
     <TabsContext.Provider
       value={{
+        animated,
+        isControlled,
         value: internalValue,
         tabNode,
-        setState: updateState,
-        // setActiveValue,
-        // setActiveTabNode
+        setState,
       }}
     >
       {children}

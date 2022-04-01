@@ -1,5 +1,6 @@
 import { getClassName } from '@reframework/classnames';
 import React from 'react';
+import { useControlledStateV2 } from '../../utils';
 import { DescendantUtils } from '../Menu/useActiveDescendant';
 import { cancelEvent, createKeyboardHandler } from '../Menu/utils';
 import Ink from './Ink';
@@ -11,9 +12,11 @@ interface TabListProps {
   inkClassName?: string;
 }
 
-const defaultParams = { width: 0, left: 0 };
-const getTabs = <T extends HTMLElement>(el?: T) =>
-  Array.from(el?.querySelectorAll('[role="tab"]:not(.disabled)') || []);
+const defaultInkProps = { width: 0, left: 0 };
+const getTabs = <T extends HTMLElement>(el?: T) => {
+  const selector = `[role="tab"]:not(.${TabsClassName.disabled})`;
+  return Array.from(el?.querySelectorAll(selector) || []);
+};
 
 export const TabList: React.FC<TabListProps> = ({
   children: _children,
@@ -22,8 +25,8 @@ export const TabList: React.FC<TabListProps> = ({
 }) => {
   const wrapperRef = React.useRef<HTMLDivElement>(null);
 
-  const { value, tabNode } = useTabs();
-  const [inkProps, setInkProps] = React.useState(defaultParams);
+  const { value, tabNode, isControlled, animated } = useTabs();
+  const [inkProps, setInkProps] = React.useState(defaultInkProps);
 
   React.useEffect(() => {
     if (!tabNode) return;
@@ -58,7 +61,9 @@ export const TabList: React.FC<TabListProps> = ({
   const children = React.Children.map(_children, (child) => {
     if (!React.isValidElement(child)) return null;
     let active = false;
+    let tabIndex;
 
+    // TODO: refactor
     if (!child.props.disabled) {
       // Controlled tab
       if (typeof child.props.active === 'boolean') {
@@ -69,14 +74,27 @@ export const TabList: React.FC<TabListProps> = ({
       }
     }
 
+    // TODO: refactor
+    if (isControlled) {
+      if (active) tabIndex = 0;
+    } else {
+      if (typeof child.props.tabIndex === 'number') {
+        tabIndex = child.props.tabIndex;
+      } else {
+        tabIndex = active ? 0 : -1;
+      }
+    }
+
     return React.cloneElement(child, {
       onKeyDown: handleKeyDown,
+      tabIndex,
       active,
     });
   });
 
   const classNames = getClassName({
     [TabsClassName.tabList]: true,
+    // [TabsClassName.animated]: internalAnimated,
     className: Boolean(className),
   });
 

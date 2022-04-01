@@ -43,7 +43,7 @@ export interface TypographyProps {
     | 'black';
 }
 
-const Paragraph = ({
+const Text = ({
   align = 'left',
   children,
   className,
@@ -81,4 +81,4 @@ const Paragraph = ({
   );
 };
 
-export default Paragraph;
+export default Text;

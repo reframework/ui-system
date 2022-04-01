@@ -3,12 +3,15 @@ import { TabsClassName, useTabs } from './Tabs';
 import { getClassName } from '@reframework/classnames';
 
 interface TabProps {
-  id?: string;
   value: string;
   label: React.ReactNode;
   className?: string;
   disabled?: boolean;
   active?: boolean;
+  // A11y props
+  id?: string;
+  tabIndex?: number;
+
   // onKeyDown
   // onClick
 }
@@ -52,16 +55,10 @@ export const Tab: React.FC<TabProps> = ({
 
   const classNames = getClassName({
     [TabsClassName.tab]: true,
-    active: Boolean(active),
+    [TabsClassName.active]: Boolean(active),
+    [TabsClassName.disabled]: Boolean(disabled),
     className: Boolean(className),
-    disabled: Boolean(disabled),
   });
-
-  let tabIndex;
-
-  if (!disabled) {
-    tabIndex = active ? 0 : -1;
-  }
 
   return (
     <div
@@ -71,7 +68,6 @@ export const Tab: React.FC<TabProps> = ({
       onFocus={handleFocus}
       ref={ref}
       role="tab"
-      tabIndex={tabIndex}
       {...props}
     >
       {label}

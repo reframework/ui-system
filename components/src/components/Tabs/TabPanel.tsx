@@ -3,12 +3,13 @@ import { useTabs } from './Tabs';
 
 interface TabPanelProps extends React.HTMLProps<HTMLDivElement> {
   value: string;
-  role: 'tabpanel';
+  role?: 'tabpanel';
 }
 
 export const TabPanel: React.FC<TabPanelProps> = ({
   children,
   value,
+  role = 'tabpanel',
   ...props
 }) => {
   if (!value) {
@@ -21,7 +22,7 @@ export const TabPanel: React.FC<TabPanelProps> = ({
   if (value !== internalValue) return null;
 
   return (
-    <div {...props} role="tabpanel" aria-labelledby={activeTabNode?.id}>
+    <div {...props} role={role} aria-labelledby={activeTabNode?.id}>
       {children}
     </div>
   );
