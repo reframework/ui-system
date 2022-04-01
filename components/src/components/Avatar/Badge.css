@@ -51,7 +51,7 @@
 }
 
 .ref\:badge-bottom-left {
-  inset: auto 15% auto 15%;
+  inset: auto auto 15% 15%;
   transform: scale(1) translate(-50%, 50%);
   transform-origin: 0% 100%;
 }

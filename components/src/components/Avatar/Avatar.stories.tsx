@@ -21,13 +21,21 @@ const testImage =
 
 const Template: ComponentStory<typeof Avatar> = (props) => (
   <Box>
-    <Badge content={<div>🙂</div>}>
-      <Avatar {...props} />
-    </Badge>
-
-    <StatusBadge status="online">
-      <Avatar {...props} />
-    </StatusBadge>
+    <Box p="xxs">
+      <Badge content="🙂">
+        <Avatar {...props} src={Cat2xJpeg} />
+      </Badge>
+    </Box>
+    <Box p="xxs">
+      <StatusBadge status="online">
+        <Avatar {...props} />
+      </StatusBadge>
+    </Box>
+    <Box p="xxs">
+      <StatusBadge position="bottom-left" status="busy">
+        <Avatar {...props} />
+      </StatusBadge>
+    </Box>
   </Box>
 );
 
