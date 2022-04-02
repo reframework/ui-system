@@ -7,115 +7,93 @@ type OverrideProps = 'placeholder'; // | onClick;
 enum ImageClassNames {
   container = 'ref:image-container',
   image = 'ref:image',
-  hidden = 'ref:image-hidden',
-  placeholder = 'ref:image-placeholder',
   fallback = 'ref:image-fallback',
 }
 
 export interface ImageProps
   extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, OverrideProps> {
-  fallback?: string | React.ReactNode;
-  placeholder?: string | React.ReactNode;
-  // Visual
+  /**
+   * Fallback renders when image is failed to load
+   */
+  fallback?: React.ReactNode;
+  /**
+   * Placeholder renders till image is loaded,
+   * it also renders when image is failed to load and fallback is not provided
+   */
+  placeholder?: React.ReactNode;
+  /**
+   * An aspect ratio of image
+   */
   aspectRatio?: string;
+  // TODO:
+  // fallbackSrc: string;
 }
 
-enum ImageState {
-  placeholder = 'placeholder',
-  image = 'image',
-  fallback = 'fallback',
-  fallbackImage = 'fallbackImage',
+enum ImageStatus {
+  loading = 'loading',
+  loaded = 'loaded',
+  failed = 'failed',
 }
 
 const Image: React.FC<ImageProps> = ({
   aspectRatio,
   className,
-  fallback,
+  fallback = null,
   onError,
-  placeholder,
+  placeholder = null,
   src,
   srcSet,
   ...imgProps
 }) => {
-  const [state, setState] = React.useState(ImageState.placeholder);
-
   const imageRef = React.useRef<HTMLImageElement | null>(null);
+  const [status, setStatus] = React.useState(ImageStatus.loading);
 
   const handleError = () => {
-    if (!fallback) {
-      setState(ImageState.placeholder);
-      return;
-    }
-
-    if (typeof fallback === 'string') {
-      if (imageRef.current) {
-        imageRef.current.src = fallback;
-      }
-      setState(ImageState.fallbackImage);
-      return;
-    }
-
-    if (React.isValidElement(fallback)) {
-      setState(ImageState.fallback);
-      return;
-    }
+    setStatus(ImageStatus.failed);
   };
 
   const handleLoad = (event: React.SyntheticEvent) => {
     const { complete } = event.target as HTMLImageElement;
-    if (complete) setState(ImageState.image);
+    if (complete) setStatus(ImageStatus.loaded);
   };
 
   const imageClassNames = getClassName({
     [ImageClassNames.image]: true,
-    [ImageClassNames.hidden]:
-      state === ImageState.placeholder || state === ImageState.fallback,
     [className!]: !!className,
-  });
-
-  const placeholderClassNames = getClassName({
-    [ImageClassNames.placeholder]: true,
   });
 
   const fallbackClassNames = getClassName({
     [ImageClassNames.fallback]: true,
   });
 
-  React.useLayoutEffect(() => {
-    if (!imageRef.current) return;
-
-    if (typeof srcSet === 'string') {
-      imageRef.current.srcset = srcSet;
+  const renderFallback = () => {
+    if (status === ImageStatus.failed) {
+      if (fallback) return fallback;
     }
 
-    if (typeof src === 'string') {
-      imageRef.current.src = src;
-    }
-  }, [src, srcSet]);
+    return placeholder;
+  };
 
   const style = {
     ['--image-aspect-ratio']: aspectRatio,
   } as React.CSSProperties;
 
-  console.log(state, 'status');
-
   return (
-    <div className={ImageClassNames.container}>
-      <img
-        {...imgProps}
-        ref={imageRef}
-        onLoad={handleLoad}
-        onError={handleError}
-        className={imageClassNames}
-        style={style}
-      />
-
-      {state === ImageState.placeholder && (
-        <div className={placeholderClassNames}>{placeholder}</div>
+    <div className={ImageClassNames.container} style={style}>
+      {status !== ImageStatus.failed && (
+        <img
+          {...imgProps}
+          ref={imageRef}
+          src={src}
+          srcSet={srcSet}
+          onLoad={handleLoad}
+          onError={handleError}
+          className={imageClassNames}
+        />
       )}
 
-      {state === ImageState.fallback && (
-        <div className={fallbackClassNames}>{fallback}</div>
+      {status !== ImageStatus.loaded && (
+        <div className={fallbackClassNames}>{renderFallback()}</div>
       )}
     </div>
   );

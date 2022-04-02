@@ -11,7 +11,6 @@ enum BadgeClassNames {
   'bottom-right' = 'ref:badge-bottom-right',
   'top-left' = 'ref:badge-top-left',
   'top-right' = 'ref:badge-top-right',
-  size = 'ref:badge-size',
 }
 
 enum StatusClassNames {
@@ -26,20 +25,19 @@ enum StatusClassNames {
 
 type BadgePosition = `${'top' | 'bottom'}-${'left' | 'right'}`;
 type Status = 'online' | 'offline' | 'away' | 'busy';
-// type Size = number | 's' | 'm' | 'l';
 
 interface BadgeProps {
   className?: string;
   content?: React.ReactNode;
   position?: BadgePosition;
   size?: number | string;
-  // TODO:
+  // TODO: after avatar shape is ready
   overlap?: 'circular' | 'rectangular';
 }
 
 export const Badge: React.FC<BadgeProps> = ({
   position = 'top-right',
-  content,
+  content = null,
   className,
   children,
   size,
@@ -64,12 +62,12 @@ export const Badge: React.FC<BadgeProps> = ({
   );
 };
 
-interface StatusProps extends BadgeProps {
+interface OnlineStatus extends BadgeProps {
   status: Status;
   animated?: boolean;
 }
 
-export const OnlineStatus: React.FC<StatusProps> = ({
+export const OnlineStatus: React.FC<OnlineStatus> = ({
   status,
   position = 'bottom-right',
   animated = false,

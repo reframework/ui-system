@@ -10,9 +10,9 @@ enum AvatarClassNames {
 }
 
 interface AvatarProps extends ImageProps {
+  size?: number | string;
   // TODO:
   shape?: 'square' | 'circle' | 'rounded';
-  size?: number | string;
 }
 
 const Avatar: React.FC<AvatarProps> = ({ className, size, ...props }) => {
