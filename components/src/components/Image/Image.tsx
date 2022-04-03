@@ -3,7 +3,6 @@ import './Image.css';
 import { getClassName } from '@reframework/classnames';
 
 type OverrideProps = 'placeholder'; // | onClick;
-const getClassName = () => '';
 
 enum ImageClassName {
   container = 'ref:image-container',
