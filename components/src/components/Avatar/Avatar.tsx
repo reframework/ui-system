@@ -4,7 +4,7 @@ import { getClassName } from '@reframework/classnames';
 import { Image, ImageProps } from '../Image';
 import { getCSSSize } from '../../utils';
 
-enum AvatarClassNames {
+enum AvatarClassName {
   container = 'ref:avatar-container',
   picture = 'ref:avatar-picture',
 }
@@ -17,7 +17,7 @@ interface AvatarProps extends ImageProps {
 
 const Avatar: React.FC<AvatarProps> = ({ className, size, ...props }) => {
   const classNames = getClassName({
-    [AvatarClassNames.container]: true,
+    [AvatarClassName.container]: true,
     [className!]: Boolean(className),
   });
 
@@ -31,7 +31,7 @@ const Avatar: React.FC<AvatarProps> = ({ className, size, ...props }) => {
       <Image
         {...props}
         aspectRatio="1 / 1"
-        className={AvatarClassNames.picture}
+        className={AvatarClassName.picture}
       />
     </div>
   );
