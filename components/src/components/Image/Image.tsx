@@ -1,10 +1,11 @@
-import { getClassName } from '@reframework/classnames';
 import React from 'react';
 import './Image.css';
+// import { getClassName } from '@reframework/classnames';
 
 type OverrideProps = 'placeholder'; // | onClick;
+const getClassName = () => '';
 
-enum ImageClassNames {
+enum ImageClassName {
   container = 'ref:image-container',
   image = 'ref:image',
   fallback = 'ref:image-fallback',
@@ -23,6 +24,8 @@ export interface ImageProps
   placeholder?: React.ReactNode;
   /**
    * An aspect ratio of image
+   * Implemented via CSS property aspect-ratio,
+   * doesn't impact images width and height attributes
    */
   aspectRatio?: string;
   // TODO:
@@ -58,12 +61,12 @@ const Image: React.FC<ImageProps> = ({
   };
 
   const imageClassNames = getClassName({
-    [ImageClassNames.image]: true,
+    [ImageClassName.image]: true,
     [className!]: !!className,
   });
 
   const fallbackClassNames = getClassName({
-    [ImageClassNames.fallback]: true,
+    [ImageClassName.fallback]: true,
   });
 
   const renderFallback = () => {
@@ -79,7 +82,7 @@ const Image: React.FC<ImageProps> = ({
   } as React.CSSProperties;
 
   return (
-    <div className={ImageClassNames.container} style={style}>
+    <div className={ImageClassName.container} style={style}>
       {status !== ImageStatus.failed && (
         <img
           {...imgProps}
