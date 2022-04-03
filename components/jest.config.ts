@@ -45,6 +45,7 @@ const config: Config.InitialOptions = {
     '@reframework/classNames':
       '<rootDir>/node_modules/@reframework/classNames/dist/index.js',
   },
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
 };
 
 export default config;

@@ -69,11 +69,12 @@ const Image: React.FC<ImageProps> = ({
   });
 
   const renderFallback = () => {
-    if (status === ImageStatus.failed) {
-      if (fallback) return fallback;
-    }
+    if (!fallback && !placeholder) return null;
 
-    return placeholder;
+    const fallbackContent =
+      status === ImageStatus.failed && fallback ? fallback : placeholder;
+
+    return <div className={fallbackClassNames}>{fallbackContent}</div>;
   };
 
   const style = {
@@ -94,9 +95,7 @@ const Image: React.FC<ImageProps> = ({
         />
       )}
 
-      {status !== ImageStatus.loaded && (
-        <div className={fallbackClassNames}>{renderFallback()}</div>
-      )}
+      {status !== ImageStatus.loaded && renderFallback()}
     </div>
   );
 };
