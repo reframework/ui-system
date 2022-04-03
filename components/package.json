@@ -1,7 +1,7 @@
 {
   "homepage": "https://reframework.github.io/ui-system",
   "dependencies": {
-    "@reframework/classnames": "^1.0.2",
+    "@reframework/classnames": "^1.0.3",
     "@reframework/ui-system-tokens": "../tokens",
     "@typescript-eslint/eslint-plugin": "^5.17.0",
     "@typescript-eslint/parser": "^5.17.0"
