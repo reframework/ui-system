@@ -3,7 +3,7 @@ import { getClassName } from '@reframework/classnames';
 import './Badge.css';
 import { getCSSSize } from '../../utils';
 
-enum BadgeClassNames {
+enum BadgeClassName {
   container = 'ref:badge-container',
   badge = 'ref:badge',
   //
@@ -13,7 +13,7 @@ enum BadgeClassNames {
   'top-right' = 'ref:badge-top-right',
 }
 
-enum StatusClassNames {
+enum StatusClassName {
   status = 'ref:status',
   //
   away = 'ref:status-away',
@@ -43,8 +43,8 @@ export const Badge: React.FC<BadgeProps> = ({
   size,
 }) => {
   const badgeClassNames = getClassName({
-    [BadgeClassNames.badge]: true,
-    [BadgeClassNames[position]]: true,
+    [BadgeClassName.badge]: true,
+    [BadgeClassName[position]]: true,
     [className!]: !!className,
   });
 
@@ -53,7 +53,7 @@ export const Badge: React.FC<BadgeProps> = ({
   } as React.CSSProperties;
 
   return (
-    <div className={BadgeClassNames.container}>
+    <div className={BadgeClassName.container}>
       {children}
       <div className={badgeClassNames} style={style}>
         {content}
@@ -62,21 +62,21 @@ export const Badge: React.FC<BadgeProps> = ({
   );
 };
 
-interface OnlineStatus extends BadgeProps {
+interface OnlineStatusProps extends BadgeProps {
   status: Status;
   animated?: boolean;
 }
 
-export const OnlineStatus: React.FC<OnlineStatus> = ({
+export const OnlineStatus: React.FC<OnlineStatusProps> = ({
   status,
   position = 'bottom-right',
   animated = false,
   ...props
 }) => {
   const statusClassNames = getClassName({
-    [StatusClassNames.status]: true,
-    [StatusClassNames[status!]]: true,
-    [StatusClassNames.animated]: animated,
+    [StatusClassName.status]: true,
+    [StatusClassName[status!]]: true,
+    [StatusClassName.animated]: animated,
   });
 
   return <Badge {...props} position={position} className={statusClassNames} />;
