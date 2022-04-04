@@ -1,4 +1,4 @@
-.active {
+.ref\:wave-active {
   --wave: inherit;
   &:after {
     animation: var(

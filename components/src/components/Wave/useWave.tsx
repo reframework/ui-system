@@ -1,5 +1,9 @@
 import { MutableRefObject, useRef, useEffect } from 'react';
-import wave from './Wave.module.css?module';
+import wave from './Wave.css';
+
+enum WaveClassName {
+  active = 'ref:wave-active',
+}
 
 export const useWave = (ref: MutableRefObject<HTMLElement | null>) => {
   const timeout = useRef<number>();
@@ -12,7 +16,7 @@ export const useWave = (ref: MutableRefObject<HTMLElement | null>) => {
       // Doesn't remove a className
       clearTimeout(timeout.current);
 
-      ref.current.classList.add(wave.active);
+      ref.current.classList.add(WaveClassName.active);
       // Forces to restart animation
       ref.current.style.setProperty('--wave', 'none');
 

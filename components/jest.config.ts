@@ -6,11 +6,9 @@ const config: Config.InitialOptions = {
   verbose: true,
   testEnvironment: 'jest-environment-jsdom',
   moduleFileExtensions: [...defaults.moduleFileExtensions, 'jsx', 'ts', 'tsx'],
-  //
   automock: false,
   clearMocks: true,
-  // collectCoverageFrom: ['src/**/*.{ts,tsx}'],
-  // transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
+  collectCoverageFrom: ['src/**/*.{ts,tsx}'],
   globals: {
     'ts-jest': {
       tsconfig: 'tsconfig.json',
@@ -36,6 +34,8 @@ const config: Config.InitialOptions = {
     '^.+\\.(js|jsx|ts|tsx)?$': 'ts-jest',
     '^.+\\.js$': 'babel-jest',
   },
+  transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
+
   extensionsToTreatAsEsm: ['.ts', '.tsx'],
 
   moduleNameMapper: {
@@ -45,7 +45,7 @@ const config: Config.InitialOptions = {
     '@reframework/classNames':
       '<rootDir>/node_modules/@reframework/classNames/dist/index.js',
   },
-  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
 };
 
 export default config;

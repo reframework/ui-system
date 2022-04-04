@@ -1,4 +1,0 @@
-.hide button[aria-controls='menu'] {
-  opacity: 0;
-  pointer-events: none;
-}

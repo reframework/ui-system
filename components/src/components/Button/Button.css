@@ -1,5 +1,5 @@
 /* Common */
-.button {
+.ref\:button {
   --__shadow-color: var(--color-scale-blue-1);
   background-color: transparent;
   /* TODO: add border-radius token */
@@ -13,88 +13,86 @@
   transition: background-color 0.2s ease, color 0.2s ease;
   position: relative;
   width: max-content;
-  &:focus:not(:active) {
+
+  &:focus {
     box-shadow: 0 0 0 2px var(--__shadow-color);
   }
 }
 
 /* Size */
-.small {
+.ref\:button-size-small {
   font-size: var(--font-size-xxs);
-  /* min-height: var(--spacing-s); */
   padding: var(--spacing-xxxs) var(--spacing-xs);
 }
 
-.medium {
+.ref\:button-size-medium {
   font-size: var(--font-size-xs);
-  /* min-height: var(--spacing-m); */
   padding: var(--spacing-xxs) var(--spacing-s);
 }
 
-.large {
+.ref\:button-size-large {
   font-size: var(--font-size-s);
-  /* min-height: var(--spacing-l); */
   padding: var(--spacing-xxs) var(--spacing-m);
 }
 
 /* wave effect */
 
-.primary {
+.ref\:button-color-primary {
   --__wave-color: var(--color-scale-blue-4);
 }
 
-.secondary {
+.ref\:button-color-secondary {
   --__wave-color: var(--color-scale-pink-4);
 }
 
-.success {
+.ref\:button-color-success {
   --__wave-color: var(--color-scale-green-4);
 }
 
-.warning {
+.ref\:button-color-warning {
   --__wave-color: var(--color-scale-yellow-4);
 }
 
-.error {
+.ref\:button-color-error {
   --__wave-color: var(--color-scale-red-4);
 }
 
-.neutral {
+.ref\:button-color-neutral {
   --__wave-color: var(--color-scale-gray-4);
 }
 
 /* Stretch */
-.stretch {
+.ref\:button-stretch {
   width: 100%;
 }
 
 /* Shape */
-.circle {
-  &.small {
+.ref\:button-circle {
+  &.ref\:button-size-small {
     border-radius: var(--spacing-s);
   }
 
-  &.medium {
+  &.ref\:button-size-medium {
     border-radius: var(--spacing-m);
   }
 
-  &.large {
+  &.ref\:button-size-large {
     border-radius: var(--spacing-l);
   }
 }
 
 /* Variant */
-.solid {
+.ref\:button-variant-solid {
   color: var(--color-scale-white);
 
-  &.primary {
+  &.ref\:button-color-primary {
     background-color: var(--color-scale-blue-4);
     &:hover {
       background-color: var(--color-scale-blue-3);
     }
   }
 
-  &.secondary {
+  &.ref\:button-color-secondary {
     --__shadow-color: var(--color-scale-pink-1);
     background-color: var(--color-scale-pink-4);
     &:hover {
@@ -102,7 +100,7 @@
     }
   }
 
-  &.success {
+  &.ref\:button-color-success {
     --__shadow-color: var(--color-scale-green-1);
     background-color: var(--color-scale-green-4);
     &:hover {
@@ -110,7 +108,7 @@
     }
   }
 
-  &.warning {
+  &.ref\:button-color-warning {
     --__shadow-color: var(--color-scale-yellow-1);
     background-color: var(--color-scale-yellow-4);
     &:hover {
@@ -118,7 +116,7 @@
     }
   }
 
-  &.error {
+  &.ref\:button-color-error {
     --__shadow-color: var(--color-scale-red-1);
     background-color: var(--color-scale-red-4);
     &:hover {
@@ -126,7 +124,7 @@
     }
   }
 
-  &.neutral {
+  &.ref\:button-color-neutral {
     --__shadow-color: var(--color-scale-gray-1);
     background-color: var(--color-scale-gray-4);
     &:hover {
@@ -135,10 +133,10 @@
   }
 }
 
-.outlined {
+.ref\:button-variant-outlined {
   border: 1px solid currentColor;
 
-  &.primary {
+  &.ref\:button-color-primary {
     --__shadow-color: var(--color-scale-blue-1);
     color: var(--color-scale-blue-4);
     &:hover {
@@ -146,7 +144,7 @@
     }
   }
 
-  &.secondary {
+  &.ref\:button-color-secondary {
     --__shadow-color: var(--color-scale-pink-1);
     color: var(--color-scale-pink-3);
     &:hover {
@@ -154,7 +152,7 @@
     }
   }
 
-  &.success {
+  &.ref\:button-color-success {
     --__shadow-color: var(--color-scale-green-1);
     color: var(--color-scale-green-4);
     &:hover {
@@ -162,7 +160,7 @@
     }
   }
 
-  &.warning {
+  &.ref\:button-color-warning {
     --__shadow-color: var(--color-scale-yellow-1);
     color: var(--color-scale-yellow-4);
     &:hover {
@@ -170,7 +168,7 @@
     }
   }
 
-  &.error {
+  &.ref\:button-color-error {
     --__shadow-color: var(--color-scale-red-1);
     color: var(--color-scale-red-4);
     &:hover {
@@ -178,7 +176,7 @@
     }
   }
 
-  &.neutral {
+  &.ref\:button-color-neutral {
     --__shadow-color: var(--color-scale-gray-1);
     color: var(--color-scale-gray-4);
     &:hover {
@@ -187,8 +185,8 @@
   }
 }
 
-.ghost {
-  &.primary {
+.ref\:button-variant-ghost {
+  &.ref\:button-color-primary {
     --__shadow-color: var(--color-scale-blue-1);
     color: var(--color-scale-blue-4);
     &:focus,
@@ -197,7 +195,7 @@
     }
   }
 
-  &.secondary {
+  &.ref\:button-color-secondary {
     --__shadow-color: var(--color-scale-pink-1);
     color: var(--color-scale-pink-4);
     &:focus,
@@ -206,7 +204,7 @@
     }
   }
 
-  &.success {
+  &.ref\:button-color-success {
     --__shadow-color: var(--color-scale-green-1);
     color: var(--color-scale-green-4);
     &:focus,
@@ -215,7 +213,7 @@
     }
   }
 
-  &.warning {
+  &.ref\:button-color-warning {
     --__shadow-color: var(--color-scale-yellow-1);
     color: var(--color-scale-yellow-4);
     &:focus,
@@ -224,7 +222,7 @@
     }
   }
 
-  &.error {
+  &.ref\:button-color-error {
     --__shadow-color: var(--color-scale-red-1);
     color: var(--color-scale-red-4);
     &:focus,
@@ -233,7 +231,7 @@
     }
   }
 
-  &.neutral {
+  &.ref\:button-color-neutral {
     --__shadow-color: var(--color-scale-gray-2);
     color: var(--color-scale-gray-4);
     &:focus,
@@ -243,7 +241,7 @@
   }
 }
 
-.link {
+.ref\:button-variant-link {
   --__main-color: transparent;
   &.link {
     box-shadow: none;
@@ -253,7 +251,7 @@
     text-decoration: underline;
   }
 
-  &.primary {
+  &.ref\:button-color-primary {
     color: var(--color-scale-blue-4);
     &:focus,
     &:hover {
@@ -261,7 +259,7 @@
     }
   }
 
-  &.secondary {
+  &.ref\:button-color-secondary {
     --__main-color: transparent;
     color: var(--color-scale-pink-4);
     &:focus,
@@ -270,7 +268,7 @@
     }
   }
 
-  &.success {
+  &.ref\:button-color-success {
     color: var(--color-scale-green-4);
     &:focus,
     &:hover {
@@ -278,7 +276,7 @@
     }
   }
 
-  &.warning {
+  &.ref\:button-color-warning {
     color: var(--color-scale-yellow-4);
     &:focus,
     &:hover {
@@ -286,7 +284,7 @@
     }
   }
 
-  &.error {
+  &.ref\:button-color-error {
     color: var(--color-scale-red-4);
     &:focus,
     &:hover {
@@ -294,7 +292,7 @@
     }
   }
 
-  &.neutral {
+  &.ref\:button-color-neutral {
     --__main-color: transparent;
     color: var(--color-scale-gray-4);
     &:focus,
@@ -305,7 +303,7 @@
 }
 
 /* Disabled */
-.disabled {
+.ref\:button-disabled {
   opacity: 0.7;
   cursor: default;
 }

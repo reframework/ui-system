@@ -2,7 +2,31 @@ import React, { useRef } from 'react';
 import { getClassName } from '@reframework/classnames';
 import { useWave } from '../Wave/useWave';
 import { forkRef } from '../../utils/forkRef';
-import styles from './Button.module.css?module?module';
+import './Button.css';
+
+enum ButtonClassName {
+  button = 'ref:button',
+  // Sizes
+  large = 'ref:button-size-large',
+  medium = 'ref:button-size-medium',
+  small = 'ref:button-size-small',
+  // Variants
+  solid = 'ref:button-variant-solid',
+  outlined = 'ref:button-variant-outlined',
+  ghost = 'ref:button-variant-ghost',
+  link = 'ref:button-variant-link',
+  // Colors
+  primary = 'ref:button-color-primary',
+  secondary = 'ref:button-color-secondary',
+  success = 'ref:button-color-success',
+  warning = 'ref:button-color-warning',
+  error = 'ref:button-color-error',
+  neutral = 'ref:button-color-neutral',
+  // Shape
+  circle = 'ref:button-circle',
+  stretch = 'ref:button-stretch',
+  disabled = 'ref:button-disabled',
+}
 
 export interface ButtonProps {
   /**
@@ -54,23 +78,24 @@ const Button = React.forwardRef(
       variant = 'ghost',
       ...otherProps
     }: Props,
-    ref: React.ForwardedRef<HTMLButtonElement>
+    ref: React.ForwardedRef<HTMLButtonElement>,
   ) => {
     const buttonRef = useRef<HTMLButtonElement | null>(null);
 
     const forkedRef = forkRef(ref, buttonRef);
 
     const waveRef = variant !== 'link' ? buttonRef : { current: null };
-    // useWave(waveRef);
+
+    useWave(waveRef);
 
     const classNames = getClassName({
-      [styles.button]: true,
-      [styles[size]]: true,
-      [styles[variant]]: true,
-      [styles[color]]: true,
-      [styles.circle]: shape === 'circle',
-      [styles.stretch]: stretch,
-      [styles.disabled]: disabled,
+      [ButtonClassName.button]: true,
+      [ButtonClassName[size]]: true,
+      [ButtonClassName[variant]]: true,
+      [ButtonClassName[color]]: true,
+      [ButtonClassName.circle]: shape === 'circle',
+      [ButtonClassName.stretch]: stretch,
+      [ButtonClassName.disabled]: disabled,
       [className!]: Boolean(className),
     });
 
@@ -84,7 +109,7 @@ const Button = React.forwardRef(
         {children}
       </button>
     );
-  }
+  },
 );
 
 export default Button;
