@@ -1,22 +1,15 @@
 .ref\:image-container {
   /* TODO: test with responsive container */
   position: relative;
-  aspect-ratio: var(--image-aspect-ratio);
 }
 
 .ref\:image {
   display: block;
   /* TODO: */
   /* aspect-ratio: attr(width) / attr(height); */
-  aspect-ratio: inherit;
+  aspect-ratio: var(--image-aspect-ratio);
+  /* aspect-ratio: inherit; */
   width: 100%;
   height: 100%;
   opacity: 1;
-}
-
-.ref\:image-fallback {
-  height: 100%;
-  inset: 0;
-  position: absolute;
-  width: 100%;
 }

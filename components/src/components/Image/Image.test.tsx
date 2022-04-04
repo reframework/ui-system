@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from './Image';
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
 type ImageProps = React.ComponentProps<typeof Image>;
 
@@ -31,11 +31,12 @@ describe('Image component', () => {
       expect(screen.getByTestId('placeholder')).toBeInTheDocument();
       const img = screen.getByRole('img') as HTMLImageElement;
       Object.defineProperty(img, 'complete', { value: true });
+      Object.defineProperty(img, 'naturalHeight', { value: 100 });
       img.dispatchEvent(new Event('load'));
       // Placeholder destroyed
       expect(screen.queryByTestId('placeholder')).not.toBeInTheDocument();
     });
-    it('renders fallback when loading is failed and destroys img', () => {
+    it('renders fallback when failed and destroys img', () => {
       render(<Image {...baseProps} fallback={fallback} />);
       const img = screen.getByRole('img') as HTMLImageElement;
       img.dispatchEvent(new Event('error'));
@@ -46,7 +47,7 @@ describe('Image component', () => {
       // Fallback is rendered
       expect(screen.queryByTestId('fallback')).toBeInTheDocument();
     });
-    it('renders placeholder when loading is failed fallback is not provided', () => {
+    it('renders placeholder when failed and fallback is not provided', () => {
       render(<Image {...baseProps} />);
       const img = screen.getByRole('img') as HTMLImageElement;
       img.dispatchEvent(new Event('error'));
@@ -56,6 +57,13 @@ describe('Image component', () => {
       expect(screen.getByTestId('placeholder')).toBeInTheDocument();
       // No Fallback rendered
       expect(screen.queryByTestId('fallback')).not.toBeInTheDocument();
+    });
+    it('renders only image when failed fallback and placeholder are not provided', () => {
+      render(<Image {...baseProps} placeholder={undefined} />);
+      const img = screen.getByRole('img') as HTMLImageElement;
+      img.dispatchEvent(new Event('error'));
+      expect(img).toBeInTheDocument();
+      expect(img.parentElement?.children).toHaveLength(1);
     });
   });
 

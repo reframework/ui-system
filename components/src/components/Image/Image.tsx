@@ -7,7 +7,6 @@ type OverrideProps = 'placeholder'; // | onClick;
 enum ImageClassName {
   container = 'ref:image-container',
   image = 'ref:image',
-  fallback = 'ref:image-fallback',
 }
 
 export interface ImageProps
@@ -37,6 +36,14 @@ enum ImageStatus {
   failed = 'failed',
 }
 
+const isFailed = (status: ImageStatus) => {
+  return status === ImageStatus.failed;
+};
+
+const isLoaded = (status: ImageStatus) => {
+  return status === ImageStatus.loaded;
+};
+
 const Image: React.FC<ImageProps> = ({
   aspectRatio,
   className,
@@ -64,17 +71,15 @@ const Image: React.FC<ImageProps> = ({
     [className!]: !!className,
   });
 
-  const fallbackClassNames = getClassName({
-    [ImageClassName.fallback]: true,
-  });
+  const hasFallback = React.isValidElement(fallback);
+  const hasPlaceholder = React.isValidElement(placeholder);
+  const ignoreFallback = !hasFallback && !hasPlaceholder;
 
   const renderFallback = () => {
-    if (!fallback && !placeholder) return null;
-
-    const fallbackContent =
-      status === ImageStatus.failed && fallback ? fallback : placeholder;
-
-    return <div className={fallbackClassNames}>{fallbackContent}</div>;
+    if (ignoreFallback) return null;
+    if (isLoaded(status)) return null;
+    if (isFailed(status) && hasFallback) return fallback;
+    return placeholder;
   };
 
   const style = {
@@ -83,7 +88,7 @@ const Image: React.FC<ImageProps> = ({
 
   return (
     <div className={ImageClassName.container} style={style}>
-      {status !== ImageStatus.failed && (
+      {(ignoreFallback || !isFailed(status)) && (
         <img
           {...imgProps}
           ref={imageRef}
@@ -95,7 +100,7 @@ const Image: React.FC<ImageProps> = ({
         />
       )}
 
-      {status !== ImageStatus.loaded && renderFallback()}
+      {renderFallback()}
     </div>
   );
 };
