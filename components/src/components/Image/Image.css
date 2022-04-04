@@ -1,6 +1,8 @@
 .ref\:image-container {
   /* TODO: test with responsive container */
   position: relative;
+  height: 100%;
+  width: 100%;
 }
 
 .ref\:image {
