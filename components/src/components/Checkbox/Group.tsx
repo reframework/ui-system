@@ -38,7 +38,7 @@ const Group: React.FC<CheckboxGroupProps> = ({ options, children }) => {
   const getOptions = () => {
     if (!Array.isArray(options)) return children;
 
-    return options.map((option) => {
+    return options.map(() => {
       //
     });
   };

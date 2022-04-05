@@ -2,8 +2,7 @@ import Paper, { PaperProps } from '../Paper/Paper';
 import React from 'react';
 import { isFunction } from '../../utils';
 import Option from './Option';
-import { SelectProps } from './types';
-import { UseComboboxReturnType } from './types';
+import { SelectProps, UseComboboxReturnType } from './types';
 
 type ListBoxProps = {
   getOptionLabel: NonNullable<SelectProps['getOptionLabel']>;

@@ -1,6 +1,10 @@
-import { CSSProperties, useEffect, useImperativeHandle, useRef } from 'react';
+import React, {
+  CSSProperties,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from 'react';
 import ReactDOM from 'react-dom';
-import React from 'react';
 import { isString } from '../../utils';
 
 export const useCreated = (callback: () => void) => {
@@ -75,7 +79,7 @@ export interface PortalProps {
 const Portal = React.forwardRef<HTMLElement | null, PortalProps>(
   ({ children, element, id, style, className }, ref) => {
     const containerRef = useRef<HTMLElement | null>(
-      createContainer({ id, style, element, className })
+      createContainer({ id, style, element, className }),
     );
 
     // Allow to customize the Node using a ref
@@ -95,14 +99,14 @@ const Portal = React.forwardRef<HTMLElement | null, PortalProps>(
         // Removes the Node from the DOM before unmounting
         document.body.removeChild(containerRef.current);
       },
-      []
+      [],
     );
 
     // Creates a Portal
     return containerRef.current
       ? ReactDOM.createPortal(children, containerRef.current)
       : null;
-  }
+  },
 );
 
 export default Portal;

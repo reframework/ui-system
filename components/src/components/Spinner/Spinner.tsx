@@ -1,5 +1,5 @@
-import React from "react";
-import styles from "./Spinner.css?module";
+import React from 'react';
+import styles from './Spinner.css?module';
 
 type Props = {
   color?: string;

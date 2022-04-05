@@ -1,5 +1,3 @@
-import { CSSProperties } from 'react';
-
 export type PlacementAxis = 'top' | 'bottom' | 'left' | 'right';
 export type PlacementAlign = 'end' | 'center' | 'start';
 
@@ -31,7 +29,7 @@ type InternalPlacementTuple = [InternalPlacement, InternalPlacement];
 type AxisOverflow = Record<Axis, OverflowValues>;
 
 const parsePlacement = (
-  placement: Placement
+  placement: Placement,
 ): [InternalPlacement, InternalPlacement] => {
   const [axis, align] = placement.split('-') as [PlacementAxis, PlacementAlign];
 
@@ -125,7 +123,7 @@ interface PlacementHandlerParams
 export class PlacementHero {
   static getComputedPosition = (
     placement: InternalPlacementTuple,
-    params: GetComputedPositionParams
+    params: GetComputedPositionParams,
   ) => {
     const {
       offsetParentRect,
@@ -148,7 +146,7 @@ export class PlacementHero {
      */
     const parentOffset = getParentOffset(referenceRect, offsetParentRect);
 
-    let computedPlacementX = computePlacementX({
+    const computedPlacementX = computePlacementX({
       axis: Axis.X,
       offset: offsetX,
       parentOffset,
@@ -156,7 +154,7 @@ export class PlacementHero {
       targetRect,
     });
 
-    let computedPlacementY = computePlacementY({
+    const computedPlacementY = computePlacementY({
       axis: Axis.Y,
       offset: offsetY,
       parentOffset,
@@ -206,7 +204,7 @@ export class PlacementHero {
    */
   static getParentOffset = (
     originRect: DOMRect,
-    parentOffsetRect: DOMRect
+    parentOffsetRect: DOMRect,
   ): OffsetBoundaries => {
     return {
       top: originRect.top - parentOffsetRect.top,
@@ -297,7 +295,7 @@ export class PlacementHero {
 
   static flipPlacement(
     [placementX, placementY]: InternalPlacementTuple,
-    overflow: AxisOverflow
+    overflow: AxisOverflow,
   ) {
     return [
       flipPlacement[placementX](overflow.X),
@@ -308,7 +306,7 @@ export class PlacementHero {
   // REFLOW
   static getRects = (
     targetElement: HTMLElement,
-    referenceElement: HTMLElement
+    referenceElement: HTMLElement,
   ): Rects => {
     const { offsetParent } = targetElement;
     const offsetParentRect = (
@@ -335,7 +333,7 @@ export function computePosition(
     //
     preventOverflowX?: boolean;
     preventOverflowY?: boolean;
-  }
+  },
 ) {
   const { targetElement, referenceElement } = params;
 
@@ -346,25 +344,25 @@ export function computePosition(
 
   let computedPosition = PlacementHero.getComputedPosition(
     [placementX, placementY],
-    rects
+    rects,
   );
 
   const overflow = PlacementHero.getOverflow({
-    // @ts-expect-error
+    // @ts-expect-error ?--
     computedPosition,
     ...rects,
   });
 
   const [flipPlacementX, flipPlacementY] = PlacementHero.flipPlacement(
     [placementX, placementY],
-    overflow
+    overflow,
   );
 
   // TODO: Split by axis
   if (placementX !== flipPlacementX || placementY !== flipPlacementY) {
     computedPosition = PlacementHero.getComputedPosition(
       [flipPlacementX, flipPlacementY],
-      rects
+      rects,
     );
   }
 

@@ -11,7 +11,7 @@ export const defaultGetOptionLabel = (opt: OptionItem) => opt.label;
 
 export const getDefaultValue = (
   defaultValue: Optional<SelectValue>,
-  multiple: boolean
+  multiple: boolean,
 ) => {
   if (multiple) {
     if (isArray(defaultValue)) return defaultValue;
@@ -27,7 +27,7 @@ export const defaultGetOptionDisabled = (_: OptionItem) => false;
 
 export const defaultGetOptionSelected = (
   opt: OptionItem,
-  value?: SelectValue
+  value?: SelectValue,
 ) => {
   if (isArray(value)) {
     // Multiple mode

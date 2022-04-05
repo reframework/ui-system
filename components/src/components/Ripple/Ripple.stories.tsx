@@ -1,10 +1,10 @@
-import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import React from 'react';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import Ripple from "./Ripple";
+import Ripple from './Ripple';
 
 export default {
-  title: "Ripple/Ripple",
+  title: 'Ripple/Ripple',
   component: Ripple,
 } as ComponentMeta<typeof Ripple>;
 
@@ -15,5 +15,5 @@ const Template: ComponentStory<typeof Ripple> = ({ children, ...props }) => (
 export const Button = Template.bind({});
 
 Button.args = {
-  children: "Ripple",
+  children: 'Ripple',
 };

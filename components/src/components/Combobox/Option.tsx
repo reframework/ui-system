@@ -6,7 +6,7 @@ export interface OptionProps {
   children?: React.ReactNode;
   color?: string;
   disabled?: boolean;
-  highlighted?: Boolean;
+  highlighted?: boolean;
   icon?: React.ReactNode;
   id?: string;
   label?: React.ReactNode;

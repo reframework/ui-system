@@ -43,37 +43,37 @@ class ComboboxAutocomplete {
 
     this.comboboxNode.addEventListener(
       'keydown',
-      this.onComboboxKeyDown.bind(this)
+      this.onComboboxKeyDown.bind(this),
     );
     this.comboboxNode.addEventListener(
       'keyup',
-      this.onComboboxKeyUp.bind(this)
+      this.onComboboxKeyUp.bind(this),
     );
     this.comboboxNode.addEventListener(
       'click',
-      this.onComboboxClick.bind(this)
+      this.onComboboxClick.bind(this),
     );
     this.comboboxNode.addEventListener(
       'focus',
-      this.onComboboxFocus.bind(this)
+      this.onComboboxFocus.bind(this),
     );
     this.comboboxNode.addEventListener('blur', this.onComboboxBlur.bind(this));
 
     document.body.addEventListener(
       'pointerup',
       this.onBackgroundPointerUp.bind(this),
-      true
+      true,
     );
 
     // initialize pop up menu
 
     this.listboxNode.addEventListener(
       'pointerover',
-      this.onListboxPointerover.bind(this)
+      this.onListboxPointerover.bind(this),
     );
     this.listboxNode.addEventListener(
       'pointerout',
-      this.onListboxPointerout.bind(this)
+      this.onListboxPointerout.bind(this),
     );
 
     // Traverse the element children of domNode: configure each with
@@ -150,12 +150,12 @@ class ComboboxAutocomplete {
         if (flag) {
           this.comboboxNode.setSelectionRange(
             this.option.textContent.length,
-            this.option.textContent.length
+            this.option.textContent.length,
           );
         } else {
           this.comboboxNode.setSelectionRange(
             this.filter.length,
-            this.option.textContent.length
+            this.option.textContent.length,
           );
         }
       }
@@ -485,7 +485,7 @@ class ComboboxAutocomplete {
 
               if (
                 this.getLowercaseContent(option).indexOf(
-                  this.comboboxNode.value.toLowerCase()
+                  this.comboboxNode.value.toLowerCase(),
                 ) === 0
               ) {
                 this.option = option;

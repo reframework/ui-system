@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 export type PlacementAxis = 'before' | 'end' | 'center' | 'start' | 'after';
 export type Placement = `${PlacementAxis}-${PlacementAxis}`;
 type BoundarySide = 'top' | 'left' | 'right' | 'bottom';
@@ -110,7 +111,7 @@ export class PlacementHero {
 
     const [placementX, placementY] = placement.split('-') as [
       PlacementAxis,
-      PlacementAxis
+      PlacementAxis,
     ];
     /**
      * Viewport (window) boundaries
@@ -220,8 +221,8 @@ export class PlacementHero {
       triggerRect,
       // preventOverflowX = false,
       // preventOverflowY = true,
-      offsetX = 0,
-      offsetY = 0,
+      // offsetX = 0,
+      // offsetY = 0,
     } = params;
 
     const {
@@ -233,7 +234,7 @@ export class PlacementHero {
 
     const [placementX, placementY] = placement.split('-') as [
       PlacementAxis,
-      PlacementAxis
+      PlacementAxis,
     ];
     /**
      * Viewport (window) boundaries
@@ -242,6 +243,7 @@ export class PlacementHero {
     /**
      * Checks if viewport is larger then popup and flipping placement does make sense
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const anywayOverflowing = isAnywayOverflowing(viewportRect, targetRect);
     /**
      * First relative parent offset
@@ -250,22 +252,22 @@ export class PlacementHero {
     /**
      * Placement handlers e.g. before, start, end, center, after
      */
-    let computePlacementX = PlacementHero[placementX];
-    let computePlacementY = PlacementHero[placementY];
+    const computePlacementX = PlacementHero[placementX];
+    const computePlacementY = PlacementHero[placementY];
     /**
      * Overflowing
      */
     // let overflowX;
     // let overflowY;
 
-    let computedPositionX = computePlacementX({
+    const computedPositionX = computePlacementX({
       axis: Axis.X,
       // offset: offsetX,
       parentOffset,
       triggerRect,
     });
 
-    let computedPositionY = computePlacementY({
+    const computedPositionY = computePlacementY({
       axis: Axis.Y,
       // offset: offsetY,
       parentOffset,
@@ -282,7 +284,7 @@ export class PlacementHero {
    *
    */
   private static getFlippedPlacement = (
-    direction: BoundarySide
+    direction: BoundarySide,
   ): PlacementAxis => {
     return direction === 'left' || direction === 'top' ? 'after' : 'before';
   };
@@ -292,7 +294,7 @@ export class PlacementHero {
    */
   private static isAnywayOverflowing = (
     viewportRect: DOMRect,
-    targetRect: DOMRect
+    targetRect: DOMRect,
   ) => {
     return {
       x: viewportRect.width < targetRect.width * 2,
@@ -332,7 +334,7 @@ export class PlacementHero {
 
   private static getParentOffset = (
     originRect: DOMRect,
-    parentOffsetRect: DOMRect
+    parentOffsetRect: DOMRect,
   ): OffsetBoundaries => {
     return {
       top: originRect.top - parentOffsetRect.top,
@@ -424,7 +426,7 @@ export class PlacementHero {
   // REFLOW
   static getComputedRects = async (
     targetElement: HTMLElement,
-    referenceElement: HTMLElement
+    referenceElement: HTMLElement,
   ) => {
     return asyncRAF(() => {
       // if (!targetElement || !referenceElement) return;

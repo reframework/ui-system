@@ -37,10 +37,12 @@ const SnackbarItem = ({
     return () => {
       clearTimeout(timeout);
     };
+    // TODO: fix
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [duration]);
 
   return (
-    <Paper reflection={6} className={className}>
+    <Paper levitation={6} className={className}>
       <span className={styles.icon}>{emoji[type]} </span>
       <span>{content}</span>
     </Paper>

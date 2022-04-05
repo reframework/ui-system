@@ -22,7 +22,7 @@ const Paper = React.forwardRef<HTMLDivElement | null, PaperProps>(
       [className!]: Boolean(className),
     });
     return <div {...props} className={classNames} ref={ref} />;
-  }
+  },
 );
 
 export default Paper;

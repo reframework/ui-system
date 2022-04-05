@@ -11,6 +11,7 @@ const pipeCallbacks =
     fns.forEach((fn) => fn?.(...args));
   };
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 const mergeStyles = (styleA: {}, styleB: {}) => {
   return {
     style: {
@@ -23,7 +24,7 @@ const mergeStyles = (styleA: {}, styleB: {}) => {
 const Merge = React.forwardRef<any, MergeProps>((props, parentRef) => {
   const child = React.Children.only(props.children) as React.ReactElement;
 
-  const { children: _, style, ...parentProps } = props;
+  const { style, ...parentProps } = props;
 
   const mergedProps = Object.entries(parentProps).reduce(
     (acc, [propKey, propValue]) => {
@@ -40,7 +41,7 @@ const Merge = React.forwardRef<any, MergeProps>((props, parentRef) => {
 
       return acc;
     },
-    {} as Record<string, any>
+    {} as Record<string, any>,
   );
 
   const newChildProps = {

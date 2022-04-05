@@ -9,7 +9,7 @@ export const [DescendantProvider, useDescendantContext] =
 
 export const createDescendantManager = (
   node: any,
-  setNode: (node: any) => void
+  setNode: (node: any) => void,
 ) => {
   return {
     reset: () => {

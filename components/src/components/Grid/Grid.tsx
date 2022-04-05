@@ -1,8 +1,7 @@
 import React from 'react';
 import { getClassName } from '@reframework/classnames';
-import { getGrid } from '../../atomic/Grid/getGrid';
+import { getGrid, AtomicGridProps } from '../../atomic/Grid/getGrid';
 import { Box } from '../Box';
-import { AtomicGridProps } from '../../atomic/Grid/getGrid';
 import { BoxProps } from '../Box/Box';
 
 interface GridProps extends AtomicGridProps, BoxProps {}

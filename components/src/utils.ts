@@ -1,7 +1,6 @@
 import React from 'react';
 
 type Optional<T> = T | undefined;
-type Func = (...args: any[]) => any;
 
 export const getCSSSize = (size?: number | string, units = 'px') => {
   if (size === undefined) return;
@@ -18,10 +17,11 @@ export const useConst = <T>(value: T) => {
 export const useAutoFocus = (hasFocus: boolean, node?: HTMLElement | null) => {
   React.useEffect(() => {
     if (hasFocus && node) node.focus?.();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 };
 
-export const useControlledState = <T extends unknown>(params: {
+export const useControlledState = <T>(params: {
   controlled: T;
   default: NonNullable<T>;
 }) => {
@@ -29,20 +29,22 @@ export const useControlledState = <T extends unknown>(params: {
 
   // isControlled should never change
   const { current: isControlled } = React.useRef(
-    params.controlled !== undefined
+    params.controlled !== undefined,
   );
 
   const [uncontrolled, setUncontrolled] = React.useState(_default);
   const noOp = React.useCallback(() =>
     // todo: fire callback
-    {}, []) as typeof setUncontrolled;
+    {
+      // eslint :)
+    }, []) as typeof setUncontrolled;
 
   return isControlled
     ? ([controlled as NonNullable<T>, noOp] as const)
     : ([uncontrolled, setUncontrolled] as const);
 };
 
-export const useControlledStateV2 = <T extends unknown>(params: {
+export const useControlledStateV2 = <T>(params: {
   controlled: T;
   default: T;
 }) => {
@@ -50,13 +52,15 @@ export const useControlledStateV2 = <T extends unknown>(params: {
 
   // isControlled should never change
   const { current: isControlled } = React.useRef(
-    params.controlled !== undefined
+    params.controlled !== undefined,
   );
 
   const [uncontrolled, setUncontrolled] = React.useState(_default);
 
   // TODO: move outside the hook
-  const noOp = React.useCallback(() => {}, []) as typeof setUncontrolled;
+  const noOp = React.useCallback(() => {
+    // eslint :)
+  }, []) as typeof setUncontrolled;
 
   return {
     isControlled,
@@ -84,40 +88,40 @@ export const useAriaActiveDescendant = () => {
   };
 };
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export const isFunction = <T extends Function>(f: unknown): f is T =>
   typeof f === 'function';
 
 export const isNumber = (value: unknown): value is number =>
   typeof value === 'number';
 
-export const isArray = <T extends any>(value: unknown): value is T[] => {
+export const isArray = <T>(value: unknown): value is T[] => {
   return Array.isArray(value);
 };
 
-export const isString = <T extends any>(value: unknown): value is string => {
+export const isString = (value: unknown): value is string => {
   return typeof value === 'string';
 };
 
-export const lastOf = <T extends any>(arr: T[]): Optional<T> => {
+export const lastOf = <T>(arr: T[]): Optional<T> => {
   return arr[arr.length - 1];
 };
 
-export const firstOf = <T extends any>(arr: T[]): Optional<T> => {
+export const firstOf = <T>(arr: T[]): Optional<T> => {
   return arr[0];
 };
 
-export const nextOf = <T extends any>(arr: T[], idx: number): Optional<T> => {
+export const nextOf = <T>(arr: T[], idx: number): Optional<T> => {
   return arr[idx + 1];
 };
 
-export const previousOf = <T extends any>(
-  arr: T[],
-  idx: number
-): Optional<T> => {
+export const previousOf = <T>(arr: T[], idx: number): Optional<T> => {
   return arr[idx - 1];
 };
 
-const useMutableState = <T extends object>(defaultState: T = {} as T) => {
+export const useMutableState = <T extends object>(
+  defaultState: T = {} as T,
+) => {
   const [, forceUpdate] = React.useReducer(() => ({}), {});
   const state = React.useRef(defaultState);
 

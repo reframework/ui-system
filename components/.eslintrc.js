@@ -1,4 +1,3 @@
-// chakra
 module.exports = {
   root: true,
   parser: '@babel/eslint-parser',
@@ -9,7 +8,6 @@ module.exports = {
     },
   },
   extends: [
-    'eslint:recommended',
     'plugin:import/recommended',
     'plugin:import/typescript',
     'plugin:react-hooks/recommended',
@@ -22,7 +20,7 @@ module.exports = {
     'react-hooks',
     'jsx-a11y',
     'jest',
-    '@typescript-eslint/eslint-plugin',
+    // '@typescript-eslint/eslint-plugin',
     'testing-library',
     'prettier',
   ],
@@ -36,6 +34,9 @@ module.exports = {
   rules: {
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': ['error'],
+    // prettier-ignore
+    'import/no-unresolved': [2, { ignore: ['.css\\?module$'] }],
+    // 'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
   },
   settings: {
     react: {
@@ -46,6 +47,11 @@ module.exports = {
     {
       files: ['**/*.ts?(x)'],
       parser: '@typescript-eslint/parser',
+      rules: {
+        '@typescript-eslint/no-non-null-assertion': 'off',
+        '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/ban-types': 'off',
+      },
       parserOptions: {
         ecmaVersion: 2018,
         sourceType: 'module',
@@ -56,9 +62,6 @@ module.exports = {
         // typescript-eslint specific options
         warnOnUnsupportedTypeScriptVersion: true,
       },
-
-      // If adding a typescript-eslint version of an existing ESLint rule,
-      // make sure to disable the ESLint rule here.
     },
     {
       files: ['**/__tests__/**/*', '**/*.{spec,test}.*'],

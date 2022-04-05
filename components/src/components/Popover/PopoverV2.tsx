@@ -39,7 +39,7 @@ const getStyles = (styles?: CSSProperties) => ({
 
 const getWidth = (
   originRect: DOMRect | null,
-  matchOriginWidth?: boolean | number
+  matchOriginWidth?: boolean | number,
 ) => {
   if (isNumber(matchOriginWidth)) {
     return { width: matchOriginWidth };

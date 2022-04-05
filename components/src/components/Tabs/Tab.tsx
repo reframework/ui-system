@@ -33,14 +33,14 @@ export const Tab: React.FC<TabProps> = ({
   const ref = React.useRef<HTMLDivElement>(null);
   const { setState, tabNode, value: activeValue } = useTabs();
 
-  const updateState = () => {
+  const updateState = React.useCallback(() => {
     if (!ref.current) return;
 
     setState({
       value: value,
       tabNode: ref.current,
     });
-  };
+  }, [setState, value]);
 
   const handleFocus = () => {
     updateState();
@@ -51,7 +51,7 @@ export const Tab: React.FC<TabProps> = ({
     /** Doesn't make sense to update when current tab is the same */
     if (value === activeValue && tabNode === ref.current) return;
     updateState();
-  }, [active, activeValue, tabNode]);
+  }, [active, activeValue, tabNode, value, updateState]);
 
   const classNames = getClassName({
     [TabsClassName.tab]: true,

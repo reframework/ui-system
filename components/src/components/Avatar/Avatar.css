@@ -15,6 +15,7 @@
 
   /* Handle non-square image. */
   object-fit: cover;
+
   /* Hide alt text. */
   color: transparent;
 }

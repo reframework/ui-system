@@ -68,7 +68,7 @@ const Input = React.forwardRef(
       onClick,
       ...props
     }: InputProps,
-    ref: React.ForwardedRef<InputRef>
+    ref: React.ForwardedRef<InputRef>,
   ) => {
     const classNames = getClassName({
       [className!]: Boolean(className),
@@ -96,7 +96,7 @@ const Input = React.forwardRef(
           inputNode: inputRef.current,
         };
       },
-      []
+      [],
     );
 
     useAutoFocus(!!autoFocus, inputRef.current);
@@ -127,6 +127,6 @@ const Input = React.forwardRef(
         {/* TODO:  Suffix */}
       </div>
     );
-  }
+  },
 );
 export default Input;

@@ -4,7 +4,7 @@ import { Store } from './Store';
 // Utils
 const createKey = () =>
   'xxxx-xxxx-xxxx'.replace(/[x]/g, () =>
-    ((Math.random() * 16) % 16 | 0).toString(16)
+    ((Math.random() * 16) % 16 | 0).toString(16),
   );
 
 type PartialPick<T, TKeys extends keyof T> = { [k in TKeys]+?: T[k] };

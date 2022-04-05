@@ -2,6 +2,7 @@
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -12,48 +13,51 @@
     stroke-dasharray: 1px 200px;
     stroke-dashoffset: 0;
   }
+
   50% {
     stroke-dasharray: 100px 200px;
     stroke-dashoffset: -15px;
   }
+
   100% {
     stroke-dasharray: 100px 200px;
     stroke-dashoffset: -120px;
   }
 }
 
-.loader {
+.ref\:circular-loader {
   color: block;
 }
 
-.background {
+.ref\:circular-loader-background {
   fill: none;
   opacity: 0.15;
-  stroke: currentColor;
+  stroke: currentcolor;
 }
 
-.undetermined {
-  & .svg {
+.ref\:circular-loader-progress {
+  fill: none;
+  stroke: currentcolor;
+  stroke-dasharray: 100 100;
+}
+
+.ref\:circular-loader-undetermined {
+  & .ref\:circular-loader-svg {
     animation: rotation 1.5s linear infinite;
   }
-  & .progress {
+
+  & .ref\:circular-loader-progress {
     animation: dash-rotation 1.5s ease-in-out infinite;
   }
 }
 
-.determined {
-  .svg {
+.ref\:circular-loader-determined {
+  .ref\:circular-loader-svg {
     /* set start position at 12:00 AM */
     transform: rotate(-90deg);
   }
 
-  & .progress {
+  & .ref\:circular-loader-progress {
     transition: stroke-dashoffset 0.5s ease-out;
   }
-}
-
-.progress {
-  fill: none;
-  stroke: currentColor;
-  stroke-dasharray: 100 100;
 }

@@ -9,35 +9,36 @@ export const useWave = (ref: MutableRefObject<HTMLElement | null>) => {
   const timeout = useRef<number>();
 
   useEffect(() => {
-    if (!ref.current) return;
+    const { current: node } = ref;
+    if (!node) return;
 
     const handleClick = () => {
       if (!ref.current) return;
       // Doesn't remove a className
       clearTimeout(timeout.current);
 
-      ref.current.classList.add(WaveClassName.active);
+      node.classList.add(WaveClassName.active);
       // Forces to restart animation
-      ref.current.style.setProperty('--wave', 'none');
+      node.style.setProperty('--wave', 'none');
 
       window.setTimeout(() => {
         if (!ref.current) return;
         // Restarts animation
-        ref.current.style.setProperty('--wave', '');
+        node.style.setProperty('--wave', '');
       }, 0);
 
       timeout.current = window.setTimeout(() => {
         if (!ref.current) return;
         // Removes animation
-        ref.current.classList.remove(wave.active);
+        node.classList.remove(wave.active);
       }, 1000);
     };
 
-    ref.current.addEventListener('click', handleClick);
+    node.addEventListener('click', handleClick);
     // remove listener
     return () => {
-      if (!ref.current) return;
-      ref.current.removeEventListener('click', handleClick);
+      if (!node) return;
+      node.removeEventListener('click', handleClick);
     };
   }, [ref]);
 };

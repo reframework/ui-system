@@ -1,7 +1,9 @@
 /* Common */
 .ref\:button {
   --__shadow-color: var(--color-scale-blue-1);
+
   background-color: transparent;
+
   /* TODO: add border-radius token */
   border-radius: var(--spacing-xxxs);
   border: 1px solid transparent;
@@ -87,6 +89,7 @@
 
   &.ref\:button-color-primary {
     background-color: var(--color-scale-blue-4);
+
     &:hover {
       background-color: var(--color-scale-blue-3);
     }
@@ -94,7 +97,9 @@
 
   &.ref\:button-color-secondary {
     --__shadow-color: var(--color-scale-pink-1);
+
     background-color: var(--color-scale-pink-4);
+
     &:hover {
       background-color: var(--color-scale-pink-3);
     }
@@ -102,7 +107,9 @@
 
   &.ref\:button-color-success {
     --__shadow-color: var(--color-scale-green-1);
+
     background-color: var(--color-scale-green-4);
+
     &:hover {
       background-color: var(--color-scale-green-3);
     }
@@ -110,7 +117,9 @@
 
   &.ref\:button-color-warning {
     --__shadow-color: var(--color-scale-yellow-1);
+
     background-color: var(--color-scale-yellow-4);
+
     &:hover {
       background-color: var(--color-scale-yellow-3);
     }
@@ -118,7 +127,9 @@
 
   &.ref\:button-color-error {
     --__shadow-color: var(--color-scale-red-1);
+
     background-color: var(--color-scale-red-4);
+
     &:hover {
       background-color: var(--color-scale-red-3);
     }
@@ -126,7 +137,9 @@
 
   &.ref\:button-color-neutral {
     --__shadow-color: var(--color-scale-gray-1);
+
     background-color: var(--color-scale-gray-4);
+
     &:hover {
       background-color: var(--color-scale-gray-3);
     }
@@ -134,11 +147,13 @@
 }
 
 .ref\:button-variant-outlined {
-  border: 1px solid currentColor;
+  border: 1px solid currentcolor;
 
   &.ref\:button-color-primary {
     --__shadow-color: var(--color-scale-blue-1);
+
     color: var(--color-scale-blue-4);
+
     &:hover {
       background-color: var(--color-scale-blue-0);
     }
@@ -146,7 +161,9 @@
 
   &.ref\:button-color-secondary {
     --__shadow-color: var(--color-scale-pink-1);
+
     color: var(--color-scale-pink-3);
+
     &:hover {
       background-color: var(--color-scale-pink-0);
     }
@@ -154,7 +171,9 @@
 
   &.ref\:button-color-success {
     --__shadow-color: var(--color-scale-green-1);
+
     color: var(--color-scale-green-4);
+
     &:hover {
       background-color: var(--color-scale-green-0);
     }
@@ -162,7 +181,9 @@
 
   &.ref\:button-color-warning {
     --__shadow-color: var(--color-scale-yellow-1);
+
     color: var(--color-scale-yellow-4);
+
     &:hover {
       background-color: var(--color-scale-yellow-0);
     }
@@ -170,7 +191,9 @@
 
   &.ref\:button-color-error {
     --__shadow-color: var(--color-scale-red-1);
+
     color: var(--color-scale-red-4);
+
     &:hover {
       background-color: var(--color-scale-red-0);
     }
@@ -178,7 +201,9 @@
 
   &.ref\:button-color-neutral {
     --__shadow-color: var(--color-scale-gray-1);
+
     color: var(--color-scale-gray-4);
+
     &:hover {
       background-color: var(--color-scale-gray-1);
     }
@@ -188,7 +213,9 @@
 .ref\:button-variant-ghost {
   &.ref\:button-color-primary {
     --__shadow-color: var(--color-scale-blue-1);
+
     color: var(--color-scale-blue-4);
+
     &:focus,
     &:hover {
       background-color: var(--color-scale-blue-0);
@@ -197,7 +224,9 @@
 
   &.ref\:button-color-secondary {
     --__shadow-color: var(--color-scale-pink-1);
+
     color: var(--color-scale-pink-4);
+
     &:focus,
     &:hover {
       background-color: var(--color-scale-pink-0);
@@ -206,7 +235,9 @@
 
   &.ref\:button-color-success {
     --__shadow-color: var(--color-scale-green-1);
+
     color: var(--color-scale-green-4);
+
     &:focus,
     &:hover {
       background-color: var(--color-scale-green-0);
@@ -215,7 +246,9 @@
 
   &.ref\:button-color-warning {
     --__shadow-color: var(--color-scale-yellow-1);
+
     color: var(--color-scale-yellow-4);
+
     &:focus,
     &:hover {
       background-color: var(--color-scale-yellow-0);
@@ -224,7 +257,9 @@
 
   &.ref\:button-color-error {
     --__shadow-color: var(--color-scale-red-1);
+
     color: var(--color-scale-red-4);
+
     &:focus,
     &:hover {
       background-color: var(--color-scale-red-0);
@@ -233,7 +268,9 @@
 
   &.ref\:button-color-neutral {
     --__shadow-color: var(--color-scale-gray-2);
+
     color: var(--color-scale-gray-4);
+
     &:focus,
     &:hover {
       background-color: var(--color-scale-gray-1);
@@ -243,9 +280,9 @@
 
 .ref\:button-variant-link {
   --__main-color: transparent;
-  &.link {
-    box-shadow: none;
-  }
+
+  box-shadow: none;
+
   &:active,
   &:hover {
     text-decoration: underline;
@@ -253,6 +290,7 @@
 
   &.ref\:button-color-primary {
     color: var(--color-scale-blue-4);
+
     &:focus,
     &:hover {
       color: var(--color-scale-blue-3);
@@ -261,7 +299,9 @@
 
   &.ref\:button-color-secondary {
     --__main-color: transparent;
+
     color: var(--color-scale-pink-4);
+
     &:focus,
     &:hover {
       color: var(--color-scale-pink-3);
@@ -270,6 +310,7 @@
 
   &.ref\:button-color-success {
     color: var(--color-scale-green-4);
+
     &:focus,
     &:hover {
       color: var(--color-scale-green-3);
@@ -278,6 +319,7 @@
 
   &.ref\:button-color-warning {
     color: var(--color-scale-yellow-4);
+
     &:focus,
     &:hover {
       color: var(--color-scale-yellow-3);
@@ -286,6 +328,7 @@
 
   &.ref\:button-color-error {
     color: var(--color-scale-red-4);
+
     &:focus,
     &:hover {
       color: var(--color-scale-red-3);
@@ -294,7 +337,9 @@
 
   &.ref\:button-color-neutral {
     --__main-color: transparent;
+
     color: var(--color-scale-gray-4);
+
     &:focus,
     &:hover {
       color: var(--color-scale-gray-3);

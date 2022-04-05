@@ -1,7 +1,11 @@
 import React from 'react';
-import styles from './AspectRatio.css?module';
+import './AspectRatio.css';
 import { getClassName } from '@reframework/classnames';
 
+enum AspectRatioClassName {
+  container = 'ref=aspect-ration-container',
+  inner = 'ref:aspect-ratio-inner',
+}
 export interface AspectRatioBaseProps {
   /**
    * The aspect ratio of the Box. Common values are:  `16/9`, `4/3`, etc...
@@ -19,7 +23,7 @@ const AspectRatio: React.FC<AspectRatioProps> = ({
   ...props
 }) => {
   const classNames = getClassName({
-    [styles.container]: true,
+    [AspectRatioClassName.container]: true,
     [className!]: Boolean(className),
   });
 
@@ -30,7 +34,7 @@ const AspectRatio: React.FC<AspectRatioProps> = ({
 
   return (
     <div {...props} className={classNames} style={style}>
-      <div className={styles.inner}>{children}</div>
+      <div className={AspectRatioClassName.inner}>{children}</div>
     </div>
   );
 };

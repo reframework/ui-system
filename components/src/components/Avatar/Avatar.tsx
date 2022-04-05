@@ -9,7 +9,7 @@ enum AvatarClassName {
   picture = 'ref:avatar-picture',
 }
 
-interface AvatarProps extends ImageProps {
+export interface AvatarProps extends ImageProps {
   size?: number | string;
   // TODO:
   shape?: 'square' | 'circle' | 'rounded';

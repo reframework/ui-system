@@ -41,7 +41,6 @@ export const getFlex = <T extends AtomicFlexProps>(props: T) => {
     [styles[`justifySelf-${justifySelf}`]]: Boolean(justifySelf),
     [styles[`placeSelf-${placeSelf}`]]: Boolean(placeSelf),
     [styles[`direction-${direction}`]]: Boolean(direction),
-
   });
 
   return { className, props: restProps };

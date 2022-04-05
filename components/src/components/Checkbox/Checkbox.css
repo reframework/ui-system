@@ -1,4 +1,4 @@
-.wrapper {
+.ref\:checkbox-wrapper {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -7,7 +7,7 @@
   outline: none;
   cursor: pointer;
 
-  & .checkbox {
+  & .ref\:checkbox {
     background-color: var(--color-scale-white);
     border-collapse: separate;
     border-radius: 2px;
@@ -33,15 +33,15 @@
     z-index: 1;
   }
 
-  & input:hover + .checkbox {
+  & input:hover + .ref\:checkbox {
     border-color: var(--color-scale-blue-4);
   }
 
   /*
   * Checked and indeterminate checkbox
   */
-  & input:indeterminate + .checkbox,
-  & input:checked + .checkbox {
+  & input:indeterminate + .ref\:checkbox,
+  & input:checked + .ref\:checkbox {
     background-color: var(--color-scale-blue-4);
     border-color: var(--color-scale-blue-4);
     box-shadow: 0 0 0 1.5px var(--color-scale-blue-1);
@@ -58,7 +58,7 @@
   /*
   * Checked checkbox
   */
-  & input:checked + .checkbox::after {
+  & input:checked + .ref\:checkbox::after {
     border-left: 0;
     border-top: 0;
     height: 9px;
@@ -71,7 +71,7 @@
   /*
   * Indeterminate checkbox
   */
-  & input:indeterminate + .checkbox::after {
+  & input:indeterminate + .ref\:checkbox::after {
     border-left: 0;
     border-right: 0;
     border-top: 0;
@@ -85,11 +85,12 @@
   /*
   * Disabled checkbox
   */
-  & input:disabled + .checkbox {
+  & input:disabled + .ref\:checkbox {
     background-color: var(--color-scale-gray-1);
     border-color: var(--color-scale-gray-2);
     box-shadow: none;
-    &:after {
+
+    &::after {
       border-color: var(--color-scale-gray-2);
     }
   }

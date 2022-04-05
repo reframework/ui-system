@@ -1,8 +1,12 @@
 import { getClassName } from '@reframework/classnames';
 import React from 'react';
 import { useAutoFocus, useControlledStateV2 } from '../../utils';
-import styles from './Checkbox.css?module';
+import './Checkbox.css';
 
+enum CheckboxClassName {
+  wrapper = 'ref:checkbox-wrapper',
+  checkbox = 'ref:checkbox',
+}
 export interface CheckboxProps {
   autofocus?: boolean;
   checked?: boolean;
@@ -26,7 +30,7 @@ const Checkbox = ({
   onChange,
 }: CheckboxProps) => {
   const innerClassName = getClassName({
-    [styles.checkbox]: true,
+    [CheckboxClassName.checkbox]: true,
   });
 
   const checkboxRef = React.useRef<HTMLInputElement>(null);
@@ -53,7 +57,7 @@ const Checkbox = ({
   useAutoFocus(!!autofocus, checkboxRef.current);
 
   return (
-    <div className={styles.wrapper}>
+    <div className={CheckboxClassName.wrapper}>
       <input
         checked={internalChecked}
         disabled={disabled}

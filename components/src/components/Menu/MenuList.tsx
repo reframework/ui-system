@@ -42,13 +42,13 @@ export const MenuList: React.FC<MenuListProps> = ({
     onArrowDown: cancelEvent(() => {
       ActiveDescendant.setNext(
         getEnabledItems(listRef.current),
-        getActiveEl(listRef.current)
+        getActiveEl(listRef.current),
       );
     }),
     onArrowUp: cancelEvent(() => {
       ActiveDescendant.setPrevious(
         getEnabledItems(listRef.current),
-        getActiveEl(listRef.current)
+        getActiveEl(listRef.current),
       );
     }),
     onArrowLeft: cancelEvent(() => {
@@ -91,7 +91,7 @@ export const MenuList: React.FC<MenuListProps> = ({
       focusManager.saveFocus();
       ActiveDescendant.setByIndex(
         getEnabledItems(listRef.current),
-        autoFocusIndex
+        autoFocusIndex,
       );
       return;
     }

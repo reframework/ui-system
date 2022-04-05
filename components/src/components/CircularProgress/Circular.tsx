@@ -1,9 +1,18 @@
-import React from "react";
-import styles from "./Circular.css?module";
+import React from 'react';
+import './Circular.css';
+
+enum LoaderClassName {
+  svg = 'ref:circular-loader-svg',
+  progress = 'ref:circular-loader-progress',
+  determined = 'ref:circular-loader-determined',
+  undetermined = 'ref:circular-loader-undetermined',
+  loader = 'ref:circular-loader',
+  background = 'ref:circular-loader-background',
+}
 
 type Props = {
   className?: string;
-  color?: "string";
+  color?: 'string';
   size?: number;
   progress?: number;
   thickness?: number;
@@ -16,14 +25,14 @@ const CircularLoader = ({
   progress,
 }: Props) => {
   const SIZE = 44;
-  let variant = "undetermined";
+  let variant = 'undetermined';
   const circleStyle: {
     strokeDasharray?: string;
     strokeDashoffset?: string;
   } = {};
 
-  if (typeof progress === "number") {
-    variant = "determined";
+  if (typeof progress === 'number') {
+    variant = 'determined';
     const circumference = 2 * Math.PI * ((SIZE - thickness) / 2);
     const dashOffset = ((100 - progress) / 100) * circumference;
     circleStyle.strokeDasharray = circumference.toFixed(3);
@@ -32,22 +41,22 @@ const CircularLoader = ({
 
   return (
     <div
-      className={`${styles.loader} ${styles[variant]}`}
+      className={`${LoaderClassName.loader} ${LoaderClassName[variant]}`}
       style={{ width: size, height: size, color }}
     >
       <svg
-        className={styles.svg}
+        className={LoaderClassName.svg}
         viewBox={`${SIZE / 2} ${SIZE / 2} ${SIZE} ${SIZE}`}
       >
         <circle
-          className={styles.background}
+          className={LoaderClassName.background}
           cx={SIZE}
           cy={SIZE}
           r={(SIZE - thickness) / 2}
           strokeWidth={thickness}
         />
         <circle
-          className={styles.progress}
+          className={LoaderClassName.progress}
           cx={SIZE}
           cy={SIZE}
           r={(SIZE - thickness) / 2}

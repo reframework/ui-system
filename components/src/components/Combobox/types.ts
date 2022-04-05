@@ -42,12 +42,12 @@ export interface SelectProps {
   renderValue?: (v: Optional<SelectValue>) => string;
   renderOption: (
     props: Partial<Omit<OptionProps, keyof OptionItem>>,
-    option: OptionItem
+    option: OptionItem,
   ) => React.ReactNode;
   getOptionDisabled?: (option: OptionItem) => boolean;
   getOptionSelected?: (
     option: OptionItem,
-    value: Optional<SelectValue>
+    value: Optional<SelectValue>,
   ) => boolean;
   getOptionLabel?: (option: OptionItem) => React.ReactNode;
   getOptionFiltered?: (option: OptionItem) => boolean;

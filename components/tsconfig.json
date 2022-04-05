@@ -22,6 +22,8 @@
     "allowSyntheticDefaultImports": true,
     "downlevelIteration": true,
     "incremental": true,
-    "declarationMap": true
-  }
+    "declarationMap": true,
+    "baseUrl": "."
+  },
+  "include": ["src", "types"]
 }

@@ -1,6 +1,5 @@
 import { getClassName } from '@reframework/classnames';
 import React from 'react';
-import { useControlledStateV2 } from '../../utils';
 import { DescendantUtils } from '../Menu/useActiveDescendant';
 import { cancelEvent, createKeyboardHandler } from '../Menu/utils';
 import Ink from './Ink';
@@ -25,7 +24,7 @@ export const TabList: React.FC<TabListProps> = ({
 }) => {
   const wrapperRef = React.useRef<HTMLDivElement>(null);
 
-  const { value, tabNode, isControlled, animated } = useTabs();
+  const { value, tabNode, isControlled } = useTabs();
   const [inkProps, setInkProps] = React.useState(defaultInkProps);
 
   React.useEffect(() => {
@@ -45,14 +44,14 @@ export const TabList: React.FC<TabListProps> = ({
     onArrowRight: cancelEvent(() => {
       const next = DescendantUtils.getNext(
         getTabs(wrapperRef.current as HTMLElement),
-        tabNode!
+        tabNode!,
       );
       (next as HTMLElement)?.focus();
     }),
     onArrowLeft: cancelEvent(() => {
       const prev = DescendantUtils.getPrevious(
         getTabs(wrapperRef.current as HTMLElement),
-        tabNode!
+        tabNode!,
       );
       (prev as HTMLElement)?.focus();
     }),

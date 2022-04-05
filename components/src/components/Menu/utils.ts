@@ -99,7 +99,7 @@ const isNodeDisabled = (node: Node | HTMLElement) => {
 export const getEnabledItems = (node: HTMLElement | null) => {
   // todo: add roles menuitemcheckbox, menuitemchecoption
   return Array.from(node?.querySelectorAll?.('[role="menuitem"]') || []).filter(
-    (node) => !isNodeDisabled(node)
+    (node) => !isNodeDisabled(node),
   ) as HTMLElement[];
 };
 

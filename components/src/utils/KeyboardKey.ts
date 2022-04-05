@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 export enum EventKeyEnum {
   ArrowDown = 'ArrowDown',
   ArrowLeft = 'ArrowLeft',
@@ -45,4 +46,6 @@ const useKeyboardEventHandlers = (handlersMapping: {
   onTab?: () => void;
 
   // return (event:Key)
-}) => {};
+}) => {
+  //
+};

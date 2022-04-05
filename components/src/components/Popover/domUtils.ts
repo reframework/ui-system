@@ -40,7 +40,7 @@ export const raf =
   };
 
 export const asyncRAF = async <Fn extends (...args: any) => any>(
-  callback: Fn
+  callback: Fn,
 ): Promise<ReturnType<Fn>> => {
   return new Promise((resolve) => {
     requestAnimationFrame((timestamp) => {

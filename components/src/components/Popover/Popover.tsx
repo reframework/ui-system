@@ -42,7 +42,7 @@ const getStyles = (styles?: CSSProperties) => ({
 
 const getAnchorWidth = (
   el: HTMLElement | null | undefined,
-  anchorWidth?: boolean | number
+  anchorWidth?: boolean | number,
 ) => {
   if (!el) return;
   let width: number | string = el.clientWidth;

@@ -4,9 +4,10 @@ import { Placement, computePosition } from './placementUtilsV2';
 import { useListener, useMounted } from './hooks';
 import { isNumber, useControlledStateV2 } from '../../utils';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getWidth = (
   referenceRect: DOMRect | null,
-  matchOriginWidth?: boolean | number
+  matchOriginWidth?: boolean | number,
 ) => {
   if (isNumber(matchOriginWidth)) {
     return { width: matchOriginWidth };
@@ -40,7 +41,7 @@ export interface UsePopperProps {
 
 const usePopper = ({
   defaultOpen,
-  matchOriginWidth,
+  // matchOriginWidth,
   onClickAway,
   onOpen,
   onClose,
@@ -79,7 +80,7 @@ const usePopper = ({
       computePosition(placement, {
         targetElement: popperRef.current,
         referenceElement: originElement,
-      })
+      }),
     );
   }, [originElement, placement]);
 
@@ -101,7 +102,7 @@ const usePopper = ({
     if (!isMounted) return;
     if (isOpenControlled) return;
     (isOpen ? onOpen : onClose)?.();
-  }, [isOpen, onOpen, onClose]);
+  }, [isOpen, onOpen, onClose, isMounted, isOpenControlled]);
 
   useListener({ event: 'click', listener: handleClickAway }, [
     handleClickAway,

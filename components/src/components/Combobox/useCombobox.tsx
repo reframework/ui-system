@@ -175,7 +175,7 @@ const useCombobox = ({
         if (altKey) break;
 
         const optionIdx = filteredOptions.findIndex(
-          (it) => it?.value === highlighted?.value
+          (it) => it?.value === highlighted?.value,
         );
 
         const nextHighlighted =
@@ -195,7 +195,7 @@ const useCombobox = ({
         if (altKey) break;
 
         const optionIdx = filteredOptions.findIndex(
-          (it) => it?.value === highlighted?.value
+          (it) => it?.value === highlighted?.value,
         );
 
         const nextHighlighted =

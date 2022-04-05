@@ -1,6 +1,6 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {CSSTransition} from 'react-transition-group';
-import {CSSTransitionProps} from 'react-transition-group/CSSTransition';
+import React, { useCallback, useEffect, useState } from 'react';
+import { CSSTransition } from 'react-transition-group';
+import { CSSTransitionProps } from 'react-transition-group/CSSTransition';
 
 type ExcludedProps = 'appear' | 'classNames' | 'unmountOnExit' | 'style';
 // @types mistake
@@ -8,12 +8,20 @@ const endListener = () => {
   return;
 };
 
-type CollapseProps = Omit<CSSTransitionProps, ExcludedProps> & {defaultExpanded?: boolean};
+type CollapseProps = Omit<CSSTransitionProps, ExcludedProps> & {
+  defaultExpanded?: boolean;
+};
 
-export const Collapse: React.FC<CollapseProps> = ({children, defaultExpanded, ...props}) => {
+export const Collapse: React.FC<CollapseProps> = ({
+  children,
+  defaultExpanded,
+  ...props
+}) => {
   const [showContent, setShowContent] = useState(false);
   const [height, setHeight] = useState(0);
-  const [className, setClassName] = useState(defaultExpanded ? 'default-expanded' : '');
+  const [className, setClassName] = useState(
+    defaultExpanded ? 'default-expanded' : '',
+  );
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   const setContainerHeight = useCallback(() => {
@@ -34,7 +42,7 @@ export const Collapse: React.FC<CollapseProps> = ({children, defaultExpanded, ..
     if (!container) return;
 
     const observer = new MutationObserver(setContainerHeight);
-    observer.observe(container, {childList: true, subtree: true});
+    observer.observe(container, { childList: true, subtree: true });
     return () => {
       observer.disconnect();
     };
@@ -42,7 +50,7 @@ export const Collapse: React.FC<CollapseProps> = ({children, defaultExpanded, ..
 
   return (
     <CSSTransition
-      style={{height}}
+      style={{ height }}
       unmountOnExit
       appear
       className={className}
@@ -52,9 +60,16 @@ export const Collapse: React.FC<CollapseProps> = ({children, defaultExpanded, ..
       onEntering={() => setShowContent(true)}
       onExiting={() => setShowContent(false)}
       onEntered={() => setClassName('')}
-      {...props}>
+      {...props}
+    >
       <div>
-        <CSSTransition {...props} in={showContent} timeout={100} classNames="fade" addEndListener={endListener}>
+        <CSSTransition
+          {...props}
+          in={showContent}
+          timeout={100}
+          classNames="fade"
+          addEndListener={endListener}
+        >
           <div ref={setContainer}>{children}</div>
         </CSSTransition>
       </div>

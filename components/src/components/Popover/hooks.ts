@@ -23,7 +23,7 @@ export const useCreated = (callback: () => void) => {
 
 export const useListener = (
   params: { event: string; listener: EventListener },
-  deps: any[]
+  deps: any[],
 ) => {
   const { event, listener } = params;
   React.useEffect(() => {

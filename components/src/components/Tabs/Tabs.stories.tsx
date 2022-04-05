@@ -16,11 +16,7 @@ export default {
   },
 } as ComponentMeta<typeof TabsComponent>;
 
-const Template: ComponentStory<any> = ({
-  value: valueProp,
-  defaultValue,
-  ...props
-}) => {
+const Template: ComponentStory<any> = ({ value: valueProp, defaultValue }) => {
   const [value, setValue] = React.useState(valueProp);
 
   const handleChange = (value: string) => {

@@ -1,4 +1,4 @@
-import React, { ComponentType, ComponentProps, useState } from "react";
+import React, { ComponentType, ComponentProps, useState } from 'react';
 
 type Box = ComponentType | keyof JSX.IntrinsicElements;
 type Props<C extends Box> = {
@@ -8,7 +8,7 @@ type Props<C extends Box> = {
 
 const Ripple = <T extends Box>({
   children,
-  component: Component = "div" as any,
+  component: Component = 'div' as any,
   ...props
 }: Props<T>) => {
   const [ref, setRef] = useState<HTMLElement | null>(null);
@@ -17,7 +17,7 @@ const Ripple = <T extends Box>({
     if (!ref || !e.currentTarget) return;
     const node = e.currentTarget as Element;
 
-    if (e.animationName === "exit") {
+    if (e.animationName === 'exit') {
       if (!ref.contains(node)) return;
       ref.removeChild(node);
     }
@@ -26,22 +26,22 @@ const Ripple = <T extends Box>({
   const handleMouseUp = () => {
     if (!ref) return;
     Array.prototype.forEach.call(ref.children, (node) =>
-      node.classList.add("exit")
+      node.classList.add('exit'),
     );
-    window.removeEventListener("mouseup", handleMouseUp);
+    window.removeEventListener('mouseup', handleMouseUp);
   };
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (typeof props.onMouseDown === "function") {
+    if (typeof props.onMouseDown === 'function') {
       props.onMouseDown(e);
     }
 
-    const span = document.createElement("span");
+    const span = document.createElement('span');
 
     if (!ref) return;
 
-    span.addEventListener("animationend", handleAnimationEnd);
-    window.addEventListener("mouseup", handleMouseUp);
+    span.addEventListener('animationend', handleAnimationEnd);
+    window.addEventListener('mouseup', handleMouseUp);
 
     const rect = ref.getBoundingClientRect();
 
@@ -54,18 +54,18 @@ const Ripple = <T extends Box>({
           left,
           Math.abs(left - rect.width),
           top,
-          Math.abs(top - rect.height)
-        ) * 2
+          Math.abs(top - rect.height),
+        ) * 2,
       ) + 20;
 
-    span.style.top = top - size / 2 + "px";
-    span.style.left = left - size / 2 + "px";
-    span.style.width = size + "px";
-    span.style.height = size + "px";
+    span.style.top = top - size / 2 + 'px';
+    span.style.left = left - size / 2 + 'px';
+    span.style.width = size + 'px';
+    span.style.height = size + 'px';
 
     setTimeout(() => {
       if (!span) return;
-      span.classList.add("enter");
+      span.classList.add('enter');
     }, 0);
 
     if (ref.children.length >= 3) {
@@ -87,11 +87,11 @@ export default Ripple;
 
 //  Usage
 
-const Ex = () => {
-  return (
-    <div style={{ color: blue }}>
-      <h1>Example of Ripple</h1>
-      <Ripple component={"div"}>Click Me!</Ripple>
-    </div>
-  );
-};
+// const Ex = () => {
+//   return (
+//     <div style={{ color: blue }}>
+//       <h1>Example of Ripple</h1>
+//       <Ripple component={'div'}>Click Me!</Ripple>
+//     </div>
+//   );
+// };

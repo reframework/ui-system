@@ -3,7 +3,7 @@ import { getClassName } from '@reframework/classnames';
 import { TabsClassName } from './Tabs';
 
 interface InkProps {
-  left: Number;
+  left: number;
   width: number;
   className?: string;
 }

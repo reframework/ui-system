@@ -4,6 +4,8 @@ import { useWave } from '../Wave/useWave';
 import { forkRef } from '../../utils/forkRef';
 import './Button.css';
 
+export const olo_sd = 1000;
+
 enum ButtonClassName {
   button = 'ref:button',
   // Sizes
@@ -80,15 +82,11 @@ const Button = React.forwardRef(
     }: Props,
     ref: React.ForwardedRef<HTMLButtonElement>,
   ) => {
-
-
-
     const buttonRef = useRef<HTMLButtonElement | null>(null);
 
     const forkedRef = forkRef(ref, buttonRef);
 
     const waveRef = variant !== 'link' ? buttonRef : { current: null };
-
     useWave(waveRef);
 
     const classNames = getClassName({

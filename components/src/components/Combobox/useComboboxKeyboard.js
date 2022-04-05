@@ -172,7 +172,7 @@ class ComboboxAutocomplete {
 
               if (
                 this.getLowercaseContent(option).indexOf(
-                  this.comboboxNode.value.toLowerCase()
+                  this.comboboxNode.value.toLowerCase(),
                 ) === 0
               ) {
                 this.option = option;

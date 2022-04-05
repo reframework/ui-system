@@ -72,7 +72,7 @@ const Autocomplete = ({
   React.useEffect(() => {
     if (!isFunction(match)) return;
     setMatchingOptions(
-      $options.filter((it) => match(it.value, value as string))
+      $options.filter((it) => match(it.value, value as string)),
     );
   }, [value, $options, match]);
 

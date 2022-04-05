@@ -3,7 +3,7 @@ import { MessageItemProps } from './MessageItem';
 
 export class Store {
   static setMessages = (
-    _: MessageItemProps[] | React.SetStateAction<MessageItemProps[]>
+    _: MessageItemProps[] | React.SetStateAction<MessageItemProps[]>,
   ) => {};
 
   static removeMessage = (key: React.Key) => {

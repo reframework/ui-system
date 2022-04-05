@@ -6,7 +6,7 @@ function setRef<T>(
     | ((instance: T | null) => void)
     | null
     | undefined,
-  value: T | null
+  value: T | null,
 ): void {
   if (!ref) return;
 
@@ -25,7 +25,7 @@ function setRef<T>(
 
 export const forkRef = (
   parentRef: React.MutableRefObject<any>,
-  childRef: React.MutableRefObject<any>
+  childRef: React.MutableRefObject<any>,
 ) => {
   // TODO: handle callback ref
   return (refValue: any) => {
@@ -37,7 +37,7 @@ export const forkRef = (
 // https://github.com/facebook/react/issues/8873#issuecomment-275423780
 export const cloneChildRef = (
   child: React.ReactElement & { ref?: any },
-  ref: any
+  ref: any,
 ) => {
   if (!ref) return {};
 

@@ -1,13 +1,13 @@
-import React, { useLayoutEffect, useState } from "react";
-import { CSSTransition } from "react-transition-group";
-import { CSSTransitionProps } from "react-transition-group/CSSTransition";
+import React, { useLayoutEffect, useState } from 'react';
+import { CSSTransition } from 'react-transition-group';
+import { CSSTransitionProps } from 'react-transition-group/CSSTransition';
 
 // @types mistake
 const endListener = () => {
   return;
 };
 
-type FadeProps = Omit<CSSTransitionProps, "addEndListener" | "classNames">;
+type FadeProps = Omit<CSSTransitionProps, 'addEndListener' | 'classNames'>;
 
 export const Fade: React.FC<FadeProps> = ({
   children,

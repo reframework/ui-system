@@ -81,11 +81,12 @@
     "storybook": "start-storybook -p 6006",
     "test": "yarn jest src/components",
     "test:watch": "yarn jest src/components --watch",
-    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
-    "lint:fix": "",
+    "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "yarn lint --fix",
     "lint:types": "tsc --noEmit",
-    "lint.md": "",
-    "lint:styles": "stylelint **/*.css"
+    "lint:md": "",
+    "lint:styles": "stylelint **/*.css",
+    "lint:all": "yarn lint && yarn lint:types && yarn lint:styles"
   },
   "version": "0.0.1"
 }

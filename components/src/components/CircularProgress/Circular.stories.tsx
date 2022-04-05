@@ -1,10 +1,10 @@
-import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import React from 'react';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import CircularProgress from "./Circular";
+import CircularProgress from './Circular';
 
 export default {
-  title: "Processing/CircularProgress",
+  title: 'Processing/CircularProgress',
   component: CircularProgress,
 } as ComponentMeta<typeof CircularProgress>;
 
@@ -27,13 +27,13 @@ export const Determined = Template.bind({});
 
 Undetermined.args = {
   size: 100,
-  color: "blue",
+  color: 'blue',
   thickness: 5,
 };
 
 Determined.args = {
   size: 100,
   progress: 50,
-  color: "blue",
+  color: 'blue',
   thickness: 5,
 };

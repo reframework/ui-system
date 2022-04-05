@@ -3,14 +3,17 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+
   /* or inline-flex */
   display: inline-flex;
 }
 
 .ref\:badge {
   position: absolute;
+
   /* allows to take the size of children */
   display: inline-flex;
+
   /* Should be overwritten by className provided to the component */
   min-width: var(--badge-size, 10px);
   min-height: var(--badge-size, 10px);
@@ -20,16 +23,16 @@
   border: 3px solid var(--color-scale-white);
   box-sizing: border-box;
   border-radius: 50%;
-  background-color: currentColor;
-  color: currentColor;
+  background-color: currentcolor;
+  color: currentcolor;
 
   &.ref\:status-animated {
     &::after {
       animation: ripple 1.2s infinite cubic-bezier(0.38, 0.87, 0.6, 1.04);
       background: radial-gradient(
         circle,
-        rgba(0, 0, 0, 0) 30%,
-        currentColor 100%
+        rgb(0 0 0 / 0%) 30%,
+        currentcolor 100%
       );
       border-radius: 50%;
       content: '';

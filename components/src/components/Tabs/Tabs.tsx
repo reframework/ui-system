@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { useConst, useControlledStateV2 } from '../../utils';
+import React from 'react';
+import { useControlledStateV2 } from '../../utils';
 import './Tabs.css';
 
 const TabsContext = React.createContext({} as any);
@@ -14,7 +14,7 @@ export enum TabsClassName {
   tabList = 'ref:tab-list',
 }
 
-interface TabsProps {
+export interface TabsProps {
   defaultValue?: string;
   value?: string;
   onChange?: (value: string) => void;
