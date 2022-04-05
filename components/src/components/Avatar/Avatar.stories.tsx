@@ -22,52 +22,8 @@ const testImage2 =
   'https://www.humanesociety.org/sites/default/files/styles/1240x698/public/2018/08/cat-home-441939.jpg?h=83a2eac3&itok=RHVSjYLN';
 
 // @ts-expect-error investigating
-const Template: ComponentStory<typeof Avatar> = (props) => (
-  <Flex alignItems="center" justifyContent="center" p="xxxl">
-    <Flex mr="xxxl" p="xl" direction="column" alignItems="center">
-      <Box mb="m">
-        <Text>Badge</Text>
-      </Box>
-      <Badge content="🙂">
-        <Avatar {...props} src={testImage3} />
-      </Badge>
-    </Flex>
-    <Flex mr="xxxl" p="xl" direction="column" alignItems="center">
-      <Box mb="m">
-        <Text>Online status</Text>
-      </Box>
-      <OnlineStatus animated status="online" size={18}>
-        <Avatar
-          {...props}
-          src={testImage2}
-          size={`${(100 / 16).toFixed(1)}rem`}
-        />
-      </OnlineStatus>
-    </Flex>
-    <Flex p="xl" direction="column" alignItems="center">
-      <Box mb="m">
-        <Text>Do not disturb</Text>
-      </Box>
-      <OnlineStatus position="bottom-left" status="busy" size="1.5rem">
-        <Avatar {...props} src={testImage1} size={150} />
-      </OnlineStatus>
-    </Flex>
-    <Flex p="xl" direction="column" alignItems="center">
-      <Box mb="m">
-        <Text>Error Fallback</Text>
-      </Box>
-      <OnlineStatus position="bottom-left" status="busy" size="1.5rem">
-        <Avatar {...props} src={'%%%-error'} size={150} />
-      </OnlineStatus>
-    </Flex>
-  </Flex>
-);
-
-// @ts-expect-error investigating
-export const Avatar = Template.bind({});
-
-Avatar.args = {
-  placeholder: (
+export const Avatar: ComponentStory<typeof Avatar> = () => {
+  const placeholder = (
     <div
       style={{
         alignItems: 'center',
@@ -80,8 +36,8 @@ Avatar.args = {
     >
       <Spinner size={30} color="white" />
     </div>
-  ),
-  fallback: (
+  );
+  const fallback = (
     <div
       style={{
         alignItems: 'center',
@@ -96,5 +52,60 @@ Avatar.args = {
         😥 Error
       </Text>
     </div>
-  ),
+  );
+
+  return (
+    <Flex alignItems="center" justifyContent="center" p="xxxl">
+      <Flex mr="xxxl" p="xl" direction="column" alignItems="center">
+        <Box mb="m">
+          <Text>Badge</Text>
+        </Box>
+        <Badge content="🙂">
+          <AvatarComponent
+            size={100}
+            fallback={fallback}
+            placeholder={placeholder}
+            src={testImage2}
+          />
+        </Badge>
+      </Flex>
+      <Flex mr="xxxl" p="xl" direction="column" alignItems="center">
+        <Box mb="m">
+          <Text>Online status</Text>
+        </Box>
+        <OnlineStatus animated status="online" size={30}>
+          <AvatarComponent
+            src={testImage3}
+            size={`${(250 / 16).toFixed(1)}rem`}
+          />
+        </OnlineStatus>
+      </Flex>
+      <Flex p="xl" direction="column" alignItems="center">
+        <Box mb="m">
+          <Text>Do not disturb</Text>
+        </Box>
+        <OnlineStatus position="bottom-left" status="busy" size="1.5rem">
+          <AvatarComponent
+            fallback={fallback}
+            placeholder={placeholder}
+            size={200}
+            src={testImage1}
+          />
+        </OnlineStatus>
+      </Flex>
+      <Flex p="xl" direction="column" alignItems="center">
+        <Box mb="m">
+          <Text>Error Fallback</Text>
+        </Box>
+        <OnlineStatus position="bottom-left" status="busy" size="1.5rem">
+          <AvatarComponent
+            fallback={fallback}
+            placeholder={placeholder}
+            size={150}
+            src={'%%%-error'}
+          />
+        </OnlineStatus>
+      </Flex>
+    </Flex>
+  );
 };

@@ -28,7 +28,7 @@ export interface ImageProps
   aspectRatio?: string;
   // TODO:
   // fallbackSrc: string;
-  onError: () => void;
+  onError?: () => void;
 }
 
 enum ImageStatus {
