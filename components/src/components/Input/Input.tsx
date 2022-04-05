@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useImperativeHandle, useRef } from 'react';
+import React, { useImperativeHandle, useRef } from 'react';
 import styles from './Input.css?module';
 import { getClassName } from '@reframework/classnames';
 import { isFunction, useAutoFocus, useControlledState } from '../../utils';

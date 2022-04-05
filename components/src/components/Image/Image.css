@@ -7,9 +7,10 @@
 
 .ref\:image {
   display: block;
-  /* TODO: */
-  /* aspect-ratio: attr(width) / attr(height); */
+
+  /* TODO: aspect-ratio: attr(width) / attr(height); */
   aspect-ratio: var(--image-aspect-ratio);
+
   /* aspect-ratio: inherit; */
   width: 100%;
   height: 100%;

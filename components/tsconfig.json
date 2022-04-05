@@ -9,7 +9,6 @@
     "moduleResolution": "node",
     "skipLibCheck": true,
     "strict": true,
-    "isolatedModules": true,
     "noFallthroughCasesInSwitch": true,
     "suppressImplicitAnyIndexErrors": true,
     "noImplicitAny": true,

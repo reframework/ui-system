@@ -45,7 +45,7 @@ describe('Image component', () => {
       // Placeholder is destroyed
       expect(screen.queryByTestId('placeholder')).not.toBeInTheDocument();
       // Fallback is rendered
-      expect(screen.queryByTestId('fallback')).toBeInTheDocument();
+      expect(screen.getByTestId('fallback')).toBeInTheDocument();
     });
     it('renders placeholder when failed and fallback is not provided', () => {
       render(<Image {...baseProps} />);
@@ -67,7 +67,11 @@ describe('Image component', () => {
     });
   });
 
-  describe('Component classNames', () => {});
+  describe('Component classNames', () => {
+    //
+  });
 
-  describe('Component props', () => {});
+  describe('Component props', () => {
+    //
+  });
 });

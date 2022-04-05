@@ -2,7 +2,7 @@ import React from 'react';
 import './Image.css';
 import { getClassName } from '@reframework/classnames';
 
-type OverrideProps = 'placeholder'; // | onClick;
+type OverrideProps = 'placeholder' | 'onError'; // | onClick;
 
 enum ImageClassName {
   container = 'ref:image-container',
@@ -28,6 +28,7 @@ export interface ImageProps
   aspectRatio?: string;
   // TODO:
   // fallbackSrc: string;
+  onError: () => void;
 }
 
 enum ImageStatus {
@@ -45,6 +46,7 @@ const isLoaded = (status: ImageStatus) => {
 };
 
 const Image: React.FC<ImageProps> = ({
+  alt,
   aspectRatio,
   className,
   fallback = null,
@@ -58,6 +60,7 @@ const Image: React.FC<ImageProps> = ({
   const [status, setStatus] = React.useState(ImageStatus.loading);
 
   const handleError = () => {
+    onError?.();
     setStatus(ImageStatus.failed);
   };
 
@@ -91,6 +94,7 @@ const Image: React.FC<ImageProps> = ({
       {(ignoreFallback || !isFailed(status)) && (
         <img
           {...imgProps}
+          alt={alt}
           ref={imageRef}
           src={src}
           srcSet={srcSet}

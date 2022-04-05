@@ -1,0 +1,1 @@
+import { SyntheticEvent } from 'react';

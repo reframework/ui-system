@@ -80,6 +80,8 @@ module.exports = {
         'jest/valid-expect-in-promise': 'error',
         'jest/valid-title': 'warn',
 
+        //
+        'testing-library/no-node-access': 'off',
         // https://github.com/testing-library/eslint-plugin-testing-library
         'testing-library/await-async-query': 'error',
         'testing-library/await-async-utils': 'error',
