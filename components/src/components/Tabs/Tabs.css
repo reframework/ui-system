@@ -6,12 +6,12 @@
   padding: var(--spacing-xxs) var(--spacing-xs);
 
   &:focus {
-    outline: 1px solid currentColor;
+    outline: 1px solid currentcolor;
   }
 
   &.ref\:tab-active {
-    color: currentColor;
-    outline: 1px solid currentColor;
+    color: currentcolor;
+    outline: 1px solid currentcolor;
   }
 
   &.ref\:tab-disabled {
@@ -27,7 +27,7 @@
 }
 
 .ref\:tabs-ink {
-  background-color: currentColor;
+  background-color: currentcolor;
   bottom: 0;
   height: 1px;
   left: 0;

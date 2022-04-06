@@ -22,7 +22,13 @@
     "downlevelIteration": true,
     "incremental": true,
     "declarationMap": true,
-    "baseUrl": "."
+    "baseUrl": ".",
+    "paths": {
+      "@wip/*": ["src/components-wip/*"],
+      "@components/*": ["src/components/*"],
+      "@utils/*": ["src/utils/*"],
+      "@src/*": ["src/*"]
+    }
   },
   "include": ["src", "types"]
 }

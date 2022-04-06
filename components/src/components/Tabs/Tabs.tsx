@@ -1,5 +1,5 @@
 import React from 'react';
-import { useControlledStateV2 } from '../../utils';
+import useControlledState from '@utils/useControlledState';
 import './Tabs.css';
 
 const TabsContext = React.createContext({} as any);
@@ -52,7 +52,7 @@ export const Tabs: React.FC<TabsProps> = ({
     setState: setInternalValue,
     state: internalValue,
     isControlled,
-  } = useControlledStateV2({
+  } = useControlledState({
     controlled: value,
     default: defaultValue,
   });

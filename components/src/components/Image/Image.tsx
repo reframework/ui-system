@@ -2,7 +2,7 @@ import React from 'react';
 import './Image.css';
 import { getClassName } from '@reframework/classnames';
 
-type OverrideProps = 'placeholder' | 'onError'; // | onClick;
+type OverrideProps = 'placeholder' | 'onError';
 
 enum ImageClassName {
   container = 'ref:image-container',

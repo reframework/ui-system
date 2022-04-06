@@ -2,7 +2,7 @@ import React from 'react';
 import { TabsClassName, useTabs } from './Tabs';
 import { getClassName } from '@reframework/classnames';
 
-interface TabProps {
+export interface TabProps {
   value: string;
   label: React.ReactNode;
   className?: string;
@@ -11,9 +11,6 @@ interface TabProps {
   // A11y props
   id?: string;
   tabIndex?: number;
-
-  // onKeyDown
-  // onClick
 }
 
 export const Tab: React.FC<TabProps> = ({

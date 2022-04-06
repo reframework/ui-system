@@ -1,0 +1,166 @@
+/* common */
+.ref\:text {
+  font-family: var(--font-family-primary);
+  text-transform: unset;
+  text-decoration: unset;
+  width: max-content;
+  padding: 0;
+  margin: 0;
+}
+
+button.ref\:text {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+a.ref\:text {
+  cursor: pointer;
+}
+
+/* align  */
+.ref\:text-align-left {
+  text-align: left;
+}
+
+.ref\:text-align-center {
+  text-align: center;
+}
+
+.ref\:text-align-right {
+  text-align: right;
+}
+
+/* font */
+.ref\:text-primary {
+  font-family: var(--font-family-primary);
+}
+
+.ref\:text-secondary {
+  font-family: var(--font-family-secondary);
+}
+
+.ref\:text-monospace {
+  font-family: var(--font-family-monospace);
+}
+
+.ref\:text-italic {
+  font-family: var(--font-family-italic);
+}
+
+/* size */
+.ref\:text-size-xxxs {
+  font-size: var(--font-size-xxxs);
+}
+
+.ref\:text-size-xxs {
+  font-size: var(--font-size-xxs);
+}
+
+.ref\:text-size-xs {
+  font-size: var(--font-size-xs);
+}
+
+.ref\:text-size-s {
+  font-size: var(--font-size-s);
+}
+
+.ref\:text-size-m {
+  font-size: var(--font-size-m);
+}
+
+.ref\:text-size-l {
+  font-size: var(--font-size-l);
+}
+
+.ref\:text-size-xl {
+  font-size: var(--font-size-xl);
+}
+
+.ref\:text-size-xxl {
+  font-size: var(--font-size-xxl);
+}
+
+.ref\:text-size-xxxl {
+  font-size: var(--font-size-xxxl);
+}
+
+/* variant */
+.ref\:text-color-primary {
+  color: var(--color-scale-blue-4);
+}
+
+.ref\:text-color-secondary {
+  color: var(--color-scale-pink-4);
+}
+
+.ref\:text-color-error {
+  color: var(--color-scale-red-4);
+}
+
+.ref\:text-color-warning {
+  color: var(--color-scale-yellow-2);
+}
+
+.ref\:text-color-success {
+  color: var(--color-scale-green-4);
+}
+
+.ref\:text-color-neutral {
+  color: var(--color-scale-gray-4);
+}
+
+.ref\:text-color-default {
+  color: var(--color-scale-black);
+}
+
+/* weight */
+.ref\:text-weight-thin {
+  font-weight: var(--font-weight-thin);
+}
+
+.ref\:text-weight-light {
+  font-weight: var(--font-weight-light);
+}
+
+.ref\:text-weight-regular {
+  font-weight: var(--font-weight-regular);
+}
+
+.ref\:text-weight-medium {
+  font-weight: var(--font-weight-medium);
+}
+
+.ref\:text-weight-semibold {
+  font-weight: var(--font-weight-semibold);
+}
+
+.ref\:text-weight-bold {
+  font-weight: var(--font-weight-bold);
+}
+
+.ref\:text-weight-black {
+  font-weight: var(--font-weight-black);
+}
+
+.ref\:text-ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.ref\:text-uppercase {
+  text-transform: uppercase;
+}
+
+.ref\:text-underline {
+  text-decoration: underline;
+}
+
+.ref\:text-nowrap {
+  white-space: nowrap;
+}
+
+.ref\:text-stretch {
+  width: 100%;
+  display: block;
+}

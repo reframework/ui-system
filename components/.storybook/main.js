@@ -1,5 +1,7 @@
 const injectTokens = require('./injectTokens');
+const { resolveTsAliases } = require('../src/utils/setup');
 const cssRegex = '/\\.css$/';
+const path = require('path');
 
 const lastOf = (arr) => {
   if (!Array.isArray(arr)) return;
@@ -8,29 +10,14 @@ const lastOf = (arr) => {
 
 module.exports = {
   webpackFinal(config = {}, options = {}) {
+    Object.assign(config.resolve.alias, resolveTsAliases());
+
     const cssRuleIdx = config.module.rules.findIndex((rule) => {
       return rule && rule.test && rule.test.toString() === cssRegex;
     });
-
     const rulesLength = config.module.rules.length;
     const hasCssRule = cssRuleIdx !== -1;
     const postCssRule = lastOf(config.module.rules[cssRuleIdx].use);
-
-    // config.module.rules.push({
-    //   test: /\.stories\.tsx?$/,
-    //   use: [
-    //     {
-    //       loader: require.resolve('@storybook/source-loader'),
-    //       options: {
-    //         injectParameters: true,
-    //         inspectLocalDependencies: false,
-    //         inspectDependencies: false,
-    //         parser: 'typescript',
-    //       },
-    //     },
-    //   ],
-    //   enforce: 'pre',
-    // });
 
     const cssRule = {
       test: /\.css$/i,

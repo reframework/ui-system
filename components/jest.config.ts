@@ -5,7 +5,6 @@ import { defaults } from 'jest-config';
 const config: Config.InitialOptions = {
   verbose: true,
   testEnvironment: 'jest-environment-jsdom',
-  moduleFileExtensions: [...defaults.moduleFileExtensions, 'jsx', 'ts', 'tsx'],
   automock: false,
   clearMocks: true,
   collectCoverageFrom: ['src/**/*.{ts,tsx}'],
@@ -34,10 +33,8 @@ const config: Config.InitialOptions = {
     '^.+\\.(js|jsx|ts|tsx)?$': 'ts-jest',
     '^.+\\.js$': 'babel-jest',
   },
+  testMatch: ['<rootDir>/**/*.test.(js|jsx|ts|tsx)'],
   transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
-
-  extensionsToTreatAsEsm: ['.ts', '.tsx'],
-
   moduleNameMapper: {
     '\\.(jpg|ico|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
       '<rootDir>/src/__mocks__/fileMock.js',

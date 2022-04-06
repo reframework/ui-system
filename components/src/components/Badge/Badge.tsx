@@ -1,7 +1,7 @@
 import React from 'react';
 import { getClassName } from '@reframework/classnames';
-import './Badge.css';
 import { getCSSSize } from '../../utils';
+import './Badge.css';
 
 enum BadgeClassName {
   container = 'ref:badge-container',
@@ -26,7 +26,7 @@ enum StatusClassName {
 type BadgePosition = `${'top' | 'bottom'}-${'left' | 'right'}`;
 type Status = 'online' | 'offline' | 'away' | 'busy';
 
-interface BadgeProps {
+export interface BadgeProps {
   className?: string;
   content?: React.ReactNode;
   position?: BadgePosition;
@@ -62,7 +62,7 @@ export const Badge: React.FC<BadgeProps> = ({
   );
 };
 
-interface OnlineStatusProps extends BadgeProps {
+export interface OnlineStatusProps extends BadgeProps {
   status: Status;
   animated?: boolean;
 }

@@ -3,12 +3,10 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import AvatarComponent from './Avatar';
 import { Badge, OnlineStatus } from '../Badge';
-import { Box } from '../Box';
-import { Spinner } from '../Spinner';
-import Text from '../Typography/Typography';
-import { Flex } from '../Flex';
-
-import testImage3 from './assets/maxresdefault2x.jpeg';
+import { Box } from '@wip/Box';
+import { Spinner } from '@components/Spinner';
+import { Text } from '@components/Text';
+import { Flex } from '@wip/Flex';
 
 export default {
   title: 'Avatar/Avatar',
@@ -71,20 +69,20 @@ export const Avatar: ComponentStory<typeof Avatar> = () => {
       </Flex>
       <Flex mr="xxxl" p="xl" direction="column" alignItems="center">
         <Box mb="m">
-          <Text>Online status</Text>
+          <Text>Status: Online</Text>
         </Box>
         <OnlineStatus animated status="online" size={30}>
           <AvatarComponent
-            src={testImage3}
+            src={testImage2}
             size={`${(250 / 16).toFixed(1)}rem`}
           />
         </OnlineStatus>
       </Flex>
       <Flex p="xl" direction="column" alignItems="center">
         <Box mb="m">
-          <Text>Do not disturb</Text>
+          <Text>Status: Away</Text>
         </Box>
-        <OnlineStatus position="bottom-left" status="busy" size="1.5rem">
+        <OnlineStatus position="bottom-left" status="away" size="1.8rem">
           <AvatarComponent
             fallback={fallback}
             placeholder={placeholder}
@@ -95,9 +93,9 @@ export const Avatar: ComponentStory<typeof Avatar> = () => {
       </Flex>
       <Flex p="xl" direction="column" alignItems="center">
         <Box mb="m">
-          <Text>Error Fallback</Text>
+          <Text>Fallback</Text>
         </Box>
-        <OnlineStatus position="bottom-left" status="busy" size="1.5rem">
+        <OnlineStatus status="busy" size="1.5rem">
           <AvatarComponent
             fallback={fallback}
             placeholder={placeholder}

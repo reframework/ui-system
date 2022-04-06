@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTabs } from './Tabs';
 
-interface TabPanelProps extends React.HTMLProps<HTMLDivElement> {
+export interface TabPanelProps extends React.HTMLProps<HTMLDivElement> {
   value: string;
   role?: 'tabpanel';
 }

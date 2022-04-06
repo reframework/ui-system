@@ -1,5 +1,11 @@
 import React from 'react';
-import styles from './Radio.css?module';
+import './Radio.css';
+
+enum RadioClassName {
+  container = 'ref:radio-container',
+  radio = 'ref:radio',
+}
+
 export interface RadioProps {
   checked: boolean;
   disabled?: boolean;
@@ -20,7 +26,7 @@ const Radio = ({
   value,
 }: RadioProps) => {
   return (
-    <div className={styles.radio}>
+    <div className={RadioClassName.container}>
       <input
         checked={checked}
         disabled={disabled}
@@ -31,7 +37,7 @@ const Radio = ({
         type="radio"
         value={value}
       />
-      <span className={styles.inner} aria-hidden="true" />
+      <span className={RadioClassName.radio} aria-hidden="true" />
     </div>
   );
 };

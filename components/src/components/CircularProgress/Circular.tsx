@@ -10,20 +10,20 @@ enum LoaderClassName {
   background = 'ref:circular-loader-background',
 }
 
-type Props = {
+export interface CircularProgressProps {
   className?: string;
   color?: 'string';
-  size?: number;
   progress?: number;
+  size?: number;
   thickness?: number;
-};
+}
 
 const CircularLoader = ({
   color,
   size = 50,
   thickness = 5,
   progress,
-}: Props) => {
+}: CircularProgressProps) => {
   const SIZE = 44;
   let variant = 'undetermined';
   const circleStyle: {

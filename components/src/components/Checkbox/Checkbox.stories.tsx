@@ -1,8 +1,8 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-
+import { Box } from '@wip/Box';
+import { Text } from '@components/Text';
 import CheckboxComponent from './Checkbox';
-import { Box } from '../Box';
 
 export default {
   title: 'Data Entry/Checkbox',
@@ -12,11 +12,11 @@ export default {
 const Template: ComponentStory<typeof CheckboxComponent> = ({ ...props }) => (
   <Box>
     <Box mt="s">
-      Controlled:
+      <Text>Controlled:</Text>
       <CheckboxComponent {...props} />
     </Box>
     <Box mt="l">
-      Uncontrolled:
+      <Text>Uncontrolled:</Text>
       <CheckboxComponent defaultChecked={false} />
     </Box>
   </Box>

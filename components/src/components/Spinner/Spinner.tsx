@@ -1,18 +1,23 @@
 import React from 'react';
-import styles from './Spinner.css?module';
+import './Spinner.css';
 
-type Props = {
+enum SpinnerClassName {
+  spinner = 'ref:spinner',
+  svg = 'ref:spinner-svg',
+}
+
+export interface SpinnerProps {
   color?: string;
   size?: number;
-};
+}
 
-const SpinnerA = ({ color, size = 50 }: Props) => {
+const SpinnerA = ({ color, size = 50 }: SpinnerProps) => {
   return (
     <div
-      className={styles.spinner}
+      className={SpinnerClassName.spinner}
       style={{ width: size, height: size, color }}
     >
-      <svg className={styles.svg} viewBox="0 0 120 120">
+      <svg className={SpinnerClassName.svg} viewBox="0 0 120 120">
         <rect x="55" width="10" height="30" rx="5" />
         <rect
           x="79.5439"

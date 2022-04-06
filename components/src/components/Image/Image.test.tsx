@@ -1,3 +1,5 @@
+/* eslint-disable testing-library/no-node-access */
+
 import React from 'react';
 import Image from './Image';
 import { render, screen } from '@testing-library/react';
@@ -10,16 +12,15 @@ describe('Image component', () => {
 
   const baseProps: Partial<ImageProps> = {
     placeholder,
-    alt: 'stub-img',
+    alt: 'stub-alt',
     src: 'stub-src',
-    // todo: other props
   };
 
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  describe('Image loading status', () => {
+  describe('Image loading', () => {
     it('renders only img', () => {
       render(<Image {...baseProps} placeholder={undefined} />);
       const img = screen.getByRole('img') as HTMLImageElement;
@@ -67,11 +68,18 @@ describe('Image component', () => {
     });
   });
 
-  describe('Component classNames', () => {
-    //
-  });
-
   describe('Component props', () => {
-    //
+    it('renders with src, srcSet and alt', () => {
+      render(<Image {...baseProps} srcSet={'stub-srcset'} />);
+      const img = screen.getByAltText('stub-alt');
+      expect(img).toHaveAttribute('src', 'stub-src');
+      expect(img).toHaveAttribute('srcset', 'stub-srcset');
+      expect(img).toBeInTheDocument();
+    });
+
+    it('renders with passed className', () => {
+      render(<Image {...baseProps} className="stub-className" />);
+      expect(screen.getByRole('img')).toHaveClass('stub-className');
+    });
   });
 });

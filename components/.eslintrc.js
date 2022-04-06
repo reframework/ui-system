@@ -35,8 +35,9 @@ module.exports = {
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': ['error'],
     // prettier-ignore
-    'import/no-unresolved': [2, { ignore: ['.css\\?module$'] }],
-    // 'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
+    'import/no-unresolved': 'off',
+    // 'import/no-extraneous-dependencies': ['error', { devDependencies: true }],,
+    'import/order': 'error',
   },
   settings: {
     react: {
@@ -48,6 +49,7 @@ module.exports = {
       files: ['**/*.ts?(x)'],
       parser: '@typescript-eslint/parser',
       rules: {
+        'testing-library/no-node-access': 'off',
         '@typescript-eslint/no-non-null-assertion': 'off',
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/ban-types': 'off',
@@ -64,7 +66,7 @@ module.exports = {
       },
     },
     {
-      files: ['**/__tests__/**/*', '**/*.{spec,test}.*'],
+      files: ['**/__tests__/**/*', '**/*.test.*'],
 
       // A subset of the recommended rules:
       rules: {
@@ -81,7 +83,7 @@ module.exports = {
         'jest/valid-title': 'warn',
 
         //
-        'testing-library/no-node-access': 'off',
+
         // https://github.com/testing-library/eslint-plugin-testing-library
         'testing-library/await-async-query': 'error',
         'testing-library/await-async-utils': 'error',

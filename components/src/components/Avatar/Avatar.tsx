@@ -1,7 +1,7 @@
 import React from 'react';
 import './Avatar.css';
 import { getClassName } from '@reframework/classnames';
-import { Image, ImageProps } from '../Image';
+import { Image, ImageProps } from '@components/Image';
 import { getCSSSize } from '../../utils';
 
 enum AvatarClassName {

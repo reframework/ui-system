@@ -1,11 +1,12 @@
-import { getClassName } from '@reframework/classnames';
 import React from 'react';
-import { DescendantUtils } from '../Menu/useActiveDescendant';
-import { cancelEvent, createKeyboardHandler } from '../Menu/utils';
-import Ink from './Ink';
+import { cancelEvent } from '@utils/index';
+import { createKeyboardHandler } from '@utils/Keyboard';
+import { getClassName } from '@reframework/classnames';
+import { DescendantUtils } from '@utils/descendant';
 import { TabsClassName, useTabs } from './Tabs';
+import Ink from './Ink';
 
-interface TabListProps {
+export interface TabListProps {
   value?: string;
   className?: string;
   inkClassName?: string;
@@ -13,7 +14,8 @@ interface TabListProps {
 
 const defaultInkProps = { width: 0, left: 0 };
 const getTabs = <T extends HTMLElement>(el?: T) => {
-  const selector = `[role="tab"]:not(.${TabsClassName.disabled})`;
+  const className = TabsClassName.disabled.replace(':', '\\:');
+  const selector = `[role="tab"]:not(.${className})`;
   return Array.from(el?.querySelectorAll(selector) || []);
 };
 
@@ -62,7 +64,7 @@ export const TabList: React.FC<TabListProps> = ({
     let active = false;
     let tabIndex;
 
-    // TODO: refactor
+    // So disabled tab couldn't be active
     if (!child.props.disabled) {
       // Controlled tab
       if (typeof child.props.active === 'boolean') {
@@ -73,14 +75,17 @@ export const TabList: React.FC<TabListProps> = ({
       }
     }
 
-    // TODO: refactor
     if (isControlled) {
+      // When tabs are controlled set tabIndex only for active tab, so user could navigate to this tab via keyboard
       if (active) tabIndex = 0;
     } else {
+      // When tabs are uncontrolled then set tabindex for all tabs except disabled
       if (typeof child.props.tabIndex === 'number') {
         tabIndex = child.props.tabIndex;
       } else {
-        tabIndex = active ? 0 : -1;
+        if (!child.props.disabled) {
+          tabIndex = active ? 0 : -1;
+        }
       }
     }
 

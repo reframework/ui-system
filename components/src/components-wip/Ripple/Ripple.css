@@ -1,0 +1,67 @@
+.span {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+
+  & span {
+    display: block;
+    transform: scale(0);
+    border-radius: 100%;
+    position: absolute;
+    opacity: 0;
+    background-color: currentcolor;
+    will-change: transform;
+
+    &.enter {
+      opacity: 0.1;
+      transform: scale(1);
+      animation: scale 300ms linear, enter 300ms ease-out;
+    }
+
+    &.exit {
+      opacity: 0.1;
+      animation: scale 300ms linear, exit 300ms ease-in;
+      transform: scale(1);
+    }
+  }
+}
+@keyframes enter {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0.1;
+  }
+}
+
+@keyframes scale {
+  0% {
+    transform: scale(0.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes exit {
+  0% {
+    opacity: 0.1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.root {
+  position: relative;
+  overflow: hidden;
+  // will-change: transform: fix safari overflow hidden with border-radius
+  // credits https://stackoverflow.com/questions/49066011/overflow-hidden-with-border-radius-not-working-on-safari
+  will-change: transform;will-change
+}

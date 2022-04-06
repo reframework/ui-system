@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { getClassName } from '@reframework/classnames';
-import { useWave } from '../Wave/useWave';
+// import { useWave } from '@wip/Wave/useWave';
 import { forkRef } from '../../utils/forkRef';
 import './Button.css';
 
@@ -86,8 +86,8 @@ const Button = React.forwardRef(
 
     const forkedRef = forkRef(ref, buttonRef);
 
-    const waveRef = variant !== 'link' ? buttonRef : { current: null };
-    useWave(waveRef);
+    // const waveRef = variant !== 'link' ? buttonRef : { current: null };
+    // useWave(waveRef);
 
     const classNames = getClassName({
       [ButtonClassName.button]: true,

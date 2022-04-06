@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { TabList, TabPanel, Tabs as TabsComponent, Tab } from '.';
-import Text from '../Typography/Typography';
-import { Box } from '../Box';
+import { Text } from '@components/Text';
+import { Box } from '@wip/Box';
 
 export default {
   title: 'Navigation/Tabs',
