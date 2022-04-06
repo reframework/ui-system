@@ -1,34 +1,21 @@
 import React from 'react';
-import { Portal, PortalProps } from '@components/Portal';
-import Merge from '../Trigger/Merge';
-import usePopper, { UsePopperProps } from './usePopper';
+import { Popper, PopperProps } from '@wip/Popper';
+import { PaperProps, Paper } from '@components/Paper';
 
-export interface PopoverProps extends UsePopperProps {
+export interface PopoverProps extends PopperProps {
   children: React.ReactNode;
-  disablePortal?: boolean;
-  portalProps?: PortalProps;
+  paperProps: PaperProps;
 }
 
-const Popover = ({
+const Popover: React.FC<PopoverProps> = ({
   children,
-  disablePortal,
-  portalProps,
-  ...restProps
-}: PopoverProps) => {
-  const { open, ref, styles } = usePopper(restProps);
-
-  const content = !open ? null : (
-    <Merge ref={ref} style={styles}>
-      {children}
-    </Merge>
-  );
-
-  if (disablePortal) return content;
-
+  paperProps,
+  ...props
+}) => {
   return (
-    <Portal id="popover-root" {...portalProps}>
-      {content}
-    </Portal>
+    <Popper {...props}>
+      <Paper {...paperProps}>{children}</Paper>
+    </Popper>
   );
 };
 

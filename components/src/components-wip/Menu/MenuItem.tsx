@@ -1,8 +1,15 @@
 import React from 'react';
 import { getClassName } from '@reframework/classnames';
 import { DOMFocus } from '@utils/focus';
-import styles from './MenuItem.module.css?module';
+import './MenuItem.css';
 import { useDescendantContext, useMenuContext } from './Context';
+
+enum MenuItemClassName {
+  divider = 'ref:menu-item-divider',
+  disabled = 'ref:menu-item-disabled',
+  selected = 'ref:menu-item-selected',
+  item = 'ref:menu-item',
+}
 
 export interface MenuItemProps {
   autoFocus?: boolean;
@@ -40,10 +47,10 @@ const MenuItem: React.FC<MenuItemProps> = ({
   const shouldFocus = ref.current?.isSameNode(activeDescendant);
 
   const classNames = getClassName({
-    [styles.item]: true,
-    [styles.selected]: Boolean(selected),
-    [styles.disabled]: Boolean(disabled),
-    [styles.divider]: Boolean(divider),
+    [MenuItemClassName.item]: true,
+    [MenuItemClassName.selected]: Boolean(selected),
+    [MenuItemClassName.disabled]: Boolean(disabled),
+    [MenuItemClassName.divider]: Boolean(divider),
     [className!]: Boolean(className),
   });
 

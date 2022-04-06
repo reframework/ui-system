@@ -5,8 +5,12 @@ import { getClassName } from '@reframework/classnames';
 import { useActiveDescendant } from '@utils/descendant';
 import { useDOMFocus } from '@utils/focus';
 import { stopPropagation } from '@utils/domUtils';
-import styles from './MenuList.module.css?module';
-import { DescendantProvider } from './Context';
+import { DescendantProvider, useMenuContext } from './Context';
+import './MenuList.css';
+
+enum MenuListClassName {
+  list = 'ref:menu-list',
+}
 
 const isNodeDisabled = (node: Node | HTMLElement) => {
   return (
@@ -42,6 +46,7 @@ export const MenuList: React.FC<MenuListProps> = ({
   const listRef = React.useRef<HTMLUListElement | null>(null);
   const ActiveDescendant = useActiveDescendant();
   const focus = useDOMFocus();
+  const { close } = useMenuContext();
 
   const keyboardHandler = createKeyboardHandler({
     onArrowDown: () => {
@@ -67,6 +72,9 @@ export const MenuList: React.FC<MenuListProps> = ({
     },
     onEnd: () => {
       ActiveDescendant.setLast(getEnabledItems(listRef.current));
+    },
+    onSpace: () => {
+      close();
     },
   });
 
@@ -117,10 +125,11 @@ export const MenuList: React.FC<MenuListProps> = ({
   }, []);
 
   const listClassName = getClassName({
-    [styles.list]: true,
+    [MenuListClassName.list]: true,
   });
 
   console.log(ActiveDescendant.current, 'activeDescendant');
+  console.log(autoFocusIndex, 'autofocusIndex');
 
   return (
     <DescendantProvider

@@ -1,11 +1,11 @@
 import React from 'react';
+import { Popover } from '@wip/Popover';
+import Input, { InputRef } from '../Input/Input';
+import { isFunction, useAutoFocus } from '@utils/index';
 import { defaultGetOptionLabel, defaultMatch } from './utils';
 import useCombobox from './useCombobox';
 import { AutocompleteProps } from './types';
-import Input, { InputRef } from '../Input/Input';
 import ListBox from './ListBox';
-import { isFunction, useAutoFocus } from '../../utils';
-import { Popover } from '@wip/Popover';
 
 const Autocomplete = ({
   ariaLabel,

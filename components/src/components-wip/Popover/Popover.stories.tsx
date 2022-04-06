@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import PopoverComponent, { PopoverProps } from './Popover';
-import Box from '../Box/Box';
 import { Button } from '@components/Button';
 import { Paper } from '@components/Paper';
+import Box from '../Box/Box';
+import PopoverComponent, { PopoverProps } from './Popover';
 
 export default {
   title: 'Feedback/Popover',
@@ -12,31 +12,18 @@ export default {
   argTypes: {
     placement: {
       options: [
-        'before-before',
-        'before-end',
-        'before-center',
-        'before-start',
-        'before-after',
-        'end-before',
-        'end-end',
-        'end-center',
-        'end-start',
-        'end-after',
-        'center-before',
-        'center-end',
-        'center-center',
-        'center-start',
-        'center-after',
-        'start-before',
-        'start-end',
-        'start-center',
-        'start-start',
-        'start-after',
-        'after-before',
-        'after-end',
-        'after-center',
-        'after-start',
-        'after-after',
+        'bottom-center',
+        'bottom-end',
+        'bottom-start',
+        'left-center',
+        'left-end',
+        'left-start',
+        'right-center',
+        'right-end',
+        'right-start',
+        'top-center',
+        'top-end',
+        'top-start',
       ],
       control: { type: 'select' },
     },
@@ -61,30 +48,25 @@ const Page = ({ children, open: openProp, ...props }: PopoverProps) => {
         height: '400px',
       }}
     >
-      <Button ref={ref} onClick={() => setOpen(true)}>
+      <Button variant="solid" ref={ref} onClick={() => setOpen(true)}>
         Click me!
       </Button>
       <PopoverComponent
         {...props}
-        anchorEl={ref.current}
+        originElement={ref.current}
         onClickAway={() => setOpen(false)}
         open={open}
-      >
-        <Paper
-          style={{
+        paperProps={{
+          style: {
             width: '200px',
             height: '200px',
-            color: 'var(--color-scale-blue-4)',
-            border: '1px solid currentColor',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            opacity: 0.8,
-            backgroundColor: 'var(--color-scale-blue-1)',
-          }}
-        >
-          {children}
-        </Paper>
+          },
+        }}
+      >
+        {children}
       </PopoverComponent>
     </Box>
   );
@@ -97,9 +79,8 @@ export const Popover = Template.bind({});
 
 Popover.args = {
   children: 'Popover',
-  placement: 'start-start',
-  offsetX: 0,
-  offsetY: 0,
+  placement: 'bottom-start',
+  // offsetX: 0,
+  // offsetY: 0,
   open: false,
-  zIndex: 1,
 };

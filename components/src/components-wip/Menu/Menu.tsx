@@ -1,34 +1,33 @@
 import React from 'react';
 import { Paper, PaperProps } from '@components/Paper';
-import MenuItem from './MenuItem';
 import { isFunction, isNumber, cancelEvent } from '@utils/index';
-import { MenuList } from './MenuList';
 import { Popover, PopoverProps } from '@wip/Popover';
-import Merge from '../Trigger/Merge';
-import { Optional } from '../Combobox/types';
 import useControlledState from '@utils/useControlledState';
 import { createKeyboardHandler } from '@utils/Keyboard';
 import { MenuProvider } from '@wip/Menu/Context';
+import { Optional } from '../Combobox/types';
+import Merge from '../Trigger/Merge';
+import { MenuList } from './MenuList';
+import MenuItem from './MenuItem';
 
 type Action = 'click' | 'hover';
 
 export interface MenuProps {
-  id?: string;
-  originElement?: HTMLElement | null;
   autoFocus?: boolean;
   children: React.ReactNode;
+  id?: string;
   onClose?: () => void;
   onOpen?: () => void;
   open?: boolean;
+  originElement?: HTMLElement | null;
   paperProps?: PaperProps;
   trigger?: React.ReactNode;
   triggerAction?: Action;
   // Popover props
-  popoverProps?: PopoverProps;
-  placement?: PopoverProps['placement'];
   matchOriginWidth?: PopoverProps['matchOriginWidth'];
+  placement?: PopoverProps['placement'];
+  popoverProps?: PopoverProps;
   portal?: boolean;
-  //
   // closeOnBlur
   closeOnSelect?: boolean;
   defaultOpen?: boolean;
@@ -42,7 +41,7 @@ const Menu = ({
   matchOriginWidth = true,
   autoFocus = false,
   children,
-  id = 'menu',
+  id = 'ref/:menu-id',
   onClose,
   onOpen,
   open: $open,
@@ -72,7 +71,6 @@ MenuProps) => {
 
   const openMenu = (options?: { focusIndex?: number }) => {
     if (isOpen) return;
-    console.log('OPEN ');
     if (isNumber(options?.focusIndex)) {
       setAutofocusIndex(options?.focusIndex);
     }
@@ -82,7 +80,6 @@ MenuProps) => {
 
   const closeMenu = React.useCallback(() => {
     if (!isOpen) return;
-    console.log('CLOSE');
     setIsOpen(false);
     setAutofocusIndex(undefined);
     onClose?.();

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Placement, computePosition } from './placementUtils';
 import { isNumber, useMounted } from '@utils/index';
 import useControlledState from '@utils/useControlledState';
+import { Placement, computePosition } from './placementUtils';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getWidth = (
@@ -53,6 +53,7 @@ const usePopper = ({
   const [computedPosition, setComputedPosition] =
     React.useState<React.CSSProperties | null>(null);
 
+  console.log(computedPosition, 'POSITION');
   const popperRef = React.useRef<HTMLDivElement | null>(null);
 
   const {
@@ -140,9 +141,10 @@ const usePopper = ({
     open: isOpen,
     ref: popperRef,
     styles: {
-      position: 'absolute',
       inset: '0 auto auto 0',
-      // opacity: Number(computedPosition),
+      opacity: Number(computedPosition),
+      pointerEvents: computedPosition ? 'unset' : 'none',
+      position: 'absolute',
       ...computedPosition,
     },
   };
