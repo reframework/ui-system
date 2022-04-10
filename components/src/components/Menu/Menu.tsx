@@ -1,5 +1,5 @@
 import React from 'react';
-import { Paper, PaperProps } from '@components/Paper';
+import { PaperProps } from '@components/Paper';
 import { isFunction, isNumber, cancelEvent } from '@utils/index';
 import { Popover, PopoverProps } from '@components/Popover';
 import useControlledState from '@utils/useControlledState';
@@ -53,12 +53,10 @@ const Menu = ({
   // closeOnBlur = true,
   // autoSelect = true,
   // keep open (do not close after click item is caught)
-  triggerAction = 'click',
+  // triggerAction = 'click',
   portal = false,
-}: // watchResizing,
-// preventOverflowX,
-// preventOverflowY,
-MenuProps) => {
+  watchResizing,
+}: MenuProps) => {
   // Saves ref to the state in order to catch the un/mounting
   const triggerRef = React.useRef<HTMLElement>(null);
   const [autoFocusIndex, setAutofocusIndex] =
@@ -69,9 +67,10 @@ MenuProps) => {
     default: false,
   });
 
+  /**
+   * Opens menu
+   */
   const openMenu = (options?: { focusIndex?: number }) => {
-    console.log('OPEN');
-
     if (isOpen) return;
     if (isNumber(options?.focusIndex)) {
       setAutofocusIndex(options?.focusIndex);
@@ -80,45 +79,41 @@ MenuProps) => {
     onOpen?.();
   };
 
+  /**
+   * Closes menu
+   */
   const closeMenu = React.useCallback(() => {
-    console.log('CLOSE');
     if (!isOpen) return;
     setIsOpen(false);
     setAutofocusIndex(undefined);
     onClose?.();
   }, [onClose, setAutofocusIndex, setIsOpen, isOpen]);
 
+  /**
+   * Popover property
+   */
   const handleClickAway = React.useCallback(() => {
     if (isOpen) closeMenu();
   }, [isOpen, closeMenu]);
 
-  const openWithTheFirstFocused = () => {
+  const openWithTheFirstFocused = cancelEvent(() => {
     openMenu({ focusIndex: 0 });
-  };
+  });
 
-  const openWithTheLastFocused = () => {
+  const openWithTheLastFocused = cancelEvent(() => {
     openMenu({ focusIndex: -1 });
-  };
-
-  const handleListKeyDown = createKeyboardHandler({
-    onEnter: cancelEvent(closeMenu),
-    onEscape: cancelEvent(closeMenu),
-    onTab: cancelEvent(closeMenu),
   });
 
   const handleTriggerKeyDown = createKeyboardHandler({
-    onEnter: cancelEvent(openWithTheFirstFocused),
-    onSpace: cancelEvent(openWithTheFirstFocused),
-    onArrowDown: cancelEvent(openWithTheFirstFocused),
-    onArrowUp: cancelEvent(openWithTheLastFocused),
+    onEnter: openWithTheFirstFocused,
+    onSpace: openWithTheFirstFocused,
+    onArrowDown: openWithTheFirstFocused,
+    onArrowUp: openWithTheLastFocused,
   });
 
-  const handleMouseLeave = () => {
-    if (triggerAction === 'hover') {
-      // todo: handle hovering
-    }
-  };
-
+  /**
+   * Menu Context
+   */
   const menuContext = {
     close: closeMenu,
     isOpen: isOpen,
@@ -144,7 +139,6 @@ MenuProps) => {
         aria-expanded={isOpen}
         aria-haspopup={true}
         onKeyDown={handleTriggerKeyDown}
-        onMouseLeave={handleMouseLeave}
         ref={triggerRef}
         tabIndex={0}
       >
@@ -153,27 +147,19 @@ MenuProps) => {
       <Popover
         matchOriginWidth={matchOriginWidth}
         placement={placement}
-        // watchResizing={watchResizing}
+        watchResizing={watchResizing}
         disablePortal={!portal}
-        // preventOverflowX={preventOverflowX}
-        // preventOverflowY={preventOverflowY}
         {...popoverProps}
         originElement={originElement || triggerRef.current}
         onClickAway={handleClickAway}
         open={isOpen}
         offsetX={10}
         offsetY={10}
+        paperProps={paperProps}
       >
-        <Paper {...paperProps}>
-          <MenuList
-            id={id}
-            autoFocusIndex={autoFocusIndex}
-            onKeyDown={handleListKeyDown}
-            onMouseLeave={handleMouseLeave}
-          >
-            {children}
-          </MenuList>
-        </Paper>
+        <MenuList id={id} autoFocusIndex={autoFocusIndex}>
+          {children}
+        </MenuList>
       </Popover>
     </MenuProvider>
   );

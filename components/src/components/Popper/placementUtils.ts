@@ -356,7 +356,6 @@ export function computePosition(
   const overflow = PlacementHero.getOverflow({
     // @ts-expect-error ?--
     computedPosition,
-
     ...rects,
   });
 

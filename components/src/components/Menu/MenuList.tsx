@@ -3,7 +3,7 @@ import { isNumber, preventDefault } from '@utils/index';
 import { createKeyboardHandler } from '@utils/Keyboard';
 import { getClassName } from '@reframework/classnames';
 import { useActiveDescendant } from '@utils/descendant';
-import { useDOMFocus } from '@utils/focus';
+import { DOMFocus } from '@utils/focus';
 import { stopPropagation } from '@utils/domUtils';
 import { DescendantProvider, useMenuContext } from './Context';
 import './MenuList.css';
@@ -12,26 +12,19 @@ enum MenuListClassName {
   list = 'ref:menu-list',
 }
 
-const isNodeDisabled = (node: Node | HTMLElement) => {
-  return (
-    (node as HTMLElement).getAttribute('aria-disabled') === 'true' ||
-    (node as HTMLElement).getAttribute('disabled') === 'true'
-  );
-};
-
 export const getEnabledItems = (node: HTMLElement | null) => {
   // todo: add roles menuitemcheckbox, menuitemchecoption
-  return Array.from(node?.querySelectorAll?.('[role="menuitem"]') || []).filter(
-    (node) => !isNodeDisabled(node),
-  ) as HTMLElement[];
+  return Array.from(
+    node?.querySelectorAll?.('[role="menuitem"]:not([aria-disabled="true"])') ||
+      [],
+  );
 };
 
 export interface MenuListProps {
   autoFocusIndex?: number;
   children: React.ReactNode;
   id?: string;
-  onKeyDown: (e: React.KeyboardEvent) => void;
-  onMouseLeave: (e: React.MouseEvent) => void;
+  // onMouseLeave: (e: React.MouseEvent) => void;
   tabIndex?: number;
 }
 
@@ -39,26 +32,28 @@ const MenuList: React.FC<MenuListProps> = ({
   autoFocusIndex,
   children,
   id,
-  onKeyDown,
-  onMouseLeave,
+  // onMouseLeave,
   tabIndex,
 }) => {
   const listRef = React.useRef<HTMLUListElement | null>(null);
   const ActiveDescendant = useActiveDescendant();
-  const focus = useDOMFocus();
   const { close } = useMenuContext();
 
-  const keyboardHandler = createKeyboardHandler({
+  const handleKeyDown = createKeyboardHandler({
+    beforeAll: (event) => {
+      preventDefault(event);
+      stopPropagation(event);
+    },
     onArrowDown: () => {
       ActiveDescendant.setNext(
         getEnabledItems(listRef.current),
-        focus.getActiveElement(),
+        ActiveDescendant.current,
       );
     },
     onArrowUp: () => {
       ActiveDescendant.setPrevious(
         getEnabledItems(listRef.current),
-        focus.getActiveElement(),
+        ActiveDescendant.current,
       );
     },
     onArrowLeft: () => {
@@ -74,16 +69,14 @@ const MenuList: React.FC<MenuListProps> = ({
       ActiveDescendant.setLast(getEnabledItems(listRef.current));
     },
     onSpace: () => {
-      close();
+      ActiveDescendant.current?.click();
     },
+    onEnter: () => {
+      ActiveDescendant.current?.click();
+    },
+    onEscape: close,
+    onTab: close,
   });
-
-  const handleKeyDown = (event: React.KeyboardEvent) => {
-    preventDefault(event);
-    stopPropagation(event);
-    onKeyDown?.(event);
-    keyboardHandler(event);
-  };
 
   React.useEffect(() => {
     // Pedantic typescript
@@ -98,12 +91,12 @@ const MenuList: React.FC<MenuListProps> = ({
 
     // The case when autoFocus should appear on the list
     if (!isNumber(autoFocusIndex)) {
-      focus.set(listRef.current);
+      DOMFocus.set(listRef.current);
       return;
     }
 
     if (!ActiveDescendant.current) {
-      focus.save();
+      DOMFocus.save();
       ActiveDescendant.setByIndex(
         getEnabledItems(listRef.current),
         autoFocusIndex,
@@ -116,9 +109,10 @@ const MenuList: React.FC<MenuListProps> = ({
 
   // Restores document focus if component is destroyed
   React.useEffect(() => {
+    // restore the focus after closing menu
     return () => {
       ActiveDescendant.reset();
-      focus.restore();
+      DOMFocus.restore();
     };
     // Mount only
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -127,9 +121,6 @@ const MenuList: React.FC<MenuListProps> = ({
   const listClassName = getClassName({
     [MenuListClassName.list]: true,
   });
-
-  console.log(ActiveDescendant.current, 'activeDescendant');
-  console.log(autoFocusIndex, 'autofocusIndex');
 
   return (
     <DescendantProvider
@@ -142,7 +133,7 @@ const MenuList: React.FC<MenuListProps> = ({
         aria-orientation="vertical"
         className={listClassName}
         onKeyDown={handleKeyDown}
-        onMouseLeave={onMouseLeave}
+        // onMouseLeave={onMouseLeave}
         ref={listRef}
         role="menu"
         tabIndex={tabIndex || -1}

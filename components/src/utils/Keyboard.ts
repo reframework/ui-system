@@ -25,6 +25,8 @@ export enum EventKeyEnum {
 }
 
 interface KeyboardManager {
+  beforeAll: (event: React.KeyboardEvent) => void;
+  afterAll: (event: React.KeyboardEvent) => void;
   onArrowDown: (event: React.KeyboardEvent) => void;
   onArrowLeft: (event: React.KeyboardEvent) => void;
   onArrowRight: (event: React.KeyboardEvent) => void;
@@ -54,6 +56,8 @@ const useKeyboardEventHandlers = (handlersMapping: {
 
 export const createKeyboardHandler =
   (manager: Partial<KeyboardManager>) => (event: React.KeyboardEvent) => {
+    manager.beforeAll?.(event);
+
     switch (event.key) {
       case EventKeyEnum.Down:
       case EventKeyEnum.ArrowDown: {
@@ -113,4 +117,6 @@ export const createKeyboardHandler =
       default:
       // Handle printable key to select by content
     }
+
+    manager.afterAll?.(event);
   };

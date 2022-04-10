@@ -30,6 +30,7 @@ export interface UsePopperProps {
   onOpen?: () => void;
   open: boolean;
   placement?: Placement;
+  watchResizing?: boolean;
   // position?: 'fixed' | 'absolute';
   // preventOverflowX?: boolean;
   // preventOverflowY?: boolean;
@@ -49,6 +50,7 @@ const usePopper = ({
   open: openProp,
   originElement,
   placement,
+  watchResizing,
 }: UsePopperProps) => {
   const isMounted = useMounted();
 
@@ -118,6 +120,7 @@ const usePopper = ({
   }, [handleClickAway, isOpen]);
 
   React.useEffect(() => {
+    if (!watchResizing) return;
     if (!popperRef.current) return;
 
     const handleResize = (entries: ResizeObserverEntry[]) => {
@@ -134,7 +137,7 @@ const usePopper = ({
     return () => {
       observer.disconnect();
     };
-  }, [originElement, updatePosition]);
+  }, [originElement, updatePosition, watchResizing]);
 
   return {
     open: isOpen,

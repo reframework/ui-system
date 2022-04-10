@@ -1,6 +1,6 @@
 import React from 'react';
-import { isFunction } from '../../utils';
-import { cloneChildRef } from '../../utils/forkRef';
+import { isFunction } from '@utils/index';
+import { cloneChildRef } from '@utils/forkRef';
 
 // TODO: add generic type for props
 type MergeProps = Record<string, any>;
