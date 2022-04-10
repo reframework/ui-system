@@ -21,6 +21,7 @@ export const getEnabledItems = (node: HTMLElement | null) => {
 };
 
 export interface MenuListProps {
+  autofocus?: boolean;
   autoFocusIndex?: number;
   children: React.ReactNode;
   id?: string;

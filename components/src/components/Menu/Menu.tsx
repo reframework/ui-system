@@ -5,7 +5,7 @@ import { Popover, PopoverProps } from '@components/Popover';
 import useControlledState from '@utils/useControlledState';
 import { createKeyboardHandler } from '@utils/Keyboard';
 import { MenuProvider } from '@components/Menu/Context';
-import Merge from '@wip/Trigger/Merge';
+import MergeProps from '@wip/Trigger/Merge';
 import { Optional } from '@wip/Combobox/types';
 import MenuList from './MenuList';
 import MenuItem from './MenuItem';
@@ -13,49 +13,44 @@ import MenuItem from './MenuItem';
 type Action = 'click' | 'hover';
 
 export interface MenuProps {
+  // closeOnBlur
   autoFocus?: boolean;
   children: React.ReactNode;
+  closeOnSelect?: boolean;
+  defaultOpen?: boolean;
   id?: string;
+  matchOriginWidth?: PopoverProps['matchOriginWidth'];
+  offsetX?: number;
+  offsetY?: number;
   onClose?: () => void;
   onOpen?: () => void;
   open?: boolean;
   originElement?: HTMLElement | null;
   paperProps?: PaperProps;
-  trigger?: React.ReactNode;
-  triggerAction?: Action;
-  // Popover props
-  matchOriginWidth?: PopoverProps['matchOriginWidth'];
   placement?: PopoverProps['placement'];
   popoverProps?: PopoverProps;
   portal?: boolean;
-  // closeOnBlur
-  closeOnSelect?: boolean;
-  defaultOpen?: boolean;
-  preventOverflowX?: boolean;
-  preventOverflowY?: boolean;
-  watchResizing?: boolean;
+  trigger?: React.ReactNode;
+  triggerAction?: Action;
 }
 
 const Menu = ({
-  originElement,
-  matchOriginWidth = true,
+  // triggerAction = 'click',
   autoFocus = false,
   children,
   id = 'ref/:menu-id',
+  matchOriginWidth = true,
+  offsetX,
+  offsetY,
   onClose,
   onOpen,
   open: $open,
+  originElement,
   paperProps,
   placement = 'bottom-start',
   popoverProps,
-  trigger,
-  // closeOnSelect = true,
-  // closeOnBlur = true,
-  // autoSelect = true,
-  // keep open (do not close after click item is caught)
-  // triggerAction = 'click',
   portal = false,
-  watchResizing,
+  trigger,
 }: MenuProps) => {
   // Saves ref to the state in order to catch the un/mounting
   const triggerRef = React.useRef<HTMLElement>(null);
@@ -133,7 +128,7 @@ const Menu = ({
 
   return (
     <MenuProvider value={menuContext}>
-      <Merge
+      <MergeProps
         onClick={openMenu}
         aria-controls={id}
         aria-expanded={isOpen}
@@ -143,18 +138,17 @@ const Menu = ({
         tabIndex={0}
       >
         {isFunction(trigger) ? trigger.call(null, { isOpen }) : trigger}
-      </Merge>
+      </MergeProps>
       <Popover
         matchOriginWidth={matchOriginWidth}
         placement={placement}
-        watchResizing={watchResizing}
         disablePortal={!portal}
+        offsetX={offsetX}
+        offsetY={offsetY}
         {...popoverProps}
         originElement={originElement || triggerRef.current}
         onClickAway={handleClickAway}
         open={isOpen}
-        offsetX={10}
-        offsetY={10}
         paperProps={paperProps}
       >
         <MenuList id={id} autoFocusIndex={autoFocusIndex}>

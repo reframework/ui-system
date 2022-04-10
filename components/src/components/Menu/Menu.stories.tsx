@@ -53,10 +53,16 @@ export const Intro: ComponentStory<typeof Menu> = (props) => {
       }}
     >
       <Menu {...props} trigger={<Button variant="outlined">Open Menu</Button>}>
-        <Menu.MenuItem key="1">Share...</Menu.MenuItem>
-        <Menu.MenuItem key="3">Move...</Menu.MenuItem>
-        <Menu.MenuItem key="4">Rename...</Menu.MenuItem>
-        <Menu.MenuItem key="5" disabled>
+        <Menu.MenuItem id="1" key="1">
+          Share...
+        </Menu.MenuItem>
+        <Menu.MenuItem id="2" key="3">
+          Move...
+        </Menu.MenuItem>
+        <Menu.MenuItem id="3" key="4">
+          Rename...
+        </Menu.MenuItem>
+        <Menu.MenuItem id="5" key="5" disabled>
           Delete...
         </Menu.MenuItem>
       </Menu>
