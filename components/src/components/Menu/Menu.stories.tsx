@@ -5,7 +5,7 @@ import { Box } from '@wip//Box';
 import { Button } from '@components/Button';
 import { CircularProgress } from '@components/CircularProgress';
 import { Flex } from '@wip//Flex';
-import { Menu } from '@wip/Menu';
+import { Menu } from '@components/Menu';
 
 export default {
   title: 'Menu/Menu',
@@ -47,6 +47,9 @@ export const Intro: ComponentStory<typeof Menu> = (props) => {
         width: 500,
         marginLeft: 10,
         backgroundColor: 'white',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
       <Menu {...props} trigger={<Button variant="outlined">Open Menu</Button>}>

@@ -23,8 +23,8 @@ export interface UsePopperProps {
   defaultOpen?: boolean;
   originElement?: HTMLElement | null;
   matchOriginWidth?: boolean | number;
-  // offsetX?: number;
-  // offsetY?: number;
+  offsetX?: number;
+  offsetY?: number;
   onClickAway?: (e: Event) => void;
   onClose?: () => void;
   onOpen?: () => void;
@@ -39,11 +39,13 @@ export interface UsePopperProps {
 }
 
 const usePopper = ({
-  defaultOpen,
   // matchOriginWidth,
+  defaultOpen,
+  offsetX,
+  offsetY,
   onClickAway,
-  onOpen,
   onClose,
+  onOpen,
   open: openProp,
   originElement,
   placement,
@@ -53,7 +55,6 @@ const usePopper = ({
   const [computedPosition, setComputedPosition] =
     React.useState<React.CSSProperties | null>(null);
 
-  console.log(computedPosition, 'POSITION');
   const popperRef = React.useRef<HTMLDivElement | null>(null);
 
   const {
@@ -67,12 +68,8 @@ const usePopper = ({
 
   const handleClickAway = React.useCallback(
     (event: Event) => {
-      if (!popperRef?.current?.contains(event.target as Node)) {
-        console.log('SET OPEN FALSE');
-        setIsOpen(false);
-      }
-
-      console.log('AWAY -2');
+      if (popperRef?.current?.contains(event.target as Node)) return;
+      setIsOpen(false);
       onClickAway?.(event);
     },
     [onClickAway, setIsOpen],
@@ -85,9 +82,11 @@ const usePopper = ({
       computePosition(placement, {
         targetElement: popperRef.current,
         referenceElement: originElement,
+        offsetX,
+        offsetY,
       }),
     );
-  }, [originElement, placement]);
+  }, [originElement, placement, offsetX, offsetY]);
 
   const resetPosition = React.useCallback(() => {
     setComputedPosition(null);
@@ -142,7 +141,7 @@ const usePopper = ({
     ref: popperRef,
     styles: {
       inset: '0 auto auto 0',
-      opacity: Number(computedPosition),
+      opacity: computedPosition ? 1 : 0,
       pointerEvents: computedPosition ? 'unset' : 'none',
       position: 'absolute',
       ...computedPosition,

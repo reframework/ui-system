@@ -1,7 +1,7 @@
 import React from 'react';
-import { Popover } from '@wip/Popover';
-import Input, { InputRef } from '../Input/Input';
+import { Popover } from '@components/Popover';
 import { isFunction, useAutoFocus } from '@utils/index';
+import Input, { InputRef } from '../Input/Input';
 import { defaultGetOptionLabel, defaultMatch } from './utils';
 import useCombobox from './useCombobox';
 import { AutocompleteProps } from './types';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Portal, PortalProps } from '@components/Portal';
-import Merge from '../Trigger/Merge';
+import Merge from '@wip/Trigger/Merge';
 import usePopper, { UsePopperProps } from './usePopper';
 
 export interface PopperProps extends UsePopperProps {
@@ -17,12 +17,11 @@ const Popover = ({
 }: PopperProps) => {
   const { open, ref, styles } = usePopper(restProps);
 
-  console.log(children, 'children');
-  const content = !open ? null : (
+  const content = open ? (
     <Merge ref={ref} style={styles}>
       {children}
     </Merge>
-  );
+  ) : null;
 
   if (disablePortal) return content;
 

@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import { Button } from '@components/Button';
 import { Paper } from '@components/Paper';
-import Box from '../Box/Box';
+import Box from '../../components-wip/Box/Box';
 import PopoverComponent, { PopoverProps } from './Popover';
 
 export default {

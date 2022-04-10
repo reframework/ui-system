@@ -1,12 +1,12 @@
 import React from 'react';
-import Popover from '../Popover/Popover';
-import styles from './Select.css?module';
 import { getClassName } from '@reframework/classnames';
+import { Popover } from '@components/Popover';
+import { useAutoFocus } from '@utils/index';
+import styles from './Select.css?module';
 import { defaultGetOptionLabel } from './utils';
 import useCombobox from './useCombobox';
 import { SelectProps } from './types';
 import ListBox from './ListBox';
-import { useAutoFocus } from '../../utils';
 
 const Select = ({
   ariaLabel,

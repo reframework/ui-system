@@ -1,13 +1,13 @@
 import React from 'react';
 import { Paper, PaperProps } from '@components/Paper';
 import { isFunction, isNumber, cancelEvent } from '@utils/index';
-import { Popover, PopoverProps } from '@wip/Popover';
+import { Popover, PopoverProps } from '@components/Popover';
 import useControlledState from '@utils/useControlledState';
 import { createKeyboardHandler } from '@utils/Keyboard';
-import { MenuProvider } from '@wip/Menu/Context';
-import { Optional } from '../Combobox/types';
-import Merge from '../Trigger/Merge';
-import { MenuList } from './MenuList';
+import { MenuProvider } from '@components/Menu/Context';
+import Merge from '@wip/Trigger/Merge';
+import { Optional } from '@wip/Combobox/types';
+import MenuList from './MenuList';
 import MenuItem from './MenuItem';
 
 type Action = 'click' | 'hover';
@@ -70,6 +70,8 @@ MenuProps) => {
   });
 
   const openMenu = (options?: { focusIndex?: number }) => {
+    console.log('OPEN');
+
     if (isOpen) return;
     if (isNumber(options?.focusIndex)) {
       setAutofocusIndex(options?.focusIndex);
@@ -79,6 +81,7 @@ MenuProps) => {
   };
 
   const closeMenu = React.useCallback(() => {
+    console.log('CLOSE');
     if (!isOpen) return;
     setIsOpen(false);
     setAutofocusIndex(undefined);
@@ -158,6 +161,8 @@ MenuProps) => {
         originElement={originElement || triggerRef.current}
         onClickAway={handleClickAway}
         open={isOpen}
+        offsetX={10}
+        offsetY={10}
       >
         <Paper {...paperProps}>
           <MenuList

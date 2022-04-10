@@ -35,7 +35,7 @@ export interface MenuListProps {
   tabIndex?: number;
 }
 
-export const MenuList: React.FC<MenuListProps> = ({
+const MenuList: React.FC<MenuListProps> = ({
   autoFocusIndex,
   children,
   id,
@@ -152,3 +152,5 @@ export const MenuList: React.FC<MenuListProps> = ({
     </DescendantProvider>
   );
 };
+
+export default MenuList;

@@ -1,10 +1,10 @@
 import React from 'react';
-import { Popper, PopperProps } from '@wip/Popper';
+import { Popper, PopperProps } from '@components/Popper';
 import { PaperProps, Paper } from '@components/Paper';
 
 export interface PopoverProps extends PopperProps {
   children: React.ReactNode;
-  paperProps: PaperProps;
+  paperProps?: PaperProps;
 }
 
 const Popover: React.FC<PopoverProps> = ({

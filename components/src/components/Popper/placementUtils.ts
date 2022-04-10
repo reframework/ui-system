@@ -337,23 +337,26 @@ export function computePosition(
   params: {
     targetElement: HTMLElement;
     referenceElement: HTMLElement;
+    offsetX?: number;
+    offsetY?: number;
     //
     preventOverflowX?: boolean;
     preventOverflowY?: boolean;
   },
 ) {
-  const { targetElement, referenceElement } = params;
+  const { targetElement, referenceElement, offsetY, offsetX } = params;
   const [placementX, placementY] = parsePlacement(placement);
   const rects = PlacementHero.getRects(targetElement, referenceElement);
 
   let computedPosition = PlacementHero.getComputedPosition(
     [placementX, placementY],
-    rects,
+    { ...rects, offsetY, offsetX },
   );
 
   const overflow = PlacementHero.getOverflow({
     // @ts-expect-error ?--
     computedPosition,
+
     ...rects,
   });
 
@@ -362,11 +365,29 @@ export function computePosition(
     overflow,
   );
 
+  const isFlipX = placementX !== flipPlacementX;
+  const isFlipY = placementY !== flipPlacementY;
+
   // TODO: Split by axis
-  if (placementX !== flipPlacementX || placementY !== flipPlacementY) {
+  if (isFlipX || isFlipY) {
+    let flipOffsetX = offsetX;
+    let flipOffsetY = offsetY;
+
+    if (isFlipX && flipOffsetX !== undefined) {
+      flipOffsetX = flipOffsetX >= 0 ? -flipOffsetX : Math.abs(flipOffsetX);
+    }
+
+    if (isFlipY && flipOffsetY !== undefined) {
+      flipOffsetY = flipOffsetY >= 0 ? -flipOffsetY : Math.abs(flipOffsetY);
+    }
+
     computedPosition = PlacementHero.getComputedPosition(
       [flipPlacementX, flipPlacementY],
-      rects,
+      {
+        ...rects,
+        offsetX: flipOffsetX,
+        offsetY: flipOffsetY,
+      },
     );
   }
 
