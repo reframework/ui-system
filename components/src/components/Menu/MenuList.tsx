@@ -2,7 +2,7 @@ import React from 'react';
 import { isNumber, preventDefault } from '@utils/index';
 import { createKeyboardHandler } from '@utils/Keyboard';
 import { getClassName } from '@reframework/classnames';
-import { useActiveDescendant } from '@utils/descendant';
+import { useActiveDescendantV2 } from '@utils/descendant';
 import { DOMFocus } from '@utils/focus';
 import { stopPropagation } from '@utils/domUtils';
 import { DescendantProvider, useMenuContext } from './Context';
@@ -37,7 +37,11 @@ const MenuList: React.FC<MenuListProps> = ({
   tabIndex,
 }) => {
   const listRef = React.useRef<HTMLUListElement | null>(null);
-  const ActiveDescendant = useActiveDescendant();
+  const ActiveDescendant = useActiveDescendantV2({
+    listRef,
+    filterElement: (node) => node?.getAttribute('aria-disabled') !== 'true',
+  });
+
   const { close } = useMenuContext();
 
   const handleKeyDown = createKeyboardHandler({
@@ -46,28 +50,22 @@ const MenuList: React.FC<MenuListProps> = ({
       stopPropagation(event);
     },
     onArrowDown: () => {
-      ActiveDescendant.setNext(
-        getEnabledItems(listRef.current),
-        ActiveDescendant.current,
-      );
+      ActiveDescendant.setNext();
     },
     onArrowUp: () => {
-      ActiveDescendant.setPrevious(
-        getEnabledItems(listRef.current),
-        ActiveDescendant.current,
-      );
+      ActiveDescendant.setPrevious();
     },
     onArrowLeft: () => {
-      ActiveDescendant.setFirst(getEnabledItems(listRef.current));
+      ActiveDescendant.setFirst();
     },
     onArrowRight: () => {
-      ActiveDescendant.setLast(getEnabledItems(listRef.current));
+      ActiveDescendant.setLast();
     },
     onHome: () => {
-      ActiveDescendant.setFirst(getEnabledItems(listRef.current));
+      ActiveDescendant.setFirst();
     },
     onEnd: () => {
-      ActiveDescendant.setLast(getEnabledItems(listRef.current));
+      ActiveDescendant.setLast();
     },
     onSpace: () => {
       ActiveDescendant.current?.click();
@@ -98,10 +96,7 @@ const MenuList: React.FC<MenuListProps> = ({
 
     if (!ActiveDescendant.current) {
       DOMFocus.save();
-      ActiveDescendant.setByIndex(
-        getEnabledItems(listRef.current),
-        autoFocusIndex,
-      );
+      ActiveDescendant.setByIndex(autoFocusIndex);
       return;
     }
     // Mount only
