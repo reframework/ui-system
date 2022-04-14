@@ -91,15 +91,16 @@ const Menu = ({
     if (isOpen) closeMenu();
   }, [isOpen, closeMenu]);
 
-  const openWithTheFirstFocused = cancelEvent(() => {
+  const openWithTheFirstFocused = () => {
     openMenu({ focusIndex: 0 });
-  });
+  };
 
-  const openWithTheLastFocused = cancelEvent(() => {
+  const openWithTheLastFocused = () => {
     openMenu({ focusIndex: -1 });
-  });
+  };
 
   const handleTriggerKeyDown = createKeyboardHandler({
+    beforeAll: cancelEvent,
     onEnter: openWithTheFirstFocused,
     onSpace: openWithTheFirstFocused,
     onArrowDown: openWithTheFirstFocused,

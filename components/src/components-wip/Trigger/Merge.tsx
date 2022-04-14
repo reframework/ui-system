@@ -3,7 +3,7 @@ import { isFunction } from '@utils/index';
 import { cloneChildRef } from '@utils/forkRef';
 
 // TODO: add generic type for props
-type MergeProps = Record<string, any>;
+type Props = Record<string, any>;
 
 const pipeCallbacks =
   (...fns: any[]) =>
@@ -12,15 +12,10 @@ const pipeCallbacks =
   };
 
 const mergeStyles = (styleA: {}, styleB: {}) => {
-  return {
-    style: {
-      ...(styleA || {}),
-      ...(styleB || {}),
-    },
-  };
+  return Object.assign({}, styleA, styleB);
 };
 
-const Merge = React.forwardRef<any, MergeProps>((props, parentRef) => {
+const MergeProps = React.forwardRef<any, Props>((props, parentRef) => {
   const { style, children, ...parentProps } = props;
 
   const child = React.Children.only(children) as React.ReactElement;
@@ -52,4 +47,4 @@ const Merge = React.forwardRef<any, MergeProps>((props, parentRef) => {
   return React.cloneElement(child, newChildProps);
 });
 
-export default Merge;
+export default MergeProps;

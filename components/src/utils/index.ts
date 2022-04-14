@@ -111,18 +111,15 @@ export const useMutableState = <T extends object>(
   };
 };
 
-export const cancelEvent =
-  (fn: (event: React.KeyboardEvent) => void) =>
-  (event: React.KeyboardEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
-    fn(event);
-  };
-
 export const preventDefault = (event: React.SyntheticEvent) => {
   event.preventDefault();
 };
 
 export const stopPropagation = (event: React.SyntheticEvent) => {
   event.stopPropagation();
+};
+
+export const cancelEvent = (event: React.KeyboardEvent) => {
+  stopPropagation(event);
+  preventDefault(event);
 };

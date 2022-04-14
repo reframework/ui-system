@@ -37,10 +37,19 @@ export const forkRef = (
 // https://github.com/facebook/react/issues/8873#issuecomment-275423780
 export const cloneChildRef = (
   child: React.ReactElement & { ref?: any },
-  ref: any,
+  ref?: any,
 ) => {
-  if (!ref) return {};
+  // If no refs then empty
+  if (!child?.ref && !ref) {
+    return {};
+  }
 
+  // If only one exist then that one
+  if (!child?.ref || !ref) {
+    return { ref: child.ref || ref };
+  }
+
+  // Merges both refs
   return {
     ref: forkRef(ref, child.ref),
   };
