@@ -1,11 +1,11 @@
 import React from 'react';
 import { isFunction } from '@utils/index';
-import { cloneChildRef } from '@utils/forkRef';
+import { useMergeRef } from '@utils/forkRef';
 
 // TODO: add generic type for props
 type Props = Record<string, any>;
 
-const pipeCallbacks =
+const mergeCallbacks =
   (...fns: any[]) =>
   (...args: any[]) => {
     fns.forEach((fn) => fn?.(...args));
@@ -13,27 +13,25 @@ const pipeCallbacks =
 
 const mergeStyles = (styleA: {}, styleB: {}) => {
   // Edge case when no `style` provided
-  if (!styleA && !styleB) return {};
-
-  return {
-    style: {
-      ...styleA,
-      ...styleB,
-    },
-  };
+  if (!styleA && !styleB) return;
+  return Object.assign({}, styleA, styleB);
 };
 
 const MergeProps = React.forwardRef<any, Props>((props, parentRef) => {
-  const { style, children, ...parentProps } = props;
+  const { style: parentStyle, children, ...parentProps } = props;
 
   const child = React.Children.only(children) as React.ReactElement;
+
+  // @ts-expect-error there is no ref in typescript types
+  const ref = useMergeRef(parentRef, child.ref);
+  const style = mergeStyles(parentStyle, child.props.style);
 
   const mergedProps = Object.entries(parentProps).reduce(
     (acc, [propKey, propValue]) => {
       const { [propKey]: childProp } = child.props;
 
       if (isFunction(propValue) && isFunction(childProp)) {
-        acc[propKey] = pipeCallbacks(propValue, childProp);
+        acc[propKey] = mergeCallbacks(propValue, childProp);
         return acc;
       }
 
@@ -48,8 +46,8 @@ const MergeProps = React.forwardRef<any, Props>((props, parentRef) => {
 
   const newChildProps = {
     ...mergedProps,
-    ...mergeStyles(child.props.style, style),
-    ...cloneChildRef(child, parentRef),
+    ...(style ? { style } : {}),
+    ...(ref ? { ref } : {}),
   };
 
   return React.cloneElement(child, newChildProps);

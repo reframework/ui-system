@@ -17,11 +17,13 @@ const Popover = ({
 }: PopperProps) => {
   const { open, ref, styles } = usePopper(restProps);
 
-  const content = open ? (
+  if (!open) return null;
+
+  const content = (
     <MergeProps ref={ref} style={styles}>
       {children}
     </MergeProps>
-  ) : null;
+  );
 
   if (disablePortal) return content;
 

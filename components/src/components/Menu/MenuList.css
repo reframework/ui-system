@@ -4,6 +4,8 @@
   padding: var(--spacing-xxs) 0;
   border-radius: 4px;
   overflow-y: auto;
-  max-height: calc(100vh - 96px);
   outline: none;
+
+  /* Do we realy need max-height */
+  max-height: calc(100vh - 96px);
 }

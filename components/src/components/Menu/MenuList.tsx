@@ -5,44 +5,51 @@ import { getClassName } from '@reframework/classnames';
 import { useActiveDescendantV2 } from '@utils/descendant';
 import { DOMFocus } from '@utils/focus';
 import { stopPropagation } from '@utils/domUtils';
-import { DescendantProvider, useMenuContext } from './Context';
+import { DescendantProvider } from './Context';
 import './MenuList.css';
 
 enum MenuListClassName {
   list = 'ref:menu-list',
 }
 
-export const getEnabledItems = (node: HTMLElement | null) => {
-  // todo: add roles menuitemcheckbox, menuitemchecoption
-  return Array.from(
-    node?.querySelectorAll?.('[role="menuitem"]:not([aria-disabled="true"])') ||
-      [],
-  );
-};
-
 export interface MenuListProps {
+  // Default: false
+  // If true, will focus the [role="menu"] container and move into tab order.
   autofocus?: boolean;
   autoFocusIndex?: number;
   children: React.ReactNode;
   id?: string;
   // onMouseLeave: (e: React.MouseEvent) => void;
   tabIndex?: number;
+  // Default:false
+  // If true, will allow focus on disabled items.
+  disabledItemsFocusable?: boolean;
+  /**
+   * @private
+   * a `close` method provided by Menu component,
+   * could be used without Menu to handle clicking the item
+   */
+  onCloseRequest?: () => void;
 }
 
 const MenuList: React.FC<MenuListProps> = ({
   autoFocusIndex,
   children,
+  onCloseRequest,
   id,
   // onMouseLeave,
   tabIndex,
 }) => {
   const listRef = React.useRef<HTMLUListElement | null>(null);
+
+  const setListRef = (node: any) => {
+    listRef.current = node;
+  };
+
   const ActiveDescendant = useActiveDescendantV2({
     listRef,
     filterElement: (node) => node?.getAttribute('aria-disabled') !== 'true',
   });
-
-  const { close } = useMenuContext();
 
   const handleKeyDown = createKeyboardHandler({
     beforeAll: (event) => {
@@ -73,18 +80,13 @@ const MenuList: React.FC<MenuListProps> = ({
     onEnter: () => {
       ActiveDescendant.current?.click();
     },
-    onEscape: close,
-    onTab: close,
+    onEscape: onCloseRequest,
+    onTab: onCloseRequest,
   });
 
   React.useEffect(() => {
     // Pedantic typescript
     if (!listRef.current) {
-      return;
-    }
-
-    // The case when autoFocus is set on the item
-    if (listRef.current.contains(document.activeElement)) {
       return;
     }
 
@@ -122,6 +124,7 @@ const MenuList: React.FC<MenuListProps> = ({
     <DescendantProvider
       value={{
         activeDescendant: ActiveDescendant.current,
+        onCloseRequest,
       }}
     >
       <ul
@@ -130,7 +133,7 @@ const MenuList: React.FC<MenuListProps> = ({
         className={listClassName}
         onKeyDown={handleKeyDown}
         // onMouseLeave={onMouseLeave}
-        ref={listRef}
+        ref={setListRef}
         role="menu"
         tabIndex={tabIndex || -1}
       >

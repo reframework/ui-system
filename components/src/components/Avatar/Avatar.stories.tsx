@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import AvatarComponent from './Avatar';
-import { Badge, OnlineStatus } from '../Badge';
 import { Box } from '@wip/Box';
 import { Spinner } from '@components/Spinner';
 import { Text } from '@components/Text';
 import { Flex } from '@wip/Flex';
+import { Badge, OnlineStatus } from '../Badge';
+import AvatarComponent from './Avatar';
 
 export default {
   title: 'Avatar/Avatar',

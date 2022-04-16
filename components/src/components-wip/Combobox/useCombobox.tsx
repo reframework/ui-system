@@ -1,3 +1,5 @@
+import useControlledState from '@utils/useControlledState';
+import React from 'react';
 import {
   firstOf,
   isArray,
@@ -6,7 +8,6 @@ import {
   nextOf,
   previousOf,
 } from '../../utils';
-import useControlledState from '@utils/useControlledState';
 
 import {
   defaultGetOptionDisabled,
@@ -21,7 +22,6 @@ import {
   UseComboboxProps,
   UseComboboxReturnType,
 } from './types';
-import React from 'react';
 import { OptionProps } from './Option';
 
 const useCombobox = ({

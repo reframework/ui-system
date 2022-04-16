@@ -18,13 +18,6 @@ export function isClient(): boolean {
   return typeof document !== 'undefined';
 }
 
-const defaultStyle = {
-  position: 'absolute',
-  zIndex: 800,
-  width: '100%',
-  top: '0px',
-};
-
 export function createContainer(params: {
   id?: string;
   style?: CSSProperties;
@@ -33,7 +26,7 @@ export function createContainer(params: {
 }): HTMLElement | null {
   if (!isClient()) return null;
 
-  const { id, style = defaultStyle, element = 'div', className } = params;
+  const { id, style, element = 'div', className } = params;
 
   // Checks if id is ready to use
   const hasValidId = isString(id) && id.trim().length > 0;

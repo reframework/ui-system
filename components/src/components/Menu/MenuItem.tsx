@@ -2,7 +2,7 @@ import React from 'react';
 import { getClassName } from '@reframework/classnames';
 import { DOMFocus } from '@utils/focus';
 import './MenuItem.css';
-import { useDescendantContext, useMenuContext } from './Context';
+import { useDescendantContext } from './Context';
 
 enum MenuItemClassName {
   divider = 'ref:menu-item-divider',
@@ -12,6 +12,7 @@ enum MenuItemClassName {
 }
 
 export interface MenuItemProps {
+  id?: string;
   autoFocus?: boolean;
   as?: keyof JSX.IntrinsicElements;
   // closeOnSelect
@@ -40,8 +41,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
   // role = 'menuitem',
   ...props
 }) => {
-  const { close } = useMenuContext();
-  const { activeDescendant } = useDescendantContext();
+  const { activeDescendant, onCloseRequest } = useDescendantContext();
 
   const ref = React.useRef<HTMLLIElement | null>(null);
   const shouldFocus = ref.current?.isSameNode(activeDescendant);
@@ -55,7 +55,8 @@ const MenuItem: React.FC<MenuItemProps> = ({
   });
 
   const handleClick = (e: React.MouseEvent) => {
-    close?.();
+    console.log('onCloseRequest', onCloseRequest);
+    onCloseRequest?.();
     onClick?.(e);
   };
 
@@ -77,6 +78,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
   }, []);
 
   return (
+    // `handleKeyDown` is provided by `MenuList`
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events
     <li
       role="menuitem"

@@ -4,22 +4,18 @@ import { isFunction, isNumber, cancelEvent } from '@utils/index';
 import { Popover, PopoverProps } from '@components/Popover';
 import useControlledState from '@utils/useControlledState';
 import { createKeyboardHandler } from '@utils/Keyboard';
-import { MenuProvider } from '@components/Menu/Context';
-import MergeProps from '@wip/Trigger/Merge';
+import { MergeProps } from '@wip/MergeProps';
 import { Optional } from '@wip/Combobox/types';
 import MenuList from './MenuList';
-import MenuItem from './MenuItem';
 
 type Action = 'click' | 'hover';
 
 export interface MenuProps {
-  // closeOnBlur
   autoFocus?: boolean;
   children: React.ReactNode;
-  closeOnSelect?: boolean;
   defaultOpen?: boolean;
   id?: string;
-  matchOriginWidth?: PopoverProps['matchOriginWidth'];
+  matchWidth?: PopoverProps['matchOriginWidth'];
   offsetX?: number;
   offsetY?: number;
   onClose?: () => void;
@@ -32,19 +28,30 @@ export interface MenuProps {
   portal?: boolean;
   trigger?: React.ReactNode;
   triggerAction?: Action;
+  // TODO:
+  flip?: boolean;
+  closeOnSelect?: boolean;
+  closeOnBlur?: boolean;
+  /**
+   * boundary
+   * Description: The boundary area for the popper. Used within the preventOverflow modifier
+   * Type: HTMLElement | "clippingParents" | "scrollParent"
+   * Default: "clippingParents"
+   */
 }
 
 const Menu = ({
   // triggerAction = 'click',
   autoFocus = false,
   children,
-  id = 'ref/:menu-id',
-  matchOriginWidth = true,
+  defaultOpen,
+  id = 'ref:menu-id',
+  matchWidth = true,
   offsetX,
-  offsetY,
+  offsetY = 10,
   onClose,
   onOpen,
-  open: $open,
+  open,
   originElement,
   paperProps,
   placement = 'bottom-start',
@@ -53,13 +60,19 @@ const Menu = ({
   trigger,
 }: MenuProps) => {
   // Saves ref to the state in order to catch the un/mounting
-  const triggerRef = React.useRef<HTMLElement>(null);
+  const [triggerNode, setTriggerNode] =
+    React.useState<HTMLElement | null>(null);
+
   const [autoFocusIndex, setAutofocusIndex] =
     React.useState<Optional<number>>();
 
-  const { state: isOpen, setState: setIsOpen } = useControlledState({
-    controlled: $open,
-    default: false,
+  const {
+    isControlled: isOpenControlled,
+    setState: setIsOpen,
+    state: isOpen,
+  } = useControlledState({
+    controlled: open,
+    default: defaultOpen,
   });
 
   /**
@@ -107,60 +120,59 @@ const Menu = ({
     onArrowUp: openWithTheLastFocused,
   });
 
-  /**
-   * Menu Context
-   */
-  const menuContext = {
-    close: closeMenu,
-    isOpen: isOpen,
-  };
-
+  React.useEffect(() => {
+    if (isOpenControlled) return;
+    setIsOpen(open);
+  }, [open, isOpenControlled, setIsOpen]);
   /**
    * Autofocus handling
    */
   React.useEffect(() => {
-    if (autoFocus && triggerRef.current) {
-      triggerRef.current.focus();
+    if (autoFocus && triggerNode) {
+      triggerNode.focus();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [triggerRef.current]);
+  }, [triggerNode]);
 
   console.log('$$ Menu: updated $$');
 
   return (
-    <MenuProvider value={menuContext}>
+    <>
       <MergeProps
         onClick={openMenu}
         aria-controls={id}
         aria-expanded={isOpen}
         aria-haspopup={true}
         onKeyDown={handleTriggerKeyDown}
-        ref={triggerRef}
+        ref={setTriggerNode}
         tabIndex={0}
       >
         {isFunction(trigger) ? trigger.call(null, { isOpen }) : trigger}
       </MergeProps>
       <Popover
-        matchOriginWidth={matchOriginWidth}
+        matchOriginWidth={matchWidth}
         placement={placement}
         disablePortal={!portal}
         offsetX={offsetX}
         offsetY={offsetY}
         {...popoverProps}
-        originElement={originElement || triggerRef.current}
+        originElement={originElement || triggerNode}
         onClickAway={handleClickAway}
         open={isOpen}
         paperProps={paperProps}
+        onOpen={openMenu}
+        onClose={closeMenu}
       >
-        <MenuList id={id} autoFocusIndex={autoFocusIndex}>
+        <MenuList
+          id={id}
+          autoFocusIndex={autoFocusIndex}
+          onCloseRequest={closeMenu}
+        >
           {children}
         </MenuList>
       </Popover>
-    </MenuProvider>
+    </>
   );
 };
-
-Menu.MenuItem = MenuItem;
-Menu.MenuList = MenuList;
 
 export default Menu;

@@ -46,14 +46,14 @@ const usePopper = ({
   onClickAway,
   onClose,
   onOpen,
-  open: openProp,
+  open,
   originElement,
   placement,
 }: UsePopperProps) => {
   const isMounted = useMounted();
 
   const [computedPosition, setComputedPosition] =
-    React.useState<React.CSSProperties | null>(null);
+    React.useState<{ top: number; left: number } | null>(null);
 
   const popperRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -62,7 +62,7 @@ const usePopper = ({
     setState: setIsOpen,
     isControlled: isOpenControlled,
   } = useControlledState({
-    controlled: openProp,
+    controlled: open,
     default: !!defaultOpen,
   });
 
@@ -76,6 +76,7 @@ const usePopper = ({
   );
 
   const updatePosition = React.useCallback(() => {
+    // console.log(popperRef.current, originElement, 'Goes here');
     if (!placement || !popperRef.current || !originElement) return;
 
     setComputedPosition(
@@ -93,14 +94,18 @@ const usePopper = ({
   }, []);
 
   React.useEffect(() => {
-    if (isOpen) return updatePosition();
+    if (isOpen) {
+      updatePosition();
+      return;
+    }
     resetPosition();
   }, [isOpen, updatePosition, resetPosition]);
 
   React.useEffect(() => {
+    // TODO: change
     // Controlled state changes
-    setIsOpen(openProp);
-  }, [openProp, setIsOpen]);
+    // setIsOpen(open);
+  }, [open, setIsOpen]);
 
   React.useEffect(() => {
     if (!isMounted) return;
@@ -123,7 +128,8 @@ const usePopper = ({
     const handleResize = (entries: ResizeObserverEntry[]) => {
       const [{ target }] = entries;
       if (target === popperRef.current || target === originElement) {
-        updatePosition();
+        // console.log('RESIZE', target);
+        // updatePosition();
       }
     };
 
@@ -144,7 +150,9 @@ const usePopper = ({
       opacity: computedPosition ? 1 : 0,
       pointerEvents: computedPosition ? 'unset' : 'none',
       position: 'absolute',
-      ...computedPosition,
+      transform: computedPosition
+        ? `translate3d(${computedPosition.left}px, ${computedPosition.top}px, 0px)`
+        : 'unset',
     },
   };
 };

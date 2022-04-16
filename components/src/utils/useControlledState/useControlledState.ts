@@ -9,6 +9,7 @@ const noOp = () => {};
 const useControlledState = <T>(params: { controlled: T; default: T }) => {
   const { controlled, default: _default } = params;
 
+  console.log('CONTROLLED', controlled);
   // isControlled should never change
   const { current: isControlled } = React.useRef(
     params.controlled !== undefined,

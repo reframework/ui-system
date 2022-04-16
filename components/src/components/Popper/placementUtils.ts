@@ -390,7 +390,5 @@ export function computePosition(
     );
   }
 
-  return {
-    transform: `translate3d(${computedPosition.left}px, ${computedPosition.top}px, 0px)`,
-  };
+  return computedPosition as { top: number; left: number };
 }

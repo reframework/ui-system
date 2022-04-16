@@ -1,8 +1,8 @@
 import React, { useImperativeHandle, useRef } from 'react';
 import './Input.css';
 import { getClassName } from '@reframework/classnames';
-import { isFunction, useAutoFocus } from '../../utils';
 import useControlledState from '@utils/useControlledState';
+import { isFunction, useAutoFocus } from '../../utils';
 
 enum InputClassName {
   input = 'ref:input',
