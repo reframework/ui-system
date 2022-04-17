@@ -23,7 +23,7 @@ describe('useControlledState', () => {
       );
 
       rerender({
-        default: true,
+        default: NEXT_STATE,
         controlled: undefined,
       });
 
@@ -38,6 +38,7 @@ describe('useControlledState', () => {
       );
 
       act(() => result.current.setState(NEXT_STATE));
+
       expect(result.current.state).toBe(CONTROLLED_STATE);
     });
     it('Should return controlled state and ignore the default', () => {
