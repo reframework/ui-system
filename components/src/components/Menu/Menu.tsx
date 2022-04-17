@@ -2,7 +2,7 @@ import React from 'react';
 import { PaperProps } from '@components/Paper';
 import { isFunction, isNumber, cancelEvent } from '@utils/index';
 import { Popover, PopoverProps } from '@components/Popover';
-import useControlledState from '@utils/useControlledState';
+import { useControlledState } from '@utils/useControlledState';
 import { createKeyboardHandler } from '@utils/Keyboard';
 import { MergeProps } from '@wip/MergeProps';
 import { Optional } from '@wip/Combobox/types';
@@ -66,13 +66,10 @@ const Menu = ({
   const [autoFocusIndex, setAutofocusIndex] =
     React.useState<Optional<number>>();
 
-  const {
-    isControlled: isOpenControlled,
-    setState: setIsOpen,
-    state: isOpen,
-  } = useControlledState({
+  const { setState: setIsOpen, state: isOpen } = useControlledState({
     controlled: open,
-    default: defaultOpen,
+    // shouldn't be undefined because goes as controlled state in popper
+    default: !!defaultOpen,
   });
 
   /**
@@ -102,7 +99,7 @@ const Menu = ({
    */
   const handleClickAway = React.useCallback(() => {
     if (isOpen) closeMenu();
-  }, [isOpen, closeMenu]);
+  }, [closeMenu, isOpen]);
 
   const openWithTheFirstFocused = () => {
     openMenu({ focusIndex: 0 });
@@ -110,6 +107,14 @@ const Menu = ({
 
   const openWithTheLastFocused = () => {
     openMenu({ focusIndex: -1 });
+  };
+
+  const handleClick = () => {
+    if (isOpen) {
+      closeMenu();
+    } else {
+      openWithTheFirstFocused();
+    }
   };
 
   const handleTriggerKeyDown = createKeyboardHandler({
@@ -120,10 +125,6 @@ const Menu = ({
     onArrowUp: openWithTheLastFocused,
   });
 
-  React.useEffect(() => {
-    if (isOpenControlled) return;
-    setIsOpen(open);
-  }, [open, isOpenControlled, setIsOpen]);
   /**
    * Autofocus handling
    */
@@ -134,12 +135,13 @@ const Menu = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [triggerNode]);
 
+  // TODO: rerenders twice
   console.log('$$ Menu: updated $$');
 
   return (
     <>
       <MergeProps
-        onClick={openMenu}
+        onClick={handleClick}
         aria-controls={id}
         aria-expanded={isOpen}
         aria-haspopup={true}

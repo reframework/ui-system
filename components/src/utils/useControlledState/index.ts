@@ -1,1 +1,1 @@
-export { default } from './useControlledState';
+export { default as useControlledState } from './useControlledState';

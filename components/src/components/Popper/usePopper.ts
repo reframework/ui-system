@@ -1,6 +1,6 @@
 import React from 'react';
 import { isNumber, useMounted } from '@utils/index';
-import useControlledState from '@utils/useControlledState';
+import { useControlledState } from '@utils/useControlledState';
 import { Placement, computePosition } from './placementUtils';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -68,11 +68,15 @@ const usePopper = ({
 
   const handleClickAway = React.useCallback(
     (event: Event) => {
+      if (popperRef?.current === (event.target as Node)) return;
       if (popperRef?.current?.contains(event.target as Node)) return;
+      if (originElement === (event.target as Node)) return;
+      if (originElement?.contains(event.target as Node)) return;
+
       setIsOpen(false);
       onClickAway?.(event);
     },
-    [onClickAway, setIsOpen],
+    [onClickAway, originElement, setIsOpen],
   );
 
   const updatePosition = React.useCallback(() => {

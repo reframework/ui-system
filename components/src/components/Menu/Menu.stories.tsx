@@ -220,12 +220,20 @@ export const Intro: ComponentStory<typeof Menu> = () => {
   );
 };
 
-//
 export const Debug = () => {
+  const [isOpen, setIsOpen] = React.useState(true);
+
+  const onClose = () => {
+    setIsOpen(false);
+  };
+
+  const onOpen = () => {
+    setIsOpen(true);
+  };
+
   return (
     <Box style={wrapperStyle}>
       <Menu
-        defaultOpen={true}
         trigger={(params: { isOpen: boolean }) => (
           <Button variant={params.isOpen ? 'outlined' : 'solid'}>
             {params.isOpen ? 'Close Menu' : 'Open Menu'}
@@ -235,9 +243,6 @@ export const Debug = () => {
         <MenuItem key="1">Share...</MenuItem>
         <MenuItem key="3">Move...</MenuItem>
         <MenuItem key="4">Rename...</MenuItem>
-        <MenuItem key="5" disabled>
-          Delete...
-        </MenuItem>
       </Menu>
     </Box>
   );

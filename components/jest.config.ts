@@ -41,6 +41,9 @@ const config: Config.InitialOptions = {
     '\\.css$': '<rootDir>/src/__mocks__/fileMock.js',
     '@reframework/classNames':
       '<rootDir>/node_modules/@reframework/classNames/dist/index.js',
+    '^@utils(.*)$': '<rootDir>/src/utils$1',
+    '^@components(.*)$': '<rootDir>/src/components$1',
+    '^@wip(.*)$': '<rootDir>/src/components-wip$1',
   },
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
 };

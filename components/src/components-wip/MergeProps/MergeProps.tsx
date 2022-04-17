@@ -1,6 +1,6 @@
 import React from 'react';
 import { isFunction } from '@utils/index';
-import { useMergeRef } from '@utils/forkRef';
+import { useMergedRef } from '@utils/useMergedRef';
 
 // TODO: add generic type for props
 type Props = Record<string, any>;
@@ -23,8 +23,8 @@ const MergeProps = React.forwardRef<any, Props>((props, parentRef) => {
   const child = React.Children.only(children) as React.ReactElement;
 
   // @ts-expect-error there is no ref in typescript types
-  const ref = useMergeRef(parentRef, child.ref);
-  const style = mergeStyles(parentStyle, child.props.style);
+  const ref = useMergedRef(child.ref, parentRef);
+  const style = mergeStyles(child.props.style, parentStyle);
 
   const mergedProps = Object.entries(parentProps).reduce(
     (acc, [propKey, propValue]) => {
