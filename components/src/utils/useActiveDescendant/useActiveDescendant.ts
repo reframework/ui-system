@@ -79,8 +79,9 @@ export const useActiveDescendant = (options: {
   const activeDescendant = React.useRef<HTMLElement | null>(null);
 
   const setNode = (next: HTMLElement | null) => {
+    const { current } = activeDescendant;
     activeDescendant.current = next;
-    onChange?.(activeDescendant.current, next);
+    onChange?.(current, next);
   };
 
   const reset = () => {

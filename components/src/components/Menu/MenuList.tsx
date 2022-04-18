@@ -16,7 +16,8 @@ const manageFocusOnChange = (
   prev: HTMLElement | null,
   next: HTMLElement | null,
 ) => {
-  if (prev && prev.tabIndex === 0) {
+  console.log(prev, prev?.tabIndex, '123');
+  if (prev) {
     prev.tabIndex = -1;
   }
 
@@ -149,7 +150,7 @@ const MenuList: React.FC<MenuListProps> = ({
 
   const listClassName = getClassName({
     [MenuListClassName.list]: true,
-    [MenuListClassName.visuallyHidden]: true,
+    [MenuListClassName.visuallyHidden]: !active,
   });
 
   return (
