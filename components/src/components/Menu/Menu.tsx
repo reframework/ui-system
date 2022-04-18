@@ -15,7 +15,7 @@ export interface MenuProps {
   children: React.ReactNode;
   defaultOpen?: boolean;
   id?: string;
-  matchWidth?: PopoverProps['matchOriginWidth'];
+  matchWidth?: PopoverProps['matchWidth'];
   offsetX?: number;
   offsetY?: number;
   onClose?: () => void;
@@ -63,6 +63,9 @@ const Menu = ({
   const [triggerNode, setTriggerNode] =
     React.useState<HTMLElement | null>(null);
 
+  /**
+   *
+   */
   const [autoFocusIndex, setAutofocusIndex] =
     React.useState<Optional<number>>();
 
@@ -125,26 +128,16 @@ const Menu = ({
     onArrowUp: openWithTheLastFocused,
   });
 
-  /**
-   * Autofocus handling
-   */
-  React.useEffect(() => {
-    if (autoFocus && triggerNode) {
-      triggerNode.focus();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [triggerNode]);
-
   // TODO: rerenders twice
   console.log('$$ Menu: updated $$');
 
   return (
     <>
       <MergeProps
-        onClick={handleClick}
         aria-controls={id}
         aria-expanded={isOpen}
-        aria-haspopup={true}
+        aria-haspopup="menu"
+        onClick={handleClick}
         onKeyDown={handleTriggerKeyDown}
         ref={setTriggerNode}
         tabIndex={0}
@@ -152,7 +145,7 @@ const Menu = ({
         {isFunction(trigger) ? trigger.call(null, { isOpen }) : trigger}
       </MergeProps>
       <Popover
-        matchOriginWidth={matchWidth}
+        matchWidth={matchWidth}
         placement={placement}
         disablePortal={!portal}
         offsetX={offsetX}
@@ -167,6 +160,7 @@ const Menu = ({
       >
         <MenuList
           id={id}
+          autofocus={autoFocus}
           autoFocusIndex={autoFocusIndex}
           onCloseRequest={closeMenu}
         >

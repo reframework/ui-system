@@ -5,24 +5,22 @@ import { Placement, computePosition } from './placementUtils';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getWidth = (
-  referenceRect: DOMRect | null,
-  matchOriginWidth?: boolean | number,
+  element?: HTMLElement | null,
+  matchWidth?: boolean | number,
 ) => {
-  if (isNumber(matchOriginWidth)) {
-    return { width: matchOriginWidth };
+  if (isNumber(matchWidth)) {
+    return matchWidth;
   }
 
-  if (matchOriginWidth === true && referenceRect) {
-    return { width: referenceRect.width };
+  if (matchWidth === true && element) {
+    return element.clientWidth;
   }
-
-  return { width: 'max-content' };
 };
 
 export interface UsePopperProps {
   defaultOpen?: boolean;
   originElement?: HTMLElement | null;
-  matchOriginWidth?: boolean | number;
+  matchWidth?: boolean | number;
   offsetX?: number;
   offsetY?: number;
   onClickAway?: (e: Event) => void;
@@ -39,7 +37,6 @@ export interface UsePopperProps {
 }
 
 const usePopper = ({
-  // matchOriginWidth,
   defaultOpen,
   offsetX,
   offsetY,
@@ -49,6 +46,7 @@ const usePopper = ({
   open,
   originElement,
   placement,
+  matchWidth,
 }: UsePopperProps) => {
   const isMounted = useMounted();
 
@@ -97,7 +95,7 @@ const usePopper = ({
     setComputedPosition(null);
   }, []);
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     if (isOpen) {
       updatePosition();
       return;
@@ -105,13 +103,7 @@ const usePopper = ({
     resetPosition();
   }, [isOpen, updatePosition, resetPosition]);
 
-  React.useEffect(() => {
-    // TODO: change
-    // Controlled state changes
-    // setIsOpen(open);
-  }, [open, setIsOpen]);
-
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     if (!isMounted) return;
     if (isOpenControlled) return;
     (isOpen ? onOpen : onClose)?.();
@@ -154,6 +146,7 @@ const usePopper = ({
       opacity: computedPosition ? 1 : 0,
       pointerEvents: computedPosition ? 'unset' : 'none',
       position: 'absolute',
+      width: getWidth(originElement, matchWidth),
       transform: computedPosition
         ? `translate3d(${computedPosition.left}px, ${computedPosition.top}px, 0px)`
         : 'unset',

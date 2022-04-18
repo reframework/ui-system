@@ -45,8 +45,6 @@ const wrapperStyle: React.CSSProperties = {
 };
 
 export const Intro: ComponentStory<typeof Menu> = () => {
-  console.log('DDDDDDDD');
-
   return (
     <Box>
       <Box pt="l" pb="l">
@@ -73,6 +71,7 @@ export const Intro: ComponentStory<typeof Menu> = () => {
       </Box>
       <Box style={wrapperStyle}>
         <Menu
+          matchWidth
           trigger={(params: { isOpen: boolean }) => (
             <Button variant={params.isOpen ? 'outlined' : 'solid'}>
               {params.isOpen ? 'Close Menu' : 'Open Menu'}
@@ -220,7 +219,7 @@ export const Intro: ComponentStory<typeof Menu> = () => {
   );
 };
 
-export const Debug = () => {
+export const Controlled = () => {
   const [isOpen, setIsOpen] = React.useState(true);
 
   const onClose = () => {
@@ -234,6 +233,9 @@ export const Debug = () => {
   return (
     <Box style={wrapperStyle}>
       <Menu
+        open={isOpen}
+        onOpen={onOpen}
+        onClose={onClose}
         trigger={(params: { isOpen: boolean }) => (
           <Button variant={params.isOpen ? 'outlined' : 'solid'}>
             {params.isOpen ? 'Close Menu' : 'Open Menu'}
@@ -243,6 +245,68 @@ export const Debug = () => {
         <MenuItem key="1">Share...</MenuItem>
         <MenuItem key="3">Move...</MenuItem>
         <MenuItem key="4">Rename...</MenuItem>
+      </Menu>
+    </Box>
+  );
+};
+
+export const Selectable = () => {
+  const [index, setIndex] = React.useState<number | undefined>();
+
+  const onChange = (idx: number) => () => {
+    if (idx === index) return setIndex(undefined);
+    setIndex(idx);
+  };
+
+  const options = ['Белый доцент', 'Васек', 'Бомбочка', 'Кисуня', 'Дуся'];
+
+  return (
+    <Box style={wrapperStyle}>
+      <Menu
+        trigger={
+          <Button
+            style={{ width: 200 }}
+            variant={index === undefined ? 'solid' : 'outlined'}
+          >
+            {options[index!] || 'Выбери васька'}
+          </Button>
+        }
+      >
+        {options.map((label, idx) => {
+          return (
+            <MenuItem
+              key={label}
+              selected={index === idx}
+              onClick={onChange(idx)}
+            >
+              {label}
+            </MenuItem>
+          );
+        })}
+      </Menu>
+    </Box>
+  );
+};
+
+export const AutofocusItem = () => {
+  const options = ['Белый доцент', 'Васек', 'Бомбочка', 'Кисуня', 'Дуся'];
+
+  return (
+    <Box style={wrapperStyle}>
+      <Menu
+        trigger={
+          <Button style={{ width: 200 }} variant="outlined">
+            Выбери васька
+          </Button>
+        }
+      >
+        {options.map((label, idx) => {
+          return (
+            <MenuItem key={label} autoFocus={idx === 2}>
+              {label}
+            </MenuItem>
+          );
+        })}
       </Menu>
     </Box>
   );

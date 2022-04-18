@@ -1,6 +1,5 @@
 import React from 'react';
 import { getClassName } from '@reframework/classnames';
-import { DOMFocus } from '@utils/focus';
 import './MenuItem.css';
 import { useDescendantContext } from './Context';
 
@@ -26,6 +25,7 @@ export interface MenuItemProps {
   closeOnSelect?: boolean;
   focusable?: boolean;
   role?: 'menuitem';
+  tabIndex?: number;
   // TODO: add those props;
   // icon?: React.ReactNode;
 }
@@ -39,12 +39,29 @@ const MenuItem: React.FC<MenuItemProps> = ({
   children = null,
   disabled,
   // role = 'menuitem',
+  tabIndex = -1,
   ...props
 }) => {
   const { activeDescendant, onCloseRequest } = useDescendantContext();
 
   const ref = React.useRef<HTMLLIElement | null>(null);
-  const shouldFocus = ref.current?.isSameNode(activeDescendant);
+
+  const handleClick = (e: React.MouseEvent) => {
+    onCloseRequest?.();
+    onClick?.(e);
+  };
+
+  const handleMouseEnter = ({ currentTarget }: React.MouseEvent) => {
+    activeDescendant.set(currentTarget as HTMLElement);
+  };
+
+  // TEST: autofocus
+  React.useLayoutEffect(() => {
+    if (ref.current && autoFocus) {
+      activeDescendant.set(ref.current);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const classNames = getClassName({
     [MenuItemClassName.item]: true,
@@ -53,29 +70,6 @@ const MenuItem: React.FC<MenuItemProps> = ({
     [MenuItemClassName.divider]: Boolean(divider),
     [className!]: Boolean(className),
   });
-
-  const handleClick = (e: React.MouseEvent) => {
-    console.log('onCloseRequest', onCloseRequest);
-    onCloseRequest?.();
-    onClick?.(e);
-  };
-
-  const handleMouseEnter = ({ currentTarget }: React.MouseEvent) => {
-    DOMFocus.set(currentTarget as HTMLElement);
-  };
-
-  React.useEffect(() => {
-    if (ref.current && shouldFocus) {
-      DOMFocus.set(ref.current);
-    }
-  }, [shouldFocus]);
-
-  React.useEffect(() => {
-    if (ref.current && autoFocus) {
-      DOMFocus.set(ref.current!);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     // `handleKeyDown` is provided by `MenuList`
@@ -87,7 +81,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
       className={classNames}
       aria-disabled={disabled}
       onMouseEnter={handleMouseEnter}
-      tabIndex={shouldFocus ? 0 : -1}
+      tabIndex={tabIndex}
       {...props}
     >
       {children}
