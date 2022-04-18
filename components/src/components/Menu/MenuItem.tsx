@@ -6,7 +6,6 @@ import { useDescendantContext } from './Context';
 enum MenuItemClassName {
   divider = 'ref:menu-item-divider',
   disabled = 'ref:menu-item-disabled',
-  selected = 'ref:menu-item-selected',
   item = 'ref:menu-item',
 }
 
@@ -20,7 +19,6 @@ export interface MenuItemProps {
   disabled?: boolean;
   divider?: boolean;
   onClick?: (event: React.MouseEvent) => void;
-  selected?: boolean;
   //
   closeOnSelect?: boolean;
   focusable?: boolean;
@@ -33,7 +31,6 @@ export interface MenuItemProps {
 const MenuItem: React.FC<MenuItemProps> = ({
   autoFocus,
   onClick,
-  selected,
   divider,
   className,
   children = null,
@@ -65,7 +62,6 @@ const MenuItem: React.FC<MenuItemProps> = ({
 
   const classNames = getClassName({
     [MenuItemClassName.item]: true,
-    [MenuItemClassName.selected]: Boolean(selected),
     [MenuItemClassName.disabled]: Boolean(disabled),
     [MenuItemClassName.divider]: Boolean(divider),
     [className!]: Boolean(className),

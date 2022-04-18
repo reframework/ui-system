@@ -9,3 +9,7 @@
   /* Do we realy need max-height */
   max-height: calc(100vh - 96px);
 }
+
+.ref\:menu-list-hidden {
+  /* 123 */
+}

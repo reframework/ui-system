@@ -19,14 +19,6 @@
   }
 }
 
-.ref\:menu-item-selected {
-  background-color: var(--color-scale-blue-0);
-
-  &:hover {
-    background-color: var(--color-scale-blue-0);
-  }
-}
-
 .ref\:menu-item-disabled {
   &:hover {
     background-color: var(--color-scale-gray-0);

@@ -274,11 +274,7 @@ export const Selectable = () => {
       >
         {options.map((label, idx) => {
           return (
-            <MenuItem
-              key={label}
-              selected={index === idx}
-              onClick={onChange(idx)}
-            >
+            <MenuItem key={label} onClick={onChange(idx)}>
               {label}
             </MenuItem>
           );

@@ -6,9 +6,16 @@ import { useControlledState } from '@utils/useControlledState';
 import { createKeyboardHandler } from '@utils/Keyboard';
 import { MergeProps } from '@wip/MergeProps';
 import { Optional } from '@wip/Combobox/types';
+import { DOMFocus } from '@utils/focus';
 import MenuList from './MenuList';
 
 type Action = 'click' | 'hover';
+
+/**
+ * TODO:
+ * 1. Lazy
+ * 2. Animation
+ */
 
 export interface MenuProps {
   autoFocus?: boolean;
@@ -78,11 +85,16 @@ const Menu = ({
   /**
    * Opens menu
    */
+
   const openMenu = (options?: { focusIndex?: number }) => {
     if (isOpen) return;
     if (isNumber(options?.focusIndex)) {
       setAutofocusIndex(options?.focusIndex);
     }
+    /**
+     * Save the focus when List appears in order to restore when it disappears
+     */
+    DOMFocus.save();
     setIsOpen(true);
     onOpen?.();
   };
@@ -92,6 +104,7 @@ const Menu = ({
    */
   const closeMenu = React.useCallback(() => {
     if (!isOpen) return;
+    DOMFocus.restore();
     setIsOpen(false);
     setAutofocusIndex(undefined);
     onClose?.();
@@ -160,6 +173,7 @@ const Menu = ({
       >
         <MenuList
           id={id}
+          // className={isLazy ? '' : 'hidden'}
           autofocus={autoFocus}
           autoFocusIndex={autoFocusIndex}
           onCloseRequest={closeMenu}

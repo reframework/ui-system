@@ -9,6 +9,7 @@ import './MenuList.css';
 
 enum MenuListClassName {
   list = 'ref:menu-list',
+  visuallyHidden = 'ref:menu-list-hidden',
 }
 
 const manageFocusOnChange = (
@@ -45,22 +46,22 @@ export interface MenuListProps {
   onCloseRequest?: () => void;
 }
 
-const isItemFocusable = (node: Element | null | undefined) =>
-  node?.getAttribute('aria-disabled') !== 'true';
-
 const MenuList: React.FC<MenuListProps> = ({
   autoFocusIndex,
   children,
   onCloseRequest,
   id,
   // onMouseLeave,
-  // disabledItemsFocusable,
+  disabledItemsFocusable,
   tabIndex,
 }) => {
+  const active = true;
+
   const listRef = React.useRef<HTMLUListElement | null>(null);
 
-  const setListRef = (node: any) => {
-    listRef.current = node;
+  const isItemFocusable = (node: Element | null | undefined) => {
+    if (disabledItemsFocusable) return true;
+    return node?.getAttribute('aria-disabled') !== 'true';
   };
 
   const ActiveDescendant = useActiveDescendant({
@@ -89,9 +90,7 @@ const MenuList: React.FC<MenuListProps> = ({
     onPrintableCharacter: (event) => {
       if (!listRef.current) return;
 
-      /**
-       * Items which are matching the event.key
-       */
+      // Items which are matching the event.key
       const matchedItems = Array.from(
         listRef.current.querySelectorAll('[role="menuitem"]'),
       ).filter((node) => {
@@ -129,11 +128,6 @@ const MenuList: React.FC<MenuListProps> = ({
       return;
     }
 
-    /**
-     * Save the focus when List appears in order to restore when it disappears
-     * */
-    DOMFocus.save();
-
     if (ActiveDescendant.current) {
       /**
        * When active descendent already exist
@@ -153,20 +147,9 @@ const MenuList: React.FC<MenuListProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Restores document focus if component is destroyed
-  React.useLayoutEffect(() => {
-    // restore the focus after closing menu
-    return () => {
-      // TODO: reset tabIndex;
-      ActiveDescendant.reset();
-      DOMFocus.restore();
-    };
-    // Mount only
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const listClassName = getClassName({
     [MenuListClassName.list]: true,
+    [MenuListClassName.visuallyHidden]: true,
   });
 
   return (
@@ -177,14 +160,15 @@ const MenuList: React.FC<MenuListProps> = ({
       }}
     >
       <ul
+        aria-hidden={!active}
         aria-orientation="vertical"
         className={listClassName}
         id={id}
         onFocus={handleFocus}
         onKeyDown={handleKeyDown}
-        ref={setListRef}
+        ref={listRef}
         role="menu"
-        tabIndex={tabIndex || -1}
+        tabIndex={active ? tabIndex || 0 : -1}
       >
         {children}
       </ul>

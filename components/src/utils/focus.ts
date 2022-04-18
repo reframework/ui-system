@@ -14,6 +14,7 @@ export class DOMFocus {
   };
 
   static restore = () => {
+    console.log(DOMFocus.current, 'focus');
     if (!document.contains(DOMFocus.current)) return;
     DOMFocus.set(DOMFocus.current!);
   };
