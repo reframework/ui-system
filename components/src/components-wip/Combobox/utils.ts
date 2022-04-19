@@ -23,7 +23,8 @@ export const getDefaultValue = (
   return '';
 };
 
-export const defaultGetOptionDisabled = (_: OptionItem) => false;
+export const defaultGetOptionDisabled = () => false;
+export const defaultGetOptionFiltered = () => true;
 
 export const defaultGetOptionSelected = (
   opt: OptionItem,
@@ -36,8 +37,6 @@ export const defaultGetOptionSelected = (
 
   return value === opt.value;
 };
-
-export const defaultGetOptionFiltered = (_: OptionItem) => true;
 
 export const defaultMatch = (optionValue: string, value: string) => {
   return new RegExp(value as string, 'ig').test(optionValue);

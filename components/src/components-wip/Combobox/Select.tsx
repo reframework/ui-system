@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/aria-activedescendant-has-tabindex */
+
 import React from 'react';
 import { getClassName } from '@reframework/classnames';
 import { Popover } from '@components/Popover';
@@ -12,7 +14,7 @@ const Select = ({
   ariaLabel,
   ariaLabelledBy,
   autoFocus,
-  dropdownMatchSelectWidth = true,
+  matchWidth = true,
   getOptionLabel = defaultGetOptionLabel,
   id,
   listBoxId,
@@ -23,6 +25,7 @@ const Select = ({
   placeholder,
   PopoverProps,
   renderOption,
+  placement = 'bottom-start',
   tabIndex,
   // to autocomplete
   // filterSelectedOptions = true,
@@ -42,7 +45,7 @@ const Select = ({
   } = useCombobox(useComboboxProps);
 
   /**
-   * Ref
+   * Ref of the combobox (input/select container)
    */
   const comboboxRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -50,6 +53,12 @@ const Select = ({
    * Autofocus
    */
   useAutoFocus(!!autoFocus, comboboxRef.current);
+
+  const className = getClassName({
+    [styles.combobox]: true,
+    [styles.placeholder]: hasValue,
+    [styles.disabled]: disabled,
+  });
 
   return (
     <div>
@@ -62,13 +71,9 @@ const Select = ({
         aria-haspopup="listbox"
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledBy}
-        aria-placeholder={value ? undefined : placeholder}
         aria-owns={listBoxId}
-        className={getClassName({
-          [styles.combobox]: true,
-          [styles.placeholder]: hasValue,
-          [styles.disabled]: disabled,
-        })}
+        aria-placeholder={value ? undefined : placeholder}
+        className={className}
         id={id}
         onBlur={onBlur}
         onClick={onClick}
@@ -81,10 +86,10 @@ const Select = ({
         {value || placeholder}
       </div>
       <Popover
-        placement="start-after"
+        placement={placement}
         {...PopoverProps}
-        anchorEl={comboboxRef.current}
-        anchorWidth={dropdownMatchSelectWidth}
+        originElement={comboboxRef.current}
+        matchWidth={matchWidth}
         onClickAway={onClickAway}
         open={open}
       >

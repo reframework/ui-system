@@ -193,18 +193,21 @@ export const useActiveDescendant = (options: {
     setNextActive(activeDescendant.current, { reverse: true });
   };
 
-  return {
-    get current() {
-      return activeDescendant.current;
-    },
-    reset,
-    set,
-    setByIndex,
-    setFirst,
-    setLast,
-    setNext,
-    setPrevious,
-  };
+  return React.useMemo(
+    () => ({
+      get current() {
+        return activeDescendant.current;
+      },
+      reset,
+      set,
+      setByIndex,
+      setFirst,
+      setLast,
+      setNext,
+      setPrevious,
+    }),
+    [],
+  );
 };
 
 export default useActiveDescendant;

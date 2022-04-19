@@ -1,6 +1,6 @@
 import React from 'react';
-import { PaperProps } from '../../Containers/Paper/Paper';
-import { PopoverProps } from '../../Messaging/Popover/Popover';
+import { PopoverProps } from '@components/Popover';
+import { PaperProps } from '@components/Paper';
 import { InputProps } from '../Input/Input';
 import { OptionProps } from './Option';
 
@@ -32,7 +32,7 @@ export interface SelectProps {
   placeholder?: string;
   PopoverProps?: PopoverProps;
   value?: SelectValue;
-  dropdownMatchSelectWidth?: true | number;
+  matchWidth?: true | number;
   openOnFocus?: boolean;
   openOnClick?: boolean;
   onClickAway?: (e: Event) => void;
@@ -56,6 +56,8 @@ export interface SelectProps {
   id?: string;
   listBoxId?: string;
   tabIndex?: number;
+  //
+  placement: PopoverProps['placement'];
 }
 
 export interface UseComboboxReturnType {
