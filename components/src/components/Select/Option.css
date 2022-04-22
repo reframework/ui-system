@@ -6,7 +6,7 @@
   font-family: var(--font-family-primary);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-regular);
-  padding: var(--spacing-xxs) var(--spacing-s);
+  padding: var(--spacing-xxs) var(--spacing-xs);
 
   /* position: relative; */
   outline: none;

@@ -8,8 +8,27 @@ export default {
   component: SelectComponent,
 } as ComponentMeta<typeof SelectComponent>;
 
+const wrapperStyle: React.CSSProperties = {
+  alignItems: 'center',
+  backgroundColor: 'white',
+  display: 'flex',
+  minHeight: 100,
+  justifyContent: 'center',
+};
+
+const innerStyle: React.CSSProperties = {
+  width: '100%',
+  maxWidth: 500,
+};
+
 const Template: ComponentStory<typeof SelectComponent> = (props) => {
-  return <SelectComponent {...props} />;
+  return (
+    <div style={wrapperStyle}>
+      <div style={innerStyle}>
+        <SelectComponent {...props} />
+      </div>
+    </div>
+  );
 };
 
 export const Select = Template.bind({});

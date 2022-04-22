@@ -56,14 +56,12 @@ export interface SelectProps {
   className?: string;
   id?: string;
   tabIndex?: number;
-
   // Popover props
   PaperProps?: PaperProps;
   PopoverProps?: PopoverProps;
   placement?: PopoverProps['placement'];
   portal?: boolean;
   // portalTarget?:null | HTMLElement
-  //
   // List props
   listBoxClassName?: string;
   listBoxId?: string;
@@ -164,7 +162,16 @@ const Select = ({
   onInputChange,
   inputValue: inputValueProp,
   skipSelectedOptions,
-  notFoundContent = 'No options found.',
+  notFoundContent = (
+    <div
+      style={{
+        padding: 'var(--spacing-xxxs) var(--spacing-xs)',
+        color: 'var(--color-scale-gray-4)',
+      }}
+    >
+      No options found. 🐈,
+    </div>
+  ),
 }: SelectProps) => {
   /**
    * * Refs
@@ -172,7 +179,7 @@ const Select = ({
    * *
    */
   const listBoxRef = React.useRef<HTMLUListElement | null>(null);
-  const comboboxRef = React.useRef<HTMLElement | null>(null);
+  const comboboxRef = React.useRef<HTMLInputElement | null>(null);
   const [containerRef, setContainerRef] =
     React.useState<HTMLElement | null>(null);
 
@@ -465,54 +472,52 @@ const Select = ({
 
   const withValue = Boolean((isArray(value) ? value[0] : value)?.trim());
 
-  const comboboxProps = {
-    value: inputValue,
-    placeholder,
-    onChange: handleInputChange,
-  };
+  const renderedOptions = React.useMemo(() => {
+    return options
+      .map((option: OptionItem) => {
+        if (searchable && !getOptionMatching(option, inputValue)) {
+          return null;
+        }
+
+        const optionId = `ref:select-option-${option.value}-id`;
+        const selected = getOptionSelected(option, value);
+
+        if (selected) {
+          if (skipSelectedOptions === true) {
+            return null;
+          }
+
+          if (multiple && skipSelectedOptions !== false) {
+            if (selected) return null;
+          }
+        }
+
+        // TODO: first focused in autocomplete suggestions
+
+        const optionProps = {
+          autoFocus: selected,
+          disabled: getOptionDisabled(option),
+          focused: activeOptionId === optionId,
+          id: optionId,
+          onClick: handleOptionClick(option),
+          selected: selected,
+          tabIndex: -1,
+        };
+
+        if (isFunction(renderOption)) {
+          return renderOption(optionProps, option);
+        }
+
+        return (
+          <Option {...optionProps} key={optionId}>
+            {getOptionLabel(option)}
+          </Option>
+        );
+      })
+      .filter(Boolean);
+  }, [activeOptionId, value, inputValue, options]);
 
   console.log('$$ Select: updated $$');
-
-  const renderedOptions = options.map((option: OptionItem) => {
-    if (searchable && !getOptionMatching(option, inputValue)) {
-      return null;
-    }
-    const optionId = `ref:select-option-${option.value}-id`;
-    const selected = getOptionSelected(option, value);
-
-    if (selected) {
-      if (skipSelectedOptions === true) {
-        return null;
-      }
-
-      if (multiple && skipSelectedOptions !== false) {
-        if (selected) return null;
-      }
-    }
-
-    // TODO: first focused in autocomplete suggestions
-
-    const optionProps = {
-      autoFocus: selected,
-      disabled: getOptionDisabled(option),
-      focused: activeOptionId === optionId,
-      id: optionId,
-      onClick: handleOptionClick(option),
-      selected: selected,
-      tabIndex: -1,
-    };
-
-    if (isFunction(renderOption)) {
-      return renderOption(optionProps, option);
-    }
-
-    return (
-      <Option {...optionProps} key={optionId}>
-        {getOptionLabel(option)}
-      </Option>
-    );
-  });
-
   return (
     <div
       className={containerClassName}
@@ -543,16 +548,17 @@ const Select = ({
           aria-owns={listBoxId}
           className={comboboxClassName}
           id={id}
-          onKeyDown={handleKeyDown}
           name={name}
-          // @ts-expect-error not fun :(
-          ref={comboboxRef}
-          readOnly={!searchable}
-          tabIndex={tabIndex}
-          onFocus={handleFocus}
           onBlur={handleBlur}
+          onChange={handleInputChange}
+          onFocus={handleFocus}
+          onKeyDown={handleKeyDown}
+          placeholder={placeholder}
+          readOnly={!searchable}
+          ref={comboboxRef}
           role="combobox"
-          {...comboboxProps}
+          tabIndex={tabIndex}
+          value={inputValue}
         />
       </div>
       {withValue && clearable && (
