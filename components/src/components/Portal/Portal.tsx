@@ -5,7 +5,7 @@ import React, {
   useRef,
 } from 'react';
 import ReactDOM from 'react-dom';
-import { isString } from '../../utils';
+import { isString } from '@utils/assert';
 
 export const useCreated = (callback: () => void) => {
   const created = useRef(false);
@@ -23,6 +23,7 @@ export function createContainer(params: {
   style?: CSSProperties;
   element?: keyof JSX.IntrinsicElements;
   className?: string;
+  // targetNode
 }): HTMLElement | null {
   if (!isClient()) return null;
 

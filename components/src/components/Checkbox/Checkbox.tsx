@@ -1,7 +1,7 @@
 import { getClassName } from '@reframework/classnames';
 import React from 'react';
 import { useControlledState } from '@utils/useControlledState';
-import { useAutoFocus } from '../../utils';
+import { DOMFocus } from '@utils/focus';
 import './Checkbox.css';
 
 enum CheckboxClassName {
@@ -55,7 +55,12 @@ const Checkbox = ({
     onChange?.(event);
   };
 
-  useAutoFocus(!!autofocus, checkboxRef.current);
+  React.useEffect(() => {
+    if (autofocus && checkboxRef.current) {
+      DOMFocus.set(checkboxRef.current);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className={CheckboxClassName.wrapper}>

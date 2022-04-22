@@ -1,6 +1,6 @@
 import React from 'react';
 import { Portal, PortalProps } from '@components/Portal';
-import MergeProps from '@wip/Trigger/Merge';
+import { MergeProps } from '@wip/MergeProps';
 import usePopper, { UsePopperProps } from './usePopper';
 
 export interface PopperProps extends UsePopperProps {

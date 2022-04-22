@@ -1,5 +1,5 @@
 import React from 'react';
-import { isFunction } from '@utils/index';
+import { isFunction } from '@utils/assert';
 
 export function setRef<T>(
   ref:

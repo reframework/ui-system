@@ -1,6 +1,6 @@
 import React from 'react';
-import './Text.css';
 import { getClassName } from '@reframework/classnames';
+import './Text.css';
 
 enum TextClassName {
   text = 'ref:text',

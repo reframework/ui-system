@@ -1,7 +1,8 @@
 import React, { useImperativeHandle, useRef } from 'react';
 import { getClassName } from '@reframework/classnames';
 import { useControlledState } from '@utils/useControlledState';
-import { isFunction, useAutoFocus } from '@utils/index';
+import { isFunction } from '@utils/assert';
+import { DOMFocus } from '@utils/focus';
 import './Input.css';
 
 enum InputClassName {
@@ -114,7 +115,12 @@ const Input = React.forwardRef(
       [],
     );
 
-    useAutoFocus(!!autoFocus, inputRef.current);
+    React.useEffect(() => {
+      if (autoFocus && inputRef.current) {
+        DOMFocus.set(inputRef.current);
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       if (readOnly) return;

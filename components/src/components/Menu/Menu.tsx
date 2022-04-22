@@ -1,12 +1,13 @@
 import React from 'react';
 import { PaperProps } from '@components/Paper';
-import { isFunction, isNumber, cancelEvent } from '@utils/index';
+import { cancelEvent } from '@utils/index';
 import { Popover, PopoverProps } from '@components/Popover';
 import { useControlledState } from '@utils/useControlledState';
-import { createKeyboardHandler } from '@utils/Keyboard';
+import { useKeyboardHandler } from '@utils/useKeyboardHandler';
 import { MergeProps } from '@wip/MergeProps';
-import { Optional } from '@wip/Combobox/types';
 import { DOMFocus } from '@utils/focus';
+import { Optional } from '@utils/types';
+import { isFunction, isNumber } from '@utils/assert';
 import MenuList from './MenuList';
 
 type Action = 'click' | 'hover';
@@ -132,8 +133,8 @@ const Menu = ({
     }
   };
 
-  const handleTriggerKeyDown = createKeyboardHandler({
-    beforeAll: cancelEvent,
+  const handleTriggerKeyDown = useKeyboardHandler({
+    before: cancelEvent,
     onEnter: openWithTheFirstFocused,
     onSpace: openWithTheFirstFocused,
     onArrowDown: openWithTheFirstFocused,

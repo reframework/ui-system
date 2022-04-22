@@ -1,6 +1,7 @@
 import React from 'react';
-import { isNumber, useMounted } from '@utils/index';
+import { useMounted } from '@utils/index';
 import { useControlledState } from '@utils/useControlledState';
+import { isNumber } from '@utils/assert';
 import { Placement, computePosition } from './placementUtils';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

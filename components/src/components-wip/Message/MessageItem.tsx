@@ -1,6 +1,6 @@
-import styles from './MessageItem.css?module';
-import { Paper } from '@components/Paper';
 import React from 'react';
+import { Paper } from '@components/Paper';
+import styles from './MessageItem.css?module';
 
 // TODO: add icons by type
 const emoji = {
@@ -34,7 +34,7 @@ const MessageItem = ({
   }, [duration]);
 
   return (
-    <Paper reflection={6} className={styles.message}>
+    <Paper shadow={6} className={styles.message}>
       <span className={styles.icon}>{emoji[type]} </span>
       <span>{content}</span>
     </Paper>

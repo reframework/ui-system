@@ -1,6 +1,6 @@
 import React from 'react';
-import './Paper.css';
 import { getClassName } from '@reframework/classnames';
+import './Paper.css';
 
 enum PaperClassName {
   paper = 'ref:paper',
@@ -22,7 +22,7 @@ export interface PaperProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
    * Shadow depth. It accepts values between 0 and 9 inclusive.
    */
-  levitation?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+  shadow?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
   /**
    * Border radius style.
    */
@@ -30,11 +30,11 @@ export interface PaperProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const Paper = React.forwardRef<HTMLDivElement | null, PaperProps>(
-  ({ className, shape = 'circle', levitation = 3, ...props }, ref) => {
+  ({ className, shape = 'circle', shadow = 3, ...props }, ref) => {
     const classNames = getClassName({
       [PaperClassName.paper]: true,
       [PaperClassName[shape]]: Boolean(shape),
-      [PaperClassName[`shadow-${levitation}`]]: Boolean(levitation),
+      [PaperClassName[`shadow-${shadow}`]]: Boolean(shadow),
       [className!]: Boolean(className),
     });
     return <div {...props} className={classNames} ref={ref} />;

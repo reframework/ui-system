@@ -1,7 +1,7 @@
 import React from 'react';
 import { getClassName } from '@reframework/classnames';
+import { useDescendantContext } from '@utils/useActiveDescendant';
 import './MenuItem.css';
-import { useDescendantContext } from './Context';
 
 enum MenuItemClassName {
   divider = 'ref:menu-item-divider',
@@ -39,6 +39,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
   tabIndex = -1,
   ...props
 }) => {
+  // @ts-expect-error ---
   const { activeDescendant, onCloseRequest } = useDescendantContext();
 
   const ref = React.useRef<HTMLLIElement | null>(null);

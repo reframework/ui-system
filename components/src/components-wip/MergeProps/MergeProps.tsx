@@ -1,5 +1,5 @@
 import React from 'react';
-import { isFunction } from '@utils/index';
+import { isFunction } from '@utils/assert';
 import { useMergedRef } from '@utils/useMergedRef';
 
 // TODO: add generic type for props

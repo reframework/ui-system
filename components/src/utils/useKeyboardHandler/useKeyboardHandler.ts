@@ -2,7 +2,6 @@ import { isFunction } from '@utils/index';
 import { KeyEnum, Space } from './keys';
 
 type KeyboardManager = {
-  beforeAll: (event: React.KeyboardEvent) => void;
   before: (event: React.KeyboardEvent) => void;
   onPrintableCharacter: (event: React.KeyboardEvent) => void;
   onSpace: (event: React.KeyboardEvent) => void;

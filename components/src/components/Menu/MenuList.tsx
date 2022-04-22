@@ -1,13 +1,14 @@
 import React from 'react';
-import { cancelEvent, getFirstMatchingItem, isNumber } from '@utils/index';
+import { cancelEvent, getFirstMatchingItem } from '@utils/index';
 import { Space, useKeyboardHandler } from '@utils/useKeyboardHandler';
 import { getClassName } from '@reframework/classnames';
 import {
   manageFocusOnChange,
   useActiveDescendant,
+  DescendantProvider,
 } from '@utils/useActiveDescendant';
 import { DOMFocus } from '@utils/focus';
-import { DescendantProvider } from './Context';
+import { isNumber } from '@utils/assert';
 import './MenuList.css';
 
 enum MenuListClassName {

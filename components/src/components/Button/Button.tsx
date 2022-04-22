@@ -1,10 +1,8 @@
 import React, { useRef } from 'react';
 import { getClassName } from '@reframework/classnames';
 // import { useWave } from '@wip/Wave/useWave';
-import { forkRef } from '../../utils/forkRef';
 import './Button.css';
-
-export const olo_sd = 1000;
+import { useMergedRef } from '@utils/useMergedRef';
 
 enum ButtonClassName {
   button = 'ref:button',
@@ -83,8 +81,7 @@ const Button = React.forwardRef(
     ref: React.ForwardedRef<HTMLButtonElement>,
   ) => {
     const buttonRef = useRef<HTMLButtonElement | null>(null);
-
-    const forkedRef = forkRef(ref, buttonRef);
+    const mergedRef = useMergedRef(ref, buttonRef);
 
     // const waveRef = variant !== 'link' ? buttonRef : { current: null };
     // useWave(waveRef);
@@ -103,7 +100,7 @@ const Button = React.forwardRef(
     return (
       <button
         {...otherProps}
-        ref={forkedRef}
+        ref={mergedRef}
         disabled={disabled}
         className={classNames}
       >

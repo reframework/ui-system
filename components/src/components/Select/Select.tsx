@@ -6,9 +6,6 @@ import React from 'react';
 import { PaperProps } from '@components/Paper';
 import {
   getFirstMatchingItem,
-  isArray,
-  isFunction,
-  isNumber,
   preventDefault,
   stopPropagation,
 } from '@utils/index';
@@ -21,6 +18,7 @@ import {
   useActiveDescendant,
 } from '@utils/useActiveDescendant';
 import { DOMFocus } from '@utils/focus';
+import { isArray, isNumber, isFunction } from '@utils/assert';
 import { MultiValue } from './MultiValue';
 import { OptionItem, SelectValue } from './types';
 import Option, { OptionProps } from './Option';
@@ -515,6 +513,7 @@ const Select = ({
         );
       })
       .filter(Boolean);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeOptionId, value, inputValue, options]);
 
   console.log('$$ Select: updated $$');

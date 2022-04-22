@@ -1,4 +1,4 @@
-import { isArray, isString } from '../../utils';
+import { isArray, isString } from '@utils/assert';
 import { OptionItem, SelectValue } from './types';
 
 export const defaultRenderValue = (value: SelectValue) => {
