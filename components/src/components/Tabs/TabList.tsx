@@ -1,11 +1,14 @@
 import React from 'react';
 import { cancelEvent } from '@utils/index';
-import { createKeyboardHandler } from '@utils/Keyboard';
 import { getClassName } from '@reframework/classnames';
+import { useKeyboardHandler } from '@utils/useKeyboardHandler';
+import {
+  manageFocusOnChange,
+  useActiveDescendant,
+} from '@utils/useActiveDescendant';
 import { TabsClassName, useTabs } from './Tabs';
 import Ink from './Ink';
 
-class DescendantUtils {}
 export interface TabListProps {
   value?: string;
   className?: string;
@@ -13,11 +16,6 @@ export interface TabListProps {
 }
 
 const defaultInkProps = { width: 0, left: 0 };
-const getTabs = <T extends HTMLElement>(el?: T) => {
-  const className = TabsClassName.disabled.replace(':', '\\:');
-  const selector = `[role="tab"]:not(.${className})`;
-  return Array.from(el?.querySelectorAll(selector) || []);
-};
 
 export const TabList: React.FC<TabListProps> = ({
   children: _children,
@@ -28,6 +26,15 @@ export const TabList: React.FC<TabListProps> = ({
 
   const { value, tabNode, isControlled } = useTabs();
   const [inkProps, setInkProps] = React.useState(defaultInkProps);
+
+  const activeTab = useActiveDescendant({
+    parentRef: wrapperRef,
+    onChange: manageFocusOnChange,
+    filterElement: (node) => {
+      if (node?.getAttribute('role') !== 'tab') return false;
+      return node?.getAttribute('aria-disabled') !== 'true';
+    },
+  });
 
   React.useEffect(() => {
     if (!tabNode) return;
@@ -42,21 +49,15 @@ export const TabList: React.FC<TabListProps> = ({
     });
   }, [tabNode, value]);
 
-  const handleKeyDown = createKeyboardHandler({
-    onArrowRight: cancelEvent(() => {
-      const next = DescendantUtils.getNext(
-        getTabs(wrapperRef.current as HTMLElement),
-        tabNode!,
-      );
-      (next as HTMLElement)?.focus();
-    }),
-    onArrowLeft: cancelEvent(() => {
-      const prev = DescendantUtils.getPrevious(
-        getTabs(wrapperRef.current as HTMLElement),
-        tabNode!,
-      );
-      (prev as HTMLElement)?.focus();
-    }),
+  const handleKeyDown = useKeyboardHandler({
+    onArrowRight: (event) => {
+      cancelEvent(event);
+      activeTab.setNext();
+    },
+    onArrowLeft: (event) => {
+      cancelEvent(event);
+      activeTab.setPrevious();
+    },
   });
 
   const children = React.Children.map(_children, (child) => {

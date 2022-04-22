@@ -2,7 +2,10 @@ import React from 'react';
 import { cancelEvent, getFirstMatchingItem, isNumber } from '@utils/index';
 import { Space, useKeyboardHandler } from '@utils/useKeyboardHandler';
 import { getClassName } from '@reframework/classnames';
-import { useActiveDescendant } from '@utils/useActiveDescendant';
+import {
+  manageFocusOnChange,
+  useActiveDescendant,
+} from '@utils/useActiveDescendant';
 import { DOMFocus } from '@utils/focus';
 import { DescendantProvider } from './Context';
 import './MenuList.css';
@@ -11,19 +14,6 @@ enum MenuListClassName {
   list = 'ref:menu-list',
   visuallyHidden = 'ref:menu-list-hidden',
 }
-
-const manageFocusOnChange = (
-  prev: HTMLElement | null,
-  next: HTMLElement | null,
-) => {
-  if (prev) {
-    prev.tabIndex = -1;
-  }
-  if (next) {
-    next.tabIndex = 0;
-    DOMFocus.set(next, { preventScroll: true });
-  }
-};
 
 export interface MenuListProps {
   // Default: false

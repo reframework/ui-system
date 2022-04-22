@@ -20,6 +20,15 @@ const innerStyle: React.CSSProperties = {
   width: '100%',
   maxWidth: 500,
 };
+const options = [
+  { label: 'Васёк', value: 'Васёк' },
+  { label: 'Белый Доцент', value: 'Белый Доцент' },
+  { label: 'Кисуня', value: 'Кисуня' },
+  { label: 'Бомбочка', value: 'Бомбочка' },
+  { label: 'Дуся', value: 'Дуся' },
+  { label: 'Музыкальный кот', value: 'Музыкальный кот' },
+  { label: 'При-шмякнутый', value: 'Пришмякнутый' },
+];
 
 const Template: ComponentStory<typeof SelectComponent> = (props) => {
   return (
@@ -34,67 +43,34 @@ const Template: ComponentStory<typeof SelectComponent> = (props) => {
 export const Select = Template.bind({});
 
 Select.args = {
-  placeholder: 'Выбрать васёчка',
+  placeholder: 'Выбери васёчка',
   listBoxId: 'ref-select',
-  options: [
-    { label: 'Васёк', value: 'Васёк' },
-    { label: 'Белый Доцент', value: 'Белый Доцент' },
-    { label: 'Кисуня', value: 'Кисуня' },
-    { label: 'Бомбочка', value: 'Бомбочка' },
-    { label: 'Дуся', value: 'Дуся' },
-    { label: 'Музыкальный кот', value: 'Музыкальный кот' },
-    { label: 'При шмякнутый', value: 'Пришмякнутый' },
-  ],
+  options,
 };
 
 export const Multi = Template.bind({});
 
 Multi.args = {
-  placeholder: 'Выбрать васёчка',
+  placeholder: 'Выбери васёчка',
   multiple: true,
   listBoxId: 'ref-select',
-  options: [
-    { label: 'Васёк', value: 'Васёк' },
-    { label: 'Белый Доцент', value: 'Белый Доцент' },
-    { label: 'Кисуня', value: 'Кисуня' },
-    { label: 'Бомбочка', value: 'Бомбочка' },
-    { label: 'Дуся', value: 'Дуся' },
-    { label: 'Музыкальный кот', value: 'Музыкальный кот' },
-    { label: 'При шмякнутый', value: 'Пришмякнутый' },
-  ],
+  options,
 };
 
 export const Searchable = Template.bind({});
 
 Searchable.args = {
-  placeholder: 'Выбрать васёчка',
+  placeholder: 'Выбери васёчка',
   listBoxId: 'ref-select',
   searchable: true,
-  options: [
-    { label: 'Васёк', value: 'Васёк' },
-    { label: 'Белый Доцент', value: 'Белый Доцент' },
-    { label: 'Кисуня', value: 'Кисуня' },
-    { label: 'Бомбочка', value: 'Бомбочка' },
-    { label: 'Дуся', value: 'Дуся' },
-    { label: 'Музыкальный кот', value: 'Музыкальный кот' },
-    { label: 'При шмякнутый', value: 'Пришмякнутый' },
-  ],
 };
 
-export const SearchableAndMultiple = Template.bind({});
+export const SearchableAndMulti = Template.bind({});
 
-SearchableAndMultiple.args = {
-  placeholder: 'Выбрать васёчка',
+SearchableAndMulti.args = {
+  placeholder: 'Выбери васёчка',
   searchable: true,
   multiple: true,
   listBoxId: 'ref-select',
-  options: [
-    { label: 'Васёк', value: 'Васёк' },
-    { label: 'Белый Доцент', value: 'Белый Доцент' },
-    { label: 'Кисуня', value: 'Кисуня' },
-    { label: 'Бомбочка', value: 'Бомбочка' },
-    { label: 'Дуся', value: 'Дуся' },
-    { label: 'Музыкальный кот', value: 'Музыкальный кот' },
-    { label: 'При-шмякнутый', value: 'Пришмякнутый' },
-  ],
+  options,
 };

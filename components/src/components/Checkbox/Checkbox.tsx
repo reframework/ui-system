@@ -1,7 +1,7 @@
 import { getClassName } from '@reframework/classnames';
 import React from 'react';
+import { useControlledState } from '@utils/useControlledState';
 import { useAutoFocus } from '../../utils';
-import useControlledState from '@utils/useControlledState';
 import './Checkbox.css';
 
 enum CheckboxClassName {
@@ -38,7 +38,7 @@ const Checkbox = ({
 
   const { state: internalChecked, setState: setInternalChecked } =
     useControlledState({
-      default: defaultChecked,
+      default: !!defaultChecked,
       controlled: checked,
     });
 

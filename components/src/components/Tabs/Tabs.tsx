@@ -1,5 +1,5 @@
 import React from 'react';
-import useControlledState from '@utils/useControlledState';
+import { useControlledState } from '@utils/useControlledState';
 import './Tabs.css';
 
 const TabsContext = React.createContext({} as any);
@@ -44,24 +44,24 @@ export const Tabs: React.FC<TabsProps> = ({
   children,
   defaultValue,
   onChange,
-  value,
+  value: valueProp,
 }) => {
   const [tabNode, setTabNode] = React.useState<HTMLDivElement | null>(null);
 
   const {
-    setState: setInternalValue,
-    state: internalValue,
+    setState: setValue,
+    state: value,
     isControlled,
   } = useControlledState({
-    controlled: value,
+    controlled: valueProp,
     default: defaultValue,
   });
 
   const setState = (next: TabsState) => {
     if (!next.value) return;
 
-    if (next.value !== internalValue) {
-      setInternalValue(next.value);
+    if (next.value !== value) {
+      setValue(next.value);
       onChange?.(next.value);
     }
 
@@ -75,7 +75,7 @@ export const Tabs: React.FC<TabsProps> = ({
       value={{
         animated,
         isControlled,
-        value: internalValue,
+        value: value,
         tabNode,
         setState,
       }}

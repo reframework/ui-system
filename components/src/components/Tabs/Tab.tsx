@@ -1,6 +1,6 @@
 import React from 'react';
-import { TabsClassName, useTabs } from './Tabs';
 import { getClassName } from '@reframework/classnames';
+import { TabsClassName, useTabs } from './Tabs';
 
 export interface TabProps {
   value: string;
@@ -43,7 +43,7 @@ export const Tab: React.FC<TabProps> = ({
     updateState();
   };
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     if (!active) return;
     /** Doesn't make sense to update when current tab is the same */
     if (value === activeValue && tabNode === ref.current) return;
@@ -60,6 +60,7 @@ export const Tab: React.FC<TabProps> = ({
   return (
     <div
       aria-selected={active}
+      aria-disabled={disabled}
       className={classNames}
       id={id || `tab:${value}`}
       onFocus={handleFocus}

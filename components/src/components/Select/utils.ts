@@ -24,7 +24,6 @@ export const getDefaultValue = (
 };
 
 export const defaultGetOptionDisabled = () => false;
-export const defaultGetOptionFiltered = () => true;
 
 export const defaultGetOptionMatch = (
   option: OptionItem,
@@ -47,8 +46,4 @@ export const defaultGetOptionSelected = (
 
 export const defaultMatch = (optionValue: string, value: string) => {
   return new RegExp(value as string, 'ig').test(optionValue);
-};
-
-export const isPrintableCharacter = (value: string) => {
-  return value.length === 1 && value.match(/\S| /);
 };

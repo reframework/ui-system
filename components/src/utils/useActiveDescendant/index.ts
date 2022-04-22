@@ -5,3 +5,4 @@ export {
 } from './useActiveDescendant';
 
 export { DescendantProvider, useDescendantContext } from './context';
+export { manageFocusOnChange } from './utils';
