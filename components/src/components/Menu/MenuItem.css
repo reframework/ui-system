@@ -1,6 +1,4 @@
 .ref\:menu-item {
-  --color: red;
-
   color: var(--color-scale-black);
   cursor: pointer;
   font-family: var(--font-family-primary);

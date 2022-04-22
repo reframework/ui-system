@@ -1,12 +1,6 @@
 import React from 'react';
-import {
-  cancelEvent,
-  firstOf,
-  getFirstMatchingItem,
-  isNumber,
-  nextOf,
-} from '@utils/index';
-import { useKeyboardHandler } from '@utils/useKeyboardHandler';
+import { cancelEvent, getFirstMatchingItem, isNumber } from '@utils/index';
+import { Space, useKeyboardHandler } from '@utils/useKeyboardHandler';
 import { getClassName } from '@reframework/classnames';
 import { useActiveDescendant } from '@utils/useActiveDescendant';
 import { DOMFocus } from '@utils/focus';
@@ -22,14 +16,12 @@ const manageFocusOnChange = (
   prev: HTMLElement | null,
   next: HTMLElement | null,
 ) => {
-  console.log(prev, prev?.tabIndex, '123');
   if (prev) {
     prev.tabIndex = -1;
   }
-
   if (next) {
     next.tabIndex = 0;
-    DOMFocus.set(next);
+    DOMFocus.set(next, { preventScroll: true });
   }
 };
 
@@ -37,7 +29,7 @@ export interface MenuListProps {
   // Default: false
   // If true, will focus the [role="menu"] container and move into tab order.
   autofocus?: boolean;
-  autoFocusIndex?: number;
+  autoFocusItem?: number;
   children: React.ReactNode;
   id?: string;
   // onMouseLeave: (e: React.MouseEvent) => void;
@@ -54,7 +46,7 @@ export interface MenuListProps {
 }
 
 const MenuList: React.FC<MenuListProps> = ({
-  autoFocusIndex,
+  autoFocusItem,
   children,
   onCloseRequest,
   id,
@@ -64,55 +56,79 @@ const MenuList: React.FC<MenuListProps> = ({
 }) => {
   const active = true;
 
-  const listRef = React.useRef<HTMLUListElement | null>(null);
+  const ref = React.useRef<HTMLUListElement | null>(null);
 
   const isItemFocusable = (node: Element | null | undefined) => {
     if (disabledItemsFocusable) return true;
     return node?.getAttribute('aria-disabled') !== 'true';
   };
 
-  const ActiveDescendant = useActiveDescendant({
-    listRef,
+  const activeItem = useActiveDescendant({
+    parentRef: ref,
     filterElement: isItemFocusable,
     onChange: manageFocusOnChange,
   });
 
   const handleKeyDown = useKeyboardHandler({
-    beforeAll: cancelEvent,
-    onArrowDown: ActiveDescendant.setNext,
-    onArrowUp: ActiveDescendant.setPrevious,
-    onArrowLeft: ActiveDescendant.setFirst,
-    onArrowRight: ActiveDescendant.setLast,
-    onHome: ActiveDescendant.setFirst,
-    onEnd: ActiveDescendant.setLast,
-    onSpace: () => ActiveDescendant.current?.click?.(),
-    onEnter: () => ActiveDescendant.current?.click?.(),
+    onArrowDown: (event) => {
+      cancelEvent(event);
+      activeItem.setNext();
+    },
+    onArrowUp: (event) => {
+      cancelEvent(event);
+      activeItem.setPrevious();
+    },
+    onArrowLeft: (event) => {
+      cancelEvent(event);
+      activeItem.setFirst();
+    },
+    onArrowRight: (event) => {
+      cancelEvent(event);
+      activeItem.setLast();
+    },
+    onHome: (event) => {
+      cancelEvent(event);
+      activeItem.setFirst();
+    },
+    onEnd: (event) => {
+      cancelEvent(event);
+      activeItem.setLast();
+    },
+    onEnter: (event) => {
+      cancelEvent(event);
+      activeItem.current?.click?.();
+    },
     onPrintableCharacter: (event) => {
-      if (!listRef.current) return;
+      cancelEvent(event);
+
+      if (event.key === Space) {
+        activeItem.current?.click?.();
+      }
+
+      if (!ref.current) return;
       // Items which are matching the event.key
       const items = Array.from(
-        listRef.current.querySelectorAll('[role="menuitem"]'),
+        ref.current.querySelectorAll('[role="menuitem"]'),
       ).filter(isItemFocusable);
 
       const nextItem = getFirstMatchingItem({
         list: items as HTMLElement[],
-        current: ActiveDescendant.current,
+        current: activeItem.current,
         searchString: event.key,
       });
 
-      ActiveDescendant.set(nextItem as HTMLElement);
+      activeItem.set(nextItem as HTMLElement);
     },
     onEscape: onCloseRequest,
-    onTab: onCloseRequest,
   });
 
   React.useLayoutEffect(() => {
     // Pedantic typescript
-    if (!listRef.current) {
+    if (!ref.current) {
       return;
     }
 
-    if (ActiveDescendant.current) {
+    if (activeItem.current) {
       /**
        * When active descendent already exist
        * means that some of item is already focused
@@ -121,12 +137,12 @@ const MenuList: React.FC<MenuListProps> = ({
     }
 
     // The case when autoFocus should appear on the list
-    if (!isNumber(autoFocusIndex)) {
-      DOMFocus.set(listRef.current);
+    if (!isNumber(autoFocusItem)) {
+      DOMFocus.set(ref.current);
       return;
     }
 
-    ActiveDescendant.setByIndex(autoFocusIndex);
+    activeItem.setByIndex(autoFocusItem);
     // Mount only
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -139,7 +155,7 @@ const MenuList: React.FC<MenuListProps> = ({
   return (
     <DescendantProvider
       value={{
-        activeDescendant: ActiveDescendant,
+        activeDescendant: activeItem,
         onCloseRequest,
       }}
     >
@@ -149,7 +165,7 @@ const MenuList: React.FC<MenuListProps> = ({
         className={listClassName}
         id={id}
         onKeyDown={handleKeyDown}
-        ref={listRef}
+        ref={ref}
         role="menu"
         tabIndex={active ? tabIndex || 0 : -1}
       >

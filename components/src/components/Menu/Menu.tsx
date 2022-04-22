@@ -73,8 +73,7 @@ const Menu = ({
   /**
    *
    */
-  const [autoFocusIndex, setAutofocusIndex] =
-    React.useState<Optional<number>>();
+  const [autoFocusItem, setAutofocusItem] = React.useState<Optional<number>>();
 
   const { setState: setIsOpen, state: isOpen } = useControlledState({
     controlled: open,
@@ -89,7 +88,7 @@ const Menu = ({
   const openMenu = (options?: { focusIndex?: number }) => {
     if (isOpen) return;
     if (isNumber(options?.focusIndex)) {
-      setAutofocusIndex(options?.focusIndex);
+      setAutofocusItem(options?.focusIndex);
     }
     /**
      * Save the focus when List appears in order to restore when it disappears
@@ -106,9 +105,9 @@ const Menu = ({
     if (!isOpen) return;
     DOMFocus.restore();
     setIsOpen(false);
-    setAutofocusIndex(undefined);
+    setAutofocusItem(undefined);
     onClose?.();
-  }, [onClose, setAutofocusIndex, setIsOpen, isOpen]);
+  }, [onClose, setAutofocusItem, setIsOpen, isOpen]);
 
   /**
    * Popover property
@@ -175,7 +174,7 @@ const Menu = ({
           id={id}
           // className={isLazy ? '' : 'hidden'}
           autofocus={autoFocus}
-          autoFocusIndex={autoFocusIndex}
+          autoFocusItem={autoFocusItem}
           onCloseRequest={closeMenu}
         >
           {children}

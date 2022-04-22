@@ -15,11 +15,10 @@ const Template: ComponentStory<typeof SelectComponent> = (props) => {
 export const Select = Template.bind({});
 
 Select.args = {
-  placeholder: 'Выбрать васечка',
-  skipSelectedOptions: true,
+  placeholder: 'Выбрать васёчка',
   listBoxId: 'ref-select',
   options: [
-    { label: 'Васек', value: 'Васек' },
+    { label: 'Васёк', value: 'Васёк' },
     { label: 'Белый Доцент', value: 'Белый Доцент' },
     { label: 'Кисуня', value: 'Кисуня' },
     { label: 'Бомбочка', value: 'Бомбочка' },
@@ -32,12 +31,11 @@ Select.args = {
 export const Multi = Template.bind({});
 
 Multi.args = {
-  placeholder: 'Выбрать васечка',
+  placeholder: 'Выбрать васёчка',
   multiple: true,
   listBoxId: 'ref-select',
-  skipSelectedOptions: true,
   options: [
-    { label: 'Васек', value: 'Васек' },
+    { label: 'Васёк', value: 'Васёк' },
     { label: 'Белый Доцент', value: 'Белый Доцент' },
     { label: 'Кисуня', value: 'Кисуня' },
     { label: 'Бомбочка', value: 'Бомбочка' },
@@ -50,11 +48,11 @@ Multi.args = {
 export const Searchable = Template.bind({});
 
 Searchable.args = {
-  placeholder: 'Выбрать васечка',
+  placeholder: 'Выбрать васёчка',
   listBoxId: 'ref-select',
   searchable: true,
   options: [
-    { label: 'Васек', value: 'Васек' },
+    { label: 'Васёк', value: 'Васёк' },
     { label: 'Белый Доцент', value: 'Белый Доцент' },
     { label: 'Кисуня', value: 'Кисуня' },
     { label: 'Бомбочка', value: 'Бомбочка' },
@@ -67,17 +65,17 @@ Searchable.args = {
 export const SearchableAndMultiple = Template.bind({});
 
 SearchableAndMultiple.args = {
-  placeholder: 'Выбрать васечка',
+  placeholder: 'Выбрать васёчка',
   searchable: true,
   multiple: true,
   listBoxId: 'ref-select',
   options: [
-    { label: 'Васек', value: 'Васек' },
+    { label: 'Васёк', value: 'Васёк' },
     { label: 'Белый Доцент', value: 'Белый Доцент' },
     { label: 'Кисуня', value: 'Кисуня' },
     { label: 'Бомбочка', value: 'Бомбочка' },
     { label: 'Дуся', value: 'Дуся' },
     { label: 'Музыкальный кот', value: 'Музыкальный кот' },
-    { label: 'При шмякнутый', value: 'Пришмякнутый' },
+    { label: 'При-шмякнутый', value: 'Пришмякнутый' },
   ],
 };

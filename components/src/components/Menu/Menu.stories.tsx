@@ -180,7 +180,6 @@ export const Intro: ComponentStory<typeof Menu> = () => {
       </Box>
       <Box style={wrapperStyle}>
         <Menu
-          defaultOpen
           portal
           trigger={(params: { isOpen: boolean }) => (
             <Button variant={params.isOpen ? 'outlined' : 'solid'}>

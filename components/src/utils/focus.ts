@@ -5,8 +5,8 @@ export class DOMFocus {
     return document.activeElement;
   };
 
-  static set = (node: HTMLElement) => {
-    node?.focus();
+  static set = (node: HTMLElement, options?: { preventScroll: true }) => {
+    node?.focus(options);
   };
 
   static save = () => {
@@ -14,7 +14,6 @@ export class DOMFocus {
   };
 
   static restore = () => {
-    console.log(DOMFocus.current, 'focus');
     if (!document.contains(DOMFocus.current)) return;
     DOMFocus.set(DOMFocus.current!);
   };

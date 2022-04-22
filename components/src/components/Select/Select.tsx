@@ -21,8 +21,8 @@ import {
   useActiveDescendant,
 } from '@utils/useActiveDescendant';
 import { DOMFocus } from '@utils/focus';
-import { MultiValue } from '@wip/Select/MultiValue';
-import { Optional, OptionItem, SelectValue } from './types';
+import { MultiValue } from './MultiValue';
+import { OptionItem, SelectValue } from './types';
 import Option, { OptionProps } from './Option';
 import {
   defaultGetOptionDisabled,
@@ -90,16 +90,13 @@ export interface SelectProps {
   options: OptionItem[];
   placeholder?: string;
   value?: SelectValue;
-  renderValue?: (v: Optional<SelectValue>) => string;
+  renderValue?: (v: SelectValue) => string;
   renderOption: (
     props: Partial<Omit<OptionProps, keyof OptionItem>>,
     option: OptionItem,
   ) => React.ReactNode;
   getOptionDisabled?: (option: OptionItem) => boolean;
-  getOptionSelected?: (
-    option: OptionItem,
-    value: Optional<SelectValue>,
-  ) => boolean;
+  getOptionSelected?: (option: OptionItem, value: SelectValue) => boolean;
   getOptionMatching?: (option: OptionItem, value: string) => boolean;
   getOptionLabel?: (option: OptionItem) => React.ReactNode;
   // Autocomplete props
@@ -163,8 +160,8 @@ const Select = ({
   // TODO: name,
   // TODO: readOnly = false,
   // TODO: renderValue,
+  // TODO: includeInputInList,
   onInputChange,
-  includeInputInList,
   inputValue: inputValueProp,
   skipSelectedOptions,
   notFoundContent = 'No options found.',
@@ -248,7 +245,8 @@ const Select = ({
    * *
    */
 
-  const [autoFocusItem, setAutofocusItem] = React.useState<Optional<number>>();
+  const [autoFocusItem, setAutofocusItem] =
+    React.useState<number | undefined>();
 
   const [activeOptionId, setActiveOptionId] =
     React.useState<string | undefined>();
@@ -466,7 +464,6 @@ const Select = ({
   });
 
   const withValue = Boolean((isArray(value) ? value[0] : value)?.trim());
-  // const withInputValue = Boolean(inputValue?.trim());
 
   const comboboxProps = {
     value: inputValue,
@@ -474,7 +471,7 @@ const Select = ({
     onChange: handleInputChange,
   };
 
-  console.log(activeOptionId, '$$ Select: updated $$');
+  console.log('$$ Select: updated $$');
 
   const renderedOptions = options.map((option: OptionItem) => {
     if (searchable && !getOptionMatching(option, inputValue)) {
@@ -589,18 +586,6 @@ const Select = ({
             tabIndex={-1}
             ref={listBoxRef}
           >
-            {
-              /* TODO: */ includeInputInList && (
-                <Option
-                  id={'ref:select-option-live-value-id'}
-                  key={'ref:select-option--live-value-key'}
-                  focused={'ref:select-option-live-value-id' === activeOptionId}
-                  tabIndex={-1}
-                >
-                  {inputValue}
-                </Option>
-              )
-            }
             {renderedOptions.length > 0 ? renderedOptions : notFoundContent}
           </ul>
         </DescendantProvider>

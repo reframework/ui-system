@@ -1,7 +1,7 @@
 import { isArray, isString } from '../../utils';
-import { Optional, OptionItem, SelectValue } from './types';
+import { OptionItem, SelectValue } from './types';
 
-export const defaultRenderValue = (value: Optional<string | string[]>) => {
+export const defaultRenderValue = (value: SelectValue) => {
   if (isArray(value)) return value.join(', ');
   if (isString(value)) return value as string;
   return '';
@@ -10,7 +10,7 @@ export const defaultRenderValue = (value: Optional<string | string[]>) => {
 export const defaultGetOptionLabel = (opt: OptionItem) => opt.label;
 
 export const getDefaultValue = (
-  defaultValue: Optional<SelectValue>,
+  defaultValue: SelectValue | undefined,
   multiple: boolean,
 ) => {
   if (multiple) {
@@ -28,9 +28,9 @@ export const defaultGetOptionFiltered = () => true;
 
 export const defaultGetOptionMatch = (
   option: OptionItem,
-  value: SelectValue,
+  inputValue: string,
 ) => {
-  return new RegExp(value, 'ig').test(option.value as string);
+  return new RegExp(inputValue, 'ig').test(option.value as string);
 };
 
 export const defaultGetOptionSelected = (

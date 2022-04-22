@@ -6,15 +6,16 @@
   font-family: var(--font-family-primary);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-regular);
-  padding: var(--spacing-xxs) var(--spacing-xxs);
+  padding: var(--spacing-xxs) var(--spacing-s);
+
+  /* position: relative; */
+  outline: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .ref\:select-option-focused:not(.ref\:select-option-selected) {
-  &:active {
-    background-color: var(--color-scale-blue-1);
-  }
-
-  background-color: var(--color-scale-blue-0);
+  background-color: var(--color-scale-gray-1);
 }
 
 .ref\:select-option-selected {
