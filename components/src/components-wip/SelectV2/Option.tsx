@@ -1,60 +1,50 @@
 import React from 'react';
 import { getClassName } from '@reframework/classnames';
+import { ListItem } from '@wip/List';
 import styles from './Option.css?module';
 
 export interface OptionProps {
   children?: React.ReactNode;
   color?: string;
   disabled?: boolean;
-  highlighted?: boolean;
+  focused?: boolean;
   icon?: React.ReactNode;
   id?: string;
-  label?: React.ReactNode;
-  onBlur?: (event: React.FocusEvent) => void;
   onClick?: (event: React.MouseEvent) => void;
-  onFocus?: (event: React.FocusEvent) => void;
   selected?: boolean;
   tabIndex?: number;
-  value: string;
 }
 
 const Option = ({
   children,
   disabled,
   id,
-  label,
-  onBlur,
   onClick,
-  onFocus,
   selected,
   tabIndex,
-  highlighted,
-  value,
+  focused,
   ...props
 }: OptionProps) => {
   const classNames = getClassName({
     [styles.item]: true,
-    [styles.active]: Boolean(selected),
+    [styles.selected]: Boolean(selected),
     [styles.disabled]: Boolean(disabled),
-    [styles.highlighted]: Boolean(highlighted),
+    [styles.highlighted]: Boolean(focused),
   });
 
   return (
-    <div
-      aria-disabled={disabled}
+    <ListItem
       aria-selected={selected}
+      disabled={disabled}
       className={classNames}
-      data-value={value}
       id={id}
-      onBlur={onBlur}
       onClick={onClick}
-      onFocus={onFocus}
       role="option"
       tabIndex={tabIndex}
       {...props}
     >
-      {children || label || null}
-    </div>
+      {children}
+    </ListItem>
   );
 };
 

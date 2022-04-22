@@ -6,7 +6,6 @@
  */
 
 export const Space = ' ';
-
 export enum KeyEnum {
   // modifier
   Alt = 'Alt', // The Alt (Alternative) key. This key enables the alternate modifier function for interpreting concurrent or subsequent keyboard input. .This key value is also used for the Apple Option key.

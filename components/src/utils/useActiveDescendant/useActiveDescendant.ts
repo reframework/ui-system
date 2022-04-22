@@ -59,10 +59,23 @@ const siblings = (
   };
 };
 
+export enum Action {
+  click = 'click',
+  first = 'first',
+  focus = 'focus',
+  hover = 'hover',
+  index = 'index',
+  last = 'last',
+  next = 'next',
+  previous = 'previous',
+  reset = 'reset',
+  unknown = 'unknown',
+}
+
 export interface ActiveDescendant {
   current: HTMLElement | null;
   reset: () => void;
-  set: (next: HTMLElement) => void;
+  set: (next: HTMLElement, action: Action) => void;
   setByIndex: (index: number) => void;
   setFirst: () => void;
   setLast: () => void;
@@ -73,28 +86,32 @@ export interface ActiveDescendant {
 export const useActiveDescendant = (options: {
   listRef?: React.MutableRefObject<HTMLElement | null>;
   filterElement?: (node: Nullable<Element>) => boolean;
-  onChange?: (previous: HTMLElement | null, next: HTMLElement | null) => void;
+  onChange?: (
+    previous: HTMLElement | null,
+    next: HTMLElement | null,
+    action: Action,
+  ) => void;
 }): ActiveDescendant => {
-  const { filterElement = () => true, listRef, onChange } = options;
+  const { filterElement = () => true, listRef: parentRef, onChange } = options;
   const activeDescendant = React.useRef<HTMLElement | null>(null);
 
-  const setNode = (next: HTMLElement | null) => {
+  const setNode = (next: HTMLElement | null, action: Action) => {
     const { current } = activeDescendant;
     activeDescendant.current = next;
-    onChange?.(current, next);
+    onChange?.(current, next, action);
   };
 
   const reset = () => {
-    setNode(null);
+    setNode(null, Action.reset);
   };
 
-  const set = (next: HTMLElement) => {
+  const set = (next: HTMLElement, action: Action) => {
     /**
      * Edge case, when `next` is not provided.
      * To make current `null` use `reset()` method instead of `set()`
      */
     if (!next) return;
-    setNode(next);
+    setNode(next, action);
   };
 
   const setNextActive = (
@@ -113,7 +130,7 @@ export const useActiveDescendant = (options: {
 
   const setByIndex = (index: number) => {
     // Edge case when list is empty
-    const length = listRef?.current?.children?.length;
+    const length = parentRef?.current?.children?.length;
     if (!length) return;
 
     let reverse = false;
@@ -124,7 +141,7 @@ export const useActiveDescendant = (options: {
       reverse = true;
     }
 
-    const node = listRef?.current?.children?.[index];
+    const node = parentRef?.current?.children?.[index];
 
     if (!node) {
       // If no node is there then sets the (first|last) available
@@ -142,7 +159,7 @@ export const useActiveDescendant = (options: {
   };
 
   const setFirst = () => {
-    const firstChild = listRef?.current?.firstElementChild;
+    const firstChild = parentRef?.current?.firstElementChild;
 
     /**
      * Edge case when list is empty
@@ -159,7 +176,7 @@ export const useActiveDescendant = (options: {
   };
 
   const setLast = () => {
-    const lastChild = listRef?.current?.firstElementChild;
+    const lastChild = parentRef?.current?.firstElementChild;
 
     /**
      * Edge case when list is empty

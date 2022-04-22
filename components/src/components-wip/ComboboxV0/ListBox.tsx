@@ -11,18 +11,14 @@ type ListBoxProps = {
   PaperProps?: PaperProps;
   renderOption: SelectProps['renderOption'];
   tabIndex?: number;
-};
+} & React.HTMLProps<HTMLDivElement>;
 
-const ListBox: React.FC<ListBoxProps & React.HTMLProps<HTMLDivElement>> = ({
-  getOptionLabel,
-  id,
-  options,
-  renderOption,
-  tabIndex,
-  PaperProps,
-}) => {
+const ListBox = React.forwardRef<any, ListBoxProps>((props, ref) => {
+  const { getOptionLabel, id, options, renderOption, tabIndex, PaperProps } =
+    props;
+
   return (
-    <Paper {...PaperProps} id={id} role="listbox" tabIndex={tabIndex}>
+    <Paper {...PaperProps} ref={ref} id={id} role="listbox" tabIndex={tabIndex}>
       {options.map(({ value, label, ...optionProps }) => {
         if (isFunction(renderOption)) {
           return renderOption(optionProps, { value, label });
@@ -31,6 +27,7 @@ const ListBox: React.FC<ListBoxProps & React.HTMLProps<HTMLDivElement>> = ({
         return (
           <Option
             {...optionProps}
+            key={optionProps.id}
             value={value}
             label={getOptionLabel({ value, label })}
           />
@@ -38,6 +35,6 @@ const ListBox: React.FC<ListBoxProps & React.HTMLProps<HTMLDivElement>> = ({
       })}
     </Paper>
   );
-};
+});
 
 export default ListBox;

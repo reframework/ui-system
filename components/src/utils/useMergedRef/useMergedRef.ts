@@ -1,7 +1,7 @@
 import React from 'react';
 import { isFunction } from '@utils/index';
 
-function setRef<T>(
+export function setRef<T>(
   ref:
     | React.MutableRefObject<T | null>
     | ((instance: T | null) => void)

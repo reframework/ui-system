@@ -1,4 +1,4 @@
-import useControlledState from '@utils/useControlledState';
+import { useControlledState } from '@utils/useControlledState';
 import React from 'react';
 import {
   firstOf,

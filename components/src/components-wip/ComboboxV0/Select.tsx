@@ -6,7 +6,7 @@ import { Popover } from '@components/Popover';
 import { useAutoFocus } from '@utils/index';
 import styles from './Select.css?module';
 import { defaultGetOptionLabel } from './utils';
-import useCombobox from './useCombobox';
+import useCombobox from './useComboboxV2';
 import { SelectProps } from './types';
 import ListBox from './ListBox';
 
@@ -32,22 +32,20 @@ const Select = ({
   ...useComboboxProps
 }: SelectProps) => {
   const {
+    // isMulti,
     activeDescendant,
+    comboboxRef,
     disabled,
     hasValue,
+    isOpen,
+    listBoxRef,
     onClick,
-    onKeyDown,
-    onClickAway,
+    onClickOutside,
     onFocus,
-    open,
+    onKeyDown,
     options,
     value,
   } = useCombobox(useComboboxProps);
-
-  /**
-   * Ref of the combobox (input/select container)
-   */
-  const comboboxRef = React.useRef<HTMLDivElement | null>(null);
 
   /**
    * Autofocus
@@ -56,18 +54,18 @@ const Select = ({
 
   const className = getClassName({
     [styles.combobox]: true,
-    [styles.placeholder]: hasValue,
+    [styles.placeholder]: !hasValue,
     [styles.disabled]: disabled,
   });
 
   return (
     <div>
       <div
-        aria-activedescendant={activeDescendant}
+        aria-activedescendant={activeDescendant?.id}
         aria-autocomplete="none"
         aria-controls={listBoxId}
         aria-disabled={disabled}
-        aria-expanded={open}
+        aria-expanded={isOpen}
         aria-haspopup="listbox"
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledBy}
@@ -87,11 +85,12 @@ const Select = ({
       </div>
       <Popover
         placement={placement}
+        offsetY={8}
         {...PopoverProps}
         originElement={comboboxRef.current}
         matchWidth={matchWidth}
-        onClickAway={onClickAway}
-        open={open}
+        onClickAway={onClickOutside}
+        open={isOpen}
       >
         <ListBox
           PaperProps={PaperProps}
@@ -99,6 +98,7 @@ const Select = ({
           renderOption={renderOption}
           getOptionLabel={getOptionLabel}
           id={listBoxId}
+          ref={listBoxRef}
         />
       </Popover>
     </div>

@@ -2,10 +2,10 @@ import React from 'react';
 import { cancelEvent } from '@utils/index';
 import { createKeyboardHandler } from '@utils/Keyboard';
 import { getClassName } from '@reframework/classnames';
-import { DescendantUtils } from '@utils/descendant';
 import { TabsClassName, useTabs } from './Tabs';
 import Ink from './Ink';
 
+class DescendantUtils {}
 export interface TabListProps {
   value?: string;
   className?: string;

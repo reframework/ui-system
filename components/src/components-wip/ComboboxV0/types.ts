@@ -35,7 +35,7 @@ export interface SelectProps {
   matchWidth?: true | number;
   openOnFocus?: boolean;
   openOnClick?: boolean;
-  onClickAway?: (e: Event) => void;
+  onClickOutside?: (e: Event) => void;
   multiple?: boolean;
   notFoundContent?: React.ReactNode;
   options: OptionItem[];
@@ -52,6 +52,7 @@ export interface SelectProps {
   getOptionLabel?: (option: OptionItem) => React.ReactNode;
   getOptionFiltered?: (option: OptionItem) => boolean;
   ariaLabel?: string;
+  closeOnSelect?: boolean;
   ariaLabelledBy?: string;
   id?: string;
   listBoxId?: string;
@@ -61,26 +62,28 @@ export interface SelectProps {
 }
 
 export interface UseComboboxReturnType {
-  activeDescendant?: string;
+  activeDescendant: HTMLOptionElement | null;
   disabled: boolean;
   hasValue: boolean;
   onBlur: (e: React.FocusEvent) => void;
   onClick: (e: React.MouseEvent) => void;
-  onClickAway: (e: Event) => void;
+  onClickOutside: (e: Event) => void;
   onFocus: (e: React.FocusEvent) => void;
   onKeyDown: (e: React.KeyboardEvent) => void;
   onKeyUp: (e: React.KeyboardEvent) => void;
-  open: boolean;
+  isOpen: boolean;
+  isMulti: boolean;
   options: {
     disabled: boolean;
+    focused: boolean;
     id: string;
+    label: string;
     onBlur: (e: React.FocusEvent) => void;
     onClick: (e: React.MouseEvent) => void;
     onFocus: (e: React.FocusEvent) => void;
     selected: boolean;
     tabIndex: number;
     value: string;
-    label: string;
   }[];
   rawValue: SelectValue;
   role: 'combobox';
@@ -101,7 +104,7 @@ export type UseComboboxProps = Pick<
   | 'onBlur'
   | 'onChange'
   | 'onClick'
-  | 'onClickAway'
+  | 'onClickOutside'
   | 'onFocus'
   | 'open'
   | 'openOnClick'
@@ -109,6 +112,7 @@ export type UseComboboxProps = Pick<
   | 'options'
   | 'renderValue'
   | 'value'
+  | 'closeOnSelect'
 >;
 
 export interface AutocompleteProps extends Omit<SelectProps, 'multiple'> {

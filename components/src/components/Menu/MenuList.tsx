@@ -71,13 +71,6 @@ const MenuList: React.FC<MenuListProps> = ({
     onChange: manageFocusOnChange,
   });
 
-  const handleFocus = ({ target, currentTarget }: React.FocusEvent) => {
-    if (target === currentTarget) return;
-    if (ActiveDescendant.current === target) return;
-    if (!isItemFocusable(target)) return;
-    ActiveDescendant.set(target as HTMLElement);
-  };
-
   const handleKeyDown = useKeyboardHandler({
     beforeAll: cancelEvent,
     onArrowDown: ActiveDescendant.setNext,
@@ -165,7 +158,6 @@ const MenuList: React.FC<MenuListProps> = ({
         aria-orientation="vertical"
         className={listClassName}
         id={id}
-        onFocus={handleFocus}
         onKeyDown={handleKeyDown}
         ref={listRef}
         role="menu"
