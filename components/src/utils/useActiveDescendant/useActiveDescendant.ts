@@ -75,7 +75,7 @@ export enum Action {
 export interface ActiveDescendant {
   current: HTMLElement | null;
   reset: () => void;
-  set: (next: HTMLElement, action: Action) => void;
+  set: (next: HTMLElement) => void;
   setByIndex: (index: number) => void;
   setFirst: () => void;
   setLast: () => void;
@@ -84,34 +84,32 @@ export interface ActiveDescendant {
 }
 
 export const useActiveDescendant = (options: {
-  listRef?: React.MutableRefObject<HTMLElement | null>;
+  parentRef?: React.MutableRefObject<HTMLElement | null>;
   filterElement?: (node: Nullable<Element>) => boolean;
-  onChange?: (
-    previous: HTMLElement | null,
-    next: HTMLElement | null,
-    action: Action,
-  ) => void;
+  onChange?: (previous: HTMLElement | null, next: HTMLElement | null) => void;
 }): ActiveDescendant => {
-  const { filterElement = () => true, listRef: parentRef, onChange } = options;
+  const { filterElement = () => true, parentRef, onChange } = options;
   const activeDescendant = React.useRef<HTMLElement | null>(null);
 
-  const setNode = (next: HTMLElement | null, action: Action) => {
+  // todo useEffect cleanup
+
+  const setNode = (next: HTMLElement | null) => {
     const { current } = activeDescendant;
     activeDescendant.current = next;
-    onChange?.(current, next, action);
+    onChange?.(current, next);
   };
 
   const reset = () => {
-    setNode(null, Action.reset);
+    setNode(null);
   };
 
-  const set = (next: HTMLElement, action: Action) => {
+  const set = (next: HTMLElement) => {
     /**
      * Edge case, when `next` is not provided.
      * To make current `null` use `reset()` method instead of `set()`
      */
     if (!next) return;
-    setNode(next, action);
+    setNode(next);
   };
 
   const setNextActive = (

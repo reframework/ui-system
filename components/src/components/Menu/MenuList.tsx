@@ -1,5 +1,11 @@
 import React from 'react';
-import { cancelEvent, firstOf, isNumber, nextOf } from '@utils/index';
+import {
+  cancelEvent,
+  firstOf,
+  getFirstMatchingItem,
+  isNumber,
+  nextOf,
+} from '@utils/index';
 import { useKeyboardHandler } from '@utils/useKeyboardHandler';
 import { getClassName } from '@reframework/classnames';
 import { useActiveDescendant } from '@utils/useActiveDescendant';
@@ -83,34 +89,18 @@ const MenuList: React.FC<MenuListProps> = ({
     onEnter: () => ActiveDescendant.current?.click?.(),
     onPrintableCharacter: (event) => {
       if (!listRef.current) return;
-
       // Items which are matching the event.key
-      const matchedItems = Array.from(
+      const items = Array.from(
         listRef.current.querySelectorAll('[role="menuitem"]'),
-      ).filter((node) => {
-        return (
-          isItemFocusable(node) &&
-          node?.textContent
-            ?.trim()
-            ?.toLowerCase()
-            ?.startsWith(event.key?.toLowerCase())
-        );
+      ).filter(isItemFocusable);
+
+      const nextItem = getFirstMatchingItem({
+        list: items as HTMLElement[],
+        current: ActiveDescendant.current,
+        searchString: event.key,
       });
 
-      if (matchedItems.length > 0) {
-        const index = matchedItems.indexOf(ActiveDescendant.current!);
-        let nextItem = firstOf(matchedItems);
-
-        if (index !== -1) {
-          /**
-           * If matched items include active descendant
-           * set the next matched after current focused item
-           */
-          nextItem = nextOf(matchedItems, index) || nextItem;
-        }
-
-        ActiveDescendant.set(nextItem as HTMLElement);
-      }
+      ActiveDescendant.set(nextItem as HTMLElement);
     },
     onEscape: onCloseRequest,
     onTab: onCloseRequest,

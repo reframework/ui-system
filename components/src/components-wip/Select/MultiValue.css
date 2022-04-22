@@ -1,0 +1,51 @@
+.ref\:select-multi-value {
+  background-color: var(--color-scale-gray-2);
+  border-radius: var(--spacing-xxxs);
+  box-sizing: border-box;
+  display: flex;
+  margin: 2px;
+  padding: 0;
+  border: none;
+
+  &:nth-last-child(2) {
+    margin-right: var(--spacing-xxs);
+  }
+}
+
+.ref\:select-multi-value-label {
+  align-items: center;
+  border-radius: 2px;
+  box-sizing: border-box;
+  color: var(--color-scale-black);
+  display: flex;
+  font-size: 85%;
+  overflow: hidden;
+  padding: 3px 3px 3px 6px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ref\:select-multi-value-button {
+  align-items: center;
+  aspect-ratio: 1/1;
+  background-color: transparent;
+  border-radius: var(--spacing-xxxs);
+  border: none;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  min-width: var(--spacing-s);
+  padding-left: 4px;
+  padding-right: 4px;
+  transition: all 0.2s ease-out;
+
+  &:hover {
+    background-color: var(--color-scale-blue-3);
+  }
+
+  &:active {
+    background-color: var(--color-scale-blue-4);
+  }
+}

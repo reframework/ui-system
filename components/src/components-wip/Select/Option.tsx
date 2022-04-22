@@ -1,58 +1,47 @@
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-
 import React from 'react';
 import { getClassName } from '@reframework/classnames';
-import './ListItem.css';
 import { useDescendantContext } from '@utils/useActiveDescendant';
+import './Option.css';
 
-enum MenuItemClassName {
-  item = 'ref:menu-item',
+enum OptionClassNames {
+  option = 'ref:select-option',
+  focused = 'ref:select-option-focused',
+  selected = 'ref:select-option-selected',
+  disabled = 'ref:select-option-disabled',
 }
 
-export interface ListItemProps {
-  id?: string;
+export interface OptionProps {
   autoFocus?: boolean;
-  as?: keyof JSX.IntrinsicElements;
-  // closeOnSelect
-  children: React.ReactNode;
-  className?: string;
+  children?: React.ReactNode;
+  color?: string;
   disabled?: boolean;
-  divider?: boolean;
+  focused?: boolean;
+  icon?: React.ReactNode;
+  id?: string;
   onClick?: (event: React.MouseEvent) => void;
-  //
-  closeOnSelect?: boolean;
-  focusable?: boolean;
-  role?: string;
+  selected?: boolean;
   tabIndex?: number;
-  // TODO: add those props;
-  // icon?: React.ReactNode;
 }
 
-const ListItem: React.FC<ListItemProps> = ({
+const Option = ({
   autoFocus,
-  onClick,
-  divider,
-  className,
-  children = null,
+  children,
   disabled,
-  role,
+  focused,
+  id,
+  selected,
   tabIndex = -1,
   ...props
-}) => {
-  const { activeDescendant } = useDescendantContext();
-
+}: OptionProps) => {
   const ref = React.useRef<HTMLLIElement | null>(null);
 
-  const handleClick = (e: React.MouseEvent) => {
-    onClick?.(e);
-  };
+  const { activeDescendant } = useDescendantContext();
 
   const handleMouseEnter = ({ currentTarget }: React.MouseEvent) => {
     activeDescendant.set(currentTarget as HTMLElement);
   };
 
-  // TEST: autofocus
   React.useLayoutEffect(() => {
     if (ref.current && autoFocus) {
       activeDescendant.set(ref.current);
@@ -61,18 +50,21 @@ const ListItem: React.FC<ListItemProps> = ({
   }, []);
 
   const classNames = getClassName({
-    [MenuItemClassName.item]: true,
-    [className!]: Boolean(className),
+    [OptionClassNames.option]: true,
+    [OptionClassNames.selected]: Boolean(selected),
+    [OptionClassNames.disabled]: Boolean(disabled),
+    [OptionClassNames.focused]: Boolean(focused),
   });
 
   return (
     <li
-      role={role}
-      ref={ref}
-      onClick={handleClick}
-      className={classNames}
       aria-disabled={disabled}
+      aria-selected={selected}
+      className={classNames}
+      id={id}
       onMouseEnter={handleMouseEnter}
+      ref={ref}
+      role="option"
       tabIndex={tabIndex}
       {...props}
     >
@@ -81,4 +73,4 @@ const ListItem: React.FC<ListItemProps> = ({
   );
 };
 
-export default ListItem;
+export default Option;

@@ -123,3 +123,33 @@ export const cancelEvent = (event: React.KeyboardEvent) => {
   stopPropagation(event);
   preventDefault(event);
 };
+
+export const getFirstMatchingItem = (params: {
+  list: HTMLElement[];
+  current: HTMLElement | null;
+  searchString: string;
+}) => {
+  const { list, current, searchString } = params;
+
+  const matchingItems = list.filter((node) => {
+    return node?.textContent
+      ?.trim()
+      ?.toLowerCase()
+      ?.startsWith(searchString?.toLowerCase());
+  });
+
+  if (matchingItems.length > 0) {
+    const index = matchingItems.indexOf(current!);
+    let nextItem = firstOf(matchingItems);
+
+    if (index !== -1) {
+      /**
+       * If matched items include active descendant
+       * set the next matched after current focused item
+       */
+      nextItem = nextOf(matchingItems, index) || nextItem;
+    }
+
+    return nextItem;
+  }
+};

@@ -3,3 +3,5 @@ export {
   ActiveDescendant,
   Action as ActiveDescendantAction,
 } from './useActiveDescendant';
+
+export { DescendantProvider, useDescendantContext } from './context';

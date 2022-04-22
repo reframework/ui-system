@@ -56,29 +56,29 @@ export const useList = ({
   className,
   ...props
 }: UseListProps) => {
-  const listRef = React.useRef<HTMLUListElement | null>(null);
+  const ref = React.useRef<HTMLUListElement | null>(null);
 
-  const ActiveDescendant = useActiveDescendant({
-    listRef,
+  const activeItem = useActiveDescendant({
+    listRef: ref,
     filterElement: isItemFocusable,
     onChange: onActiveItemChange,
   });
 
   const handleKeyDown = useKeyboardHandler({
     before: onKeyDown,
-    onArrowDown: ActiveDescendant.setNext,
-    onArrowUp: ActiveDescendant.setPrevious,
-    onHome: ActiveDescendant.setFirst,
-    onEnd: ActiveDescendant.setLast,
+    onArrowDown: activeItem.setNext,
+    onArrowUp: activeItem.setPrevious,
+    onHome: activeItem.setFirst,
+    onEnd: activeItem.setLast,
   });
 
   React.useLayoutEffect(() => {
     // Pedantic typescript
-    if (!listRef.current) {
+    if (!ref.current) {
       return;
     }
 
-    if (ActiveDescendant.current) {
+    if (activeItem.current) {
       /**
        * When active descendent already exist
        * means that some of item is already focused
@@ -88,12 +88,20 @@ export const useList = ({
 
     // The case when autoFocus should appear on the list
     if (!isNumber(autoFocusItem)) {
-      if (autoFocus) DOMFocus.set(listRef.current);
+      if (autoFocus) DOMFocus.set(ref.current);
       return;
     }
 
-    ActiveDescendant.setByIndex(autoFocusItem);
+    activeItem.setByIndex(autoFocusItem);
     // Mount only
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  React.useEffect(() => {
+    // cleanup
+    return () => {
+      activeItem.reset();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -103,17 +111,11 @@ export const useList = ({
   });
 
   return {
-    activeItem: ActiveDescendant,
+    activeItem,
     Provider: DescendantProvider,
-    // keyboard: {
-    //   onArrowDown: ActiveDescendant.setNext,
-    //   onArrowUp: ActiveDescendant.setPrevious,
-    //   onHome: ActiveDescendant.setFirst,
-    //   onEnd: ActiveDescendant.setLast,
-    // },
     providerProps: {
       value: {
-        activeDescendant: ActiveDescendant,
+        activeDescendant: activeItem,
       },
     },
     listProps: {
@@ -123,7 +125,7 @@ export const useList = ({
       ['aria-orientation']: 'vertical' as const,
       ...props,
       className: classNames,
-      ref: listRef,
+      ref,
     },
   };
 };

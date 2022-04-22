@@ -1,8 +1,7 @@
-import { ActiveDescendant } from '@utils/descendant';
 import { createContext } from '../../utils/context';
+import { ActiveDescendant } from './useActiveDescendant';
 
 export const [DescendantProvider, useDescendantContext] =
   createContext<{
-    onCloseRequest?: () => void;
     activeDescendant: ActiveDescendant;
   }>();

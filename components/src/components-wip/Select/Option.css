@@ -1,15 +1,15 @@
-.item {
+.ref\:select-option {
   --color: red;
 
   color: var(--color-scale-black);
-  font-size: var(--font-size-xs);
-  font-family: var(--font-family-primary);
-  font-weight: var(--font-weight-regular);
   cursor: pointer;
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-regular);
   padding: var(--spacing-xxs) var(--spacing-xxs);
 }
 
-.highlighted:not(.selected) {
+.ref\:select-option-focused:not(.ref\:select-option-selected) {
   &:active {
     background-color: var(--color-scale-blue-1);
   }
@@ -17,12 +17,12 @@
   background-color: var(--color-scale-blue-0);
 }
 
-.selected {
+.ref\:select-option-selected {
   color: var(--color-scale-white);
   background-color: var(--color-scale-blue-4);
 }
 
-.disabled {
+.ref\:select-option-disabled {
   cursor: default;
   color: var(--color-scale-gray-2);
 }
