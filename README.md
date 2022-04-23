@@ -6,8 +6,10 @@
   </a>
 </p>
 
+<p align="center">
+  <img width="600" src="https://user-images.githubusercontent.com/49458012/164946687-aa14bf83-4bd9-49f7-bc82-e09e90fc692f.png">
+</p>
+
 <br/>
 
 # React UI library
-
-### [Storybook](https://reframework.github.io/ui-system)
