@@ -3,8 +3,8 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import SelectComponent from './Select';
 
 export default {
-  title: 'Select/Select',
-  id: 'Select/Select',
+  title: 'Reframework:UI/Select',
+  id: 'select-select',
   component: SelectComponent,
 } as ComponentMeta<typeof SelectComponent>;
 

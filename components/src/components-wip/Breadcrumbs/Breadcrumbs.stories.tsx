@@ -2,7 +2,7 @@ import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 export default {
-  title: 'Breadcrumbs/Breadcrumbs',
+  title: 'WIP/Breadcrumbs',
   component: () => <div></div>,
 } as ComponentMeta<any>;
 

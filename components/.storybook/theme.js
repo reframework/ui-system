@@ -10,7 +10,7 @@ export default create({
   colorSecondary: '#57606a',
 
   // // UI
-  appBg: '#eaeef2',
+  appBg: '#32383f',
   appContentBg: '#f6f8fa',
   appBorderColor: '#d0d7de',
   appBorderRadius: 0,
@@ -42,6 +42,6 @@ export default create({
   // brandTitle: 'reframework',
   brandUrl: 'https://github.com/reframework',
   brandImage:
-    'https://github.com/reframework/.github/blob/main/logo-grad-storybook%20(3).png?raw=true',
+    'https://github.com/reframework/.github/raw/main/Group%2027.png?raw=true',
   // brandImage: 'https://github.com/reframework/reframework/blob/main/re-logo-color.png?raw=true',
 });

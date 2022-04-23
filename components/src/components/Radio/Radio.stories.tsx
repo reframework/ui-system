@@ -4,7 +4,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import RadioComponent from './Radio';
 
 export default {
-  title: 'Radio/Radio',
+  title: 'Reframework:UI/Radio',
   component: RadioComponent,
 } as ComponentMeta<typeof RadioComponent>;
 

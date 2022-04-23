@@ -1,4 +1,4 @@
-import { isFunction } from '@utils/index';
+import { isFunction } from '@utils/assert';
 import { KeyEnum, Space } from './keys';
 
 type KeyboardManager = {

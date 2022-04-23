@@ -5,7 +5,8 @@ import { Box } from '@wip/Box';
 import { TabList, TabPanel, Tabs as TabsComponent, Tab } from '.';
 
 export default {
-  title: 'Tabs/Tabs',
+  title: 'Reframework:UI/Tabs',
+  id: 'tabs-tabs',
   component: TabsComponent,
   argTypes: {
     value: {

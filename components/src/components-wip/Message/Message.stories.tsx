@@ -5,7 +5,7 @@ import MessageComponent from './Message';
 import message from './messages';
 
 export default {
-  title: 'Message/Message',
+  title: 'WIP/Message',
   component: () => <div></div>,
 } as ComponentMeta<typeof MessageComponent>;
 

@@ -2,7 +2,7 @@
   --color: red;
 
   color: var(--color-scale-black);
-  cursor: pointer;
+  cursor: default;
   font-family: var(--font-family-primary);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-regular);

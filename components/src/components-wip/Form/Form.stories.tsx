@@ -2,7 +2,7 @@ import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 export default {
-  title: 'Form/Form',
+  title: 'WIP/Form',
   component: () => <div></div>,
 } as ComponentMeta<any>;
 

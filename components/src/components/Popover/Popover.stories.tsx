@@ -2,11 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import { Button } from '@components/Button';
-import Box from '../../components-wip/Box/Box';
+import { Box } from '@wip/Box';
 import PopoverComponent, { PopoverProps } from './Popover';
 
 export default {
-  title: 'Popover/Popover',
+  title: 'Reframework:UI/Popover',
   component: PopoverComponent,
   argTypes: {
     placement: {

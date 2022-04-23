@@ -5,7 +5,7 @@ import SnackbarComponent from './Snackbar';
 import snackbar from './snackbars';
 
 export default {
-  title: 'Snackbar/Snackbar',
+  title: 'WIP/Snackbar',
   component: () => <div></div>,
 } as ComponentMeta<typeof SnackbarComponent>;
 
