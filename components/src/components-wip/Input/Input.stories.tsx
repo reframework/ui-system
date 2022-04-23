@@ -4,7 +4,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import InputComponent from './Input';
 
 export default {
-  title: 'Data Entry/Input',
+  title: 'Input/Input',
   component: InputComponent,
   argTypes: {
     size: {

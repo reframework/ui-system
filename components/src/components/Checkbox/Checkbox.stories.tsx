@@ -5,7 +5,7 @@ import { Text } from '@components/Text';
 import CheckboxComponent from './Checkbox';
 
 export default {
-  title: 'Data Entry/Checkbox',
+  title: 'Checkbox/Checkbox',
   component: CheckboxComponent,
 } as ComponentMeta<typeof CheckboxComponent>;
 

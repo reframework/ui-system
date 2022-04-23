@@ -1,5 +1,4 @@
 import type { Config } from '@jest/types';
-import { defaults } from 'jest-config';
 
 // Sync object
 const config: Config.InitialOptions = {
@@ -20,15 +19,6 @@ const config: Config.InitialOptions = {
     'jest-watch-typeahead/filename',
     'jest-watch-typeahead/testname',
   ],
-  // coverageThreshold: {
-  //   global: {
-  //     branches: 80,
-  //     functions: 80,
-  //     lines: 80,
-  //     statements: -10,
-  //   },
-  // },
-  // injectGlobals: true,
   transform: {
     '^.+\\.(js|jsx|ts|tsx)?$': 'ts-jest',
     '^.+\\.js$': 'babel-jest',

@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import { Box } from '@wip/Box';
 import { Spinner } from '@components/Spinner';
 import { Text } from '@components/Text';
-import { Flex } from '@wip/Flex';
 import { Badge, OnlineStatus } from '../Badge';
 import AvatarComponent from './Avatar';
 
@@ -53,8 +52,8 @@ export const Avatar: ComponentStory<typeof Avatar> = () => {
   );
 
   return (
-    <Flex alignItems="center" justifyContent="center" p="xxxl">
-      <Flex mr="xxxl" p="xl" direction="column" alignItems="center">
+    <Box p="xxxl">
+      <Box mr="xxxl" p="xl">
         <Box mb="m">
           <Text>Badge</Text>
         </Box>
@@ -66,8 +65,8 @@ export const Avatar: ComponentStory<typeof Avatar> = () => {
             src={testImage2}
           />
         </Badge>
-      </Flex>
-      <Flex mr="xxxl" p="xl" direction="column" alignItems="center">
+      </Box>
+      <Box mr="xxxl" p="xl">
         <Box mb="m">
           <Text>Status: Online</Text>
         </Box>
@@ -77,8 +76,8 @@ export const Avatar: ComponentStory<typeof Avatar> = () => {
             size={`${(250 / 16).toFixed(1)}rem`}
           />
         </OnlineStatus>
-      </Flex>
-      <Flex p="xl" direction="column" alignItems="center">
+      </Box>
+      <Box p="xl">
         <Box mb="m">
           <Text>Status: Away</Text>
         </Box>
@@ -90,8 +89,8 @@ export const Avatar: ComponentStory<typeof Avatar> = () => {
             src={testImage1}
           />
         </OnlineStatus>
-      </Flex>
-      <Flex p="xl" direction="column" alignItems="center">
+      </Box>
+      <Box p="xl">
         <Box mb="m">
           <Text>Fallback</Text>
         </Box>
@@ -103,7 +102,7 @@ export const Avatar: ComponentStory<typeof Avatar> = () => {
             src={'%%%-error'}
           />
         </OnlineStatus>
-      </Flex>
-    </Flex>
+      </Box>
+    </Box>
   );
 };

@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import CircularProgress from './Circular';
 
 export default {
-  title: 'Processing/CircularProgress',
+  title: 'Progress/Progress',
   component: CircularProgress,
 } as ComponentMeta<typeof CircularProgress>;
 

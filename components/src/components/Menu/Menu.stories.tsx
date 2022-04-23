@@ -46,21 +46,23 @@ const wrapperStyle: React.CSSProperties = {
 
 export const Intro: ComponentStory<typeof Menu> = () => {
   return (
-    <Box>
-      <Box pt="l" pb="l">
-        <Text>Usage</Text>
-      </Box>
-      <Box style={wrapperStyle}>
-        <Menu trigger={<Button variant="outlined">Open Menu</Button>}>
-          <MenuItem id="1">Share</MenuItem>
-          <MenuItem id="2">Copy</MenuItem>
-          <MenuItem id="3">Rename</MenuItem>
-          <MenuItem id="4">Move</MenuItem>
-          <MenuItem id="5" disabled>
-            Delete...
-          </MenuItem>
-        </Menu>
-      </Box>
+    <Box style={wrapperStyle}>
+      <Menu trigger={<Button variant="solid">Open Menu</Button>}>
+        <MenuItem id="1">Share</MenuItem>
+        <MenuItem id="2">Copy</MenuItem>
+        <MenuItem id="3">Rename</MenuItem>
+        <MenuItem id="4" disabled>
+          Move
+        </MenuItem>
+        <MenuItem id="5">Delete...</MenuItem>
+      </Menu>
+    </Box>
+  );
+};
+
+export const InternalState = () => {
+  return (
+    <>
       <Box pt="l" pb="l">
         <Text>Accessing the internal state</Text>
         <Text size="xs" weight="thin">
@@ -86,6 +88,13 @@ export const Intro: ComponentStory<typeof Menu> = () => {
           </MenuItem>
         </Menu>
       </Box>
+    </>
+  );
+};
+
+export const LetterNavigation = () => {
+  return (
+    <>
       <Box pt="l" pb="l">
         <Text>Letter Navigation.</Text>
         <Text size="xs" weight="thin">
@@ -110,67 +119,13 @@ export const Intro: ComponentStory<typeof Menu> = () => {
           </MenuItem>
         </Menu>
       </Box>
-      <Box pt="l" pb="l">
-        <Text> Just another example#</Text>
-      </Box>
-      <Box style={wrapperStyle}>
-        <Menu
-          trigger={(params: { isOpen: boolean }) => (
-            <Button variant={params.isOpen ? 'outlined' : 'solid'}>
-              {params.isOpen ? 'Close Menu' : 'Open Menu'}
-            </Button>
-          )}
-        >
-          <MenuItem key="1">Share...</MenuItem>
-          <MenuItem key="3">Move...</MenuItem>
-          <MenuItem key="4">Rename...</MenuItem>
-          <MenuItem key="5" disabled>
-            Delete...
-          </MenuItem>
-        </Menu>
-      </Box>
-      <Box pt="l" pb="l">
-        <Text>Adding icons and commands.</Text>
-        <Text size="xs" weight="thin">
-          You can add icon to each MenuItem by passing the icon prop. To add a
-          commands (or hotkeys) to menu items, you can use the command prop
-        </Text>
-      </Box>
-      <Box style={wrapperStyle}>
-        <Menu
-          trigger={(params: { isOpen: boolean }) => (
-            <Button variant={params.isOpen ? 'outlined' : 'solid'}>
-              {params.isOpen ? 'Close Menu' : 'Open Menu'}
-            </Button>
-          )}
-        >
-          <MenuItem key="1">Share...</MenuItem>
-          <MenuItem key="3">Move...</MenuItem>
-          <MenuItem key="4">Rename...</MenuItem>
-          <MenuItem key="5" disabled>
-            Delete...
-          </MenuItem>
-        </Menu>
-      </Box>
-      <Box pt="l" pb="l">
-        <Text> Just another example#</Text>
-      </Box>
-      <Box style={wrapperStyle}>
-        <Menu
-          trigger={(params: { isOpen: boolean }) => (
-            <Button variant={params.isOpen ? 'outlined' : 'solid'}>
-              {params.isOpen ? 'Close Menu' : 'Open Menu'}
-            </Button>
-          )}
-        >
-          <MenuItem key="1">Share...</MenuItem>
-          <MenuItem key="3">Move...</MenuItem>
-          <MenuItem key="4">Rename...</MenuItem>
-          <MenuItem key="5" disabled>
-            Delete...
-          </MenuItem>
-        </Menu>
-      </Box>
+    </>
+  );
+};
+
+export const Portal = () => {
+  return (
+    <>
       <Box pt="l" pb="l">
         <Text>Rendering menu in a portal .</Text>
         <Text size="xs" weight="thin">
@@ -195,26 +150,7 @@ export const Intro: ComponentStory<typeof Menu> = () => {
           </MenuItem>
         </Menu>
       </Box>
-      <Box pt="l" pb="l">
-        <Text> Just another example#</Text>
-      </Box>
-      <Box style={wrapperStyle}>
-        <Menu
-          trigger={(params: { isOpen: boolean }) => (
-            <Button variant={params.isOpen ? 'outlined' : 'solid'}>
-              {params.isOpen ? 'Close Menu' : 'Open Menu'}
-            </Button>
-          )}
-        >
-          <MenuItem key="1">Share...</MenuItem>
-          <MenuItem key="3">Move...</MenuItem>
-          <MenuItem key="4">Rename...</MenuItem>
-          <MenuItem key="5" disabled>
-            Delete...
-          </MenuItem>
-        </Menu>
-      </Box>
-    </Box>
+    </>
   );
 };
 

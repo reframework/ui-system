@@ -2,7 +2,7 @@ import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 export default {
-  title: 'Data Entry/Switch',
+  title: 'Switch/Switch',
   component: () => <div></div>,
 } as ComponentMeta<any>;
 

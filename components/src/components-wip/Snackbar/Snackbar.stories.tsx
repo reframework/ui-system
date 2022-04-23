@@ -1,11 +1,11 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Button } from '@components/Button';
 import SnackbarComponent from './Snackbar';
 import snackbar from './snackbars';
 
-import { Button } from '@components/Button';
 export default {
-  title: 'Feedback/Snackbar',
+  title: 'Snackbar/Snackbar',
   component: () => <div></div>,
 } as ComponentMeta<typeof SnackbarComponent>;
 

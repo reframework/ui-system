@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { TabList, TabPanel, Tabs as TabsComponent, Tab } from '.';
 import { Text } from '@components/Text';
 import { Box } from '@wip/Box';
+import { TabList, TabPanel, Tabs as TabsComponent, Tab } from '.';
 
 export default {
-  title: 'Navigation/Tabs',
+  title: 'Tabs/Tabs',
   component: TabsComponent,
   argTypes: {
     value: {
