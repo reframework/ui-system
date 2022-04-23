@@ -3,7 +3,7 @@ import { AspectRatio } from '@wip/AspectRatio';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 export default {
-  title: 'Reframework:UI/AspectRatio',
+  title: 'UI:Components/AspectRatio',
   component: AspectRatio,
 } as ComponentMeta<typeof AspectRatio>;
 

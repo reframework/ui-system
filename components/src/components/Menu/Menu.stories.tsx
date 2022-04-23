@@ -7,7 +7,7 @@ import { Menu, MenuItem, MenuList } from '@components/Menu';
 import { Text } from '@components/Text';
 
 export default {
-  title: 'Reframework:UI/Menu',
+  title: 'UI:Components/Menu',
   id: 'menu-menu',
   component: Menu,
   subcomponents: {

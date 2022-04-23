@@ -77,7 +77,9 @@ module.exports = {
         },
       },
     },
-    '@storybook/addon-storysource',
+    {
+      name: '@storybook/addon-storysource',
+    },
   ],
   managerHead: injectTokens,
   previewHead: injectTokens,

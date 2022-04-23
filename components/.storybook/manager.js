@@ -17,7 +17,7 @@ addons.setConfig({
   // selectedPanel: undefined,
   initialActive: 'canvas',
   isToolshown: false,
-  enableShortcuts: false,
+  enableShortcuts: true,
   sidebar: {
     // showRoots: false,
     collapsedRoots: ['wip'],

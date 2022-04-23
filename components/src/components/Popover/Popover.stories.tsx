@@ -6,7 +6,7 @@ import { Box } from '@wip/Box';
 import PopoverComponent, { PopoverProps } from './Popover';
 
 export default {
-  title: 'Reframework:UI/Popover',
+  title: 'UI:Components/Popover',
   component: PopoverComponent,
   argTypes: {
     placement: {

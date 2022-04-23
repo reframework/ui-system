@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import SelectComponent from './Select';
 
 export default {
-  title: 'Reframework:UI/Select',
+  title: 'UI:Components/Select',
   id: 'select-select',
   component: SelectComponent,
 } as ComponentMeta<typeof SelectComponent>;
@@ -28,6 +28,7 @@ const options = [
   { label: 'Дуся', value: 'Дуся' },
   { label: 'Музыкальный кот', value: 'Музыкальный кот' },
   { label: 'При-шмякнутый', value: 'Пришмякнутый' },
+  { label: 'Храмуля', value: 'Храмуля' },
 ];
 
 const Template: ComponentStory<typeof SelectComponent> = (props) => {
@@ -48,9 +49,9 @@ Select.args = {
   options,
 };
 
-export const Multi = Template.bind({});
+export const MultiSelect = Template.bind({});
 
-Multi.args = {
+MultiSelect.args = {
   placeholder: 'Выбери васёчка',
   multiple: true,
   listBoxId: 'ref-select',
@@ -63,6 +64,7 @@ Searchable.args = {
   placeholder: 'Выбери васёчка',
   listBoxId: 'ref-select',
   searchable: true,
+  options,
 };
 
 export const SearchableAndMulti = Template.bind({});

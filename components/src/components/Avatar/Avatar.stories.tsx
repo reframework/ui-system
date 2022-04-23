@@ -8,7 +8,7 @@ import { Badge, OnlineStatus } from '../Badge';
 import AvatarComponent from './Avatar';
 
 export default {
-  title: 'Reframework:UI/Avatar',
+  title: 'UI:Components/Avatar',
   component: AvatarComponent,
 } as ComponentMeta<typeof AvatarComponent>;
 

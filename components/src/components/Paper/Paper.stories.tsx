@@ -4,7 +4,7 @@ import { Paper } from '@components/Paper';
 import { Box } from '@wip/Box';
 
 export default {
-  title: 'Reframework:UI/Paper',
+  title: 'UI:Components/Paper',
   component: Paper,
   id: 'Paper/Paper',
   argTypes: {

@@ -12,7 +12,7 @@
   .sidebar-container {
     /* padding-left: var(--spacing-xxs); */
     /* padding-right: var(--spacing-xxs); */
-    background-color: var(--color-scale-gray-8);
+    background-color: var(--color-scale-gray-9);
   }
 
   .sidebar-container form {
@@ -20,9 +20,10 @@
   }
 
   .sidebar-header > div:first-of-type {
-    max-width: 100px;
+    /* max-width: 100px; */
     margin-top: var(--spacing-xxxs);
     margin-bottom: var(--spacing-xxs);
+    margin-right: var(--spacing-xxs);
   }
 
   .sidebar-header > div:last-of-type * {
@@ -43,7 +44,7 @@
     display: none;
   }
 
-  #reframework-ui .ref\:sidebar-item-label {
+  .sidebar-subheading .ref\:sidebar-item-label {
     background: linear-gradient(
       to right,
       var(--color-scale-blue-4),
@@ -52,13 +53,15 @@
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
     transition: background 0.3s ease;
+    letter-spacing: 1px;
+    font-weight: 500;
   }
 
-  #reframework-ui button {
+  .sidebar-subheading button {
     color: var(--color-scale-pink-4);
   }
 
-  #reframework-ui span:first-child {
+  .sidebar-subheading span:first-child {
     border-left-color: var(--color-scale-blue-4);
   }
 

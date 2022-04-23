@@ -4,7 +4,7 @@ import { Button } from '@components/Button';
 import { Box } from '@wip/Box';
 
 export default {
-  title: 'Reframework:UI/Button',
+  title: 'UI:Components/Button',
   component: Button,
   argTypes: {
     color: {

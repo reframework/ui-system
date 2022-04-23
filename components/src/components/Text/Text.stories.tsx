@@ -4,7 +4,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import TextComponent from './Text';
 
 export default {
-  title: 'Reframework:UI/Text',
+  title: 'UI:Components/Text',
   component: TextComponent,
   argTypes: {
     align: {
