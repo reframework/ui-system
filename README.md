@@ -1,10 +1,10 @@
 <p align="center">
-  <a href="https://ant.design">
-    <img width="100" src="https://github.com/reframework/.github/blob/main/Group%2027.png?raw=true">
+  <a href="https://reframework.github.io/ui-system">
+    <img width="600" src="https://user-images.githubusercontent.com/49458012/164944774-95bfbcd6-654b-4026-a234-4517b53cd665.png">
   </a>
 </p>
 
-<h1 align="center">reframework / ui system</h1>
 
+# React UI library
 
-[Docs](https://reframework.github.io/ui-system)
+### [Storybook](https://reframework.github.io/ui-system)
