@@ -1,9 +1,12 @@
+<br/>
+
 <p align="center">
   <a href="https://reframework.github.io/ui-system">
-    <img width="600" src="https://user-images.githubusercontent.com/49458012/164944774-95bfbcd6-654b-4026-a234-4517b53cd665.png">
+    <img width="300" src="https://user-images.githubusercontent.com/49458012/164946096-5a60ae09-90b4-41fe-90df-909afa0d45b6.png">
   </a>
 </p>
 
+<br/>
 
 # React UI library
 
