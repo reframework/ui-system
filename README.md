@@ -5,9 +5,7 @@
 </p>
 
 <p align="center">
-  <img width="600" src="https://user-images.githubusercontent.com/49458012/164946687-aa14bf83-4bd9-49f7-bc82-e09e90fc692f.png">
+  <img width="650" src="https://user-images.githubusercontent.com/49458012/165344611-e0bf3492-301f-4e38-9293-0ebeb8d93d98.jpeg">
 </p>
 
 <br/>
-
-# React UI library
