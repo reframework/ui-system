@@ -4,7 +4,7 @@ import { Button } from '@components/Button';
 import { Box } from '@wip/Box';
 
 export default {
-  title: 'UI:Components/Button',
+  title: 'Components/Button',
   component: Button,
   argTypes: {
     color: {

@@ -44,12 +44,9 @@
     display: none;
   }
 
+  #welcome--welcome .ref\:sidebar-item-label,
   .sidebar-subheading .ref\:sidebar-item-label {
-    background: linear-gradient(
-      to right,
-      var(--color-scale-blue-4),
-      #00B4CC
-    );
+    background: linear-gradient(to right, var(--color-scale-blue-4), #00b4cc);
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
     transition: background 0.3s ease;
@@ -58,7 +55,7 @@
   }
 
   .sidebar-subheading button {
-    color: #00B4CC;
+    color: #00b4cc;
   }
 
   .sidebar-subheading span:first-child {
@@ -75,6 +72,16 @@
 
   .sidebar-subheading span:first-child {
     border-left-color: var(--color-scale-gray-4);
+  }
+
+  .sidebar-item[data-selected='true'] {
+    background-color: rgba(30, 167, 253, 0.1) !important;
+  }
+
+  /* Removes Skip to canvas link */
+
+  a.sidebar-item[data-selected='true'] + a {
+    display: none;
   }
 
   .search-field input {
@@ -99,6 +106,7 @@
     padding-top: var(--spacing-xxxs);
     font-size: var(--font-size-xs);
     color: var(--color-scale-gray-2);
+    border-radius: 8px;
   }
 
   .sidebar-item span:first-child {
@@ -116,4 +124,11 @@
   #icon--component {
     color: var(--color-scale-blue-2);
   }
+
+  /* WELCOME PAGE */
+  #welcome--welcome svg {
+    display: none;
+  }
+
+  /*  */
 </style>

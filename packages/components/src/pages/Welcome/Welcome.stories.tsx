@@ -3,7 +3,7 @@ import React from 'react';
 import { Meta } from '@storybook/react';
 import { Button } from '@components/Button';
 
-const Intro = () => {
+const Page = () => {
   return (
     <div
       style={{
@@ -35,17 +35,9 @@ export default {
   component: Button,
   parameters: {
     docs: {
-      page: () => (
-        <>
-          <Intro />
-          {/* <Subtitle /> */}
-          {/* <Description /> */}
-        </>
-      ),
+      page: Page,
     },
   },
 } as Meta;
 
-export const Welcome = () => {
-  return null;
-};
+export const Welcome = Page;
