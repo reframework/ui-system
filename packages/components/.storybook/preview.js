@@ -1,16 +1,27 @@
+// import { DocsPage } from '@storybook/addon-docs';
+
 export const parameters = {
   options: {
-    storySort: (a, b) =>
-      a[1].kind === b[1].kind
-        ? 0
-        : a[1].id.localeCompare(b[1].id, undefined, { numeric: true }),
+    storySort: {
+      order: ['UI:Components', 'wip', '*'],
+    },
   },
+  // viewMode: 'docs',
+  previewTabs: {
+    // 'storybook/docs/panel': {
+    //   index: -1,
+    // },
+    // canvas: { title: 'Sandbox' },
+  },
+  // page: DocsPage,
   actions: { argTypesRegex: '^on[A-Z].*' },
   controls: {
     matchers: {
       color: /(background|color)$/i,
       date: /Date$/,
     },
+    expanded: true,
+    sort: 'requiredFirst',
   },
 };
 

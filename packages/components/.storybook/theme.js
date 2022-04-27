@@ -42,6 +42,6 @@ export default create({
   // brandTitle: 'reframework',
   brandUrl: 'https://github.com/reframework',
   brandImage:
-    'https://user-images.githubusercontent.com/49458012/164944774-95bfbcd6-654b-4026-a234-4517b53cd665.png',
+    'https://raw.githubusercontent.com/reframework/ui-system/main/packages/components/.storybook/logo.png',
   // brandImage: 'https://github.com/reframework/reframework/blob/main/re-logo-color.png?raw=true',
 });
