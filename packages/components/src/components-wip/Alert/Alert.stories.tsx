@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import AlertComponent from './Alert';
 
 export default {
-  title: 'WIP/Alert',
+  title: 'Components/Alert',
   component: () => <div></div>,
 } as ComponentMeta<any>;
 

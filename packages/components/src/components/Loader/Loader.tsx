@@ -1,5 +1,5 @@
 import React from 'react';
-import './Circular.css';
+import './Loader.css';
 
 enum LoaderClassName {
   svg = 'ref:circular-loader-svg',
@@ -10,7 +10,7 @@ enum LoaderClassName {
   background = 'ref:circular-loader-background',
 }
 
-export interface CircularProgressProps {
+export interface LoaderProps {
   className?: string;
   color?: 'string';
   progress?: number;
@@ -18,12 +18,7 @@ export interface CircularProgressProps {
   thickness?: number;
 }
 
-const CircularLoader = ({
-  color,
-  size = 50,
-  thickness = 5,
-  progress,
-}: CircularProgressProps) => {
+const Loader = ({ color, size = 50, thickness = 5, progress }: LoaderProps) => {
   const SIZE = 44;
   let variant = 'undetermined';
   const circleStyle: {
@@ -68,4 +63,4 @@ const CircularLoader = ({
   );
 };
 
-export default CircularLoader;
+export default Loader;

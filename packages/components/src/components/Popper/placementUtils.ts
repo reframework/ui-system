@@ -1,4 +1,4 @@
-export type PlacementAxis = 'top' | 'bottom' | 'left' | 'right';
+export type PlacementAxis = 'top' | 'bottom' | 'left' | 'right' | 'center';
 export type PlacementAlign = 'end' | 'center' | 'start';
 export type Placement = `${PlacementAxis}-${PlacementAlign}`;
 
@@ -24,6 +24,7 @@ const InternalPlacementMap = {
   bottom: 'after',
   left: 'before',
   right: 'after',
+  center: 'center',
 } as const;
 
 type OverflowValues = [number, number];
@@ -101,7 +102,7 @@ type OffsetBoundaries = Record<BoundarySide, number>;
 
 interface Rects {
   targetRect: DOMRect;
-  referenceRect: DOMRect;
+  originRect: DOMRect;
   viewportRect: DOMRect;
   offsetParentRect: DOMRect;
 }
@@ -116,7 +117,7 @@ interface GetOverflowParams extends Rects {
 }
 
 interface PlacementHandlerParams
-  extends Pick<Rects, 'targetRect' | 'referenceRect'> {
+  extends Pick<Rects, 'targetRect' | 'originRect'> {
   axis: Axis;
   offset?: number;
   parentOffset: OffsetBoundaries;
@@ -130,7 +131,7 @@ export class PlacementHero {
     const {
       offsetParentRect,
       targetRect,
-      referenceRect,
+      originRect,
       offsetX = 0,
       offsetY = 0,
     } = params;
@@ -146,13 +147,13 @@ export class PlacementHero {
     /**
      * First relative parent offset
      */
-    const parentOffset = getParentOffset(referenceRect, offsetParentRect);
+    const parentOffset = getParentOffset(originRect, offsetParentRect);
 
     const computedPlacementX = computePlacementX({
       axis: Axis.X,
       offset: offsetX,
       parentOffset,
-      referenceRect,
+      originRect,
       targetRect,
     });
 
@@ -160,7 +161,7 @@ export class PlacementHero {
       axis: Axis.Y,
       offset: offsetY,
       parentOffset,
-      referenceRect,
+      originRect,
       targetRect,
     });
 
@@ -224,12 +225,12 @@ export class PlacementHero {
   static end({
     axis,
     parentOffset,
-    referenceRect,
+    originRect,
     offset = 0,
     targetRect,
   }: PlacementHandlerParams) {
     const { from, size } = AxisToPropertyMap[axis];
-    const referenceSize = referenceRect[size];
+    const referenceSize = originRect[size];
     const targetSize = targetRect[size];
     return {
       [from]: parentOffset[from] + referenceSize - targetSize + offset,
@@ -258,13 +259,13 @@ export class PlacementHero {
   static center({
     axis,
     parentOffset,
-    referenceRect,
+    originRect,
     targetRect,
     offset = 0,
   }: PlacementHandlerParams) {
     const { from, size } = AxisToPropertyMap[axis];
     const targetSize = targetRect[size] / 2;
-    const referenceSize = referenceRect[size] / 2;
+    const referenceSize = originRect[size] / 2;
     return {
       [from]: parentOffset[from] + referenceSize - targetSize + offset,
     };
@@ -276,12 +277,12 @@ export class PlacementHero {
   static after({
     axis,
     offset = 0,
-    referenceRect,
+    originRect,
     parentOffset,
   }: PlacementHandlerParams) {
     const { from, size } = AxisToPropertyMap[axis];
     return {
-      [from]: parentOffset[from] + referenceRect[size] + offset,
+      [from]: parentOffset[from] + originRect[size] + offset,
     };
   }
 
@@ -310,20 +311,20 @@ export class PlacementHero {
    */
   static getRects = (
     targetElement: HTMLElement,
-    referenceElement: HTMLElement,
+    originElement: HTMLElement,
   ): Rects => {
     const { offsetParent } = targetElement;
     const offsetParentRect = (
       offsetParent || document.body
     ).getBoundingClientRect();
-    const referenceRect = referenceElement.getBoundingClientRect();
+    const originRect = originElement.getBoundingClientRect();
     const targetRect = targetElement.getBoundingClientRect();
     const viewportRect = viewport.getBoundingDOMRect();
 
     return {
       offsetParentRect,
       targetRect,
-      referenceRect,
+      originRect,
       viewportRect,
     };
   };
@@ -336,7 +337,7 @@ export function computePosition(
   placement: Placement,
   params: {
     targetElement: HTMLElement;
-    referenceElement: HTMLElement;
+    originElement: HTMLElement;
     offsetX?: number;
     offsetY?: number;
     //
@@ -344,9 +345,9 @@ export function computePosition(
     preventOverflowY?: boolean;
   },
 ) {
-  const { targetElement, referenceElement, offsetY, offsetX } = params;
+  const { targetElement, originElement, offsetY, offsetX } = params;
   const [placementX, placementY] = parsePlacement(placement);
-  const rects = PlacementHero.getRects(targetElement, referenceElement);
+  const rects = PlacementHero.getRects(targetElement, originElement);
 
   let computedPosition = PlacementHero.getComputedPosition(
     [placementX, placementY],

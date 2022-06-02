@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Meta } from '@storybook/react';
-import { Button } from '@components/Button';
 
 const Page = () => {
   return (
@@ -10,19 +9,35 @@ const Page = () => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        background: '#fff',
+        borderRadius: 'var(--spacing-xs)',
+        justifyContent: 'space-around',
+        // padding: 'var(--spacing-m)',
       }}
     >
-      <div>
+      <div
+        style={{
+          width: '250px',
+          // minWidth: '300px',
+          boxSizing: 'border-box',
+        }}
+      >
         <img
+          style={{
+            width: '100%',
+            objectFit: 'cover',
+          }}
           alt="reframework logo"
-          width="250"
           src="https://user-images.githubusercontent.com/49458012/164946096-5a60ae09-90b4-41fe-90df-909afa0d45b6.png"
         />
       </div>
-      <div>
+      <div style={{ maxWidth: '70%', boxSizing: 'border-box' }}>
         <img
+          style={{
+            width: '100%',
+            objectFit: 'cover',
+          }}
           alt="reframework intro"
-          width="700"
           src="https://user-images.githubusercontent.com/49458012/165349158-8836184e-a69c-4d7b-9a96-eec4293dc817.jpeg"
         />
       </div>
@@ -32,7 +47,6 @@ const Page = () => {
 
 export default {
   title: 'Welcome',
-  component: Button,
   parameters: {
     docs: {
       page: Page,

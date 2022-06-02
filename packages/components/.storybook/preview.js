@@ -3,7 +3,14 @@
 export const parameters = {
   options: {
     storySort: {
-      order: ['welcome', 'System', 'Components', 'wip', '*'],
+      method: 'alphabetical',
+      order: [
+        'Welcome',
+        'System',
+
+        ['Components', '*'],
+      ],
+      locales: 'en-US',
     },
   },
   // viewMode: 'docs',

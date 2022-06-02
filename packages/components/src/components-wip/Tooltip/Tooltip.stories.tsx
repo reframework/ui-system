@@ -2,14 +2,16 @@ import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 export default {
-  title: 'WIP/Form',
+  title: 'Components/Tooltip',
   component: () => <div></div>,
 } as ComponentMeta<any>;
 
 const Template: ComponentStory<any> = ({ ...props }) => (
-  <div {...props}>Form is coming soon</div>
+  <div {...props}>Modal is coming soon</div>
 );
 
-export const Form = Template.bind({});
+export const Modal = Template.bind({});
 
-Form.args = {};
+Modal.args = {
+  id: 'example',
+};

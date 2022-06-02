@@ -1,33 +1,28 @@
 import Paper from '@components/Paper/Paper';
 import React from 'react';
 import { getClassName } from '@reframework/classnames';
+import { ToastClassName } from '@wip/Toast/Toast';
 
-enum SnakbarClassName {}
-// TODO: add icons by type
-const emoji = {
-  error: '🚫',
-  warning: '☢️',
-  success: '✅',
-  info: 'ℹ️',
-};
+type Placement = `${'top' | 'bottom'}-${'left' | 'center' | 'right'}`;
 
-export interface SnackbarItemProps {
+export interface ToastItemProps {
   content: string | React.ReactNode;
   key: React.Key;
   type: 'info' | 'success' | 'error' | 'warning';
   duration?: number;
+  placement: Placement;
 }
 
 // TODO: Add css transitions
-const SnackbarItem = ({
+const ToastItem = ({
   content,
   type,
   onClose,
   duration = 5000,
-}: SnackbarItemProps & { onClose: () => void }) => {
+}: ToastItemProps & { onClose: () => void }) => {
   const className = getClassName({
-    [SnakbarClassName.snackbar]: true,
-    [SnakbarClassName[type]]: true,
+    [ToastClassName.item]: true,
+    [ToastClassName[type]]: true,
   });
 
   React.useEffect(() => {
@@ -42,11 +37,11 @@ const SnackbarItem = ({
   }, [duration]);
 
   return (
-    <Paper levitation={6} className={className}>
-      <span className={SnakbarClassName.icon}>{emoji[type]} </span>
+    <Paper shadow={6} className={className}>
+      <span className={ToastClassName.icon}>🗯</span>
       <span>{content}</span>
     </Paper>
   );
 };
 
-export default SnackbarItem;
+export default ToastItem;

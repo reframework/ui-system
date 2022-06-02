@@ -1,9 +1,9 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import CircularProgress from './Circular';
+import CircularProgress from './Loader';
 
 export default {
-  title: 'Components/Progress',
+  title: 'Components/Loader',
   component: CircularProgress,
 } as ComponentMeta<typeof CircularProgress>;
 

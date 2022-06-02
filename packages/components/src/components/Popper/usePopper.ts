@@ -21,13 +21,14 @@ const getWidth = (
 export interface UsePopperProps {
   defaultOpen?: boolean;
   originElement?: HTMLElement | null;
+  originPosition?: { x: number; y: number };
   matchWidth?: boolean | number;
   offsetX?: number;
   offsetY?: number;
   onClickAway?: (e: Event) => void;
   onClose?: () => void;
   onOpen?: () => void;
-  open: boolean;
+  open?: boolean;
   placement?: Placement;
   // position?: 'fixed' | 'absolute';
   // preventOverflowX?: boolean;
@@ -54,7 +55,8 @@ const usePopper = ({
   const [computedPosition, setComputedPosition] =
     React.useState<{ top: number; left: number } | null>(null);
 
-  const popperRef = React.useRef<HTMLDivElement | null>(null);
+  const [popperElement, setPopperElement] =
+    React.useState<HTMLDivElement | null>(null);
 
   const {
     state: isOpen,
@@ -67,30 +69,30 @@ const usePopper = ({
 
   const handleClickAway = React.useCallback(
     (event: Event) => {
-      if (popperRef?.current === (event.target as Node)) return;
-      if (popperRef?.current?.contains(event.target as Node)) return;
+      if (popperElement === (event.target as Node)) return;
+      if (popperElement?.contains?.(event.target as Node)) return;
       if (originElement === (event.target as Node)) return;
-      if (originElement?.contains(event.target as Node)) return;
+      if (originElement?.contains?.(event.target as Node)) return;
 
       setIsOpen(false);
       onClickAway?.(event);
     },
-    [onClickAway, originElement, setIsOpen],
+    [onClickAway, originElement, setIsOpen, popperElement],
   );
 
   const updatePosition = React.useCallback(() => {
-    // console.log(popperRef.current, originElement, 'Goes here');
-    if (!placement || !popperRef.current || !originElement) return;
+    // console.log(popperElement, originElement, 'Goes here');
+    if (!placement || !popperElement || !originElement) return;
 
     setComputedPosition(
       computePosition(placement, {
-        targetElement: popperRef.current,
-        referenceElement: originElement,
+        targetElement: popperElement,
+        originElement,
         offsetX,
         offsetY,
       }),
     );
-  }, [originElement, placement, offsetX, offsetY]);
+  }, [originElement, placement, offsetX, offsetY, popperElement]);
 
   const resetPosition = React.useCallback(() => {
     setComputedPosition(null);
@@ -120,32 +122,34 @@ const usePopper = ({
   }, [handleClickAway, isOpen]);
 
   React.useEffect(() => {
-    if (!popperRef.current) return;
+    if (!popperElement) return;
 
+    if (!(originElement instanceof HTMLElement)) return;
     const handleResize = (entries: ResizeObserverEntry[]) => {
       const [{ target }] = entries;
-      if (target === popperRef.current || target === originElement) {
+      if (target === popperElement || target === originElement) {
         // console.log('RESIZE', target);
-        // updatePosition();
+        updatePosition();
       }
     };
 
     const observer = new ResizeObserver(handleResize);
-    observer.observe(popperRef.current);
-    if (originElement) observer.observe(originElement);
+    observer.observe(originElement);
 
     return () => {
       observer.disconnect();
     };
-  }, [originElement, updatePosition]);
+  }, [originElement, updatePosition, popperElement]);
 
   return {
     open: isOpen,
-    ref: popperRef,
+    ref: setPopperElement,
+    arrowStyles: {},
     styles: {
       inset: '0 auto auto 0',
       opacity: computedPosition ? 1 : 0,
-      pointerEvents: computedPosition ? 'unset' : 'none',
+      // todo: only none or nothing
+      pointerEvents: computedPosition ? 'inherit' : 'none',
       position: 'absolute',
       width: getWidth(originElement, matchWidth),
       transform: computedPosition

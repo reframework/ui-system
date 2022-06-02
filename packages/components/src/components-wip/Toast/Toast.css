@@ -1,0 +1,84 @@
+.ref\:toast-container {
+  display: flex;
+  padding: 50px;
+  pointer-events: none;
+  position: fixed;
+  width: 100%;
+}
+
+.ref\:toast-item {
+  align-items: center;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: var(--color-scale-white);
+  display: flex;
+  margin-top: 16px;
+  max-width: max-content;
+  min-height: 50px;
+  padding: 8px 16px;
+  pointer-events: auto;
+
+  &.ref\:toast-type-info {
+    background-color: var(--color-scale-blue-4);
+  }
+
+  &.ref\:toast-type-warning {
+    background-color: var(--color-scale-orange-4);
+  }
+
+  &.ref\:toast-type-success {
+    background-color: var(--color-scale-green-4);
+  }
+
+  &.ref\:toast-type-error {
+    background-color: var(--color-scale-red-4);
+  }
+}
+
+.ref\:toast-icon {
+  margin-right: 8px;
+}
+
+.ref\:toast-top-left {
+  align-items: flex-start;
+  flex-direction: column;
+  left: 0;
+  top: 0;
+}
+
+.ref\:toast-top-center {
+  align-items: center;
+  flex-direction: column;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.ref\:toast-top-right {
+  align-items: flex-end;
+  flex-direction: column;
+  top: 0;
+  right: 0;
+}
+
+.ref\:toast-bottom-left {
+  align-items: flex-start;
+  flex-direction: column-reverse;
+  bottom: 0;
+  left: 0;
+}
+
+.ref\:toast-bottom-center {
+  align-items: center;
+  flex-direction: column-reverse;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.ref\:toast-bottom-right {
+  align-items: flex-end;
+  flex-direction: column-reverse;
+  bottom: 0;
+  right: 0;
+}

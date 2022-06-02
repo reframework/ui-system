@@ -2,7 +2,7 @@ import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 export default {
-  title: 'WIP/Modal',
+  title: 'Components/Modal',
   component: () => <div></div>,
 } as ComponentMeta<any>;
 

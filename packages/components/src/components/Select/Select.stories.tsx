@@ -20,6 +20,11 @@ const innerStyle: React.CSSProperties = {
   width: '100%',
   maxWidth: 500,
 };
+
+const notFoundContent = (
+  <span style={{ padding: 'var(--spacing-xs)' }}>Все васёчки убежали 🐈</span>
+);
+
 const options = [
   { label: 'Васёк', value: 'Васёк' },
   { label: 'Белый Доцент', value: 'Белый Доцент' },
@@ -47,6 +52,7 @@ Select.args = {
   placeholder: 'Выбери васёчка',
   listBoxId: 'ref-select',
   options,
+  notFoundContent,
 };
 
 export const MultiSelect = Template.bind({});
@@ -56,6 +62,7 @@ MultiSelect.args = {
   multiple: true,
   listBoxId: 'ref-select',
   options,
+  notFoundContent,
 };
 
 export const Searchable = Template.bind({});
@@ -65,6 +72,7 @@ Searchable.args = {
   listBoxId: 'ref-select',
   searchable: true,
   options,
+  notFoundContent,
 };
 
 export const SearchableAndMulti = Template.bind({});
@@ -75,4 +83,5 @@ SearchableAndMulti.args = {
   multiple: true,
   listBoxId: 'ref-select',
   options,
+  notFoundContent,
 };

@@ -1,4 +1,4 @@
-import { addons } from '@storybook/addons';
+import { addons, register } from '@storybook/addons';
 import theme from './theme';
 import React from 'react';
 
@@ -26,7 +26,7 @@ addons.setConfig({
         // console.log(item, 'ITEM');
       }
 
-      return <span class="ref:sidebar-item-label">{item.name}</span>;
+      return <span className="ref:sidebar-item-label">{item.name}</span>;
     },
   },
   toolbar: {
