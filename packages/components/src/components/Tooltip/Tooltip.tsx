@@ -30,6 +30,9 @@ const Tooltip: React.FC<TooltipProps> = ({
     },
   );
 
+  /**
+   * Refs
+   */
   const originRef = React.useRef<HTMLElement | null>(null);
   const spacerRef = React.useRef<HTMLDivElement | null>(null);
   const popperRef = React.useRef<HTMLDivElement | null>(null);
@@ -40,8 +43,7 @@ const Tooltip: React.FC<TooltipProps> = ({
 
   const onPointerOver = () => {
     clearTimeout(closeTimerRef.current);
-    if (internalOpen) return;
-    setInternalOpen(true);
+    if (!internalOpen) setInternalOpen(true);
   };
 
   const onSpacerPointerOver = () => {
@@ -72,12 +74,11 @@ const Tooltip: React.FC<TooltipProps> = ({
 
   const origin = useCloneElement(children, {
     ref: originRef,
-    onClick: () => setInternalOpen((prev) => !prev),
     onPointerOver,
     onPointerOut,
+    // TODO: Add onClick, onFocus, onTouchStart
   });
 
-  // TODO: add only on hover
   const spacer = (
     <div
       ref={spacerRef}
