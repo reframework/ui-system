@@ -4,7 +4,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import InputComponent from './Input';
 
 export default {
-  title: 'Components/Input',
+  title: 'Forms/Input',
   component: InputComponent,
   argTypes: {
     size: {

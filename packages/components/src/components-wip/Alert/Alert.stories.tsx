@@ -1,26 +1,34 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Box } from '@wip/Box';
+import { Paper } from '@components/Paper';
 import AlertComponent from './Alert';
 
 export default {
-  title: 'Components/Alert',
+  title: 'Feedback/Alert',
   component: () => <div></div>,
+  parameters: {
+    layout: 'centered',
+  },
 } as ComponentMeta<any>;
 
 const Template: ComponentStory<any> = () => (
-  <div
-    style={{
-      height: 300,
-      display: 'flex',
-      justifyContent: 'space-between',
-      flexDirection: 'column',
-    }}
-  >
-    <AlertComponent type="info">This is an info alert</AlertComponent>
-    <AlertComponent type="success">This is a success alert</AlertComponent>
-    <AlertComponent type="warning">This is a warning alert</AlertComponent>
-    <AlertComponent type="error">This is an error alert</AlertComponent>
-  </div>
+  <Paper style={{ width: '100vw', maxWidth: 600 }}>
+    <Box p="m">
+      <Box mb="s">
+        <AlertComponent type="info" content="Info alert" />
+      </Box>
+      <Box mb="s">
+        <AlertComponent type="success" content="Success alert" />
+      </Box>
+      <Box mb="s">
+        <AlertComponent type="warning" content="Warning alert" />
+      </Box>
+      <Box>
+        <AlertComponent type="error" content="Error alert" />
+      </Box>
+    </Box>
+  </Paper>
 );
 
 export const Alert = Template.bind({});

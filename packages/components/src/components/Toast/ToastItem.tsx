@@ -1,7 +1,7 @@
 import Paper from '@components/Paper/Paper';
 import React from 'react';
 import { getClassName } from '@reframework/classnames';
-import { ToastClassName } from '@wip/Toast/Toast';
+import { ToastClassName } from '@components/Toast/Toast';
 
 type Placement = `${'top' | 'bottom'}-${'left' | 'center' | 'right'}`;
 

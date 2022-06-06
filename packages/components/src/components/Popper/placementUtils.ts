@@ -6,7 +6,6 @@ export type Placement = `${PlacementAxis}-${PlacementAlign}`;
  * @private
  */
 type InternalPlacement = 'end' | 'center' | 'start' | 'before' | 'after';
-type BoundarySide = 'top' | 'left' | 'right' | 'bottom';
 
 /**
  *
@@ -35,6 +34,8 @@ const parsePlacement = (
   placement: Placement,
 ): [InternalPlacement, InternalPlacement] => {
   const [axis, align] = placement.split('-') as [PlacementAxis, PlacementAlign];
+
+  // todo: center
 
   // X first
   if (axis === 'left' || axis === 'right') {
@@ -80,57 +81,60 @@ const AxisToPropertyMap = {
 } as const;
 
 /**
- *
+ * ???
  */
-const viewport = {
-  getBoundingDOMRect: (): DOMRect => {
-    return {
-      x: 0,
-      y: 0,
-      top: 0,
-      left: 0,
-      right: window.innerWidth,
-      bottom: window.innerHeight,
-      width: window.innerWidth,
-      height: window.innerHeight,
-      toJSON: () => ({}),
-    };
-  },
+
+// to do: add boundaries
+const getViewportClientRect = (): DOMRect => {
+  // to do: VisualViewport
+  const rect = {
+    x: 0,
+    y: 0,
+    top: 0,
+    left: 0,
+    right: window.innerWidth,
+    bottom: window.innerHeight,
+    width: window.innerWidth,
+    height: window.innerHeight,
+  };
+
+  return { ...rect, toJSON: () => rect };
 };
 
-type OffsetBoundaries = Record<BoundarySide, number>;
+type OffsetBoundaries = Record<'left' | 'top', number>;
 
 interface Rects {
-  targetRect: DOMRect;
+  arrowRect: DOMRect | null;
+  popperRect: DOMRect;
   originRect: DOMRect;
   viewportRect: DOMRect;
   offsetParentRect: DOMRect;
 }
 
-interface GetComputedPositionParams extends Rects {
+interface GetPositionParams extends Rects {
   offsetX?: number;
   offsetY?: number;
 }
 
 interface GetOverflowParams extends Rects {
-  computedPosition: Record<'left' | 'top', number>;
+  popperPosition: Record<'left' | 'top', number>;
 }
 
 interface PlacementHandlerParams
-  extends Pick<Rects, 'targetRect' | 'originRect'> {
+  extends Pick<Rects, 'popperRect' | 'originRect'> {
   axis: Axis;
   offset?: number;
-  parentOffset: OffsetBoundaries;
+  // parentOffset: OffsetBoundaries;
 }
 
-export class PlacementHero {
-  static getComputedPosition = (
+export class PopperHero {
+  static getPosition = (
     placement: InternalPlacementTuple,
-    params: GetComputedPositionParams,
+    params: GetPositionParams,
   ) => {
     const {
       offsetParentRect,
-      targetRect,
+      popperRect,
       originRect,
       offsetX = 0,
       offsetY = 0,
@@ -142,43 +146,151 @@ export class PlacementHero {
       getParentOffset,
       [placementX]: computePlacementX,
       [placementY]: computePlacementY,
-    } = PlacementHero;
+    } = PopperHero;
+
+    const { left: X } = computePlacementX({
+      axis: Axis.X,
+      offset: offsetX,
+      originRect,
+      popperRect,
+    });
+
+    const { top: Y } = computePlacementY({
+      axis: Axis.Y,
+      offset: offsetY,
+      originRect,
+      popperRect,
+    });
 
     /**
-     * First relative parent offset
+     * The first relative parent offset
      */
     const parentOffset = getParentOffset(originRect, offsetParentRect);
 
-    const computedPlacementX = computePlacementX({
-      axis: Axis.X,
-      offset: offsetX,
-      parentOffset,
-      originRect,
-      targetRect,
-    });
+    /**
+     *
+     */
 
-    const computedPlacementY = computePlacementY({
-      axis: Axis.Y,
-      offset: offsetY,
-      parentOffset,
-      originRect,
-      targetRect,
-    });
-
-    return {
-      ...computedPlacementX,
-      ...computedPlacementY,
+    const resultV2 = {
+      left: parentOffset.left + X,
+      top: parentOffset.top + Y,
+      DOMRect: {
+        width: popperRect.width,
+        height: popperRect.height,
+        left: originRect.left + X,
+        top: originRect.top + Y,
+        x: originRect.left + X,
+        y: originRect.top + X,
+        right: originRect.left + X + popperRect.width,
+        bottom: originRect.top + Y + popperRect.height,
+        toJSON: () => '',
+      },
     };
+
+    return resultV2;
+  };
+
+  // type ArrowPlacement = 'top' | 'left' | 'right' | 'bottom';
+
+  static getArrowPlacement = (placement: InternalPlacementTuple) => {
+    const [placementX, placementY] = placement;
+
+    if (placementX === 'after') {
+      return 'left';
+    }
+
+    if (placementX === 'before') {
+      return 'right';
+    }
+
+    if (placementY === 'after') {
+      return 'top';
+    }
+
+    if (placementY === 'before') {
+      return 'bottom';
+    }
+
+    // TODO: return null
+    return 'top';
+  };
+
+  static getArrowPosition = (
+    popperPlacement: InternalPlacementTuple,
+    params: {
+      originRect: DOMRect;
+      popperRect: DOMRect;
+      arrowRect: DOMRect;
+      popperOffset: { left: number; top: number };
+    },
+  ) => {
+    const arrowPlacement = PopperHero.getArrowPlacement(popperPlacement);
+    const axis = ['top', 'bottom'].includes(arrowPlacement) ? Axis.X : Axis.Y;
+
+    const { popperRect, originRect, arrowRect, popperOffset } = params;
+
+    const { from, size } = AxisToPropertyMap[axis];
+
+    const MIN_OFFSET = popperOffset[from] + 5;
+    const MAX_OFFSET =
+      popperOffset[from] + popperRect[size] - arrowRect[size] + 5;
+
+    const A = originRect[from] - popperRect[from];
+    const B = originRect[size] / 2 - arrowRect[size] / 2;
+    const C = popperRect[from];
+
+    let offset = A + B + C;
+    if (offset < MIN_OFFSET) offset = MIN_OFFSET;
+    if (offset > MAX_OFFSET) offset = MAX_OFFSET;
+
+    if (arrowPlacement === 'bottom') {
+      return {
+        left: offset,
+        top: popperOffset.top + popperRect.height,
+        placement: arrowPlacement,
+      };
+    }
+
+    if (arrowPlacement === 'top') {
+      return {
+        left: offset,
+        top: popperOffset.top - arrowRect.height,
+        placement: arrowPlacement,
+      };
+    }
+
+    if (arrowPlacement === 'left') {
+      return {
+        left: popperOffset.left - arrowRect.width,
+        top: offset,
+        placement: arrowPlacement,
+      };
+    }
+
+    if (arrowPlacement === 'right') {
+      return {
+        left: popperOffset.left + popperRect.width,
+        top: offset,
+        placement: arrowPlacement,
+      };
+    }
   };
 
   /**
    *
    *
    */
-  static isAnywayOverflowing = (viewportRect: DOMRect, targetRect: DOMRect) => {
+  static getSpacerPosition = (
+    axis: Axis,
+    params: { popperRect: DOMRect; originRect: DOMRect },
+  ) => {
+    const { originRect } = params;
+    // const { from, size } = AxisToPropertyMap[axis];
     return {
-      x: viewportRect.width < targetRect.width * 2,
-      y: viewportRect.height < targetRect.height * 2,
+      left: 0,
+      top: 0,
+      width: originRect.width,
+      height: originRect.height,
     };
   };
 
@@ -187,20 +299,19 @@ export class PlacementHero {
    *
    */
   static getOverflow = (params: GetOverflowParams): AxisOverflow => {
-    const { computedPosition, offsetParentRect, targetRect, viewportRect } =
+    const { popperPosition, offsetParentRect, popperRect, viewportRect } =
       params;
 
-    const sumX = offsetParentRect.left + computedPosition.left!;
-    const sumY = offsetParentRect.top + computedPosition.top!;
+    const sumX = offsetParentRect.left + popperPosition.left!;
+    const sumY = offsetParentRect.top + popperPosition.top!;
 
     return {
       // [left, right]
-      [Axis.X]: [sumX, viewportRect.width - (sumX + targetRect.width)],
+      [Axis.X]: [sumX, viewportRect.width - (sumX + popperRect.width)],
       // [top, bottom]
-      [Axis.Y]: [sumY, viewportRect.height - (sumY + targetRect.height)],
+      [Axis.Y]: [sumY, viewportRect.height - (sumY + popperRect.height)],
     };
   };
-
   /**
    *
    *
@@ -212,8 +323,6 @@ export class PlacementHero {
     return {
       top: originRect.top - parentOffsetRect.top,
       left: originRect.left - parentOffsetRect.left,
-      bottom: 0, // parentOffsetRect.bottom - originRect.bottom,
-      right: 0, // parentOffsetRect.right - originRect.right,
     };
   };
 
@@ -224,32 +333,27 @@ export class PlacementHero {
    */
   static end({
     axis,
-    parentOffset,
     originRect,
     offset = 0,
-    targetRect,
+    popperRect,
   }: PlacementHandlerParams) {
     const { from, size } = AxisToPropertyMap[axis];
     const referenceSize = originRect[size];
-    const targetSize = targetRect[size];
+    const targetSize = popperRect[size];
+
     return {
-      [from]: parentOffset[from] + referenceSize - targetSize + offset,
+      [from]: referenceSize - targetSize + offset,
     };
   }
 
   /**
    *
    */
-  static before({
-    axis,
-    parentOffset,
-    offset = 0,
-    targetRect,
-  }: PlacementHandlerParams) {
+  static before({ axis, offset = 0, popperRect }: PlacementHandlerParams) {
     const { from, size } = AxisToPropertyMap[axis];
 
     return {
-      [from]: parentOffset[from] + offset - targetRect[size],
+      [from]: offset - popperRect[size],
     };
   }
 
@@ -258,41 +362,35 @@ export class PlacementHero {
    */
   static center({
     axis,
-    parentOffset,
     originRect,
-    targetRect,
+    popperRect,
     offset = 0,
   }: PlacementHandlerParams) {
     const { from, size } = AxisToPropertyMap[axis];
-    const targetSize = targetRect[size] / 2;
+    const targetSize = popperRect[size] / 2;
     const referenceSize = originRect[size] / 2;
     return {
-      [from]: parentOffset[from] + referenceSize - targetSize + offset,
+      [from]: referenceSize - targetSize + offset,
     };
   }
 
   /**
    *
    */
-  static after({
-    axis,
-    offset = 0,
-    originRect,
-    parentOffset,
-  }: PlacementHandlerParams) {
+  static after({ axis, offset = 0, originRect }: PlacementHandlerParams) {
     const { from, size } = AxisToPropertyMap[axis];
     return {
-      [from]: parentOffset[from] + originRect[size] + offset,
+      [from]: originRect[size] + offset,
     };
   }
 
   /**
    *
    */
-  static start({ axis, offset = 0, parentOffset }: PlacementHandlerParams) {
+  static start({ axis, offset = 0 }: PlacementHandlerParams) {
     const { from } = AxisToPropertyMap[axis];
     return {
-      [from]: parentOffset[from] + offset,
+      [from]: offset,
     };
   }
 
@@ -306,25 +404,35 @@ export class PlacementHero {
     ];
   }
 
+  static getFlippedOffset(offset = 0) {
+    return offset >= 0 ? -offset : Math.abs(offset);
+  }
+
   /**
    * This method triggers reflow
    */
   static getRects = (
     targetElement: HTMLElement,
     originElement: HTMLElement,
+    arrowElement?: HTMLElement,
   ): Rects => {
     const { offsetParent } = targetElement;
+    // to do: ownDocument
     const offsetParentRect = (
       offsetParent || document.body
     ).getBoundingClientRect();
+
     const originRect = originElement.getBoundingClientRect();
-    const targetRect = targetElement.getBoundingClientRect();
-    const viewportRect = viewport.getBoundingDOMRect();
+    const popperRect = targetElement.getBoundingClientRect();
+    const arrowRect = arrowElement?.getBoundingClientRect?.();
+
+    const viewportRect = getViewportClientRect();
 
     return {
+      arrowRect: arrowRect || null,
       offsetParentRect,
-      targetRect,
       originRect,
+      popperRect,
       viewportRect,
     };
   };
@@ -336,60 +444,126 @@ export class PlacementHero {
 export function computePosition(
   placement: Placement,
   params: {
-    targetElement: HTMLElement;
+    arrowElement?: HTMLElement | null;
     originElement: HTMLElement;
+    targetElement: HTMLElement;
     offsetX?: number;
     offsetY?: number;
     //
     preventOverflowX?: boolean;
     preventOverflowY?: boolean;
+    spacing: boolean;
   },
 ) {
-  const { targetElement, originElement, offsetY, offsetX } = params;
-  const [placementX, placementY] = parsePlacement(placement);
-  const rects = PlacementHero.getRects(targetElement, originElement);
+  const { targetElement, originElement, arrowElement } = params;
+  const rects = PopperHero.getRects(targetElement, originElement, arrowElement);
+  /**
+   * Internal placement
+   */
+  let [placementX, placementY] = parsePlacement(placement);
+  const arrowPlacement = PopperHero.getArrowPlacement([placementX, placementY]);
 
-  let computedPosition = PlacementHero.getComputedPosition(
-    [placementX, placementY],
-    { ...rects, offsetY, offsetX },
-  );
+  /**
+   * Offsets to do: arrow height
+   */
+  let offsetX = params.offsetX || 0;
+  let offsetY = params.offsetY || 0;
 
-  const overflow = PlacementHero.getOverflow({
-    // @ts-expect-error ?--
-    computedPosition,
+  // ArrowOffset
+  if (rects.arrowRect) {
+    if (arrowPlacement === 'left') {
+      offsetX = rects.arrowRect.width + offsetX;
+    }
+    if (arrowPlacement === 'right') {
+      offsetX = -rects.arrowRect.width + offsetX;
+    }
+    if (arrowPlacement === 'top') {
+      offsetY = rects.arrowRect.height + offsetY;
+    }
+    if (arrowPlacement === 'bottom') {
+      offsetY = -rects.arrowRect.height + offsetY;
+    }
+  }
+
+  /**
+   * Computed position
+   */
+  let popperPosition = PopperHero.getPosition([placementX, placementY], {
+    ...rects,
+    offsetY,
+    offsetX,
+  });
+
+  /**
+   * Flipping
+   * to do: add overflow strategy
+   * x / y: flip | scroll | none
+   */
+  const overflow = PopperHero.getOverflow({
+    popperPosition,
     ...rects,
   });
 
-  const [flipPlacementX, flipPlacementY] = PlacementHero.flipPlacement(
+  const [flipPlacementX, flipPlacementY] = PopperHero.flipPlacement(
     [placementX, placementY],
     overflow,
   );
 
-  const isFlipX = placementX !== flipPlacementX;
-  const isFlipY = placementY !== flipPlacementY;
+  const flipX = placementX !== flipPlacementX;
+  const flipY = placementY !== flipPlacementY;
 
-  // TODO: Split by axis
-  if (isFlipX || isFlipY) {
-    let flipOffsetX = offsetX;
-    let flipOffsetY = offsetY;
-
-    if (isFlipX && flipOffsetX !== undefined) {
-      flipOffsetX = flipOffsetX >= 0 ? -flipOffsetX : Math.abs(flipOffsetX);
-    }
-
-    if (isFlipY && flipOffsetY !== undefined) {
-      flipOffsetY = flipOffsetY >= 0 ? -flipOffsetY : Math.abs(flipOffsetY);
-    }
-
-    computedPosition = PlacementHero.getComputedPosition(
-      [flipPlacementX, flipPlacementY],
-      {
-        ...rects,
-        offsetX: flipOffsetX,
-        offsetY: flipOffsetY,
-      },
-    );
+  if (flipX || flipY) {
+    /**
+     * Updates internal placement
+     */
+    if (flipX) placementX = flipPlacementX;
+    if (flipY) placementY = flipPlacementY;
+    /**
+     * Updates offsets
+     */
+    if (flipX) offsetX = PopperHero.getFlippedOffset(offsetX);
+    if (flipY) offsetY = PopperHero.getFlippedOffset(offsetY);
+    /**
+     * Updates flipped position
+     */
+    popperPosition = PopperHero.getPosition([placementX, placementY], {
+      ...rects,
+      offsetX,
+      offsetY,
+    });
   }
 
-  return computedPosition as { top: number; left: number };
+  /** Arrow / Spacer */
+
+  let arrowPosition;
+  let spacingPosition;
+
+  if (arrowElement) {
+    arrowPosition = PopperHero.getArrowPosition([placementX, placementY], {
+      arrowRect: arrowElement.getBoundingClientRect(),
+      originRect: rects.originRect,
+      popperRect: rects.popperRect,
+      popperOffset: popperPosition,
+    });
+  }
+
+  if (params.spacing) {
+    spacingPosition = PopperHero.getSpacerPosition(Axis.X, {
+      originRect: rects.originRect,
+      popperRect: rects.popperRect,
+    });
+  }
+
+  return {
+    popperOffset: {
+      left: popperPosition.left,
+      top: popperPosition.top,
+    },
+    arrowOffset: {
+      left: arrowPosition?.left,
+      top: arrowPosition?.top,
+    },
+    arrowPlacement: arrowPosition?.placement,
+    spacerOffset: spacingPosition,
+  };
 }

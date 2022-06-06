@@ -7,6 +7,9 @@ export default {
   title: 'Components/Paper',
   component: Paper,
   id: 'Paper/Paper',
+  parameters: {
+    layout: 'centered',
+  },
   argTypes: {
     shadow: {
       options: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -26,24 +29,13 @@ const StoryLayout: React.FC = (props) => {
         display: 'grid',
         width: '100%',
         justifyItems: 'center',
+        gap: 32,
+        gridTemplateColumns: '1fr 1fr',
       }}
     >
       {props.children}
     </Box>
   );
-};
-
-export const Sandbox: ComponentStory<typeof Paper> = (props) => (
-  <Paper shadow={props.shadow} shape={props.shape}>
-    <Box px="xxl" py="m">
-      Paper Content
-    </Box>
-  </Paper>
-);
-
-Sandbox.args = {
-  shadow: 1,
-  shape: 'circle',
 };
 
 export const Shapes: ComponentStory<typeof Paper> = () => (
@@ -57,7 +49,7 @@ export const Shapes: ComponentStory<typeof Paper> = () => (
   </StoryLayout>
 );
 
-export const shadow: ComponentStory<typeof Paper> = () => (
+export const Shadows: ComponentStory<typeof Paper> = () => (
   <StoryLayout>
     {([0, 1, 2, 3, 4, 5, 6, 7, 8, 9] as const).map((shadow) => {
       return (

@@ -5,33 +5,69 @@ import usePopper, { UsePopperProps } from './usePopper';
 
 export interface PopperProps extends UsePopperProps {
   children: React.ReactNode;
-  disablePortal?: boolean;
+  portalTarget?: HTMLElement | null;
   portalProps?: PortalProps;
+  arrow?: React.ReactNode | null;
 }
 
-const Popover = ({
+const Popper = ({
   children,
-  disablePortal,
+  portalTarget,
   portalProps,
+  arrow: arrowNode,
   ...restProps
 }: PopperProps) => {
-  const { open, ref, styles } = usePopper(restProps);
-
+  console.log(restProps.open, restProps.originElement, 'OPEN');
+  const { popperProps, arrowProps, spacerProps } = usePopper(restProps);
+  console.log(popperStyle, '----- style');
   if (!open) return null;
 
-  const content = (
-    <MergeProps ref={ref} style={styles}>
+  const arrowStyle = {
+    opacity: arrowProps.style ? 1 : 0,
+    pointerEvents: arrowProps.style ? 'inherit' : 'none',
+    position: 'absolute',
+    ...arrowProps.style,
+  };
+
+  const popperStyle = {
+    //
+    opacity: popperProps.style ? 1 : 0,
+    pointerEvents: popperProps.style ? 'inherit' : 'none',
+    //
+    width: 200, // getWidth(originElement, matchWidth),
+    //
+    ...popperProps.style,
+    position: 'absolute',
+    //
+  };
+
+  const popper = (
+    <MergeProps {...popperProps} style={popperStyle}>
       {children}
     </MergeProps>
   );
 
-  if (disablePortal) return content;
+  const arrow = arrowNode ? (
+    <MergeProps {...arrowProps} style={arrowStyle}>
+      {arrowNode}
+    </MergeProps>
+  ) : null;
+
+  // to do: portalTarget
+  // if (portalTarget === null) return content;
+  const spacer = <div />;
 
   return (
-    <Portal id="ref:popper-portal-id" {...portalProps}>
-      {content}
+    <Portal
+      id="ref:popper-portal-id"
+      portalTarget={portalTarget}
+      {...portalProps}
+    >
+      {popper}
+      {spacer}
+      {arrow}
     </Portal>
   );
 };
 
-export default Popover;
+export default Popper;

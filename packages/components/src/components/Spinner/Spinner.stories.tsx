@@ -4,8 +4,11 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import SpinnerComponent from './Spinner';
 
 export default {
-  title: 'Components/Spinner',
+  title: 'Processing/Spinner',
   component: SpinnerComponent,
+  parameters: {
+    layout: 'centered',
+  },
 } as ComponentMeta<typeof SpinnerComponent>;
 
 const Template: ComponentStory<typeof SpinnerComponent> = ({ size, color }) => (

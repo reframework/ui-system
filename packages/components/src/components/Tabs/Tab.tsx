@@ -11,15 +11,16 @@ export interface TabProps {
   // A11y props
   id?: string;
   tabIndex?: number;
+  onClick?: (e: React.MouseEvent) => void;
 }
 
 export const Tab: React.FC<TabProps> = ({
+  active,
+  className,
+  disabled,
   id,
   label,
   value,
-  active,
-  disabled,
-  className,
   ...props
 }) => {
   if (!value) {

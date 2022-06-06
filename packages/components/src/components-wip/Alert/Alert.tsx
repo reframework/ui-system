@@ -2,23 +2,15 @@ import { getClassName } from '@reframework/classnames';
 import React, { useEffect, useState } from 'react';
 import styles from './Alert.css?module';
 
-// TODO: add icons by type
-const emoji = {
-  error: '🚫',
-  warning: '☢️',
-  success: '✅',
-  info: 'ℹ️',
-};
-
 type AlertProps = {
-  title?: string;
+  content: React.ReactNode;
   type: 'info' | 'success' | 'error' | 'warning';
   duration?: number;
 };
 
 const Alert: React.FC<AlertProps> = ({
   type = 'info',
-  children,
+  content,
   duration = Infinity,
 }) => {
   const [open, setOpen] = useState(true);
@@ -44,8 +36,8 @@ const Alert: React.FC<AlertProps> = ({
 
   return (
     <div className={className}>
-      <span className={styles.icon}>{emoji[type]} </span>
-      <span>{children}</span>
+      <span className={styles.icon}>🗯</span>
+      <span>{content}</span>
     </div>
   );
 };

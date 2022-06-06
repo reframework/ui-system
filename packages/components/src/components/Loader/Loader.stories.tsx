@@ -3,8 +3,11 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import CircularProgress from './Loader';
 
 export default {
-  title: 'Components/Loader',
+  title: 'Processing/Loader',
   component: CircularProgress,
+  parameters: {
+    layout: 'centered',
+  },
 } as ComponentMeta<typeof CircularProgress>;
 
 const Template: ComponentStory<typeof CircularProgress> = ({

@@ -2,12 +2,18 @@ import React, { useEffect } from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Text } from '@components/Text';
 import { Box } from '@wip/Box';
+import { Alert } from '@wip/Alert';
+import { Paper } from '@components/Paper';
+import { Radio } from '@components/Radio';
 import { TabList, TabPanel, Tabs as TabsComponent, Tab } from '.';
 
 export default {
   title: 'Components/Tabs',
   id: 'tabs-tabs',
   component: TabsComponent,
+  parameters: {
+    layout: 'centered',
+  },
   argTypes: {
     value: {
       defaultValue: '2',
@@ -17,76 +23,128 @@ export default {
   },
 } as ComponentMeta<typeof TabsComponent>;
 
-const Template: ComponentStory<any> = ({ value: valueProp, defaultValue }) => {
-  const [value, setValue] = React.useState(valueProp);
+export const Controlled = () => {
+  const [value, setValue] = React.useState('1');
 
-  const handleChange = (value: string) => {
-    setValue(value);
-  };
-  useEffect(() => {
-    setValue(valueProp);
-  }, [valueProp]);
+  const onClick = (value: string) => () => setValue(value);
+
+  const onChange = ({ target }: React.ChangeEvent<HTMLInputElement>) =>
+    setValue(target.value);
+
+  const controls = (
+    <Box mr="m">
+      {['1', '2', '3', '4'].map((idx) => (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Box p="xxs">
+            <Radio
+              name="tabs"
+              value={idx}
+              onChange={onChange}
+              id={idx}
+              checked={idx === value}
+            />
+          </Box>
+          <label htmlFor={idx}>{idx}</label>
+        </div>
+      ))}
+    </Box>
+  );
 
   return (
-    <Box>
-      <Text>Uncontrolled</Text>
-      <Box pt="xs" pb="l">
-        <TabsComponent defaultValue={defaultValue}>
+    <div style={{ display: 'flex' }}>
+      {controls}
+      <div>
+        <TabsComponent value={value} onChange={setValue}>
           <TabList>
-            <Tab value="1" label="New Arrivals in the Longest Text" />
-            <Tab value="2" label="Two" />
-            <Tab value="3" label="Three" />
-            <Tab disabled value="4" label="Four" />
+            <Tab value="1" label="First" onClick={onClick('1')} />
+            <Tab value="2" label="Second" onClick={onClick('2')} />
+            <Tab value="3" label="Third" onClick={onClick('3')} />
+            <Tab disabled value="4" label="Fourth" onClick={onClick('4')} />
           </TabList>
-
-          <TabPanel value="1">One</TabPanel>
-          <TabPanel value="2">Two</TabPanel>
-          <TabPanel value="3">Three</TabPanel>
-          <TabPanel value="4">Four</TabPanel>
+          <Paper>
+            <Box p="m" mt="s">
+              <TabPanel value="1">First</TabPanel>
+              <TabPanel value="2">Second</TabPanel>
+              <TabPanel value="3">Third</TabPanel>
+              <TabPanel value="4">Fourth</TabPanel>
+            </Box>
+          </Paper>
         </TabsComponent>
-      </Box>
-      <Text>Controlled</Text>
-
-      <Box pt="xs" pb="l">
-        <TabsComponent value={value} onChange={handleChange}>
-          <TabList>
-            <Tab value="1" label="New Arrivals in the Longest Text" />
-            <Tab value="2" label="Two" />
-            <Tab value="3" label="Three" />
-            <Tab disabled value="4" label="Four" />
-          </TabList>
-
-          <Box mt="s">
-            <Text size="s">
-              Here could be any content which is outside the tab and doesn't
-              change
-            </Text>
-            <Text component="p" size="s">
-              Controlled tabs
-            </Text>
-          </Box>
-          <Box mt="s">
-            <TabPanel value="1">
-              <Text size="s">The first tab</Text>
-            </TabPanel>
-            <TabPanel value="2">
-              <Text size="s">Tab number two</Text>
-            </TabPanel>
-            <TabPanel value="3">
-              <Text size="s">The third tab</Text>
-            </TabPanel>
-            <TabPanel value="4">
-              <Text size="s">Disabled tab</Text>
-            </TabPanel>
-          </Box>
-        </TabsComponent>
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 
-export const Tabs = Template.bind({});
+export const Uncontrolled: ComponentStory<any> = () => {
+  return (
+    <TabsComponent defaultValue="1">
+      <TabList>
+        <Tab value="1" label="First" />
+        <Tab value="2" label="Second" />
+        <Tab value="3" label="Third" />
+        <Tab disabled value="4" label="Fourth" />
+      </TabList>
+      <Paper>
+        <Box p="m" mt="s">
+          <TabPanel value="1">First</TabPanel>
+          <TabPanel value="2">Second</TabPanel>
+          <TabPanel value="3">Third</TabPanel>
+          <TabPanel value="4">Fourth</TabPanel>
+        </Box>
+      </Paper>
+    </TabsComponent>
+  );
+};
 
-Tabs.args = {
-  defaultValue: '1',
+export const LongLabel: ComponentStory<any> = () => {
+  return (
+    <TabsComponent defaultValue="1">
+      <TabList>
+        <Tab
+          value="1"
+          label="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        />
+        <Tab value="2" label="Two" />
+        <Tab value="3" label="Three" />
+        <Tab disabled value="4" label="Four" />
+      </TabList>
+      <Paper>
+        <Box p="m" mt="s">
+          <TabPanel value="1">First</TabPanel>
+          <TabPanel value="2">Second</TabPanel>
+          <TabPanel value="3">Third</TabPanel>
+          <TabPanel value="4">Fourth</TabPanel>
+        </Box>
+      </Paper>
+    </TabsComponent>
+  );
+};
+
+export const StaticContent = () => {
+  return (
+    <TabsComponent defaultValue="1">
+      <TabList>
+        <Tab value="1" label="One" />
+        <Tab value="2" label="Two" />
+        <Tab value="3" label="Three" />
+        <Tab disabled value="4" label="Four" />
+      </TabList>
+
+      <Paper>
+        <Box p="m" mt="s">
+          <Alert
+            type="info"
+            content="Here could be any static content which is outside the tab"
+          />
+
+          <Box mt="s">
+            <TabPanel value="1">First</TabPanel>
+            <TabPanel value="2">Second</TabPanel>
+            <TabPanel value="3">Third</TabPanel>
+            <TabPanel value="4">Fourth</TabPanel>
+          </Box>
+        </Box>
+      </Paper>
+    </TabsComponent>
+  );
 };

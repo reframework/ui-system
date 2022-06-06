@@ -68,12 +68,13 @@ export interface PortalProps {
   id?: string;
   ref?: React.MutableRefObject<HTMLElement | null>;
   style?: CSSProperties;
+  portalTarget?: HTMLElement | null;
 }
 
 const Portal = React.forwardRef<HTMLElement | null, PortalProps>(
-  ({ children, element, id, style, className }, ref) => {
+  ({ children, element, id, style, className, portalTarget }, ref) => {
     const containerRef = useRef<HTMLElement | null>(
-      createContainer({ id, style, element, className }),
+      portalTarget || createContainer({ id, style, element, className }),
     );
 
     // Allow to customize the Node using a ref

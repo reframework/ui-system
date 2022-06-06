@@ -1,11 +1,12 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Button } from '@components/Button';
+import { Paper } from '@components/Paper';
 import Toast from './Toast';
 import toast from './toasts';
 
 export default {
-  title: 'Components/Toast',
+  title: 'Feedback/Toast',
   component: () => <div></div>,
   parameters: {
     layout: 'centered',
@@ -13,11 +14,11 @@ export default {
 } as ComponentMeta<typeof Toast>;
 
 const placements = [
-  'top-center',
   'top-left',
+  'top-center',
   'top-right',
-  'bottom-center',
   'bottom-left',
+  'bottom-center',
   'bottom-right',
 ] as const;
 
@@ -27,13 +28,15 @@ const wrapperStyle = {
   maxWidth: 'max-content',
   justifyItems: 'center',
   gap: 30,
+  padding: 'var(--spacing-m)',
 } as const;
 
 export const Variants: ComponentStory<typeof Toast> = () => (
-  <div style={{ ...wrapperStyle, gridTemplateColumns: '1fr 1fr 1fr 1fr' }}>
+  <Paper style={{ ...wrapperStyle, gridTemplateColumns: '1fr 1fr 1fr 1fr' }}>
     <Button
       size="medium"
-      variant="solid"
+      color="success"
+      variant="outlined"
       onClick={() =>
         toast.success({
           content: 'This is a success toast.',
@@ -46,6 +49,7 @@ export const Variants: ComponentStory<typeof Toast> = () => (
     <Button
       size="medium"
       variant="outlined"
+      color="warning"
       onClick={() => {
         toast.warning({
           content: 'This is a warning toast.',
@@ -57,7 +61,7 @@ export const Variants: ComponentStory<typeof Toast> = () => (
     </Button>
     <Button
       size="medium"
-      color="secondary"
+      color="error"
       variant="outlined"
       onClick={() =>
         toast.error({
@@ -70,7 +74,6 @@ export const Variants: ComponentStory<typeof Toast> = () => (
     </Button>
     <Button
       size="medium"
-      color="neutral"
       variant="outlined"
       onClick={() => {
         toast.info({
@@ -82,12 +85,12 @@ export const Variants: ComponentStory<typeof Toast> = () => (
       Info
     </Button>
     <Toast />
-  </div>
+  </Paper>
 );
 
 export const Placement: ComponentStory<typeof Toast> = () => {
   return (
-    <div style={wrapperStyle}>
+    <Paper style={wrapperStyle}>
       {placements.map((placement) => {
         return (
           <Button
@@ -107,12 +110,12 @@ export const Placement: ComponentStory<typeof Toast> = () => {
       })}
 
       <Toast />
-    </div>
+    </Paper>
   );
 };
 
 export const Mutations: ComponentStory<typeof Toast> = () => (
-  <div style={{ ...wrapperStyle, gridTemplateColumns: '1fr' }}>
+  <Paper style={{ ...wrapperStyle, gridTemplateColumns: '1fr' }}>
     <Button
       size="medium"
       variant="outlined"
@@ -139,5 +142,5 @@ export const Mutations: ComponentStory<typeof Toast> = () => (
     </Button>
 
     <Toast />
-  </div>
+  </Paper>
 );

@@ -6,7 +6,7 @@ import { Box } from '@wip/Box';
 import PopoverComponent, { PopoverProps } from './Popover';
 
 export default {
-  title: 'Components/Popover',
+  title: 'Popups/Popover',
   component: PopoverComponent,
   argTypes: {
     placement: {
@@ -168,13 +168,13 @@ export const ContextMenu = () => {
         height: '400px',
       }}
     >
-      Right click
+      Open modal
       <PopoverComponent
         matchWidth={200}
         onClickAway={onClose}
         open={!!origin}
         originElement={origin}
-        placement="bottom-start"
+        placement="center-center"
       >
         <div
           style={{
@@ -206,7 +206,7 @@ export const Modal = () => {
       <PopoverComponent
         matchWidth={300}
         onClickAway={() => {
-          // setOpen(false);
+          setOpen(false);
         }}
         open={open}
         originElement={

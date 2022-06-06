@@ -1,4 +1,4 @@
-import { placements, ToastsRecord } from '@wip/Toast/Toast';
+import { placements, ToastsRecord } from '@components/Toast/Toast';
 import React from 'react';
 import { ToastItemProps } from './ToastItem';
 

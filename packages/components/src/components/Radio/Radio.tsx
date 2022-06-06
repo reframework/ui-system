@@ -10,8 +10,8 @@ export interface RadioProps {
   checked: boolean;
   disabled?: boolean;
   id?: string;
-  name: string;
-  onChange?: (e: React.ChangeEvent) => void;
+  name?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onClick?: (e: React.MouseEvent) => void;
   value: string;
 }
