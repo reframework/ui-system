@@ -7,7 +7,7 @@ import toast from './toasts';
 
 export default {
   title: 'Feedback/Toast',
-  component: () => <div></div>,
+  component: Toast,
   parameters: {
     layout: 'centered',
   },

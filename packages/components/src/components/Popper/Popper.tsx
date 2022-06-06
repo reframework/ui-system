@@ -19,7 +19,7 @@ const Popper = ({
 }: PopperProps) => {
   console.log(restProps.open, restProps.originElement, 'OPEN');
   const { popperProps, arrowProps, spacerProps } = usePopper(restProps);
-  console.log(popperStyle, '----- style');
+
   if (!open) return null;
 
   const arrowStyle = {
@@ -34,7 +34,7 @@ const Popper = ({
     opacity: popperProps.style ? 1 : 0,
     pointerEvents: popperProps.style ? 'inherit' : 'none',
     //
-    width: 200, // getWidth(originElement, matchWidth),
+    // width: 200, // getWidth(originElement, matchWidth),
     //
     ...popperProps.style,
     position: 'absolute',

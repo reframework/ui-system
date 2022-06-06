@@ -231,9 +231,9 @@ export class PopperHero {
 
     const { from, size } = AxisToPropertyMap[axis];
 
-    const MIN_OFFSET = popperOffset[from] + 5;
+    const MIN_OFFSET = popperOffset[from] + 10;
     const MAX_OFFSET =
-      popperOffset[from] + popperRect[size] - arrowRect[size] + 5;
+      popperOffset[from] + popperRect[size] - (arrowRect[size] + 10);
 
     const A = originRect[from] - popperRect[from];
     const B = originRect[size] / 2 - arrowRect[size] / 2;
@@ -538,9 +538,9 @@ export function computePosition(
   let arrowPosition;
   let spacingPosition;
 
-  if (arrowElement) {
+  if (rects.arrowRect) {
     arrowPosition = PopperHero.getArrowPosition([placementX, placementY], {
-      arrowRect: arrowElement.getBoundingClientRect(),
+      arrowRect: rects.arrowRect,
       originRect: rects.originRect,
       popperRect: rects.popperRect,
       popperOffset: popperPosition,

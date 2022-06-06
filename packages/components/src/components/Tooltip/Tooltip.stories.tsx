@@ -3,56 +3,61 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import { Button } from '@components/Button';
 import { Box } from '@wip/Box';
-import Tooltip, { TooltipProps } from './Tooltip';
+import Tooltip from './Tooltip';
 
 export default {
   title: 'Popups/Tooltip',
   component: Tooltip,
-  argTypes: {
-    placement: {
-      options: [
-        'bottom-center',
-        'bottom-end',
-        'bottom-start',
-        'left-center',
-        'left-end',
-        'left-start',
-        'right-center',
-        'right-end',
-        'right-start',
-        'top-center',
-        'top-end',
-        'top-start',
-      ],
-      control: { type: 'select' },
-    },
+  parameters: {
+    layout: 'centered',
   },
 } as ComponentMeta<typeof Tooltip>;
 
+const placements = [
+  'top-start',
+  'top-center',
+  'top-end',
+  //
+  'left-start',
+  '',
+  'right-start',
+  'left-center',
+  '',
+  'right-center',
+  'left-end',
+  '',
+  'right-end',
+  //
+  'bottom-start',
+  'bottom-center',
+  'bottom-end',
+] as const;
+
+const wrapperStyle = {
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr 1fr',
+  maxWidth: 'max-content',
+  justifyItems: 'center',
+  gap: 30,
+  padding: 'var(--spacing-m)',
+} as const;
+
 export const Uncontrolled = () => {
   return (
-    <Box
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100vh',
-      }}
-    >
-      <Tooltip
-        title={'Tooltip'}
-        placement="bottom-center"
-        paperProps={{
-          style: {
-            height: '200px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          },
-        }}
-      >
-        <Button variant="solid">Click me!</Button>
-      </Tooltip>
+    <Box style={wrapperStyle}>
+      {placements.map((placement) => {
+        if (!placement) {
+          return <div />;
+        }
+
+        return (
+          <Tooltip title={<Box p="xxs">Tooltip</Box>} placement={placement}>
+            <Button stretch variant="outlined" size="large">
+              {placement.toUpperCase()}
+            </Button>
+          </Tooltip>
+        );
+      })}
     </Box>
   );
 };
