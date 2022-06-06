@@ -42,22 +42,38 @@ const wrapperStyle = {
   padding: 'var(--spacing-m)',
 } as const;
 
-export const Uncontrolled = () => {
+export const Placement = () => {
   return (
     <Box style={wrapperStyle}>
-      {placements.map((placement) => {
+      {placements.map((placement, idx) => {
         if (!placement) {
-          return <div />;
+          return <div key={idx} />;
         }
 
         return (
-          <Tooltip title={<Box p="xxs">Tooltip</Box>} placement={placement}>
+          <Tooltip
+            key={idx}
+            title={<Box p="xxs">Tooltip</Box>}
+            placement={placement}
+          >
             <Button stretch variant="outlined" size="large">
               {placement.toUpperCase()}
             </Button>
           </Tooltip>
         );
       })}
+    </Box>
+  );
+};
+
+export const Uncontrolled = () => {
+  return (
+    <Box style={wrapperStyle}>
+      <Tooltip title={<Box p="xxs">Tooltip</Box>} placement="bottom-start">
+        <Button stretch variant="outlined" size="large">
+          Click
+        </Button>
+      </Tooltip>
     </Box>
   );
 };

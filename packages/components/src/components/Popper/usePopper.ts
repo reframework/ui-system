@@ -7,15 +7,15 @@ import { Placement, computePosition } from './placementUtils';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getWidth = (
-  element?: HTMLElement | null,
+  originElement?: HTMLElement | null,
   matchWidth?: boolean | number,
 ) => {
   if (isNumber(matchWidth)) {
     return matchWidth;
   }
 
-  if (matchWidth === true && element) {
-    return element.clientWidth;
+  if (matchWidth === true && originElement) {
+    return originElement.clientWidth;
   }
 };
 
@@ -31,6 +31,7 @@ export interface UsePopperProps {
   onOpen?: () => void;
   open?: boolean;
   placement?: Placement;
+  spacer?: boolean;
   // position?: 'fixed' | 'absolute';
   // preventOverflowX?: boolean;
   // preventOverflowY?: boolean;
@@ -49,12 +50,12 @@ const usePopper = ({
   open,
   originElement,
   placement,
+  spacer,
   matchWidth,
 }: UsePopperProps) => {
   const isMounted = useMounted();
 
-  const [computedPosition, setComputedPosition] =
-    React.useState<{ popper: any; arrow: any } | null>(null);
+  const [state, setState] = React.useState<any>(null);
 
   const [popperElement, setPopperElement] =
     React.useState<HTMLDivElement | null>(null);
@@ -86,20 +87,28 @@ const usePopper = ({
 
   const updatePosition = React.useCallback(() => {
     if (!placement || !popperElement || !originElement) return;
-    const pos = computePosition(placement, {
+    const computedPosition = computePosition(placement, {
       arrowElement,
       targetElement: popperElement,
       originElement,
       offsetX,
       offsetY,
-      spacing: false,
+      spacer,
     });
 
-    setComputedPosition(pos);
-  }, [originElement, placement, offsetX, offsetY, arrowElement, popperElement]);
+    setState(computedPosition);
+  }, [
+    arrowElement,
+    offsetX,
+    offsetY,
+    originElement,
+    placement,
+    popperElement,
+    spacer,
+  ]);
 
   const resetPosition = React.useCallback(() => {
-    setComputedPosition(null);
+    setState(null);
   }, []);
 
   React.useLayoutEffect(() => {
@@ -139,26 +148,17 @@ const usePopper = ({
     popperProps: {
       open: isOpen,
       ref: setPopperElement,
-      ...(computedPosition
-        ? {
-            style: {
-              ...computedPosition?.popperOffset,
-            },
-          }
-        : {}),
+      width: getWidth(originElement, matchWidth),
+      ...(state ? { style: { ...state?.popperOffset } } : {}),
     },
     arrowProps: {
       ref: setArrowElement,
-      placement: computedPosition?.arrowPlacement,
-      ...(computedPosition
-        ? {
-            style: {
-              ...computedPosition?.arrowOffset,
-            },
-          }
-        : {}),
+      placement: state?.arrowPlacement,
+      ...(state ? { style: { ...state?.arrowOffset } } : {}),
     },
-    spacerProps: {},
+    spacerProps: {
+      ...(state ? { style: { ...state?.spacerOffset } } : {}),
+    },
   };
 };
 

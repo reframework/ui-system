@@ -2,7 +2,7 @@ import React from 'react';
 import { Popper, PopperProps } from '@components/Popper';
 import { PaperProps, Paper } from '@components/Paper';
 
-export interface PopoverProps extends PopperProps {
+export interface PopoverProps extends Omit<PopperProps, 'spacer' | 'arrow'> {
   children: React.ReactNode;
   paperProps?: PaperProps;
 }

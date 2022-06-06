@@ -107,7 +107,6 @@ function useClickOutside(props: UseClickOutsideProps) {
       return false;
     }
 
-    console.log(element, 'NODE', event.target);
     if (element.contains(event.target as Node)) {
       // Inside Node
       return false;

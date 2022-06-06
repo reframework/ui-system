@@ -1,0 +1,10 @@
+.ref\:tooltip-arrow {
+  &::before {
+    background: var(--color-scale-white);
+    content: '';
+    display: block;
+    height: 10px;
+    transform: rotate(45deg);
+    width: 10px;
+  }
+}

@@ -6,6 +6,7 @@ export type Placement = `${PlacementAxis}-${PlacementAlign}`;
  * @private
  */
 type InternalPlacement = 'end' | 'center' | 'start' | 'before' | 'after';
+// type ArrowPlacement = 'top' | 'left' | 'right' | 'bottom';
 
 /**
  *
@@ -144,18 +145,18 @@ export class PopperHero {
 
     const {
       getParentOffset,
-      [placementX]: computePlacementX,
-      [placementY]: computePlacementY,
+      [placementX]: getOffsetX,
+      [placementY]: getOffsetY,
     } = PopperHero;
 
-    const { left: X } = computePlacementX({
+    const { left: X } = getOffsetX({
       axis: Axis.X,
       offset: offsetX,
       originRect,
       popperRect,
     });
 
-    const { top: Y } = computePlacementY({
+    const { top: Y } = getOffsetY({
       axis: Axis.Y,
       offset: offsetY,
       originRect,
@@ -167,30 +168,28 @@ export class PopperHero {
      */
     const parentOffset = getParentOffset(originRect, offsetParentRect);
 
-    /**
-     *
-     */
+    const { width, height } = popperRect;
+    const offsetParentLeft = parentOffset.left + X;
+    const offsetParentTop = parentOffset.top + Y;
+    const x = originRect.left + X;
+    const y = originRect.top + Y;
 
-    const resultV2 = {
-      left: parentOffset.left + X,
-      top: parentOffset.top + Y,
+    return {
+      left: offsetParentLeft,
+      top: offsetParentTop,
       DOMRect: {
-        width: popperRect.width,
-        height: popperRect.height,
-        left: originRect.left + X,
-        top: originRect.top + Y,
-        x: originRect.left + X,
-        y: originRect.top + X,
-        right: originRect.left + X + popperRect.width,
-        bottom: originRect.top + Y + popperRect.height,
+        width,
+        height,
+        left: x,
+        top: y,
+        x,
+        y,
+        right: x + width,
+        bottom: y + height,
         toJSON: () => '',
       },
     };
-
-    return resultV2;
   };
-
-  // type ArrowPlacement = 'top' | 'left' | 'right' | 'bottom';
 
   static getArrowPlacement = (placement: InternalPlacementTuple) => {
     const [placementX, placementY] = placement;
@@ -281,17 +280,63 @@ export class PopperHero {
    *
    */
   static getSpacerPosition = (
-    axis: Axis,
-    params: { popperRect: DOMRect; originRect: DOMRect },
+    popperPlacement: InternalPlacementTuple,
+    params: {
+      popperRect: DOMRect;
+      originRect: DOMRect;
+      popperOffset: { left: number; top: number };
+    },
   ) => {
-    const { originRect } = params;
-    // const { from, size } = AxisToPropertyMap[axis];
-    return {
-      left: 0,
-      top: 0,
-      width: originRect.width,
-      height: originRect.height,
-    };
+    const spacerPlacement = PopperHero.getArrowPlacement(popperPlacement);
+    const { popperRect, originRect, popperOffset } = params;
+
+    if (spacerPlacement === 'bottom') {
+      const distanceX = originRect.left - popperRect.left;
+      const distanceY = originRect.top - popperRect.bottom;
+
+      return {
+        left: popperOffset.left + distanceX,
+        top: popperOffset.top + popperRect.height,
+        width: originRect.width,
+        height: distanceY,
+      };
+    }
+
+    if (spacerPlacement === 'top') {
+      const distanceX = originRect.left - popperRect.left;
+      const distanceY = popperRect.top - originRect.bottom;
+
+      return {
+        left: popperOffset.left + distanceX,
+        top: originRect.bottom,
+        width: originRect.width,
+        height: distanceY,
+      };
+    }
+
+    if (spacerPlacement === 'left') {
+      const distanceX = popperRect.left - originRect.right;
+      const distanceY = originRect.top - popperRect.top;
+
+      return {
+        left: popperOffset.left - distanceX,
+        top: popperOffset.top + distanceY,
+        width: distanceX,
+        height: originRect.height,
+      };
+    }
+
+    if (spacerPlacement === 'right') {
+      const distanceX = originRect.left - popperRect.right;
+      const distanceY = originRect.top - popperRect.top;
+
+      return {
+        left: popperOffset.left + popperRect.width,
+        top: popperOffset.top + distanceY,
+        width: distanceX,
+        height: originRect.height,
+      };
+    }
   };
 
   /**
@@ -444,7 +489,7 @@ export class PopperHero {
 export function computePosition(
   placement: Placement,
   params: {
-    arrowElement?: HTMLElement | null;
+    arrowElement?: HTMLElement;
     originElement: HTMLElement;
     targetElement: HTMLElement;
     offsetX?: number;
@@ -452,7 +497,7 @@ export function computePosition(
     //
     preventOverflowX?: boolean;
     preventOverflowY?: boolean;
-    spacing: boolean;
+    spacer?: boolean;
   },
 ) {
   const { targetElement, originElement, arrowElement } = params;
@@ -461,32 +506,30 @@ export function computePosition(
    * Internal placement
    */
   let [placementX, placementY] = parsePlacement(placement);
-  const arrowPlacement = PopperHero.getArrowPlacement([placementX, placementY]);
 
-  /**
-   * Offsets to do: arrow height
-   */
   let offsetX = params.offsetX || 0;
   let offsetY = params.offsetY || 0;
 
-  // ArrowOffset
+  /**
+   * With an arrow, the minimum offset should be the size of the arrow
+   */
   if (rects.arrowRect) {
-    if (arrowPlacement === 'left') {
+    const arrowPlacement = PopperHero.getArrowPlacement([
+      placementX,
+      placementY,
+    ]);
+
+    if (arrowPlacement === 'left' || arrowPlacement === 'right') {
       offsetX = rects.arrowRect.width + offsetX;
     }
-    if (arrowPlacement === 'right') {
-      offsetX = -rects.arrowRect.width + offsetX;
-    }
-    if (arrowPlacement === 'top') {
+
+    if (arrowPlacement === 'top' || arrowPlacement === 'bottom') {
       offsetY = rects.arrowRect.height + offsetY;
-    }
-    if (arrowPlacement === 'bottom') {
-      offsetY = -rects.arrowRect.height + offsetY;
     }
   }
 
   /**
-   * Computed position
+   * The first computed position, before flipping
    */
   let popperPosition = PopperHero.getPosition([placementX, placementY], {
     ...rects,
@@ -536,34 +579,46 @@ export function computePosition(
   /** Arrow / Spacer */
 
   let arrowPosition;
-  let spacingPosition;
+  let spacerPosition;
 
   if (rects.arrowRect) {
     arrowPosition = PopperHero.getArrowPosition([placementX, placementY], {
       arrowRect: rects.arrowRect,
       originRect: rects.originRect,
-      popperRect: rects.popperRect,
-      popperOffset: popperPosition,
+      popperRect: popperPosition.DOMRect,
+      popperOffset: {
+        left: popperPosition.left,
+        top: popperPosition.top,
+      },
     });
   }
 
-  if (params.spacing) {
-    spacingPosition = PopperHero.getSpacerPosition(Axis.X, {
+  if (params.spacer) {
+    spacerPosition = PopperHero.getSpacerPosition([placementX, placementY], {
       originRect: rects.originRect,
-      popperRect: rects.popperRect,
+      popperRect: popperPosition.DOMRect,
+      popperOffset: {
+        left: popperPosition.left,
+        top: popperPosition.top,
+      },
     });
   }
 
   return {
-    popperOffset: {
-      left: popperPosition.left,
-      top: popperPosition.top,
-    },
+    arrowPlacement: arrowPosition?.placement,
     arrowOffset: {
       left: arrowPosition?.left,
       top: arrowPosition?.top,
     },
-    arrowPlacement: arrowPosition?.placement,
-    spacerOffset: spacingPosition,
+    popperOffset: {
+      left: popperPosition.left,
+      top: popperPosition.top,
+    },
+    spacerOffset: {
+      left: spacerPosition?.left,
+      top: spacerPosition?.top,
+      width: spacerPosition?.width,
+      height: spacerPosition?.height,
+    },
   };
 }

@@ -18,6 +18,7 @@ const mergeStyles = (styleA: {}, styleB: {}) => {
 };
 
 const useCloneElement = (element: React.ReactNode, props: Props) => {
+  // if (!element || !React.isValidElement(element)) return null
   const { style: parentStyle, ref: parentRef, ...parentProps } = props;
 
   const child = React.Children.only(element) as React.ReactElement;

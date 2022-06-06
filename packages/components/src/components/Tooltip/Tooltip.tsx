@@ -3,46 +3,16 @@ import { Popper, PopperProps } from '@components/Popper';
 import { PaperProps, Paper } from '@components/Paper';
 import useCloneElement from '@wip/MergeProps/cloneElement';
 import { useControlledState } from '@utils/useControlledState';
+import { Arrow } from './Arrow';
 
+// TODO: create useTooltipHook
+// Add events click/focus/touch
 export interface TooltipProps extends PopperProps {
   children: React.ReactNode;
   paperProps?: PaperProps;
   title: React.ReactNode;
+  // to do: Add more props
 }
-
-interface ArrowProps {
-  style?: React.CSSProperties;
-  placement?: 'top' | 'right' | 'bottom' | 'left';
-}
-
-const Arrow = React.forwardRef<HTMLDivElement | null, ArrowProps>(
-  ({ style, placement }, ref) => {
-    const offsetMapping = {
-      left: '50%, 0px',
-      right: '-50%, 0px',
-      top: '0px, 50%',
-      bottom: '0px, -50%',
-    };
-
-    const styles = {
-      transform: `translate(${offsetMapping[placement!]})`,
-      ...style,
-    } as React.CSSProperties;
-
-    const beforeStyle = {
-      width: 10,
-      height: 10,
-      background: 'var(--color-scale-white)',
-      transform: `rotate(45deg)`,
-    };
-
-    return (
-      <div ref={ref} style={styles}>
-        <div style={beforeStyle} />
-      </div>
-    );
-  },
-);
 
 const Tooltip: React.FC<TooltipProps> = ({
   children,
@@ -50,6 +20,7 @@ const Tooltip: React.FC<TooltipProps> = ({
   paperProps,
   open,
   defaultOpen,
+  arrow = <Arrow />,
   ...props
 }) => {
   const { state: internalOpen, setState: setInternalOpen } = useControlledState(
@@ -60,15 +31,61 @@ const Tooltip: React.FC<TooltipProps> = ({
   );
 
   const originRef = React.useRef<HTMLElement | null>(null);
+  const spacerRef = React.useRef<HTMLDivElement | null>(null);
+  const popperRef = React.useRef<HTMLDivElement | null>(null);
+  /**
+   * Closing timeout
+   */
+  const closeTimerRef = React.useRef(0);
+
+  const onPointerOver = () => {
+    clearTimeout(closeTimerRef.current);
+    if (internalOpen) return;
+    setInternalOpen(true);
+  };
+
+  const onSpacerPointerOver = () => {
+    clearTimeout(closeTimerRef.current);
+  };
+
+  const onPointerOut = ({ clientX, clientY, target }: React.PointerEvent) => {
+    if (spacerRef.current && target !== spacerRef.current) {
+      const spacerRect = spacerRef.current?.getBoundingClientRect();
+      /**
+       * Adds the additional spacing
+       */
+      if (
+        clientX >= spacerRect?.left &&
+        clientX <= spacerRect?.right &&
+        clientY >= spacerRect?.top &&
+        clientY <= spacerRect?.bottom
+      ) {
+        return;
+      }
+    }
+
+    const CLOSE_TIMEOUT = 100;
+    closeTimerRef.current = window.setTimeout(
+      () => setInternalOpen(false),
+      CLOSE_TIMEOUT,
+    );
+  };
 
   const origin = useCloneElement(children, {
     ref: originRef,
-    onClick: () => setInternalOpen(true),
+    onClick: () => setInternalOpen((prev) => !prev),
+    onPointerOver,
+    onPointerOut,
   });
 
-  const onClickOutside = () => {
-    setInternalOpen(false);
-  };
+  // TODO: add only on hover
+  const spacer = (
+    <div
+      ref={spacerRef}
+      onPointerOut={onPointerOut}
+      onPointerOver={onSpacerPointerOver}
+    />
+  );
 
   return (
     <>
@@ -76,11 +93,18 @@ const Tooltip: React.FC<TooltipProps> = ({
       <Popper
         {...props}
         originElement={originRef.current}
-        onClickOutside={onClickOutside}
         open={internalOpen}
-        arrow={<Arrow />}
+        arrow={arrow}
+        spacer={spacer}
       >
-        <Paper {...paperProps}>{title}</Paper>
+        <Paper
+          {...paperProps}
+          ref={popperRef}
+          onPointerOut={onPointerOut}
+          onPointerOver={onPointerOver}
+        >
+          {title}
+        </Paper>
       </Popper>
     </>
   );

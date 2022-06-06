@@ -3,22 +3,25 @@ import { Portal, PortalProps } from '@components/Portal';
 import { MergeProps } from '@wip/MergeProps';
 import usePopper, { UsePopperProps } from './usePopper';
 
-export interface PopperProps extends UsePopperProps {
+export interface PopperProps extends Omit<UsePopperProps, 'spacer'> {
   children: React.ReactNode;
-  portalTarget?: HTMLElement | null;
   portalProps?: PortalProps;
   arrow?: React.ReactNode | null;
+  spacer?: React.ReactNode | null;
 }
 
 const Popper = ({
   children,
-  portalTarget,
   portalProps,
   arrow: arrowNode,
+  spacer: spacerNode,
   ...restProps
 }: PopperProps) => {
-  console.log(restProps.open, restProps.originElement, 'OPEN');
-  const { popperProps, arrowProps, spacerProps } = usePopper(restProps);
+  const { popperProps, arrowProps, spacerProps } = usePopper({
+    ...restProps,
+    spacer: !!spacerNode,
+    // arrow: arrowNode,
+  });
 
   if (!open) return null;
 
@@ -26,6 +29,7 @@ const Popper = ({
     opacity: arrowProps.style ? 1 : 0,
     pointerEvents: arrowProps.style ? 'inherit' : 'none',
     position: 'absolute',
+
     ...arrowProps.style,
   };
 
@@ -33,12 +37,18 @@ const Popper = ({
     //
     opacity: popperProps.style ? 1 : 0,
     pointerEvents: popperProps.style ? 'inherit' : 'none',
-    //
-    // width: 200, // getWidth(originElement, matchWidth),
+    width: popperProps?.width,
     //
     ...popperProps.style,
     position: 'absolute',
     //
+  };
+
+  const spacerStyle = {
+    opacity: 0,
+    pointerEvents: spacerProps.style ? 'inherit' : 'none',
+    position: 'absolute',
+    ...spacerProps.style,
   };
 
   const popper = (
@@ -53,19 +63,25 @@ const Popper = ({
     </MergeProps>
   ) : null;
 
-  // to do: portalTarget
-  // if (portalTarget === null) return content;
-  const spacer = <div />;
+  const spacer = spacerNode ? (
+    <MergeProps {...spacerProps} style={spacerStyle}>
+      {spacerNode}
+    </MergeProps>
+  ) : null;
 
-  return (
-    <Portal
-      id="ref:popper-portal-id"
-      portalTarget={portalTarget}
-      {...portalProps}
-    >
+  const content = (
+    <>
       {popper}
       {spacer}
       {arrow}
+    </>
+  );
+
+  if (portalProps?.portalTarget === null) return content;
+
+  return (
+    <Portal id="ref:popper-portal-id" {...portalProps}>
+      {content}
     </Portal>
   );
 };
