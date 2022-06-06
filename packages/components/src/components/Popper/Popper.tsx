@@ -71,8 +71,8 @@ const Popper = ({
 
   const content = (
     <>
-      {popper}
       {spacer}
+      {popper}
       {arrow}
     </>
   );

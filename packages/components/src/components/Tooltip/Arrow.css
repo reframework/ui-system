@@ -1,4 +1,36 @@
 .ref\:tooltip-arrow {
+  &.left {
+    transform: translate(50%, 0);
+
+    &::before {
+      clip-path: polygon(100% 100%, 0 100%, 0 0);
+    }
+  }
+
+  &.right {
+    transform: translate(-50%, 0);
+
+    &::before {
+      clip-path: polygon(100% 100%, 100% 0, 0 0);
+    }
+  }
+
+  &.top {
+    transform: translate(0, 50%);
+
+    &::before {
+      clip-path: polygon(0 0, 0 100%, 100% 0);
+    }
+  }
+
+  &.bottom {
+    transform: translate(0, -50%);
+
+    &::before {
+      clip-path: polygon(100% 0, 0 100%, 100% 100%);
+    }
+  }
+
   &::before {
     background: var(--color-scale-white);
     content: '';

@@ -1,3 +1,4 @@
+import { getClassName } from '@reframework/classnames';
 import React from 'react';
 import './Arrow.css';
 
@@ -12,20 +13,11 @@ interface ArrowProps {
 
 export const Arrow = React.forwardRef<HTMLDivElement | null, ArrowProps>(
   ({ style, placement }, ref) => {
-    const offsetMapping = {
-      left: '50%, 0px',
-      right: '-50%, 0px',
-      top: '0px, 50%',
-      bottom: '0px, -50%',
-    };
+    const arrowClassName = getClassName({
+      [ArrowClassNameEnum.arrow]: true,
+      [placement!]: !!placement,
+    });
 
-    const styles = {
-      transform: `translate(${offsetMapping[placement!]})`,
-      ...style,
-    } as React.CSSProperties;
-
-    return (
-      <div className={ArrowClassNameEnum.arrow} ref={ref} style={styles} />
-    );
+    return <div className={arrowClassName} ref={ref} style={style} />;
   },
 );

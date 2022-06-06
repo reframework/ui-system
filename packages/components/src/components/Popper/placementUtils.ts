@@ -519,12 +519,20 @@ export function computePosition(
       placementY,
     ]);
 
-    if (arrowPlacement === 'left' || arrowPlacement === 'right') {
+    if (arrowPlacement === 'left') {
       offsetX = rects.arrowRect.width + offsetX;
     }
 
-    if (arrowPlacement === 'top' || arrowPlacement === 'bottom') {
+    if (arrowPlacement === 'top') {
       offsetY = rects.arrowRect.height + offsetY;
+    }
+
+    if (arrowPlacement === 'right') {
+      offsetX = -rects.arrowRect.width - offsetX;
+    }
+
+    if (arrowPlacement === 'bottom') {
+      offsetY = -rects.arrowRect.height - offsetY;
     }
   }
 
@@ -585,7 +593,7 @@ export function computePosition(
     arrowPosition = PopperHero.getArrowPosition([placementX, placementY], {
       arrowRect: rects.arrowRect,
       originRect: rects.originRect,
-      popperRect: popperPosition.DOMRect,
+      popperRect: rects.popperRect,
       popperOffset: {
         left: popperPosition.left,
         top: popperPosition.top,
