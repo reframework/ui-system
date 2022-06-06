@@ -1,7 +1,6 @@
 import React from 'react';
 import { Popper, PopperProps } from '@components/Popper';
 import { PaperProps, Paper } from '@components/Paper';
-import { MergedProps } from '@wip/MergeProps/MergeProps.stories';
 import useCloneElement from '@wip/MergeProps/cloneElement';
 import { useControlledState } from '@utils/useControlledState';
 
@@ -18,7 +17,7 @@ interface ArrowProps {
 
 const Arrow = React.forwardRef<HTMLDivElement | null, ArrowProps>(
   ({ style, placement }, ref) => {
-    const translateMapping = {
+    const offsetMapping = {
       left: '50%, 0px',
       right: '-50%, 0px',
       top: '0px, 50%',
@@ -26,7 +25,7 @@ const Arrow = React.forwardRef<HTMLDivElement | null, ArrowProps>(
     };
 
     const styles = {
-      transform: `translate(${translateMapping[placement!]})`,
+      transform: `translate(${offsetMapping[placement!]})`,
       ...style,
     } as React.CSSProperties;
 
@@ -55,8 +54,8 @@ const Tooltip: React.FC<TooltipProps> = ({
 }) => {
   const { state: internalOpen, setState: setInternalOpen } = useControlledState(
     {
-      default: !!defaultOpen,
       controlled: open,
+      default: !!defaultOpen,
     },
   );
 
@@ -64,9 +63,7 @@ const Tooltip: React.FC<TooltipProps> = ({
 
   const origin = useCloneElement(children, {
     ref: originRef,
-    onClick: () => {
-      setInternalOpen(true);
-    },
+    onClick: () => setInternalOpen(true),
   });
 
   const onClickOutside = () => {
