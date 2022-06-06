@@ -51,9 +51,7 @@ const Tooltip: React.FC<TooltipProps> = ({
   const onPointerOut = ({ clientX, clientY, target }: React.PointerEvent) => {
     if (spacerRef.current && target !== spacerRef.current) {
       const spacerRect = spacerRef.current?.getBoundingClientRect();
-      /**
-       * Adds the additional spacing
-       */
+
       if (
         clientX >= spacerRect?.left &&
         clientX <= spacerRect?.right &&
@@ -64,6 +62,7 @@ const Tooltip: React.FC<TooltipProps> = ({
       }
     }
 
+    // TODO: add timeout props
     const CLOSE_TIMEOUT = 100;
     closeTimerRef.current = window.setTimeout(
       () => setInternalOpen(false),
