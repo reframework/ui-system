@@ -12,45 +12,103 @@ export interface TooltipProps extends PopperProps {
   paperProps?: PaperProps;
   title: React.ReactNode;
   // to do: Add more props
+  disableClickListener?: boolean;
+  disableClickOutsideListener?: boolean;
+  disableFocusListener?: boolean;
+  disableHoverListener?: boolean;
+  disableTouchListener?: boolean;
 }
 
-const Tooltip: React.FC<TooltipProps> = ({
-  children,
-  title,
-  paperProps,
-  open,
-  defaultOpen,
-  arrow = <Arrow />,
-  ...props
+interface UseListenerParams {
+  disabled: boolean;
+  setState: (state: boolean) => void;
+  state: boolean;
+}
+
+/**
+ * Touching
+ */
+const useListeners = (params: {
+  disableTouchListener: boolean;
+  disableFocusListener: boolean;
+  setState: UseListenerParams['setState'];
 }) => {
-  const { state: internalOpen, setState: setInternalOpen } = useControlledState(
-    {
-      controlled: open,
-      default: !!defaultOpen,
-    },
-  );
+  const { disableFocusListener, disableTouchListener, setState } = params;
+  // TODO: add timeout props
+  const OPEN_TIMEOUT = 700;
 
-  /**
-   * Refs
-   */
-  const originRef = React.useRef<HTMLElement | null>(null);
-  const spacerRef = React.useRef<HTMLDivElement | null>(null);
-  const popperRef = React.useRef<HTMLDivElement | null>(null);
-  /**
-   * Closing timeout
-   */
-  const closeTimerRef = React.useRef(0);
+  const openTimerRef = React.useRef<number>(-1);
+  const isOpenRef = React.useRef(false);
+  const isTouchInteractionRef = React.useRef(false);
 
-  const onPointerOver = () => {
-    clearTimeout(closeTimerRef.current);
-    if (!internalOpen) setInternalOpen(true);
+  const onFocus = () => {
+    if (disableFocusListener) return;
+
+    // todo:  setTimeout(() => {
+    if (isTouchInteractionRef.current) return;
+    setState(true);
+    // }, 0);
   };
 
-  const onSpacerPointerOver = () => {
+  const onBlur = () => {
+    if (disableFocusListener) return;
+    if (isTouchInteractionRef.current) return;
+    setState(false);
+  };
+
+  const onPointerDown = () => {
+    if (disableTouchListener) return;
+    isTouchInteractionRef.current = true;
+    isOpenRef.current = false;
+
+    openTimerRef.current = window.setTimeout(() => {
+      isOpenRef.current = true;
+      isTouchInteractionRef.current = false;
+      setState(true);
+    }, OPEN_TIMEOUT);
+  };
+
+  const onPointerUp = () => {
+    if (disableTouchListener) return;
+    if (!isOpenRef.current) {
+      clearTimeout(openTimerRef.current);
+    }
+  };
+
+  return {
+    onPointerDown,
+    onPointerUp,
+    onFocus,
+    onBlur,
+  };
+};
+
+/**
+ * Hovering
+ */
+const useHoverListener = ({
+  disabled,
+  setState,
+  spacerRef,
+}: UseListenerParams & {
+  spacerRef: React.MutableRefObject<HTMLDivElement | null>;
+}) => {
+  /**
+   * Closing timer
+   */
+  const closeTimerRef = React.useRef(-1);
+
+  const onPointerOver = (event: React.PointerEvent) => {
+    if (event.pointerType !== 'mouse') return;
+    clearTimeout(closeTimerRef.current);
+    setState(true);
+  };
+
+  const onSpacerMouseOver = () => {
     clearTimeout(closeTimerRef.current);
   };
 
-  const onPointerOut = ({ clientX, clientY, target }: React.PointerEvent) => {
+  const onPointerOut = ({ clientX, clientY, target }: React.MouseEvent) => {
     if (spacerRef.current && target !== spacerRef.current) {
       const spacerRect = spacerRef.current?.getBoundingClientRect();
 
@@ -65,43 +123,108 @@ const Tooltip: React.FC<TooltipProps> = ({
     }
 
     // TODO: add timeout props
-    const CLOSE_TIMEOUT = 100;
+    const CLOSE_TIMEOUT = 1000;
     closeTimerRef.current = window.setTimeout(
-      () => setInternalOpen(false),
+      () => setState(false),
       CLOSE_TIMEOUT,
     );
   };
 
-  const origin = useCloneElement(children, {
-    ref: originRef,
-    onPointerOver,
+  if (disabled) return {};
+
+  return {
     onPointerOut,
-    // TODO: Add onClick, onFocus, onTouchStart
+    onPointerOver,
+    onSpacerMouseOver,
+  };
+};
+
+const Tooltip: React.FC<TooltipProps> = ({
+  children,
+  title,
+  paperProps,
+  open,
+  defaultOpen,
+  arrow = <Arrow />,
+  disableClickListener = true,
+  disableFocusListener = false,
+  disableHoverListener = false,
+  disableTouchListener = false,
+  disableClickOutsideListener = false,
+  ...props
+}) => {
+  const originRef = React.useRef<HTMLElement | null>(null);
+  const spacerRef = React.useRef<HTMLDivElement | null>(null);
+  const popperRef = React.useRef<HTMLDivElement | null>(null);
+
+  /**
+   * State
+   */
+  const { state: internalOpen, setState: setInternalOpen } = useControlledState(
+    {
+      controlled: open,
+      default: !!defaultOpen,
+    },
+  );
+
+  const listeners = useListeners({
+    disableTouchListener,
+    disableFocusListener,
+    setState: setInternalOpen,
   });
 
-  const spacer = (
-    <div
-      ref={spacerRef}
-      onPointerOut={onPointerOut}
-      onPointerOver={onSpacerPointerOver}
-    />
-  );
+  const hoverListeners = useHoverListener({
+    disabled: disableHoverListener,
+    state: internalOpen,
+    setState: setInternalOpen,
+    spacerRef,
+  });
+
+  const onClick = () => {
+    if (disableClickListener) return;
+    setInternalOpen(true);
+  };
+
+  const onClickOutside = () => {
+    if (disableClickOutsideListener) return;
+    setInternalOpen(false);
+  };
+
+  const origin = useCloneElement(children, {
+    ref: originRef,
+    onPointerOver: hoverListeners.onPointerOver,
+    onPointerOut: hoverListeners.onPointerOut,
+    onFocus: listeners.onFocus,
+    onBlur: listeners.onBlur,
+    onPointerDown: listeners.onPointerDown,
+    onPointerUp: listeners.onPointerUp,
+    onClick,
+  });
 
   return (
     <>
       {origin}
       <Popper
+        onClickOutside={onClickOutside}
         {...props}
         originElement={originRef.current}
         open={internalOpen}
         arrow={arrow}
-        spacer={spacer}
+        spacer={
+          // eslint-disable-next-line jsx-a11y/mouse-events-have-key-events
+          <div
+            ref={spacerRef}
+            aria-hidden={true}
+            onPointerOut={hoverListeners.onPointerOut}
+            onPointerOver={hoverListeners.onSpacerMouseOver}
+          />
+        }
       >
         <Paper
           {...paperProps}
           ref={popperRef}
-          onPointerOut={onPointerOut}
-          onPointerOver={onPointerOver}
+          onPointerOut={hoverListeners.onPointerOut}
+          onPointerOver={hoverListeners.onPointerOver}
         >
           {title}
         </Paper>

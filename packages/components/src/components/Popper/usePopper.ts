@@ -20,9 +20,8 @@ const getWidth = (
 };
 
 export interface UsePopperProps {
+  arrow?: boolean;
   defaultOpen?: boolean;
-  originElement?: HTMLElement | null;
-  originPosition?: { x: number; y: number };
   matchWidth?: boolean | number;
   offsetX?: number;
   offsetY?: number;
@@ -30,6 +29,8 @@ export interface UsePopperProps {
   onClose?: () => void;
   onOpen?: () => void;
   open?: boolean;
+  originElement?: HTMLElement | null;
+  originPosition?: { x: number; y: number };
   placement?: Placement;
   spacer?: boolean;
   // position?: 'fixed' | 'absolute';
@@ -41,6 +42,7 @@ export interface UsePopperProps {
 }
 
 const usePopper = ({
+  arrow,
   defaultOpen,
   offsetX,
   offsetY,
@@ -88,8 +90,8 @@ const usePopper = ({
   const updatePosition = React.useCallback(() => {
     if (!placement || !popperElement || !originElement) return;
     const computedPosition = computePosition(placement, {
-      arrowElement,
-      targetElement: popperElement,
+      arrowElement: arrow ? arrowElement : null,
+      popperElement,
       originElement,
       offsetX,
       offsetY,
@@ -98,6 +100,7 @@ const usePopper = ({
 
     setState(computedPosition);
   }, [
+    arrow,
     arrowElement,
     offsetX,
     offsetY,

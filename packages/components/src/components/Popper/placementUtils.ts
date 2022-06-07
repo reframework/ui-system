@@ -459,7 +459,7 @@ export class PopperHero {
   static getRects = (
     targetElement: HTMLElement,
     originElement: HTMLElement,
-    arrowElement?: HTMLElement,
+    arrowElement: HTMLElement | null,
   ): Rects => {
     const { offsetParent } = targetElement;
     // to do: ownDocument
@@ -489,19 +489,20 @@ export class PopperHero {
 export function computePosition(
   placement: Placement,
   params: {
-    arrowElement?: HTMLElement;
+    arrowElement: HTMLElement | null;
     originElement: HTMLElement;
-    targetElement: HTMLElement;
+    popperElement: HTMLElement;
     offsetX?: number;
     offsetY?: number;
     //
     preventOverflowX?: boolean;
     preventOverflowY?: boolean;
+
     spacer?: boolean;
   },
 ) {
-  const { targetElement, originElement, arrowElement } = params;
-  const rects = PopperHero.getRects(targetElement, originElement, arrowElement);
+  const { popperElement, originElement, arrowElement } = params;
+  const rects = PopperHero.getRects(popperElement, originElement, arrowElement);
   /**
    * Internal placement
    */

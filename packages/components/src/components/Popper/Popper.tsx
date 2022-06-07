@@ -20,28 +20,24 @@ const Popper = ({
   const { popperProps, arrowProps, spacerProps } = usePopper({
     ...restProps,
     spacer: !!spacerNode,
-    // arrow: arrowNode,
+    arrow: !!arrowNode,
   });
 
-  if (!open) return null;
+  if (!popperProps?.open) return null;
 
   const arrowStyle = {
     opacity: arrowProps.style ? 1 : 0,
     pointerEvents: arrowProps.style ? 'inherit' : 'none',
     position: 'absolute',
-
     ...arrowProps.style,
   };
 
   const popperStyle = {
-    //
     opacity: popperProps.style ? 1 : 0,
     pointerEvents: popperProps.style ? 'inherit' : 'none',
     width: popperProps?.width,
-    //
-    ...popperProps.style,
     position: 'absolute',
-    //
+    ...popperProps.style,
   };
 
   const spacerStyle = {
