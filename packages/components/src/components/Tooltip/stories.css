@@ -1,0 +1,29 @@
+.wrapper {
+  box-sizing: border-box;
+  display: grid;
+  gap: var(--spacing-xs);
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: center;
+  max-width: 1000px;
+  width: 100%;
+
+  & :nth-child(3n + 3) {
+    justify-self: right;
+  }
+
+  & :nth-child(3n + 1) {
+    justify-self: left;
+  }
+
+  & :nth-child(1),
+  & :nth-child(2),
+  & :nth-child(3) {
+    width: 100%;
+  }
+
+  & :nth-last-child(1),
+  & :nth-last-child(2),
+  & :nth-last-child(3) {
+    width: 100%;
+  }
+}

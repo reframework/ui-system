@@ -43,6 +43,7 @@ enum TextClassName {
   'size-m' = 'ref:text-size-m ',
   'size-l' = 'ref:text-size-l',
   'size-xl' = 'ref:text-size-xl',
+  'size-xxl' = 'ref:text-size-xxl',
   'size-xxxl' = 'ref:text-size-xxxl',
 }
 export interface TextProps {
