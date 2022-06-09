@@ -1,4 +1,8 @@
-type PlacementTuple = any;
+import { Popper } from '@components/Popper/popper/Popper';
+import {
+  PlacementInternal,
+  PlacementTuple,
+} from '@components/Popper/popper/types';
 
 type Overflow = {
   left: number;
@@ -7,81 +11,58 @@ type Overflow = {
   bottom: number;
 };
 
-enum InternalPlacement {
-  after = 'after',
-  before = 'before',
-  center = 'center',
-  start = 'start',
-  end = 'end',
-}
-
-const parsePlacement = (x: string, y: string) => {
-  let placementAxis = x;
-  const placementAlign = y;
-
-  if (x === 'before') {
-    placementAxis = 'left';
-  }
-
-  if (x === 'after') {
-    placementAxis = 'right';
-  }
-
-  if (y === 'before') {
-    placementAxis = 'top';
-  }
-
-  if (y === 'before') {
-    placementAxis = 'bottom';
-  }
-
-  return `${placementAxis}-${placementAlign}`;
+const flipOffset = (offset = 0) => {
+  return offset >= 0 ? -offset : Math.abs(offset);
 };
 
 export const flipPlacementUtils = {
   before: (a: number) => {
-    return a < 0 ? InternalPlacement.after : InternalPlacement.before;
+    return a < 0 ? PlacementInternal.after : PlacementInternal.before;
   },
   start: (_: number, b: number) => {
-    return b < 0 ? InternalPlacement.end : InternalPlacement.start;
+    return b < 0 ? PlacementInternal.end : PlacementInternal.start;
   },
   center: (a: number, b: number) => {
     const isA = a < 0;
     const isB = b < 0;
-    if (isA === isB) return InternalPlacement.center;
+    if (isA === isB) return PlacementInternal.center;
     // TODO: prevent overflow
-    return isA ? InternalPlacement.after : InternalPlacement.before;
+    return isA ? PlacementInternal.after : PlacementInternal.before;
   },
   end: (a: number) => {
-    return a < 0 ? InternalPlacement.start : InternalPlacement.end;
+    return a < 0 ? PlacementInternal.start : PlacementInternal.end;
   },
   after: (_: number, b: number) => {
-    return b < 0 ? InternalPlacement.before : InternalPlacement.after;
+    return b < 0 ? PlacementInternal.before : PlacementInternal.after;
   },
 };
 
 const flipPlacement = (
-  [placementX, placementY]: PlacementTuple,
+  placement: PlacementTuple,
   { left, right, top, bottom }: Overflow,
 ) => {
-  return [
-    flipPlacementUtils[placementX](left, right),
-    flipPlacementUtils[placementY](top, bottom),
-  ];
+  const [placementX, placementY] = placement;
+  const flippedX = flipPlacementUtils[placementX](left, right);
+  const flippedY = flipPlacementUtils[placementY](top, bottom);
+  console.log(placementX, placementY, flippedX, flippedY, 'FLIPPED');
+  return [flippedX, flippedY] as PlacementTuple;
 };
 
-export const middleware = (
-  placement: PlacementTuple,
-  params: { overflow: Overflow },
-) => {
-  const [flipPlacementX, flipPlacementY] = flipPlacement(
-    placement,
-    params.overflow,
-  );
+export const flip = (params: {
+  popper: Popper;
+  middlewareResult: { overflow: Overflow };
+}) => {
+  const { popper, middlewareResult } = params;
+  const { overflow } = middlewareResult;
 
-  return parsePlacement(flipPlacementX, flipPlacementY);
+  popper.setPlacement(flipPlacement(popper.placement, overflow));
+  popper.offset = {
+    x: flipOffset(popper.offset.x),
+    y: flipOffset(popper.offset.y),
+  };
 };
 
 export const flipMiddleware = {
-  flippedPlacement: middleware,
+  name: 'flip',
+  middleware: flip,
 };

@@ -1,26 +1,14 @@
-type InternalPlacementTuple = any;
-
-interface Rects {
-  popperRect: DOMRect;
-  originRect: DOMRect;
-  viewportRect: DOMRect;
-  parentRect: DOMRect;
-}
+import { Popper } from '@components/Popper/popper/Popper';
 
 const getViewportRect = (): DOMRect => {
   // to do: VisualViewport
-  const rect = {
+
+  return DOMRectReadOnly.fromRect({
     x: 0,
     y: 0,
-    top: 0,
-    left: 0,
-    right: window.innerWidth,
-    bottom: window.innerHeight,
     width: window.innerWidth,
     height: window.innerHeight,
-  };
-
-  return { ...rect, toJSON: () => rect };
+  });
 };
 
 /**
@@ -40,19 +28,15 @@ export const getOverflow = (popperRect: DOMRect) => {
   };
 };
 
-export const flipOffset = (offset = 0) => {
-  return offset >= 0 ? -offset : Math.abs(offset);
-};
-
 type PopperMiddlewareParams = {
-  placement: InternalPlacementTuple;
-  rects: Rects;
+  popper: Popper;
 };
 
-export const middleware = ({ rects }: PopperMiddlewareParams) => {
-  return getOverflow(rects.popperRect);
+export const middleware = ({ popper }: PopperMiddlewareParams) => {
+  return getOverflow(popper.DOMRect);
 };
 
 export const overflowMiddleware = {
-  overflow: middleware,
+  name: 'overflow',
+  middleware,
 };

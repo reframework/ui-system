@@ -3,7 +3,7 @@ import { useMounted } from '@utils/index';
 import { useControlledState } from '@utils/useControlledState';
 import { isNumber } from '@utils/assert';
 import useClickOutside from '@components/ClickOutside/useClickOutside';
-import { Placement, computePosition } from './placementUtils';
+import { Placement, getPopper } from './popper/index';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getWidth = (
@@ -89,7 +89,8 @@ const usePopper = ({
 
   const updatePosition = React.useCallback(() => {
     if (!placement || !popperElement || !originElement) return;
-    const computedPosition = computePosition(placement, {
+    const computedPosition = getPopper({
+      placement,
       arrowElement: arrow ? arrowElement : null,
       popperElement,
       originElement,
