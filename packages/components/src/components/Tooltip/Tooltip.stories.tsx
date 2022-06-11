@@ -35,8 +35,6 @@ const placements = [
 export const Placement = () => {
   const match = matchMedia('(max-width: 400px)');
 
-  console.log(match);
-
   const buttonSize = match.matches ? 'small' : 'large';
   return (
     <Box>

@@ -32,7 +32,7 @@
   }
 
   &::before {
-    background: var(--color-scale-white);
+    background: red;
     content: '';
     display: block;
     height: 10px;

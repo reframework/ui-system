@@ -1,11 +1,12 @@
-import { axisToPropertyMap, Popper } from '@components/Popper/popper/Popper';
 import {
   Axis,
-  PlacementInternal,
-  PlacementTuple,
-} from '@components/Popper/popper/types';
+  axisToPropertyMap,
+  Popper,
+  PopperPlacement,
+  PopperPlacementEnum,
+} from '@utils/popper/Popper';
 
-export enum ArrowPlacement {
+export enum ArrowPlacementEnum {
   bottom = 'bottom',
   left = 'left',
   right = 'right',
@@ -13,38 +14,38 @@ export enum ArrowPlacement {
 }
 
 const arrowPlacementToAxisMap = {
-  [ArrowPlacement.left]: Axis.X,
-  [ArrowPlacement.right]: Axis.X,
-  [ArrowPlacement.top]: Axis.Y,
-  [ArrowPlacement.bottom]: Axis.Y,
+  [ArrowPlacementEnum.left]: Axis.Y,
+  [ArrowPlacementEnum.right]: Axis.Y,
+  [ArrowPlacementEnum.top]: Axis.X,
+  [ArrowPlacementEnum.bottom]: Axis.X,
 };
 
 const SAFE_OFFSET = 10;
 // TODO: import
 
-export const getArrowPlacement = (
-  placement: PlacementTuple,
-): ArrowPlacement => {
+export const getArrowPlacementEnum = (
+  placement: PopperPlacement,
+): ArrowPlacementEnum => {
   const [placementX, placementY] = placement;
 
-  if (placementX === PlacementInternal.before) {
-    return ArrowPlacement.right;
+  if (placementX === PopperPlacementEnum.before) {
+    return ArrowPlacementEnum.right;
   }
 
-  if (placementX === PlacementInternal.after) {
-    return ArrowPlacement.left;
+  if (placementX === PopperPlacementEnum.after) {
+    return ArrowPlacementEnum.left;
   }
 
-  if (placementY === PlacementInternal.before) {
-    return ArrowPlacement.bottom;
+  if (placementY === PopperPlacementEnum.before) {
+    return ArrowPlacementEnum.bottom;
   }
 
-  if (placementY === PlacementInternal.after) {
-    return ArrowPlacement.top;
+  if (placementY === PopperPlacementEnum.after) {
+    return ArrowPlacementEnum.top;
   }
 
   // TODO: return null
-  return ArrowPlacement.top;
+  return ArrowPlacementEnum.top;
 };
 
 export const getArrowPosition =
@@ -53,26 +54,26 @@ export const getArrowPosition =
     const arrowRect = arrowElement.getBoundingClientRect();
 
     // Arrow placement
-    const arrowPlacement = getArrowPlacement(popper.placement);
+    const arrowPlacementEnum = getArrowPlacementEnum(popper.placement);
     let { x, y } = popper.offset;
 
     /**
      * With an arrow, the minimum offset should be the size of the arrow
      */
-    if (arrowPlacement === ArrowPlacement.left) {
-      x = arrowRect.width + x;
+    if (arrowPlacementEnum === ArrowPlacementEnum.left) {
+      x += arrowRect.width;
     }
 
-    if (arrowPlacement === ArrowPlacement.right) {
-      x -= -arrowRect.width - x;
+    if (arrowPlacementEnum === ArrowPlacementEnum.right) {
+      x -= arrowRect.width - x;
     }
 
-    if (arrowPlacement === ArrowPlacement.top) {
-      y = arrowRect.height + y;
+    if (arrowPlacementEnum === ArrowPlacementEnum.top) {
+      y += arrowRect.height;
     }
 
-    if (arrowPlacement === ArrowPlacement.bottom) {
-      y = -arrowRect.height - y;
+    if (arrowPlacementEnum === ArrowPlacementEnum.bottom) {
+      y -= arrowRect.height - y;
     }
 
     popper.move({ x: x, y: y });
@@ -82,7 +83,7 @@ export const getArrowPosition =
      */
     const popperRect = popper.DOMRect;
     const originRect = popper.origin.getBoundingClientRect();
-    const mainAxis = arrowPlacementToAxisMap[arrowPlacement];
+    const mainAxis = arrowPlacementToAxisMap[arrowPlacementEnum];
     const { from, size } = axisToPropertyMap[mainAxis];
 
     const MIN_OFFSET = popperRect[from] + SAFE_OFFSET;
@@ -100,22 +101,22 @@ export const getArrowPosition =
     let offsetLeft = 0;
     let offsetTop = 0;
 
-    if (arrowPlacement === ArrowPlacement.bottom) {
+    if (arrowPlacementEnum === ArrowPlacementEnum.bottom) {
       offsetLeft = offset;
       offsetTop = popperRect.top + popperRect.height;
     }
 
-    if (arrowPlacement === ArrowPlacement.top) {
+    if (arrowPlacementEnum === ArrowPlacementEnum.top) {
       offsetLeft = offset;
       offsetTop = popperRect.top - arrowRect.height;
     }
 
-    if (arrowPlacement === ArrowPlacement.left) {
+    if (arrowPlacementEnum === ArrowPlacementEnum.left) {
       offsetLeft = popperRect.left - arrowRect.width;
       offsetTop = offset;
     }
 
-    if (arrowPlacement === ArrowPlacement.right) {
+    if (arrowPlacementEnum === ArrowPlacementEnum.right) {
       offsetLeft = popperRect.left + popperRect.width;
       offsetTop = offset;
     }
@@ -123,7 +124,7 @@ export const getArrowPosition =
     return {
       left: offsetLeft,
       top: offsetTop,
-      placement: arrowPlacement,
+      placement: arrowPlacementEnum,
     };
   };
 

@@ -1,27 +1,31 @@
-import { ArrowPlacement } from '@components/Popper/popper/middlewares/arrowMiddleware';
-import { Popper } from '@components/Popper/popper/Popper';
+import { ArrowPlacementEnum } from '@utils/popper/middlewares/arrowMiddleware';
+import { Popper } from '@utils/popper/Popper';
 
 export const getHoverTrap = (params: {
   popper: Popper;
   middlewareResult: {
     arrow: {
-      placement: ArrowPlacement;
+      placement: ArrowPlacementEnum;
     };
   };
 }) => {
+  // out of screen
+  const rectParams = {
+    x: -999999,
+    y: -999999,
+    width: -999999,
+    height: -999999,
+  };
+
+  /** Check if arrowMiddleware was before */
+  if (!params?.middlewareResult?.arrow?.placement) return;
+
   const { popper, middlewareResult } = params;
-  const { placement } = middlewareResult.arrow;
+  const placement = middlewareResult?.arrow?.placement;
   const originRect = popper.origin.getBoundingClientRect();
   const popperRect = popper.DOMRect;
 
-  const rectParams = {
-    x: 0,
-    y: 0,
-    width: 0,
-    height: 0,
-  };
-
-  if (placement === ArrowPlacement.bottom) {
+  if (placement === ArrowPlacementEnum.bottom) {
     const distanceX = originRect.left - popperRect.left;
     const distanceY = originRect.top - popperRect.bottom;
 
@@ -31,7 +35,7 @@ export const getHoverTrap = (params: {
     rectParams.height = distanceY;
   }
 
-  if (placement === ArrowPlacement.top) {
+  if (placement === ArrowPlacementEnum.top) {
     const distanceX = originRect.left - popperRect.left;
     const distanceY = popperRect.top - originRect.bottom;
 
@@ -41,7 +45,7 @@ export const getHoverTrap = (params: {
     rectParams.height = distanceY;
   }
 
-  if (placement === ArrowPlacement.left) {
+  if (placement === ArrowPlacementEnum.left) {
     const distanceX = popperRect.left - originRect.right;
     const distanceY = originRect.top - popperRect.top;
 
@@ -51,7 +55,7 @@ export const getHoverTrap = (params: {
     rectParams.height = originRect.height;
   }
 
-  if (placement === ArrowPlacement.right) {
+  if (placement === ArrowPlacementEnum.right) {
     const distanceX = originRect.left - popperRect.right;
     const distanceY = originRect.top - popperRect.top;
 
@@ -61,7 +65,7 @@ export const getHoverTrap = (params: {
     rectParams.height = originRect.height;
   }
 
-  return DOMRectReadOnly.fromRect(rectParams);
+  return DOMRectReadOnly.fromRect(rectParams).toJSON();
 };
 
 export const hoverTrapMiddleware = {

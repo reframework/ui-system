@@ -14,15 +14,14 @@ const Popper = ({
   children,
   portalProps,
   arrow: arrowNode,
-  spacer: spacerNode,
+  hoverTrap: hoverTrapNode,
   ...restProps
 }: PopperProps) => {
   const { popperProps, arrowProps, spacerProps } = usePopper({
     ...restProps,
-    spacer: !!spacerNode,
+    hoverTrap: !!hoverTrapNode,
     arrow: !!arrowNode,
   });
-
   if (!popperProps?.open) return null;
 
   const arrowStyle = {
@@ -59,9 +58,9 @@ const Popper = ({
     </MergeProps>
   ) : null;
 
-  const spacer = spacerNode ? (
+  const spacer = hoverTrapNode ? (
     <MergeProps {...spacerProps} style={spacerStyle}>
-      {spacerNode}
+      {hoverTrapNode}
     </MergeProps>
   ) : null;
 

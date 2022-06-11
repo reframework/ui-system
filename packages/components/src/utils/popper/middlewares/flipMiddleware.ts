@@ -1,8 +1,8 @@
-import { Popper } from '@components/Popper/popper/Popper';
 import {
-  PlacementInternal,
-  PlacementTuple,
-} from '@components/Popper/popper/types';
+  Popper,
+  PopperPlacementEnum,
+  PopperPlacement,
+} from '@utils/popper/Popper';
 
 type Overflow = {
   left: number;
@@ -17,35 +17,34 @@ const flipOffset = (offset = 0) => {
 
 export const flipPlacementUtils = {
   before: (a: number) => {
-    return a < 0 ? PlacementInternal.after : PlacementInternal.before;
+    return a < 0 ? PopperPlacementEnum.after : PopperPlacementEnum.before;
   },
   start: (_: number, b: number) => {
-    return b < 0 ? PlacementInternal.end : PlacementInternal.start;
+    return b < 0 ? PopperPlacementEnum.end : PopperPlacementEnum.start;
   },
   center: (a: number, b: number) => {
     const isA = a < 0;
     const isB = b < 0;
-    if (isA === isB) return PlacementInternal.center;
+    if (isA === isB) return PopperPlacementEnum.center;
     // TODO: prevent overflow
-    return isA ? PlacementInternal.after : PlacementInternal.before;
+    return isA ? PopperPlacementEnum.after : PopperPlacementEnum.before;
   },
   end: (a: number) => {
-    return a < 0 ? PlacementInternal.start : PlacementInternal.end;
+    return a < 0 ? PopperPlacementEnum.start : PopperPlacementEnum.end;
   },
   after: (_: number, b: number) => {
-    return b < 0 ? PlacementInternal.before : PlacementInternal.after;
+    return b < 0 ? PopperPlacementEnum.before : PopperPlacementEnum.after;
   },
 };
 
 const flipPlacement = (
-  placement: PlacementTuple,
+  placement: PopperPlacement,
   { left, right, top, bottom }: Overflow,
 ) => {
   const [placementX, placementY] = placement;
   const flippedX = flipPlacementUtils[placementX](left, right);
   const flippedY = flipPlacementUtils[placementY](top, bottom);
-  console.log(placementX, placementY, flippedX, flippedY, 'FLIPPED');
-  return [flippedX, flippedY] as PlacementTuple;
+  return [flippedX, flippedY] as PopperPlacement;
 };
 
 export const flip = (params: {

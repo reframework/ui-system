@@ -123,7 +123,7 @@ const useHoverListener = ({
     }
 
     // TODO: add timeout props
-    const CLOSE_TIMEOUT = 1000;
+    const CLOSE_TIMEOUT = 100;
     closeTimerRef.current = window.setTimeout(
       () => setState(false),
       CLOSE_TIMEOUT,
@@ -210,7 +210,7 @@ const Tooltip: React.FC<TooltipProps> = ({
         originElement={originRef.current}
         open={internalOpen}
         arrow={arrow}
-        spacer={
+        hoverTrap={
           // eslint-disable-next-line jsx-a11y/mouse-events-have-key-events
           <div
             ref={spacerRef}

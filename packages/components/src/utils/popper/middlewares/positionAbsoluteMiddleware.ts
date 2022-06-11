@@ -1,4 +1,4 @@
-import { Popper } from '@components/Popper/popper/Popper';
+import { Popper } from '@utils/popper/Popper';
 
 const getParentRect = (popperElement: HTMLElement) => {
   return (popperElement.offsetParent || document.body).getBoundingClientRect();

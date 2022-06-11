@@ -3,7 +3,7 @@ import { useMounted } from '@utils/index';
 import { useControlledState } from '@utils/useControlledState';
 import { isNumber } from '@utils/assert';
 import useClickOutside from '@components/ClickOutside/useClickOutside';
-import { Placement, getPopper } from './popper/index';
+import { createPopper, Placement } from '@components/Popper/createPopper';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getWidth = (
@@ -32,7 +32,7 @@ export interface UsePopperProps {
   originElement?: HTMLElement | null;
   originPosition?: { x: number; y: number };
   placement?: Placement;
-  spacer?: boolean;
+  hoverTrap?: boolean;
   // position?: 'fixed' | 'absolute';
   // preventOverflowX?: boolean;
   // preventOverflowY?: boolean;
@@ -52,7 +52,7 @@ const usePopper = ({
   open,
   originElement,
   placement,
-  spacer,
+  hoverTrap,
   matchWidth,
 }: UsePopperProps) => {
   const isMounted = useMounted();
@@ -89,26 +89,26 @@ const usePopper = ({
 
   const updatePosition = React.useCallback(() => {
     if (!placement || !popperElement || !originElement) return;
-    const computedPosition = getPopper({
-      placement,
+    const computedPosition = createPopper({
       arrowElement: arrow ? arrowElement : null,
-      popperElement,
-      originElement,
+      hoverTrap,
       offsetX,
       offsetY,
-      spacer,
+      originElement,
+      placement,
+      popperElement,
     });
 
     setState(computedPosition);
   }, [
     arrow,
     arrowElement,
+    hoverTrap,
     offsetX,
     offsetY,
     originElement,
     placement,
     popperElement,
-    spacer,
   ]);
 
   const resetPosition = React.useCallback(() => {

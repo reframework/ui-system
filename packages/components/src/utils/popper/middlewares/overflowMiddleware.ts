@@ -1,4 +1,4 @@
-import { Popper } from '@components/Popper/popper/Popper';
+import { Popper } from '@utils/popper/Popper';
 
 const getViewportRect = (): DOMRect => {
   // to do: VisualViewport
