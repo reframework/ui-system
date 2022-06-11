@@ -3,11 +3,11 @@ import { Portal, PortalProps } from '@components/Portal';
 import { MergeProps } from '@wip/MergeProps';
 import usePopper, { UsePopperProps } from './usePopper';
 
-export interface PopperProps extends Omit<UsePopperProps, 'spacer'> {
+export interface PopperProps extends Omit<UsePopperProps, 'hoverTrap'> {
   children: React.ReactNode;
   portalProps?: PortalProps;
   arrow?: React.ReactNode | null;
-  spacer?: React.ReactNode | null;
+  hoverTrap?: React.ReactNode | null;
 }
 
 const Popper = ({
@@ -17,12 +17,13 @@ const Popper = ({
   hoverTrap: hoverTrapNode,
   ...restProps
 }: PopperProps) => {
-  const { popperProps, arrowProps, spacerProps } = usePopper({
+  const { popperProps, arrowProps, hoverTrapProps } = usePopper({
     ...restProps,
     hoverTrap: !!hoverTrapNode,
     arrow: !!arrowNode,
   });
-  if (!popperProps?.open) return null;
+
+  // if (!popperProps?.open) return null;
 
   const arrowStyle = {
     opacity: arrowProps.style ? 1 : 0,
@@ -39,11 +40,11 @@ const Popper = ({
     ...popperProps.style,
   };
 
-  const spacerStyle = {
+  const hoverTrapStyle = {
     opacity: 0,
-    pointerEvents: spacerProps.style ? 'inherit' : 'none',
+    pointerEvents: hoverTrapProps.style ? 'inherit' : 'none',
     position: 'absolute',
-    ...spacerProps.style,
+    ...hoverTrapProps.style,
   };
 
   const popper = (
@@ -58,15 +59,15 @@ const Popper = ({
     </MergeProps>
   ) : null;
 
-  const spacer = hoverTrapNode ? (
-    <MergeProps {...spacerProps} style={spacerStyle}>
+  const hoverTrap = hoverTrapNode ? (
+    <MergeProps {...hoverTrapProps} style={hoverTrapStyle}>
       {hoverTrapNode}
     </MergeProps>
   ) : null;
 
   const content = (
     <>
-      {spacer}
+      {hoverTrap}
       {popper}
       {arrow}
     </>

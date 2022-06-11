@@ -54,7 +54,7 @@ export const Placement = () => {
 
           return (
             <Tooltip
-              key={idx}
+              key={item.placement}
               title={<Box p="xxs">Tooltip</Box>}
               placement={item.placement}
             >

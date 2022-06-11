@@ -1,8 +1,4 @@
-import {
-  Popper,
-  PopperPlacementEnum,
-  PopperPlacement,
-} from '@utils/popper/Popper';
+import { Popper, PopperPlacementEnum } from '@utils/popper/Popper';
 
 type Overflow = {
   left: number;
@@ -12,7 +8,7 @@ type Overflow = {
 };
 
 const flipOffset = (offset = 0) => {
-  return offset >= 0 ? -offset : Math.abs(offset);
+  return offset > 0 ? -offset : Math.abs(offset);
 };
 
 export const flipPlacementUtils = {
@@ -37,16 +33,6 @@ export const flipPlacementUtils = {
   },
 };
 
-const flipPlacement = (
-  placement: PopperPlacement,
-  { left, right, top, bottom }: Overflow,
-) => {
-  const [placementX, placementY] = placement;
-  const flippedX = flipPlacementUtils[placementX](left, right);
-  const flippedY = flipPlacementUtils[placementY](top, bottom);
-  return [flippedX, flippedY] as PopperPlacement;
-};
-
 export const flip = (params: {
   popper: Popper;
   middlewareResult: { overflow: Overflow };
@@ -54,11 +40,36 @@ export const flip = (params: {
   const { popper, middlewareResult } = params;
   const { overflow } = middlewareResult;
 
-  popper.setPlacement(flipPlacement(popper.placement, overflow));
+  const [placementX, placementY] = popper.placement;
+
+  const flippedPlacementX = flipPlacementUtils[placementX](
+    overflow.left,
+    overflow.right,
+  );
+
+  const flippedPlacementY = flipPlacementUtils[placementY](
+    overflow.top,
+    overflow.bottom,
+  );
+
+  const flipX = placementX !== flippedPlacementX;
+  const flipY = placementY !== flippedPlacementY;
+
+  if (!flipX && !flipY) return;
+
+  popper.setPlacement([flippedPlacementX, flippedPlacementY]);
+
+  let { x: flippedOffsetX, y: flippedOffsetY } = popper.offset;
+
+  if (flipX) flippedOffsetX = flipOffset(flippedOffsetX);
+  if (flipY) flippedOffsetY = flipOffset(flippedOffsetY);
+
   popper.offset = {
-    x: flipOffset(popper.offset.x),
-    y: flipOffset(popper.offset.y),
+    x: flippedOffsetX,
+    y: flippedOffsetY,
   };
+
+  console.log(popper.offset, 'flipped');
 };
 
 export const flipMiddleware = {

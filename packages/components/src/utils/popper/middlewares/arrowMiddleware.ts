@@ -65,7 +65,7 @@ export const getArrowPosition =
     }
 
     if (arrowPlacementEnum === ArrowPlacementEnum.right) {
-      x -= arrowRect.width - x;
+      x -= arrowRect.width;
     }
 
     if (arrowPlacementEnum === ArrowPlacementEnum.top) {
@@ -73,10 +73,10 @@ export const getArrowPosition =
     }
 
     if (arrowPlacementEnum === ArrowPlacementEnum.bottom) {
-      y -= arrowRect.height - y;
+      y -= arrowRect.height;
     }
 
-    popper.move({ x: x, y: y });
+    popper.move({ x, y });
 
     /**
      * DOMRect with arrow offset

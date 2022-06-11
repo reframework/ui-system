@@ -8,8 +8,8 @@ export const middleware = (offset: Offset) => (params: { popper: Popper }) => {
   const { popper } = params;
 
   popper.move({
-    x: offset.x || 10,
-    y: offset.y || 10,
+    x: offset.x || 0,
+    y: offset.y || 0,
   });
 };
 

@@ -42,18 +42,24 @@ export interface UsePopperProps {
 }
 
 const usePopper = ({
+  // Tooltip
   arrow,
-  defaultOpen,
+  hoverTrap,
+  //
+  // Offset
   offsetX,
   offsetY,
-  onClickOutside,
+  // Open state
   onClose,
   onOpen,
+  defaultOpen,
   open,
+  // Origin
   originElement,
   placement,
-  hoverTrap,
   matchWidth,
+  // Click outside listener
+  onClickOutside,
 }: UsePopperProps) => {
   const isMounted = useMounted();
 
@@ -160,7 +166,7 @@ const usePopper = ({
       placement: state?.arrowPlacement,
       ...(state ? { style: { ...state?.arrowOffset } } : {}),
     },
-    spacerProps: {
+    hoverTrapProps: {
       ...(state ? { style: { ...state?.spacerOffset } } : {}),
     },
   };

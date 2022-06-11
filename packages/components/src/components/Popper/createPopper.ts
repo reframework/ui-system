@@ -47,11 +47,11 @@ export const createPopper = (params: {
     popperElement: params.popperElement,
     originElement: params.originElement,
     middlewares: [
-      overflowMiddleware,
       offsetMiddleware({
         x: params.offsetX,
         y: params.offsetY,
       }),
+      overflowMiddleware,
       flipMiddleware,
       ...(params.arrowElement ? [arrowMiddleware(params.arrowElement)] : []),
       ...(params.hoverTrap ? [hoverTrapMiddleware] : []),
