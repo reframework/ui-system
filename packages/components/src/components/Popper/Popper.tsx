@@ -20,15 +20,17 @@ const Popper = ({
 }: PopperProps) => {
   const { popperProps, arrowProps, hoverTrapProps } = usePopper({
     ...restProps,
-    hoverTrap: !!hoverTrapNode,
-    arrow: !!arrowNode,
+    arrow: Boolean(arrowNode),
+    hoverTrap: Boolean(hoverTrapNode),
   });
 
-  let popper = null;
-  let arrow = null;
-  let hoverTrap = null;
+  let content = null;
 
   if (popperProps?.open) {
+    let popper = null;
+    let arrow = null;
+    let hoverTrap = null;
+
     const arrowStyle = {
       opacity: arrowProps.style ? 1 : 0,
       pointerEvents: arrowProps.style ? 'inherit' : 'none',
@@ -72,18 +74,27 @@ const Popper = ({
         </MergeProps>
       );
     }
+
+    content = (
+      <>
+        {hoverTrap}
+        {popper}
+        {arrow}
+      </>
+    );
   }
 
-  const content = (
-    <>
-      {hoverTrap}
-      {popper}
-      {arrow}
-    </>
-  );
+  if (portalProps?.portalTarget === null) {
+    /**
+     * Renders without portal
+     */
+    return content;
+  }
 
-  if (portalProps?.portalTarget === null) return content;
-
+  /**
+   * Renders in portal
+   * Id or portal target can be rewritten by portalProps
+   */
   return (
     <Portal id="ref:popper-portal-id" {...portalProps}>
       {content}
