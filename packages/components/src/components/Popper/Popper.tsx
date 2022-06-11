@@ -3,7 +3,8 @@ import { Portal, PortalProps } from '@components/Portal';
 import { MergeProps } from '@wip/MergeProps';
 import usePopper, { UsePopperProps } from './usePopper';
 
-export interface PopperProps extends Omit<UsePopperProps, 'hoverTrap'> {
+export interface PopperProps
+  extends Omit<UsePopperProps, 'arrow' | 'hoverTrap'> {
   children: React.ReactNode;
   portalProps?: PortalProps;
   arrow?: React.ReactNode | null;
@@ -23,47 +24,55 @@ const Popper = ({
     arrow: !!arrowNode,
   });
 
-  // if (!popperProps?.open) return null;
+  let popper = null;
+  let arrow = null;
+  let hoverTrap = null;
 
-  const arrowStyle = {
-    opacity: arrowProps.style ? 1 : 0,
-    pointerEvents: arrowProps.style ? 'inherit' : 'none',
-    position: 'absolute',
-    ...arrowProps.style,
-  };
+  if (popperProps?.open) {
+    const arrowStyle = {
+      opacity: arrowProps.style ? 1 : 0,
+      pointerEvents: arrowProps.style ? 'inherit' : 'none',
+      position: 'absolute',
+      ...arrowProps.style,
+    };
 
-  const popperStyle = {
-    opacity: popperProps.style ? 1 : 0,
-    pointerEvents: popperProps.style ? 'inherit' : 'none',
-    width: popperProps?.width,
-    position: 'absolute',
-    ...popperProps.style,
-  };
+    const popperStyle = {
+      opacity: popperProps.style ? 1 : 0,
+      pointerEvents: popperProps.style ? 'inherit' : 'none',
+      width: popperProps?.width,
+      position: 'absolute',
+      ...popperProps.style,
+    };
 
-  const hoverTrapStyle = {
-    opacity: 0,
-    pointerEvents: hoverTrapProps.style ? 'inherit' : 'none',
-    position: 'absolute',
-    ...hoverTrapProps.style,
-  };
+    const hoverTrapStyle = {
+      opacity: 0,
+      pointerEvents: hoverTrapProps.style ? 'inherit' : 'none',
+      position: 'absolute',
+      ...hoverTrapProps.style,
+    };
 
-  const popper = (
-    <MergeProps {...popperProps} style={popperStyle}>
-      {children}
-    </MergeProps>
-  );
+    popper = (
+      <MergeProps {...popperProps} style={popperStyle}>
+        {children}
+      </MergeProps>
+    );
 
-  const arrow = arrowNode ? (
-    <MergeProps {...arrowProps} style={arrowStyle}>
-      {arrowNode}
-    </MergeProps>
-  ) : null;
+    if (arrowNode) {
+      arrow = (
+        <MergeProps {...arrowProps} style={arrowStyle}>
+          {arrowNode}
+        </MergeProps>
+      );
+    }
 
-  const hoverTrap = hoverTrapNode ? (
-    <MergeProps {...hoverTrapProps} style={hoverTrapStyle}>
-      {hoverTrapNode}
-    </MergeProps>
-  ) : null;
+    if (hoverTrapNode) {
+      hoverTrap = (
+        <MergeProps {...hoverTrapProps} style={hoverTrapStyle}>
+          {hoverTrapNode}
+        </MergeProps>
+      );
+    }
+  }
 
   const content = (
     <>
