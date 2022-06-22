@@ -48,42 +48,47 @@ export const getArrowPlacementEnum = (
   return ArrowPlacementEnum.top;
 };
 
+export const arrowOffset = (popper: Popper, arrowRect: DOMRect) => {
+  let { x, y } = popper.offset;
+
+  const arrowPlacement = getArrowPlacementEnum(popper.placement);
+
+  /**
+   * With an arrow, the minimum offset should be the size of the arrow
+   */
+  if (arrowPlacement === ArrowPlacementEnum.left) {
+    x += arrowRect.width;
+  }
+
+  if (arrowPlacement === ArrowPlacementEnum.right) {
+    x -= arrowRect.width;
+  }
+
+  if (arrowPlacement === ArrowPlacementEnum.top) {
+    y += arrowRect.height;
+  }
+
+  if (arrowPlacement === ArrowPlacementEnum.bottom) {
+    y -= arrowRect.height;
+  }
+
+  return { x, y };
+};
+
 export const getArrowPosition =
   (arrowElement: HTMLElement) => (params: { popper: Popper }) => {
     const { popper } = params;
     const arrowRect = arrowElement.getBoundingClientRect();
 
     // Arrow placement
-    const arrowPlacementEnum = getArrowPlacementEnum(popper.placement);
-    let { x, y } = popper.offset;
-
-    /**
-     * With an arrow, the minimum offset should be the size of the arrow
-     */
-    if (arrowPlacementEnum === ArrowPlacementEnum.left) {
-      x += arrowRect.width;
-    }
-
-    if (arrowPlacementEnum === ArrowPlacementEnum.right) {
-      x -= arrowRect.width;
-    }
-
-    if (arrowPlacementEnum === ArrowPlacementEnum.top) {
-      y += arrowRect.height;
-    }
-
-    if (arrowPlacementEnum === ArrowPlacementEnum.bottom) {
-      y -= arrowRect.height;
-    }
-
-    popper.move({ x, y });
+    const arrowPlacement = getArrowPlacementEnum(popper.placement);
 
     /**
      * DOMRect with arrow offset
      */
     const popperRect = popper.DOMRect;
     const originRect = popper.origin.getBoundingClientRect();
-    const mainAxis = arrowPlacementToAxisMap[arrowPlacementEnum];
+    const mainAxis = arrowPlacementToAxisMap[arrowPlacement];
     const { from, size } = axisToPropertyMap[mainAxis];
 
     const MIN_OFFSET = popperRect[from] + SAFE_OFFSET;
@@ -101,22 +106,22 @@ export const getArrowPosition =
     let offsetLeft = 0;
     let offsetTop = 0;
 
-    if (arrowPlacementEnum === ArrowPlacementEnum.bottom) {
+    if (arrowPlacement === ArrowPlacementEnum.bottom) {
       offsetLeft = offset;
       offsetTop = popperRect.top + popperRect.height;
     }
 
-    if (arrowPlacementEnum === ArrowPlacementEnum.top) {
+    if (arrowPlacement === ArrowPlacementEnum.top) {
       offsetLeft = offset;
       offsetTop = popperRect.top - arrowRect.height;
     }
 
-    if (arrowPlacementEnum === ArrowPlacementEnum.left) {
+    if (arrowPlacement === ArrowPlacementEnum.left) {
       offsetLeft = popperRect.left - arrowRect.width;
       offsetTop = offset;
     }
 
-    if (arrowPlacementEnum === ArrowPlacementEnum.right) {
+    if (arrowPlacement === ArrowPlacementEnum.right) {
       offsetLeft = popperRect.left + popperRect.width;
       offsetTop = offset;
     }
@@ -124,7 +129,7 @@ export const getArrowPosition =
     return {
       left: offsetLeft,
       top: offsetTop,
-      placement: arrowPlacementEnum,
+      placement: arrowPlacement,
     };
   };
 

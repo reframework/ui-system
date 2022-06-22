@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useMounted } from '@utils/index';
 import { useControlledState } from '@utils/useControlledState';
 import { isNumber } from '@utils/assert';
 import useClickOutside from '@components/ClickOutside/useClickOutside';
-import { createPopper, Placement } from '@components/Popper/createPopper';
+import {
+  parseInternalPlacement,
+  Placement,
+} from '@components/Popper/createPopper';
+import { Popper } from '@utils/popper';
+import { offsetMiddleware } from '@utils/popper/middlewares/offsetMiddleware';
+import { overflowMiddleware } from '@utils/popper/middlewares/overflowMiddleware';
+import { flipMiddleware } from '@utils/popper/middlewares/flipMiddleware';
+import { arrowMiddleware } from '@utils/popper/middlewares/arrowMiddleware';
+import { hoverTrapMiddleware } from '@utils/popper/middlewares/hoverTrapMiddleware';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getWidth = (
@@ -20,7 +29,6 @@ const getWidth = (
 };
 
 export interface UsePopperProps {
-  arrow?: boolean;
   defaultOpen?: boolean;
   matchWidth?: boolean | number;
   offsetX?: number;
@@ -43,7 +51,6 @@ export interface UsePopperProps {
 
 const usePopper = ({
   // Tooltip
-  arrow,
   hoverTrap,
   //
   // Offset
@@ -63,7 +70,9 @@ const usePopper = ({
 }: UsePopperProps) => {
   const isMounted = useMounted();
 
-  const [state, setState] = React.useState<any>(null);
+  const [state, setState] = React.useState<{ popper: Popper | null }>({
+    popper: null,
+  });
 
   const [popperElement, setPopperElement] =
     React.useState<HTMLDivElement | null>(null);
@@ -93,41 +102,57 @@ const usePopper = ({
     elements: [popperElement, originElement || null],
   });
 
-  const updatePosition = React.useCallback(() => {
-    if (!placement || !popperElement || !originElement) return;
-    const computedPosition = createPopper({
-      arrowElement: arrow ? arrowElement : null,
+  const update = useCallback(
+    (prevState: { popper: Popper | null }) => {
+      let { popper } = prevState;
+
+      if (!placement || !originElement || !popperElement) {
+        // to do: or prev popper
+        return { popper: null };
+      }
+
+      if (!prevState.popper) {
+        const popperPlacement = parseInternalPlacement(placement);
+        popper = Popper.create(popperPlacement, {
+          popperElement,
+          originElement,
+        });
+      }
+
+      popper?.applyMiddlewares([
+        // todo add arrow offset
+        offsetMiddleware({
+          x: offsetX,
+          y: offsetY,
+        }),
+        overflowMiddleware,
+        flipMiddleware,
+        ...(arrowElement ? [arrowMiddleware(arrowElement)] : []),
+        ...(hoverTrap ? [hoverTrapMiddleware] : []),
+        // positionAbsoluteMiddleware,
+      ]);
+
+      return { popper };
+    },
+    [
+      arrowElement,
       hoverTrap,
       offsetX,
       offsetY,
       originElement,
       placement,
       popperElement,
-    });
-
-    setState(computedPosition);
-  }, [
-    arrow,
-    arrowElement,
-    hoverTrap,
-    offsetX,
-    offsetY,
-    originElement,
-    placement,
-    popperElement,
-  ]);
-
-  const resetPosition = React.useCallback(() => {
-    setState(null);
-  }, []);
+    ],
+  );
 
   React.useLayoutEffect(() => {
-    if (isOpen) {
-      updatePosition();
-      return;
+    if (!isOpen) {
+      // to do: lazy
+      setState({ popper: null });
     }
-    resetPosition();
-  }, [isOpen, updatePosition, resetPosition]);
+
+    setState(update);
+  }, [isOpen, update]);
 
   React.useLayoutEffect(() => {
     if (!isMounted) return;
@@ -142,7 +167,7 @@ const usePopper = ({
     const handleResize = (entries: ResizeObserverEntry[]) => {
       const [{ target }] = entries;
       if (target === popperElement || target === originElement) {
-        updatePosition();
+        setState(update);
       }
     };
 
@@ -152,22 +177,29 @@ const usePopper = ({
     return () => {
       observer.disconnect();
     };
-  }, [originElement, updatePosition, popperElement]);
+  }, [originElement, update, popperElement]);
 
   return {
     popperProps: {
       open: isOpen,
       ref: setPopperElement,
       width: getWidth(originElement, matchWidth),
-      ...(state ? { style: { ...state?.popperOffset } } : {}),
+      ...(state.popper
+        ? {
+            style: {
+              left: state.popper.DOMRect.left,
+              top: state.popper.DOMRect.top,
+            },
+          }
+        : {}),
     },
     arrowProps: {
       ref: setArrowElement,
-      placement: state?.arrowPlacement,
-      ...(state ? { style: { ...state?.arrowOffset } } : {}),
+      // placement: state?.arrowPlacement,
+      // ...(state.popper ? { style: { ...state?.arrowOffset } } : {}),
     },
     hoverTrapProps: {
-      ...(state ? { style: { ...state?.spacerOffset } } : {}),
+      // ...(state.popper ? { style: { ...state?.hoverTrapOffset } } : {}),
     },
   };
 };

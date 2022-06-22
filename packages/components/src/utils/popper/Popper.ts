@@ -151,51 +151,45 @@ export class Popper {
       y: originRect.top + offsetTop,
     });
   }
+
   /**
-   * Creates popper and modifies with provided middlewares
+   * Modifies popper with provided middlewares
+   */
+  applyMiddlewares(middlewares: PopperMiddleware[]) {
+    const middlewarePayload = {};
+
+    return middlewares.reduce((middlewareResult, schema) => {
+      const { name, middleware } = schema;
+
+      const result = middleware({
+        popper: this,
+        middlewareResult,
+      });
+
+      return {
+        ...middlewareResult,
+        [name]: result || null,
+      };
+    }, middlewarePayload);
+  }
+
+  /**
+   * Creates popper
    */
   static create(
     placement: PopperPlacement,
     params: {
       originElement: HTMLElement;
       popperElement: HTMLElement;
-      middlewares: PopperMiddleware[];
     },
   ) {
-    const { originElement, popperElement, middlewares } = params;
-
-    /**
-     * Prepare data
-     */
-    const popper = new Popper({
-      element: popperElement,
-      origin: originElement,
+    return new Popper({
+      element: params.popperElement,
+      origin: params.originElement,
       placement: placement,
     });
-
-    const middlewarePayload = {
-      popper,
-      middlewareResult: {} as any,
-    };
-
-    return middlewares.reduce((acc, schema) => {
-      const { popper: prevPopper, middlewareResult } = acc;
-      const { name, middleware } = schema;
-
-      const result = middleware({
-        popper: prevPopper,
-        middlewareResult,
-      });
-
-      return {
-        popper: prevPopper,
-        middlewareResult: {
-          ...acc.middlewareResult,
-          [name]: result || null,
-        },
-      };
-    }, middlewarePayload);
   }
+
   /**
    * Placement Utils
    */
